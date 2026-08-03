@@ -1,0 +1,95 @@
+﻿municipio,target,tests_recent,notif_recent,positives_recent,tests_hist,populacao,indice_vulnerabilidade,tipo_sinal,classificacao_silencio,score_silencio
+CAMPINAPOLIS,,0.0,0.0,0.0,1889.0,15808.0,2.7897658009572104,silencio_critico,silencio_critico,5.0
+COLNIZA,,0.0,0.0,0.0,1301.0,26026.0,1.5800048564189213,silencio_critico,silencio_critico,5.0
+COTRIGUACU,,0.0,0.0,0.0,283.0,10030.0,1.0213395974099129,silencio_critico,silencio_critico,5.0
+NOSSA SENHORA DO LIVRAMENTO,,0.0,0.0,0.0,3709.0,11658.0,1.0755540540540556,silencio_critico,silencio_critico,5.0
+RIBEIRAO CASCALHEIRA,,0.0,0.0,0.0,1079.0,10541.0,1.0804437992680185,silencio_critico,silencio_critico,5.0
+SAO FELIX DO ARAGUAIA,,0.0,0.0,0.0,121.0,14604.0,1.626718538851352,silencio_critico,silencio_critico,5.0
+ARIPUANA,,0.0,0.0,0.0,3420.0,26558.0,0.5382992328265769,silencio_critico,silencio_critico,4.5
+JURUENA,,0.0,0.0,0.0,1257.0,10057.0,0.634907305743244,silencio_critico,silencio_critico,4.5
+PORTO ALEGRE DO NORTE,,0.0,0.0,0.0,279.0,12649.0,0.8777804757882886,silencio_critico,silencio_critico,4.5
+ALTO BOA VISTA,,0.0,0.0,0.0,45.0,5920.0,1.979444819819821,silencio_critico,silencio_critico,4.0
+BARAO DE MELGACO,,0.0,0.0,0.0,1051.0,7137.0,5.221203476914431,silencio_critico,silencio_critico,4.0
+BOM JESUS DO ARAGUAIA,,0.0,0.0,0.0,86.0,7912.0,1.2204424268018026,silencio_critico,silencio_critico,4.0
+COCALINHO,,0.0,0.0,0.0,589.0,6495.0,1.5397950098536035,silencio_critico,silencio_critico,4.0
+MIRASSOL D'OESTE,,0.0,0.0,0.0,0.0,27637.0,-0.31560219594594574,silencio_provavel,silencio_provavel,4.0
+POXOREU,,0.0,0.0,0.0,0.0,25103.0,0.3712408502252245,silencio_provavel,silencio_provavel,4.0
+SANTA TEREZINHA,,0.0,0.0,0.0,408.0,7737.0,1.7831903856982005,silencio_critico,silencio_critico,4.0
+SAO JOSE DO XINGU,,0.0,0.0,0.0,118.0,6234.0,1.0040118595157665,silencio_critico,silencio_critico,4.0
+AGUA BOA,,0.0,0.0,0.0,6928.0,32099.0,-0.6940589808558565,silencio_provavel,silencio_provavel,3.5
+ALTA FLORESTA,,0.0,0.0,0.0,19980.0,62158.0,-0.6140190737612614,silencio_provavel,silencio_provavel,3.5
+ALTO ARAGUAIA,,0.0,0.0,0.0,1845.0,17751.0,-0.30463587415540516,silencio_provavel,silencio_provavel,3.5
+ALTO GARCAS,,0.0,0.0,0.0,1503.0,13956.0,-0.36858234797297273,silencio_provavel,silencio_provavel,3.5
+ALTO TAQUARI,,0.0,0.0,0.0,868.0,11877.0,-0.8078523719031531,silencio_provavel,silencio_provavel,3.5
+ARENAPOLIS,,0.0,0.0,0.0,2955.0,10769.0,-0.418571684966216,silencio_provavel,silencio_provavel,3.5
+BARRA DO GARCAS,,0.0,0.0,0.0,5245.0,73878.0,-0.593558101069821,silencio_provavel,silencio_provavel,3.5
+BRASNORTE,,0.0,0.0,0.0,1694.0,17645.0,-0.32860986768017975,silencio_provavel,silencio_provavel,3.5
+CANARANA,,0.0,0.0,0.0,4612.0,28324.0,-0.20313805602477428,silencio_provavel,silencio_provavel,3.5
+COLIDER,,0.0,0.0,0.0,9299.0,32054.0,-0.5325074957770272,silencio_provavel,silencio_provavel,3.5
+COMODORO,,0.0,0.0,0.0,3519.0,18469.0,-0.28085177364864794,silencio_provavel,silencio_provavel,3.5
+FELIZ NATAL,,0.0,0.0,0.0,273.0,10523.0,-0.2046572001689184,silencio_provavel,silencio_provavel,3.5
+GAUCHA DO NORTE,,0.0,0.0,0.0,369.0,9397.0,0.7570559895833355,silencio_critico,silencio_critico,3.5
+GENERAL CARNEIRO,,0.0,0.0,0.0,305.0,6319.0,0.818533854166666,silencio_critico,silencio_critico,3.5
+GUARANTA DO NORTE,,0.0,0.0,0.0,7379.0,31209.0,-0.3752286036036033,silencio_provavel,silencio_provavel,3.5
+GUIRATINGA,,0.0,0.0,0.0,188.0,10252.0,0.1711410824887378,silencio_provavel,silencio_provavel,3.5
+ITIQUIRA,,0.0,0.0,0.0,335.0,12587.0,0.010634009009009546,silencio_provavel,silencio_provavel,3.5
+JACIARA,,0.0,0.0,0.0,2406.0,29803.0,-0.561323761261262,silencio_provavel,silencio_provavel,3.5
+JANGADA,,0.0,0.0,0.0,1065.0,7413.0,0.5606591356982,silencio_critico,silencio_critico,3.5
+JUARA,,0.0,0.0,0.0,3063.0,36089.0,-0.33335719313063056,silencio_provavel,silencio_provavel,3.5
+JUINA,,0.0,0.0,0.0,5639.0,48396.0,-0.35476763091216235,silencio_provavel,silencio_provavel,3.5
+JUSCIMEIRA,,0.0,0.0,0.0,1574.0,11622.0,-0.29499880349099106,silencio_provavel,silencio_provavel,3.5
+MARCELANDIA,,0.0,0.0,0.0,5221.0,11355.0,0.06850390625000023,silencio_provavel,silencio_provavel,3.5
+MATUPA,,0.0,0.0,0.0,3452.0,21959.0,-0.3436588893581083,silencio_provavel,silencio_provavel,3.5
+NOBRES,,0.0,0.0,0.0,5794.0,15796.0,0.21030651745495527,silencio_provavel,silencio_provavel,3.5
+NOVA BANDEIRANTES,,0.0,0.0,0.0,625.0,14340.0,0.27430046452702816,silencio_provavel,silencio_provavel,3.5
+NOVA CANAA DO NORTE,,0.0,0.0,0.0,2288.0,11734.0,-0.10482094594594599,silencio_provavel,silencio_provavel,3.5
+NOVA NAZARE,,0.0,0.0,0.0,186.0,4575.0,1.2084791666666697,silencio_provavel,silencio_provavel,3.5
+NOVA XAVANTINA,,0.0,0.0,0.0,1315.0,25915.0,-0.26134026604729715,silencio_provavel,silencio_provavel,3.5
+PARANAITA,,0.0,0.0,0.0,6835.0,12079.0,-0.21367711852477425,silencio_provavel,silencio_provavel,3.5
+PEDRA PRETA,,0.0,0.0,0.0,364.0,18946.0,-0.20731570242117095,silencio_provavel,silencio_provavel,3.5
+PEIXOTO DE AZEVEDO,,0.0,0.0,0.0,3021.0,33754.0,0.20641371058558672,silencio_provavel,silencio_provavel,3.5
+PORTO ESTRELA,,0.0,0.0,0.0,233.0,3141.0,1.0080470861486512,silencio_provavel,silencio_provavel,3.5
+QUERENCIA,,0.0,0.0,0.0,3852.0,31100.0,-0.05924662162162103,silencio_provavel,silencio_provavel,3.5
+RONDOLANDIA,,0.0,0.0,0.0,2.0,3518.0,1.5158922262105872,silencio_provavel,silencio_provavel,3.5
+RONDONOPOLIS,,0.0,0.0,0.0,14470.0,263708.0,-0.7338890413851364,silencio_provavel,silencio_provavel,3.5
+SAO JOSE DOS QUATRO MARCOS,,0.0,0.0,0.0,2466.0,17721.0,-0.6448766891891895,silencio_provavel,silencio_provavel,3.5
+SORRISO,,0.0,0.0,0.0,42997.0,124665.0,-0.8907406742680192,silencio_provavel,silencio_provavel,3.5
+TAPURAH,,0.0,0.0,0.0,2881.0,15638.0,-0.5489332418355857,silencio_provavel,silencio_provavel,3.5
+TERRA NOVA DO NORTE,,0.0,0.0,0.0,1095.0,10591.0,-0.24140149915540499,silencio_provavel,silencio_provavel,3.5
+VERA,,0.0,0.0,0.0,2418.0,10758.0,-0.228583720439189,silencio_provavel,silencio_provavel,3.5
+VILA RICA,,0.0,0.0,0.0,1173.0,19686.0,0.46604493947072134,silencio_provavel,silencio_provavel,3.5
+CANABRAVA DO NORTE,,0.0,0.0,0.0,117.0,4451.0,0.9529781109234242,silencio_provavel,silencio_provavel,3.0
+PLANALTO DA SERRA,,0.0,0.0,0.0,254.0,3328.0,0.5307984586148657,silencio_provavel,silencio_provavel,3.0
+APIACAS,,0.0,0.0,0.0,3151.0,8693.0,0.05065396255630671,silencio_provavel,silencio_provavel,2.5
+CASTANHEIRA,,0.0,0.0,0.0,777.0,7392.0,-0.03361106418918852,silencio_provavel,silencio_provavel,2.5
+CLAUDIA,,0.0,0.0,0.0,294.0,9301.0,-0.5688720087274771,silencio_provavel,silencio_provavel,2.5
+CONQUISTA D'OESTE,,0.0,0.0,0.0,0.0,3908.0,-0.9995968468468466,silencio_moderado,silencio_moderado,2.5
+DENISE,,0.0,0.0,0.0,315.0,6675.0,-0.4047569679054053,silencio_provavel,silencio_provavel,2.5
+DOM AQUINO,,0.0,0.0,0.0,470.0,7890.0,-0.03479789555180121,silencio_provavel,silencio_provavel,2.5
+FIGUEIROPOLIS D'OESTE,,0.0,0.0,0.0,0.0,3056.0,-0.3894705799549548,silencio_moderado,silencio_moderado,2.5
+IPIRANGA DO NORTE,,0.0,0.0,0.0,2378.0,8658.0,-0.610933312218469,silencio_provavel,silencio_provavel,2.5
+ITANHANGA,,0.0,0.0,0.0,684.0,8257.0,-0.1963968538851352,silencio_provavel,silencio_provavel,2.5
+ITAUBA,,0.0,0.0,0.0,2301.0,5201.0,-0.08977192426801742,silencio_provavel,silencio_provavel,2.5
+JAURU,,0.0,0.0,0.0,1436.0,7881.0,0.0011868313626129182,silencio_provavel,silencio_provavel,2.5
+LAMBARI D'OESTE,,0.0,0.0,0.0,0.0,4662.0,0.21514878941441634,silencio_moderado,silencio_moderado,2.5
+NORTELANDIA,,0.0,0.0,0.0,1304.0,5890.0,-0.11127730855855836,silencio_provavel,silencio_provavel,2.5
+NOVA LACERDA,,0.0,0.0,0.0,2185.0,7072.0,0.3343541314752269,silencio_provavel,silencio_provavel,2.5
+NOVA MONTE VERDE,,0.0,0.0,0.0,2600.0,8470.0,0.07011799690315373,silencio_provavel,silencio_provavel,2.5
+NOVA UBIRATA,,0.0,0.0,0.0,2614.0,9760.0,0.172992539414415,silencio_provavel,silencio_provavel,2.5
+NOVO MUNDO,,0.0,0.0,0.0,906.0,6368.0,0.12248099662162204,silencio_provavel,silencio_provavel,2.5
+NOVO SAO JOAQUIM,,0.0,0.0,0.0,563.0,7239.0,0.4090770340653165,silencio_provavel,silencio_provavel,2.5
+PONTAL DO ARAGUAIA,,0.0,0.0,0.0,419.0,7441.0,-0.3628855574324333,silencio_provavel,silencio_provavel,2.5
+PORTO DOS GAUCHOS,,0.0,0.0,0.0,68.0,5705.0,0.018846882038288396,silencio_provavel,silencio_provavel,2.5
+SANTA CARMEM,,0.0,0.0,0.0,559.0,5795.0,-0.32751798282657685,silencio_provavel,silencio_provavel,2.5
+ACORIZAL,,0.0,0.0,0.0,840.0,4948.0,0.38500809403153324,silencio_provavel,silencio_provavel,2.0
+ARAGUAIANA,,0.0,0.0,0.0,15.0,4005.0,-0.11156214808558562,silencio_provavel,silencio_provavel,2.0
+NOVA BRASILANDIA,,0.0,0.0,0.0,1374.0,3791.0,0.4917279701576588,silencio_provavel,silencio_provavel,2.0
+NOVA GUARITA,,0.0,0.0,0.0,1743.0,4546.0,-0.043817813907657016,silencio_provavel,silencio_provavel,2.0
+NOVA SANTA HELENA,,0.0,0.0,0.0,3091.0,4502.0,-0.5534906742680176,silencio_provavel,silencio_provavel,2.0
+NOVO HORIZONTE DO NORTE,,0.0,0.0,0.0,243.0,3267.0,0.024828512105856543,silencio_provavel,silencio_provavel,2.0
+RIO BRANCO,,0.0,0.0,0.0,1812.0,4440.0,0.1424197635135136,silencio_provavel,silencio_provavel,2.0
+SANTA RITA DO TRIVELATO,,0.0,0.0,0.0,382.0,3536.0,-0.3771750070382892,silencio_provavel,silencio_provavel,2.0
+SANTO ANTONIO DO LESTE,,0.0,0.0,0.0,99.0,4244.0,0.09475661599099194,silencio_provavel,silencio_provavel,2.0
+SAO PEDRO DA CIPA,,0.0,0.0,0.0,91.0,4250.0,0.26770168215090173,silencio_provavel,silencio_provavel,2.0
+TORIXOREU,,0.0,0.0,0.0,23.0,4238.0,0.34679212415540517,silencio_provavel,silencio_provavel,2.0
+UNIAO DO SUL,,0.0,0.0,0.0,1052.0,3904.0,0.0187994087837845,silencio_provavel,silencio_provavel,2.0

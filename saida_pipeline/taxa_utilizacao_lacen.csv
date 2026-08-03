@@ -1,0 +1,108 @@
+﻿municipio,target,semanas,tests,positives,notificacoes,populacao,positividade_media,taxa_utilizacao,exames_por_100_notificacoes,exames_por_100k,silencio_laboratorial,baixo_uso_lacen,classificacao_uso
+SANTO ANTONIO DO LEVERGER,baciloscopia,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+BARRA DO BUGRES,criptococos_teste_rapido,2,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+DIAMANTINO,criptococos_teste_rapido,3,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,hepatite_b_hbv,4,6.0,4.0,0.0,,0.6666666666666666,,,,False,False,intermediario
+PONTES E LACERDA,hepatite_b_hbv,3,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SAPEZAL,hepatite_b_hbv,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+TANGARA DA SERRA,hepatite_b_hbv,5,6.0,3.0,0.0,,0.5,,,,False,False,intermediario
+CEREJEIRAS,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,influenza_a,2,4.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CEREJEIRAS,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,influenza_b,2,4.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CONFRESA,meningite_bacteriana_biologia_molecular,1,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CONFRESA,neisseria_gonorrhoeae,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,pesquisa_de_multipatogenos_ist,1,14.0,2.0,0.0,,0.14285714285714285,,,,False,False,intermediario
+LAMBARI D''OESTE,pesquisa_de_multipatogenos_ist,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+TANGARA DA SERRA,pesquisa_de_multipatogenos_ist,8,66.0,6.0,0.0,,0.09090909090909091,,,,False,False,intermediario
+ALTO PARAGUAI,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,rifampicina,5,16.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PACARAIMA,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PORTO VELHO,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CEREJEIRAS,sars_cov_2,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,sars_cov_2,2,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+BARRA DO BUGRES,tuberculose_lf_lam,2,2.0,1.0,0.0,,0.5,,,,False,False,intermediario
+PARANATINGA,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SINOP,tuberculose_lf_lam,6,13.0,8.0,0.0,,0.6153846153846154,,,,False,False,intermediario
+TANGARA DA SERRA,criptococos_teste_rapido,3,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CURVELANDIA,hepatite_b_hbv,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+SINOP,hepatite_b_hbv,3,6.0,4.0,0.0,,0.6666666666666666,,,,False,False,intermediario
+CACERES,hepatite_c_hcv,2,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VARZEA GRANDE,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VARZEA GRANDE,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA MARILANDIA,pesquisa_de_multipatogenos_ist,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CHAPADA DOS GUIMARAES,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VARZEA GRANDE,rifampicina,4,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VARZEA GRANDE,sars_cov_2,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+DIAMANTINO,tuberculose_lf_lam,2,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,chikungunya,2,167.0,20.0,0.0,,0.11976047904191617,,,,False,False,intermediario
+CUIABA,chikungunya,2,4.0,1.0,0.0,,0.25,,,,False,False,intermediario
+LUCAS DO RIO VERDE,chikungunya,1,2.0,1.0,0.0,,0.5,,,,False,False,intermediario
+PORTO ESPERIDIAO,chikungunya,2,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SINOP,criptococos_teste_rapido,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,dengue,2,57.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA OLIMPIA,dengue,1,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PALMEIRAS DE GOIAS,dengue,1,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SALTO DO CEU,dengue,1,3.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,hepatite_b_hbv,3,3.0,2.0,0.0,,0.6666666666666666,,,,False,False,intermediario
+CAPANEMA,hepatite_b_hbv,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+VARZEA GRANDE,pesquisa_de_multipatogenos_ist,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+FIRMINOPOLIS,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CHAPADA DOS GUIMARAES,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,zika,2,167.0,49.0,0.0,,0.2934131736526946,,,,False,False,intermediario
+CUIABA,zika,2,4.0,1.0,0.0,,0.25,,,,False,False,intermediario
+LUCAS DO RIO VERDE,zika,1,2.0,1.0,0.0,,0.5,,,,False,False,intermediario
+PORTO ESPERIDIAO,zika,2,6.0,2.0,0.0,,0.3333333333333333,,,,False,False,intermediario
+CUIABA,baciloscopia,2,3.0,3.0,0.0,,1.0,,,,False,False,intermediario
+VILA BELA DA SANTISSIMA TRINDADE,chikungunya,1,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,febre_amarela_biologia_molecular,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,hiv,1,2.0,2.0,0.0,,1.0,,,,False,False,intermediario
+CACERES,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,mayaro_biologia_molecular,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,oropouche_biologia_molecular,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+BARRA DO BUGRES,pesquisa_de_multipatogenos_ist,2,4.0,1.0,0.0,,0.25,,,,False,False,intermediario
+CACERES,pesquisa_de_multipatogenos_ist,4,12.0,3.0,0.0,,0.25,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,pesquisa_de_multipatogenos_ist,2,4.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PRIMAVERA DO LESTE,pesquisa_de_multipatogenos_ist,2,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+POCONE,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SAO GONCALO DO AMARANTE,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO VERDE,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,tuberculose_lf_lam,3,6.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VARZEA GRANDE,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,virus_respiratorios,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+VILA BELA DA SANTISSIMA TRINDADE,zika,1,6.0,2.0,0.0,,0.3333333333333333,,,,False,False,intermediario
+CACERES,criptococos_teste_rapido,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+BARRA DO BUGRES,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+BARRA DO BUGRES,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA OLIMPIA,pesquisa_de_multipatogenos_ist,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CARLINDA,rifampicina,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+BARRA DO BUGRES,sars_cov_2,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CACERES,tuberculose_lf_lam,2,4.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPOS DE JULIO,tuberculose_lf_lam,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+IPORA,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA MARINGA,criptococos_teste_rapido,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SAO JOSE DO RIO CLARO,criptococos_teste_rapido,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+ARAPUTANGA,hepatite_b_hbv,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+MIRASSOL D''OESTE,hepatite_b_hbv,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+PONTES E LACERDA,hepatite_c_hcv,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,sars_cov_2,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA MARINGA,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SAO JOSE DO RIO CLARO,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+TABAPORA,tuberculose_lf_lam,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+TANGARA DA SERRA,tuberculose_lf_lam,2,2.0,1.0,0.0,,0.5,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,criptococos_teste_rapido,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PRIMAVERA DO LESTE,criptococos_teste_rapido,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CUIABA,hepatite_b_hbv,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+PARAGOMINAS,influenza_a,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PARAGOMINAS,influenza_b,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+SINOP,pesquisa_de_multipatogenos_ist,1,2.0,0.0,0.0,,0.0,,,,False,False,intermediario
+NOVA MUTUM,rifampicina,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+PARAGOMINAS,sars_cov_2,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,tuberculose_lf_lam,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario
+PRIMAVERA DO LESTE,tuberculose_lf_lam,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+ROSARIO OESTE,tuberculose_lf_lam,1,1.0,1.0,0.0,,1.0,,,,False,False,intermediario
+VARZEA GRANDE,dengue,1,4.0,0.0,0.0,,0.0,,,,False,False,intermediario
+CAMPO NOVO DO PARECIS,meningite_bacteriana_biologia_molecular,1,1.0,0.0,0.0,,0.0,,,,False,False,intermediario

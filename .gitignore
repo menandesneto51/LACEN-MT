@@ -1,0 +1,42 @@
+# Ambiente e segredos
+.venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Logs e cache
+logs/
+*.log
+.streamlit/cache/
+
+# Bases brutas pesadas (não versionar)
+*.csv
+!saida_pipeline/municipios_em_risco.csv
+!saida_pipeline/municipios_silenciosos.csv
+!saida_pipeline/taxa_utilizacao_lacen.csv
+
+# Shapefiles e dados geo
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.zip
+
+# Artefatos locais / lixo
+antigos/
+saida_pipeline/
+!saida_pipeline/
+saida_pipeline/*
+!saida_pipeline/municipios_em_risco.csv
+!saida_pipeline/municipios_silenciosos.csv
+!saida_pipeline/taxa_utilizacao_lacen.csv
+lacen TATI/
+diagnostico_codigo_resultados_gal/
+cd
+python
+*.bak
+.DS_Store
+Thumbs.db
