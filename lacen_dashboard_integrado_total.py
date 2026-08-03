@@ -134,6 +134,20 @@ def read_csv_resilient(path: Path) -> pd.DataFrame:
     raise ValueError(f"Não foi possível ler {path}. Último erro: {last_error}")
 
 
+def read_table_resilient(path: Path) -> pd.DataFrame:
+    """Prefere .parquet (mais rápido); cai para CSV resiliente."""
+    pq = path if path.suffix.lower() == ".parquet" else path.with_suffix(".parquet")
+    csv = path if path.suffix.lower() == ".csv" else path.with_suffix(".csv")
+    if pq.exists():
+        try:
+            return pd.read_parquet(pq)
+        except Exception:
+            pass
+    if csv.exists():
+        return read_csv_resilient(csv)
+    raise FileNotFoundError(f"Nem parquet nem CSV: {path}")
+
+
 def first_col(df_or_cols: pd.DataFrame | Iterable[str], candidates: Sequence[str]) -> Optional[str]:
     cols = list(df_or_cols.columns if isinstance(df_or_cols, pd.DataFrame) else df_or_cols)
     normalized = {norm_key(c): c for c in cols}
@@ -348,17 +362,19 @@ def load_data(folder: str):
 
     for key, filename in CORE_FILES.items():
         p = base / filename
-        if not p.exists():
+        pq = p.with_suffix(".parquet")
+        if not p.exists() and not pq.exists():
             data[key] = None
             missing.append(filename)
         else:
-            data[key] = read_csv_resilient(p)
+            data[key] = read_table_resilient(p)
 
     for key, filename in OPTIONAL_FILES.items():
         p = base / filename
-        if p.exists():
+        pq = p.with_suffix(".parquet")
+        if p.exists() or pq.exists():
             try:
-                data[key] = read_csv_resilient(p)
+                data[key] = read_table_resilient(p)
             except Exception:
                 data[key] = None
         else:

@@ -70,6 +70,11 @@ def main() -> int:
         p = OUT / name
         print(f"{'OK' if p.exists() else 'MISSING'} {name}", flush=True)
 
+    # Parquet para acelerar o dashboard / Cloud
+    export_pq = BASE / "exportar_parquet_saida.py"
+    if export_pq.exists():
+        run([str(PY), str(export_pq), "--outdir", str(OUT)])
+
     print("[FINAL] Atualização local concluída.", flush=True)
     return 0
 

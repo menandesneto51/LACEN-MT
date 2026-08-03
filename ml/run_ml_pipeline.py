@@ -98,6 +98,12 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
         )
 
     _log("[ML] Pipeline preditivo concluído.")
+    try:
+        from exportar_parquet_saida import export_outdir
+        _log("[ML] Exportando parquet...")
+        export_outdir(outdir)
+    except Exception as exc:
+        _log(f"[ML][AVISO] Parquet não gerado: {exc}")
     return {
         "features": feat_out,
         "forecast": fc_out,
