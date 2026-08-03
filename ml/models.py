@@ -1,0 +1,229 @@
+# -*- coding: utf-8 -*-
+"""Inferência baseline (sem sklearn): forecast, anomalia, risco e silêncio preditos."""
+from __future__ import annotations
+
+from typing import Optional
+
+import numpy as np
+import pandas as pd
+
+from .features import latest_week_snapshot, prepare_weekly
+
+
+def _sigmoid(x: np.ndarray | pd.Series) -> np.ndarray:
+    x = np.asarray(x, dtype=float)
+    x = np.clip(x, -20, 20)
+    return 1.0 / (1.0 + np.exp(-x))
+
+
+def _advance_epiweek(year: int, week: int, steps: int = 1) -> tuple[int, int]:
+    y, w = int(year), int(week)
+    for _ in range(steps):
+        w += 1
+        if w > 53:
+            w = 1
+            y += 1
+    return y, w
+
+
+def forecast_demanda(weekly: pd.DataFrame, horizon: int = 4) -> pd.DataFrame:
+    """Previsão estadual por alvo: média móvel exponencial das últimas 8 semanas."""
+    df = prepare_weekly(weekly)
+    state = (
+        df.groupby(["epi_year", "epi_week", "target"], as_index=False)
+        .agg(
+            tests=("tests", "sum"),
+            positives=("positives", "sum"),
+            notificacoes=("notificacoes", "sum") if "notificacoes" in df.columns else ("tests", "sum"),
+            populacao=("populacao", "sum") if "populacao" in df.columns else ("tests", "size"),
+        )
+        .sort_values(["target", "epi_year", "epi_week"])
+    )
+    if "positividade" not in state.columns:
+        state["positividade"] = np.where(state["tests"] > 0, state["positives"] / state["tests"], np.nan)
+
+    rows = []
+    for target, sub in state.groupby("target"):
+        sub = sub.reset_index(drop=True)
+        if len(sub) < 6:
+            continue
+        tail = sub.tail(8)
+        # EWMA simples
+        ewma_tests = float(tail["tests"].ewm(span=4, adjust=False).mean().iloc[-1])
+        ewma_pos = float(tail["positividade"].ewm(span=4, adjust=False).mean().iloc[-1])
+        ewma_notif = float(tail["notificacoes"].ewm(span=4, adjust=False).mean().iloc[-1])
+        hist_std = float(tail["tests"].std(ddof=0) or 0.0)
+        last_y, last_w = int(sub.iloc[-1]["epi_year"]), int(sub.iloc[-1]["epi_week"])
+        for step in range(1, horizon + 1):
+            fy, fw = _advance_epiweek(last_y, last_w, step)
+            # intervalo empírico ±1 desvio
+            rows.append({
+                "target": target,
+                "forecast_step": step,
+                "forecast_epi_year": fy,
+                "forecast_epi_week": fw,
+                "forecast_tests": round(ewma_tests, 2),
+                "forecast_tests_low": round(max(0.0, ewma_tests - hist_std), 2),
+                "forecast_tests_high": round(ewma_tests + hist_std, 2),
+                "forecast_positividade": round(float(np.nan_to_num(ewma_pos, nan=0.0)), 4),
+                "forecast_notificacoes": round(ewma_notif, 2),
+                "metodo": "ewma_span4_tail8",
+                "modelo_versao": "baseline_v1",
+            })
+    return pd.DataFrame(rows)
+
+
+def detect_anomalias(features: pd.DataFrame, z_threshold: float = 2.5) -> pd.DataFrame:
+    """Anomalias na última semana: desvio vs média móvel 8 semanas."""
+    snap = latest_week_snapshot(features)
+    if snap.empty:
+        return pd.DataFrame()
+
+    rows = []
+    for metric in ("tests", "positividade", "incidencia_100k", "notificacoes"):
+        ma = f"{metric}_ma8"
+        if metric not in snap.columns or ma not in snap.columns:
+            continue
+        cur = pd.to_numeric(snap[metric], errors="coerce")
+        base = pd.to_numeric(snap[ma], errors="coerce")
+        # desvio relativo robusto
+        denom = base.abs().clip(lower=1e-6)
+        z_proxy = (cur - base) / denom
+        # também usa z histórico se existir na série completa
+        tmp = snap.copy()
+        tmp["z_proxy"] = z_proxy
+        tmp["metric"] = metric
+        tmp["valor_atual"] = cur
+        tmp["baseline_ma8"] = base
+        flag = tmp["z_proxy"].abs() >= (z_threshold / 5.0)  # limiar relativo ~0.5
+        # reforço: se tests atual >> ma8
+        if metric == "tests":
+            flag = flag | ((cur >= 5) & (cur >= base * 2.0))
+        if metric == "positividade":
+            flag = flag | ((cur >= 0.35) & (cur - base >= 0.15))
+        hit = tmp.loc[flag].copy()
+        if hit.empty:
+            continue
+        hit["tipo_anomalia"] = np.where(hit["z_proxy"] >= 0, "alta_atipica", "queda_atipica")
+        hit["severidade"] = np.where(hit["z_proxy"].abs() >= 1.0, "alta", np.where(hit["z_proxy"].abs() >= 0.5, "moderada", "baixa"))
+        hit["acao_sugerida"] = np.where(
+            hit["tipo_anomalia"].eq("alta_atipica"),
+            "Investigar pico atípico e validar capacidade laboratorial/vigilância.",
+            "Verificar possível interrupção de fluxo de coleta ou subnotificação.",
+        )
+        cols = [
+            "municipio", "target", "epi_year", "epi_week", "metric",
+            "valor_atual", "baseline_ma8", "z_proxy", "tipo_anomalia", "severidade",
+            "acao_sugerida",
+        ]
+        rows.append(hit[[c for c in cols if c in hit.columns]])
+
+    if not rows:
+        return pd.DataFrame()
+    out = pd.concat(rows, ignore_index=True)
+    out["modelo_versao"] = "baseline_v1"
+    sev_rank = {"alta": 0, "moderada": 1, "baixa": 2}
+    out["_sev"] = out["severidade"].map(sev_rank).fillna(9)
+    out = out.sort_values(["_sev", "z_proxy"], ascending=[True, False]).drop(columns=["_sev"])
+    return out.reset_index(drop=True)
+
+
+def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
+    """Probabilidade operacional de município-alvo estar em alerta na próxima janela."""
+    snap = latest_week_snapshot(features)
+    if snap.empty:
+        return pd.DataFrame()
+
+    pos = pd.to_numeric(snap.get("positividade", 0), errors="coerce").fillna(0)
+    pos_t = pd.to_numeric(snap.get("positividade_trend", 0), errors="coerce").fillna(0)
+    risco = pd.to_numeric(snap.get("risco_composto", 0), errors="coerce").fillna(0)
+    tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
+    notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
+    vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
+    tests_t = pd.to_numeric(snap.get("tests_trend", 0), errors="coerce").fillna(0)
+
+    # logit linear interpretável (pesos fixos da baseline_v1)
+    logit = (
+        -2.2
+        + 2.8 * pos
+        + 1.5 * np.tanh(pos_t * 5)
+        + 0.35 * risco.clip(0, 10)
+        + 0.15 * np.log1p(tests)
+        + 0.12 * np.log1p(notif)
+        + 0.25 * vuln.clip(-3, 3)
+        + 0.4 * np.tanh(tests_t / 5.0)
+    )
+    prob = _sigmoid(logit)
+
+    out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
+    out["prob_alerta_proxima_janela"] = np.round(prob, 4)
+    out["score_logit"] = np.round(logit, 4)
+    out["faixa_predita"] = pd.cut(
+        out["prob_alerta_proxima_janela"],
+        bins=[-0.01, 0.25, 0.50, 0.75, 1.01],
+        labels=["baixo", "moderado", "alto", "muito_alto"],
+    ).astype(str)
+    out["drivers"] = (
+        "positividade=" + pos.round(2).astype(str)
+        + "; tendencia_pos=" + pos_t.round(3).astype(str)
+        + "; risco=" + risco.round(2).astype(str)
+    )
+    out["acao_sugerida"] = np.where(
+        out["prob_alerta_proxima_janela"] >= 0.75,
+        "Priorizar monitoramento ativo e articulação com vigilância municipal.",
+        np.where(
+            out["prob_alerta_proxima_janela"] >= 0.50,
+            "Acompanhar tendência semanal e reforçar coleta se houver sintoma clínico.",
+            "Manter rotina de vigilância laboratorial.",
+        ),
+    )
+    out["modelo_versao"] = "baseline_v1"
+    return out.sort_values("prob_alerta_proxima_janela", ascending=False).reset_index(drop=True)
+
+
+def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
+    """Probabilidade de silêncio laboratorial (sem exames) na próxima janela."""
+    snap = latest_week_snapshot(features)
+    if snap.empty:
+        return pd.DataFrame()
+
+    tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
+    tests_ma8 = pd.to_numeric(snap.get("tests_ma8", 0), errors="coerce").fillna(0)
+    notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
+    weeks_zero = pd.to_numeric(snap.get("semanas_sem_exame", 0), errors="coerce").fillna(0)
+    vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
+    uso = pd.to_numeric(snap.get("solicitacoes_100k", 0), errors="coerce").fillna(0)
+
+    logit = (
+        -1.0
+        + 0.55 * weeks_zero.clip(0, 12)
+        + 0.8 * (tests <= 0).astype(float)
+        + 0.35 * (tests_ma8 < 1).astype(float)
+        + 0.25 * np.log1p(notif)
+        + 0.2 * vuln.clip(-3, 3)
+        - 0.15 * np.log1p(uso.clip(lower=0))
+    )
+    prob = _sigmoid(logit)
+
+    out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
+    out["prob_silencio_proxima_janela"] = np.round(prob, 4)
+    out["tests_ultima_semana"] = tests
+    out["tests_ma8"] = tests_ma8
+    out["notificacoes_ultima_semana"] = notif
+    out["semanas_sem_exame"] = weeks_zero
+    out["faixa_silencio_predita"] = pd.cut(
+        out["prob_silencio_proxima_janela"],
+        bins=[-0.01, 0.35, 0.55, 0.75, 1.01],
+        labels=["sem_silencio_aparente", "silencio_moderado", "silencio_provavel", "silencio_critico"],
+    ).astype(str)
+    out["acao_sugerida"] = np.where(
+        out["prob_silencio_proxima_janela"] >= 0.75,
+        "Busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal.",
+        np.where(
+            out["prob_silencio_proxima_janela"] >= 0.55,
+            "Revisar cobertura de testagem e histórico de utilização do LACEN.",
+            "Manter acompanhamento de rotina.",
+        ),
+    )
+    out["modelo_versao"] = "baseline_v1"
+    return out.sort_values("prob_silencio_proxima_janela", ascending=False).reset_index(drop=True)

@@ -70,6 +70,11 @@ OPTIONAL_FILES = {
     "municipios_risco": "municipios_em_risco.csv",
     "municipios_silenciosos": "municipios_silenciosos.csv",
     "taxa_utilizacao": "taxa_utilizacao_lacen.csv",
+    "ml_forecast": "ml_forecast_demanda.csv",
+    "ml_anomalias": "ml_anomalias.csv",
+    "ml_risco": "ml_risco_predito.csv",
+    "ml_silencio": "ml_silencio_predito.csv",
+    "ml_features": "ml_features_latest.csv",
 }
 
 
@@ -1134,12 +1139,24 @@ cnes_capacity = data["cnes_capacity"]
 df_risco = data.get("municipios_risco")
 df_silenciosos = data.get("municipios_silenciosos")
 df_utilizacao = data.get("taxa_utilizacao")
+df_ml_forecast = data.get("ml_forecast")
+df_ml_anomalias = data.get("ml_anomalias")
+df_ml_risco = data.get("ml_risco")
+df_ml_silencio = data.get("ml_silencio")
 if df_risco is None:
     df_risco = pd.DataFrame()
 if df_silenciosos is None:
     df_silenciosos = pd.DataFrame()
 if df_utilizacao is None:
     df_utilizacao = pd.DataFrame()
+if df_ml_forecast is None:
+    df_ml_forecast = pd.DataFrame()
+if df_ml_anomalias is None:
+    df_ml_anomalias = pd.DataFrame()
+if df_ml_risco is None:
+    df_ml_risco = pd.DataFrame()
+if df_ml_silencio is None:
+    df_ml_silencio = pd.DataFrame()
 
 all_targets = sorted([str(x) for x in weekly["target"].dropna().unique() if str(x).lower() not in {"nan", "none", ""}])
 all_muns = sorted([str(x) for x in weekly["municipio"].dropna().unique() if str(x).upper() not in {"NAN", "NONE", ""}])
@@ -1263,6 +1280,7 @@ tabs = st.tabs([
     "Sinais de silêncio",
     "Utilização laboratorial",
     "Alertas e recomendações",
+    "Sinais preditivos",
     "Análise do período",
     "Alertas próximos dias",
     "Municípios e mapas",
@@ -1568,9 +1586,120 @@ with tabs[5]:
 
 
 # =============================================================================
-# Aba 6: período (detalhada)
+# Aba 6: Sinais preditivos (ML)
 # =============================================================================
 with tabs[6]:
+    st.subheader("Sinais preditivos — módulo ML baseline")
+    st.caption(
+        "Modelos interpretáveis (baseline_v1): forecast EWMA, anomalias vs média móvel, "
+        "risco e silêncio preditos. Resultados gerados em `saida_pipeline` — não treinam no DW."
+    )
+    ml_missing = all(df.empty for df in (df_ml_forecast, df_ml_anomalias, df_ml_risco, df_ml_silencio))
+    if ml_missing:
+        st.info(
+            "Arquivos ML ainda não gerados. Rode: "
+            "`python -m ml.run_ml_pipeline --outdir saida_pipeline`"
+        )
+    else:
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Séries forecast", format_int(len(df_ml_forecast)))
+        k2.metric("Anomalias", format_int(len(df_ml_anomalias)))
+        alto_r = int(df_ml_risco["faixa_predita"].astype(str).isin(["alto", "muito_alto"]).sum()) if not df_ml_risco.empty and "faixa_predita" in df_ml_risco.columns else 0
+        k3.metric("Risco alto/muito alto", format_int(alto_r))
+        crit_s = int((df_ml_silencio.get("faixa_silencio_predita", pd.Series(dtype=str)).astype(str) == "silencio_critico").sum()) if not df_ml_silencio.empty else 0
+        k4.metric("Silêncio crítico predito", format_int(crit_s))
+
+        st.markdown("##### Previsão de demanda (estadual por agravo)")
+        if df_ml_forecast.empty:
+            st.caption("Sem `ml_forecast_demanda.csv`.")
+        else:
+            fc = df_ml_forecast.copy()
+            if selected_targets and "target" in fc.columns:
+                fc = fc[fc["target"].isin(selected_targets)]
+            if require_cols(fc, ["target", "forecast_step", "forecast_tests"], "Forecast ML"):
+                fig = px.line(
+                    fc.sort_values(["target", "forecast_step"]),
+                    x="forecast_step",
+                    y="forecast_tests",
+                    color="target",
+                    markers=True,
+                    title="Exames previstos — próximas semanas (EWMA)",
+                    labels={"forecast_step": "Semanas à frente", "forecast_tests": "Exames previstos", "target": "Agravo"},
+                )
+                safe_plotly(fig, "Forecast demanda")
+            with st.expander("Tabela de forecast"):
+                show_table(fc.head(100), "ml_forecast_demanda", max_rows=100)
+
+        st.markdown("##### Anomalias detectadas")
+        if df_ml_anomalias.empty:
+            st.caption("Nenhuma anomalia na última semana / arquivo ausente.")
+        else:
+            an = df_ml_anomalias.copy()
+            if selected_targets and "target" in an.columns:
+                an = an[an["target"].isin(selected_targets)]
+            if selected_muns and "municipio" in an.columns:
+                an = an[an["municipio"].map(norm_municipio).isin(selected_muns)]
+            show_table(an.head(50), "Top anomalias", max_rows=50)
+
+        c_a, c_b = st.columns(2)
+        with c_a:
+            st.markdown("##### Risco predito (top 20)")
+            if df_ml_risco.empty:
+                st.caption("Sem `ml_risco_predito.csv`.")
+            else:
+                rr = df_ml_risco.copy()
+                if selected_targets and "target" in rr.columns:
+                    rr = rr[rr["target"].isin(selected_targets)]
+                top_rr = rr.head(20)
+                if require_cols(top_rr, ["municipio", "prob_alerta_proxima_janela"], "Risco predito"):
+                    fig = px.bar(
+                        top_rr.sort_values("prob_alerta_proxima_janela"),
+                        x="prob_alerta_proxima_janela",
+                        y="municipio",
+                        color="faixa_predita" if "faixa_predita" in top_rr.columns else None,
+                        orientation="h",
+                        title="Probabilidade de alerta — próxima janela",
+                        labels={"prob_alerta_proxima_janela": "Probabilidade", "municipio": "Município"},
+                    )
+                    safe_plotly(fig, "Risco predito")
+                with st.expander("Tabela risco predito"):
+                    show_table(
+                        rr.head(50)[[c for c in ["municipio", "target", "prob_alerta_proxima_janela", "faixa_predita", "acao_sugerida"] if c in rr.columns]],
+                        "ml_risco_predito",
+                        max_rows=50,
+                    )
+        with c_b:
+            st.markdown("##### Silêncio predito (top 20)")
+            if df_ml_silencio.empty:
+                st.caption("Sem `ml_silencio_predito.csv`.")
+            else:
+                ss = df_ml_silencio.copy()
+                if selected_targets and "target" in ss.columns:
+                    ss = ss[ss["target"].isin(selected_targets)]
+                top_ss = ss.head(20)
+                if require_cols(top_ss, ["municipio", "prob_silencio_proxima_janela"], "Silêncio predito"):
+                    fig = px.bar(
+                        top_ss.sort_values("prob_silencio_proxima_janela"),
+                        x="prob_silencio_proxima_janela",
+                        y="municipio",
+                        color="faixa_silencio_predita" if "faixa_silencio_predita" in top_ss.columns else None,
+                        orientation="h",
+                        title="Probabilidade de silêncio — próxima janela",
+                        labels={"prob_silencio_proxima_janela": "Probabilidade", "municipio": "Município"},
+                    )
+                    safe_plotly(fig, "Silêncio predito")
+                with st.expander("Tabela silêncio predito"):
+                    show_table(
+                        ss.head(50)[[c for c in ["municipio", "target", "prob_silencio_proxima_janela", "faixa_silencio_predita", "acao_sugerida"] if c in ss.columns]],
+                        "ml_silencio_predito",
+                        max_rows=50,
+                    )
+
+
+# =============================================================================
+# Aba 7: período (detalhada)
+# =============================================================================
+with tabs[7]:
     st.subheader("Análise do período selecionado")
     st.markdown(
         f"**Período:** {analysis_year}-SE{week_start:02d} a SE{week_end:02d}  \n"
@@ -1653,9 +1782,9 @@ with tabs[6]:
 
 
 # =============================================================================
-# Aba 7: alertas próximos dias
+# Aba 8: alertas próximos dias
 # =============================================================================
-with tabs[7]:
+with tabs[8]:
     st.subheader("Alertas para os próximos dias")
 
     if manager_alerts.empty:
@@ -1698,9 +1827,9 @@ with tabs[7]:
 
 
 # =============================================================================
-# Aba 8: municípios e mapas
+# Aba 9: municípios e mapas
 # =============================================================================
-with tabs[8]:
+with tabs[9]:
     st.subheader("Municípios e mapas por agravo/alvo")
     st.caption("Mapas só são renderizados após selecionar o agravo e confirmar abaixo (reduz carga inicial).")
 
@@ -1811,9 +1940,9 @@ with tabs[8]:
 
 
 # =============================================================================
-# Aba 9: séries e predição
+# Aba 10: séries e predição
 # =============================================================================
-with tabs[9]:
+with tabs[10]:
     st.subheader("Séries históricas e predição operacional curta")
 
     hist_targets = sorted(wf["target"].dropna().astype(str).unique().tolist())
@@ -1912,9 +2041,9 @@ with tabs[9]:
 
 
 # =============================================================================
-# Aba 10: histórico anual
+# Aba 11: histórico anual
 # =============================================================================
-with tabs[10]:
+with tabs[11]:
     st.subheader("Histórico anual por agravo/alvo")
 
     if annual.empty:
@@ -1973,9 +2102,9 @@ with tabs[10]:
 
 
 # =============================================================================
-# Aba 11: clima e ambiente
+# Aba 12: clima e ambiente
 # =============================================================================
-with tabs[11]:
+with tabs[12]:
     st.subheader("Clima, ambiente e vulnerabilidade")
 
     if climate_assoc is not None and not climate_assoc.empty:
@@ -2042,9 +2171,9 @@ with tabs[11]:
 
 
 # =============================================================================
-# Aba 12: tabelas e qualidade
+# Aba 13: tabelas e qualidade
 # =============================================================================
-with tabs[12]:
+with tabs[13]:
     st.subheader("Tabelas, qualidade e exportações")
 
     export_tables = {
@@ -2053,6 +2182,10 @@ with tabs[12]:
         "municipios_em_risco": df_risco,
         "municipios_silenciosos": df_silenciosos,
         "taxa_utilizacao_lacen": df_utilizacao,
+        "ml_forecast_demanda": df_ml_forecast,
+        "ml_anomalias": df_ml_anomalias,
+        "ml_risco_predito": df_ml_risco,
+        "ml_silencio_predito": df_ml_silencio,
         "weekly_filtrado": wf,
         "annual": annual,
         "summary_municipio": summary_mun,

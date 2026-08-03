@@ -1,0 +1,109 @@
+# -*- coding: utf-8 -*-
+"""Executa feature store + inferência e grava CSVs em saida_pipeline."""
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from ml.features import build_panel_features, latest_week_snapshot  # noqa: E402
+from ml.models import (  # noqa: E402
+    detect_anomalias,
+    forecast_demanda,
+    score_risco_predito,
+    score_silencio_predito,
+)
+
+
+def _log(msg: str) -> None:
+    print(msg, flush=True)
+
+
+def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
+    outdir = Path(outdir)
+    weekly_path = outdir / "integrated_weekly_surveillance.csv"
+    if not weekly_path.exists():
+        raise FileNotFoundError(f"Não encontrado: {weekly_path}")
+
+    _log(f"[ML] Lendo {weekly_path.name}...")
+    weekly = pd.read_csv(weekly_path, low_memory=False)
+    _log(f"[ML] Linhas semanais: {len(weekly):,}")
+
+    _log("[ML] Construindo features (lags / médias móveis)...")
+    features = build_panel_features(weekly)
+    snap = latest_week_snapshot(features)
+
+    # Snapshot compacto da última semana (não grava painel histórico completo)
+    feat_out = outdir / "ml_features_latest.csv"
+    keep = [c for c in snap.columns if not c.endswith("_lag1") or True]
+    snap.to_csv(feat_out, index=False, encoding="utf-8-sig")
+    _log(f"[ML] {feat_out.name}: {len(snap):,} linhas")
+
+    _log("[ML] Forecast de demanda...")
+    fc = forecast_demanda(weekly, horizon=4)
+    fc_out = outdir / "ml_forecast_demanda.csv"
+    fc.to_csv(fc_out, index=False, encoding="utf-8-sig")
+    _log(f"[ML] {fc_out.name}: {len(fc):,} linhas")
+
+    _log("[ML] Detecção de anomalias...")
+    an = detect_anomalias(features)
+    an_out = outdir / "ml_anomalias.csv"
+    an.to_csv(an_out, index=False, encoding="utf-8-sig")
+    _log(f"[ML] {an_out.name}: {len(an):,} linhas")
+
+    _log("[ML] Risco predito...")
+    risco = score_risco_predito(features)
+    risco_out = outdir / "ml_risco_predito.csv"
+    risco.to_csv(risco_out, index=False, encoding="utf-8-sig")
+    _log(f"[ML] {risco_out.name}: {len(risco):,} linhas")
+
+    _log("[ML] Silêncio predito...")
+    silencio = score_silencio_predito(features)
+    silencio_out = outdir / "ml_silencio_predito.csv"
+    silencio.to_csv(silencio_out, index=False, encoding="utf-8-sig")
+    _log(f"[ML] {silencio_out.name}: {len(silencio):,} linhas")
+
+    # Também atualiza forecast estadual legado com método EWMA (compatível)
+    if not fc.empty:
+        legacy = fc.rename(columns={
+            "forecast_tests": "forecast_tests",
+            "forecast_positividade": "forecast_positividade",
+            "forecast_notificacoes": "forecast_notificacoes",
+        })
+        legacy_cols = [
+            "target", "forecast_step", "forecast_epi_year", "forecast_epi_week",
+            "forecast_tests", "forecast_positividade", "forecast_notificacoes",
+            "metodo", "modelo_versao",
+        ]
+        legacy[[c for c in legacy_cols if c in legacy.columns]].to_csv(
+            outdir / "forecast_integrated_statewide.csv",
+            index=False,
+            encoding="utf-8-sig",
+        )
+
+    _log("[ML] Pipeline preditivo concluído.")
+    return {
+        "features": feat_out,
+        "forecast": fc_out,
+        "anomalias": an_out,
+        "risco": risco_out,
+        "silencio": silencio_out,
+    }
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Pipeline ML baseline LACEN MT")
+    ap.add_argument("--outdir", default="saida_pipeline")
+    args = ap.parse_args()
+    run_ml_pipeline(args.outdir)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

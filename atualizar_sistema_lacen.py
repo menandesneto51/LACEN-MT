@@ -55,6 +55,21 @@ def main() -> int:
         p = OUT / name
         print(f"{'OK' if p.exists() else 'MISSING'} {name}", flush=True)
 
+    # Sinais preditivos (ML baseline — não depende do DW)
+    ml_script = BASE / "ml" / "run_ml_pipeline.py"
+    if ml_script.exists():
+        code = run([str(PY), "-m", "ml.run_ml_pipeline", "--outdir", str(OUT)])
+        if code != 0:
+            print("[AVISO] Pipeline ML retornou", code, flush=True)
+    for name in (
+        "ml_forecast_demanda.csv",
+        "ml_anomalias.csv",
+        "ml_risco_predito.csv",
+        "ml_silencio_predito.csv",
+    ):
+        p = OUT / name
+        print(f"{'OK' if p.exists() else 'MISSING'} {name}", flush=True)
+
     print("[FINAL] Atualização local concluída.", flush=True)
     return 0
 

@@ -59,5 +59,10 @@ saida_pipeline/*
 !saida_pipeline/municipios_em_risco.csv
 !saida_pipeline/municipios_silenciosos.csv
 !saida_pipeline/taxa_utilizacao_lacen.csv
+!saida_pipeline/ml_forecast_demanda.csv
+!saida_pipeline/ml_anomalias.csv
+!saida_pipeline/ml_risco_predito.csv
+!saida_pipeline/ml_silencio_predito.csv
+!saida_pipeline/ml_features_latest.csv
 !saida_pipeline/sinan_weekly_municipio.csv
 !saida_pipeline/sim_weekly_municipio.csv

@@ -319,6 +319,13 @@ def main():
     log("[E] Indicadores territoriais: risco, silêncio e utilização do LACEN")
     write_territorial_intelligence(weekly, outdir)
 
+    log("[F] Sinais preditivos (módulo ML baseline)")
+    try:
+        from ml.run_ml_pipeline import run_ml_pipeline
+        run_ml_pipeline(outdir)
+    except Exception as exc:
+        log(f"[AVISO] Módulo ML não executado: {exc}")
+
     log("[FINAL] Integração final concluída com sucesso.")
 
 
