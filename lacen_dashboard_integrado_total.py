@@ -313,6 +313,17 @@ def require_cols(df: Optional[pd.DataFrame], cols: Sequence[str], context: str) 
     return True
 
 
+def ensure_cols(df: Optional[pd.DataFrame], defaults: dict) -> pd.DataFrame:
+    """Garante colunas mínimas para o painel não quebrar (preenche ausentes)."""
+    if df is None:
+        return pd.DataFrame({k: pd.Series(dtype=type(v) if v is not None else float) for k, v in defaults.items()})
+    out = df.copy()
+    for col, default in defaults.items():
+        if col not in out.columns:
+            out[col] = default
+    return out
+
+
 def safe_plotly(fig, context: str = "Gráfico") -> None:
     """Renderiza Plotly com fallback — evita crash do Streamlit."""
     if fig is None:
@@ -1282,6 +1293,24 @@ period_df = build_period_analysis(
     selected_muns=selected_muns,
 )
 period_df = enrich_period_projection(period_df, int(horizon_days), int(week_start), int(week_end), int(analysis_year))
+period_df = ensure_cols(
+    period_df,
+    {
+        "municipio": "",
+        "target": "",
+        "prioridade": "MONITORAMENTO",
+        "prioridade_score": 0.0,
+        "cenario_operacional": "",
+        "tests_periodo": 0.0,
+        "positivos_periodo": 0.0,
+        "positividade_periodo": np.nan,
+        "notificacoes_periodo": 0.0,
+        "obitos_sim_periodo": 0.0,
+        "silencio_laboratorial": False,
+        "baixo_uso_lacen": False,
+        "acao_sugerida": "",
+    },
+)
 
 manager_alerts = build_manager_alert_messages(period_df, folder, int(horizon_days))
 
