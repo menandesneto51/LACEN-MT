@@ -1,0 +1,342 @@
+/* SISREG MT v3 — visual institucional SES-MT (limpo, sem gradientes decorativos) */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+:root {
+  --primary: #1B3281;
+  --primary-dark: #14245C;
+  --background: #F6F7F9;
+  --surface: #FFFFFF;
+  --text: #202124;
+  --text-muted: #667085;
+  --border: #D0D5DD;
+  --success: #16803C;
+  --warning: #B54708;
+  --danger: #B42318;
+  --info: #175CD3;
+  --radius: 10px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --font: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+
+html, body, [class*="css"] {
+  font-family: var(--font);
+  color: var(--text) !important;
+}
+
+.stApp {
+  background: var(--background) !important;
+  color: var(--text) !important;
+}
+
+.stApp p,
+.stApp span,
+.stApp label,
+.stApp li,
+.stApp h1,
+.stApp h2,
+.stApp h3,
+.stApp h4,
+.stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stMetricValue"],
+.stApp [data-testid="stMetricLabel"],
+.stApp [data-testid="stCaptionContainer"],
+.stApp [data-testid="stWidgetLabel"],
+div[data-testid="stTabs"] button {
+  color: var(--text) !important;
+}
+
+[data-testid="stSidebar"] {
+  background: var(--surface) !important;
+  border-right: 1px solid var(--border);
+}
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] h4 {
+  color: var(--text) !important;
+}
+[data-testid="stSidebar"] .stTextInput input,
+[data-testid="stSidebar"] .stMultiSelect div[data-baseweb="select"] > div,
+[data-testid="stSidebar"] [data-baseweb="input"] {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+
+.sis-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  background: var(--primary);
+  color: #ffffff !important;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 12px var(--space-2);
+  margin: 0;
+}
+.sis-topbar, .sis-topbar * { color: #ffffff !important; }
+.sis-topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.sis-topbar-titles .sis-org {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+.sis-topbar-titles .sis-sys {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.sis-topbar-right {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: right;
+  opacity: 0.95;
+}
+
+.sis-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: var(--space-2) var(--space-2) 14px;
+  margin: 0 0 var(--space-2) 0;
+}
+.sis-hero h1 {
+  font-family: var(--font);
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px 0;
+  color: var(--primary) !important;
+  line-height: 1.2;
+}
+.sis-hero p {
+  margin: 0;
+  max-width: 48rem;
+  font-size: 0.98rem;
+  color: var(--text-muted) !important;
+}
+.sis-hero .sis-brand {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  color: var(--primary) !important;
+}
+
+.sis-footer-inst {
+  margin-top: var(--space-3);
+  padding: 12px var(--space-2);
+  border-top: 2px solid var(--primary);
+  color: var(--text) !important;
+  font-size: 0.82rem;
+  background: var(--background);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.sis-footer-inst strong { color: var(--primary) !important; }
+
+.sis-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px var(--space-2);
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px var(--space-2);
+  margin: 0 0 var(--space-2) 0;
+  font-size: 0.84rem;
+  color: var(--text) !important;
+}
+.sis-meta-bar strong { color: var(--primary) !important; }
+.sis-meta-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px var(--space-2);
+}
+
+.sis-farol {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text) !important;
+}
+.sis-farol.critico { background: #FDECEA; border-color: var(--danger); }
+.sis-farol.alto { background: #FFF4E5; border-color: var(--warning); }
+.sis-farol.atencao { background: #FFF8DB; border-color: #B8860B; }
+.sis-farol.ok { background: #E8F5EE; border-color: var(--success); }
+
+.sis-alert-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px var(--space-2);
+}
+.sis-alert-list li { margin: 6px 0; }
+
+.sis-kpis {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0 var(--space-2);
+}
+@media (max-width: 1200px) {
+  .sis-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .sis-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.sis-kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  min-height: 84px;
+  box-shadow: none;
+}
+.sis-kpi .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.sis-kpi .value {
+  font-family: var(--font);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text) !important;
+  line-height: 1.15;
+}
+.sis-kpi.accent { border: 2px solid var(--primary); }
+.sis-kpi.warn { border-color: var(--warning); background: #FFFCF7; }
+.sis-kpi.danger { border-color: var(--danger); background: #FFF7F6; }
+
+.sis-section { margin: 8px 0 12px; }
+.sis-section h3 {
+  font-family: var(--font);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--text) !important;
+}
+.sis-section p {
+  margin: 0;
+  color: var(--text-muted) !important;
+  font-size: 0.92rem;
+}
+
+div[data-testid="stTabs"] button { font-weight: 600; }
+div[data-testid="stTabs"] button[aria-selected="true"] {
+  border-bottom-color: var(--primary) !important;
+}
+
+div[data-testid="stMetric"] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+div[data-testid="stMetric"] * { color: var(--text) !important; }
+
+.stButton > button {
+  border-radius: var(--radius);
+  font-weight: 600;
+  border: 1px solid var(--border);
+  color: var(--text) !important;
+}
+.stButton > button[kind="primary"] {
+  background: var(--primary);
+  border: none;
+  color: #FFFFFF !important;
+}
+
+[data-testid="stDataFrame"] {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.js-plotly-plot text,
+.js-plotly-plot .xtick text,
+.js-plotly-plot .ytick text,
+.js-plotly-plot .gtitle,
+.js-plotly-plot .legendtext {
+  fill: var(--text) !important;
+  fill-opacity: 1 !important;
+}
+
+footer { visibility: hidden; }
+
+/* LACEN — faixa de logomarcas institucionais */
+.sis-logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 10px var(--space-2);
+  margin: 0;
+}
+.sis-logo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.sis-logo-item img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.sis-logo-item .sis-logo-caption {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--primary) !important;
+  line-height: 1.25;
+}
+.sis-logo-item .sis-logo-sub {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted) !important;
+}
+.sis-topbar {
+  border-radius: 0;
+}
+@media (max-width: 900px) {
+  .sis-logo-row { justify-content: center; }
+  .sis-logo-item img { height: 44px; }
+}

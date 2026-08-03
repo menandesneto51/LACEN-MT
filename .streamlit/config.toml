@@ -1,0 +1,13 @@
+# Tema institucional SES-MT / CIEVS (padrão SISREG / Manual GOV-MT)
+[theme]
+primaryColor = "#1B3281"
+backgroundColor = "#F6F7F9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#202124"
+font = "sans serif"
+
+[client]
+showErrorDetails = false
+
+[server]
+headless = true

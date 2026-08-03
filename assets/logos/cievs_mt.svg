@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 72" role="img" aria-label="CIEVS-MT">
+  <rect width="280" height="72" rx="8" fill="#14245C"/>
+  <circle cx="36" cy="36" r="16" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="36" cy="36" r="6" fill="#FFFFFF"/>
+  <text x="62" y="32" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="1">CIEVS-MT</text>
+  <text x="62" y="52" fill="#D6DCF0" font-family="Segoe UI, Arial, sans-serif" font-size="10" font-weight="600">Centro de Informações Estratégicas</text>
+</svg>

@@ -25,15 +25,19 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
-VERSAO_DASHBOARD_LACEN = "v5.1-sistema-inteligente-monitoramento"
+
+VERSAO_DASHBOARD_LACEN = "v5.2-identidade-institucional-ses-cievs"
 
 st.set_page_config(
-    page_title="Sistema Inteligente de Monitoramento Laboratorial — LACEN MT",
-    page_icon="🧪",
+    page_title="LACEN MT | SES-MT · CIEVS-MT",
+    page_icon="assets/logos/brasao_mato_grosso.png",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+inject_theme()
 
 
 # =============================================================================
@@ -1052,10 +1056,20 @@ def build_runtime_climate_association(wf: pd.DataFrame, climate_weekly: Optional
 # App
 # =============================================================================
 
-st.title("Sistema Inteligente de Monitoramento Laboratorial — LACEN MT")
-st.caption(f"Versão: {VERSAO_DASHBOARD_LACEN} | LACEN/GAL + SINAN + SIM + CNES + clima + inteligência territorial")
+hero(
+    "Sala de Situação Laboratorial Inteligente",
+    "Monitoramento de exames, positividade, risco territorial, municípios silenciosos "
+    "e utilização do LACEN, integrado a SINAN, SIM, CNES, clima e vulnerabilidade.",
+    brand="SES-MT · CIEVS-MT · LACEN MT",
+    org_line="Governo de Mato Grosso · Secretaria de Estado de Saúde",
+    system_line="Sistema Inteligente de Monitoramento Laboratorial — LACEN MT",
+    right_line="CIEVS / Vigilância Laboratorial",
+    versao=VERSAO_DASHBOARD_LACEN,
+)
 
 with st.sidebar:
+    st.markdown("### SES-MT · CIEVS · LACEN")
+    st.caption("Painel institucional de vigilância laboratorial")
     folder = st.text_input("Pasta saida_pipeline", value="saida_pipeline")
     st.caption("Mantém leitura direta dos CSVs já produzidos.")
 
@@ -1176,6 +1190,12 @@ with st.sidebar:
     else:
         st.caption("Sem malha detectada. O painel usará pontos quando houver latitude/longitude.")
 
+meta_bar(
+    atualizado=date.today().isoformat(),
+    periodo=f"{analysis_year} · SE{week_start:02d}–SE{week_end:02d}",
+    fonte="LACEN/GAL · SINAN · SIM · CNES · clima · território",
+    status="OK" if not missing else "ATENÇÃO",
+)
 wf = weekly[weekly["target"].isin(selected_targets)].copy()
 if selected_muns:
     wf = wf[wf["municipio"].isin(selected_muns)]
@@ -1915,3 +1935,5 @@ with tabs[11]:
         {"item": "Climate weekly existe", "valor": bool(climate_weekly is not None and not climate_weekly.empty)},
     ])
     st.dataframe(diag, use_container_width=True)
+
+footer_institucional()
