@@ -398,10 +398,18 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
         + risco["risco_medio"].fillna(0).clip(0, 10) * 0.25
         + (risco["alvos_alerta"].fillna(0) / risco["alvos_monitorados"].replace(0, np.nan)).fillna(0) * 0.20
     )
+    # Faixas relativas à distribuição estadual (evita tudo "habitual" quando scores são baixos)
+    s = risco["score_risco_territorial"].fillna(0)
+    q50, q75, q90 = float(s.quantile(0.50)), float(s.quantile(0.75)), float(s.quantile(0.90))
+    # Garante cortes estritamente crescentes
+    cuts = sorted({-np.inf, q50, max(q75, q50 + 1e-6), max(q90, q75 + 1e-6), np.inf})
+    if len(cuts) < 5:
+        cuts = [-np.inf, 0.25, 0.5, 1.0, np.inf]
     risco["faixa_risco"] = pd.cut(
-        risco["score_risco_territorial"],
-        bins=[-np.inf, 1.0, 2.0, 3.0, np.inf],
+        s,
+        bins=cuts[:5] if len(cuts) >= 5 else [-np.inf, 0.25, 0.5, 1.0, np.inf],
         labels=["habitual", "atencao", "alerta", "alto_alerta"],
+        include_lowest=True,
     )
     risco = risco.sort_values(["score_risco_territorial", "risco_max"], ascending=False)
     risco.to_csv(outdir / "municipios_em_risco.csv", index=False, encoding="utf-8-sig")

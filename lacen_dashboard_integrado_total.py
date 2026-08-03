@@ -1334,7 +1334,10 @@ with tabs[0]:
             silencio_n = 0
 
         if not df_risco.empty and "faixa_risco" in df_risco.columns:
-            alto_risco_n = int(df_risco["faixa_risco"].astype(str).isin(["alerta", "alto_alerta"]).sum())
+            alto_risco_n = int(df_risco["faixa_risco"].astype(str).isin(["alerta", "alto_alerta", "atencao"]).sum())
+        elif not df_risco.empty and "score_risco_territorial" in df_risco.columns:
+            q = float(df_risco["score_risco_territorial"].quantile(0.75))
+            alto_risco_n = int((df_risco["score_risco_territorial"] >= max(q, 0.5)).sum())
         else:
             alto_risco_n = int(len(high_df))
 
@@ -1344,7 +1347,7 @@ with tabs[0]:
         c3.metric("Positividade", format_pct(pos_global))
         c4.metric("Municípios ativos", format_int(mun_ativos))
         c5.metric("Municípios silenciosos", format_int(silencio_n))
-        c6.metric("Municípios em alto risco", format_int(alto_risco_n))
+        c6.metric("Prioritários (atenção+)", format_int(alto_risco_n))
 
         st.markdown("##### Cinco principais alertas da janela")
         if "prioridade_score" in high_df.columns:
@@ -1496,19 +1499,27 @@ with tabs[3]:
         view = with_acao(df_silenciosos.copy())
         if sel_tipo and tipo_col in view.columns:
             view = view[view[tipo_col].astype(str).isin(sel_tipo)]
+        # Só filtra por agravo se a base de silêncio tiver target preenchido
         if selected_targets and "target" in view.columns:
-            view = view[view["target"].isin(selected_targets)]
+            tgt_ok = view["target"].notna() & view["target"].astype(str).str.strip().ne("") & ~view["target"].astype(str).str.lower().isin(["nan", "none"])
+            if bool(tgt_ok.any()):
+                view = view[~tgt_ok | view["target"].isin(selected_targets)]
         s1, s2, s3 = st.columns(3)
-        s1.metric("Registros", format_int(len(view)))
+        s1.metric("Municípios silenciosos", format_int(view["municipio"].nunique() if "municipio" in view.columns else len(view)))
         notif_col = "notif_recent" if "notif_recent" in view.columns else ("notificacoes" if "notificacoes" in view.columns else None)
-        s2.metric("Notificações associadas", format_int(view[notif_col].sum()) if notif_col else "—")
+        s2.metric("Notificações recentes", format_int(view[notif_col].fillna(0).sum()) if notif_col else "—")
         s3.metric(
             "Críticos",
             format_int((view.get(tipo_col, pd.Series(dtype=str)).astype(str) == "silencio_critico").sum())
             if tipo_col in view.columns else 0,
         )
+        cols_show = [c for c in [
+            "municipio", "classificacao_silencio", "tipo_sinal", "score_silencio",
+            "tests_recent", "notif_recent", "tests_hist", "notif_hist",
+            "populacao", "indice_vulnerabilidade", "acao_sugerida",
+        ] if c in view.columns]
         with st.expander("Tabela de municípios silenciosos (limitada)"):
-            show_table(view.head(100), "municipios_silenciosos", max_rows=100)
+            show_table(view[cols_show].head(100) if cols_show else view.head(100), "municipios_silenciosos", max_rows=100)
 
 
 # =============================================================================
@@ -1610,12 +1621,22 @@ with tabs[5]:
 
         c1, c2, c3 = st.columns(3)
         c1.metric("Municípios com gap SINAN (sem exame)", format_int(integ["gap_sinan_sem_exame"].sum()))
-        if "cnes_estabelecimentos" in integ.columns:
-            c2.metric("Estabelecimentos CNES (soma)", format_int(integ["cnes_estabelecimentos"].sum()))
-            c3.metric("Leitos SUS (soma)", format_int(integ["cnes_leitos_sus"].sum()) if "cnes_leitos_sus" in integ.columns else "—")
+        if not cnes_df.empty and "cnes_estabelecimentos" in cnes_df.columns:
+            c2.metric("Municípios com CNES", format_int(cnes_df["municipio"].nunique() if "municipio" in cnes_df.columns else len(cnes_df)))
+            c3.metric(
+                "Mediana estabelecimentos CNES",
+                format_num(pd.to_numeric(cnes_df["cnes_estabelecimentos"], errors="coerce").median()),
+            )
+            st.caption("Nota: valores absolutos de CNES dependem da qualidade do cadastro consolidado; use mediana e ranking, não a soma bruta.")
         else:
             c2.metric("CNES", "não carregado")
-            c3.metric("Leitos SUS", "—")
+            c3.metric("Estabelecimentos", "—")
+
+        if float(notif) == 0 and float(obitos) == 0:
+            st.info(
+                "SINAN/SIM zerados nesta janela epidemiológica (SE selecionada). "
+                "Amplie o período na barra lateral ou atualize a integração com bases mais recentes."
+            )
 
         top_gap = integ[integ["gap_sinan_sem_exame"]].sort_values("notificacoes", ascending=False).head(20)
         if not top_gap.empty and require_cols(top_gap, ["municipio", "notificacoes"], "Gap SINAN"):
