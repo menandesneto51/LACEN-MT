@@ -22,9 +22,15 @@ LOGO_DIR = BASE_DIR / "assets" / "logos"
 _STYLES = BASE_DIR / "theme" / "styles.css"
 
 LOGO_FILES = {
+    # Oficiais (preferenciais)
+    "ses_governo": LOGO_DIR / "ses_governo_mt_banner.png",
+    "cievs_rede_ses": LOGO_DIR / "cievs_rede_ses_banner.png",
+    "cievs_ses": LOGO_DIR / "cievs_ses_faixa_preta.png",
+    "vigidesastres": LOGO_DIR / "vigidesastres.png",
+    # Legado / fallback
     "brasao": LOGO_DIR / "brasao_mato_grosso.png",
     "governo": LOGO_DIR / "governo_mt.svg",
-    "ses": LOGO_DIR / "ses_mt.svg",
+    "ses": LOGO_DIR / "ses_mt_oficial.png",
     "cievs": LOGO_DIR / "cievs_mt.svg",
     "bandeira": LOGO_DIR / "bandeira_mato_grosso.svg",
 }
@@ -92,24 +98,34 @@ def hero(
     right_line: str = "Vigilância Laboratorial",
     versao: str = "",
 ) -> None:
-    """Header institucional com logomarcas Governo MT, SES-MT e CIEVS-MT."""
-    brasao = logo_data_uri("brasao")
-    governo = logo_data_uri("governo")
-    ses = logo_data_uri("ses")
-    cievs = logo_data_uri("cievs")
-
-    logos = "".join(
-        [
-            _logo_item(brasao or governo, "Governo de Mato Grosso", "Estado de Mato Grosso"),
-            _logo_item(ses, "SES-MT", "Secretaria de Estado de Saúde"),
-            _logo_item(cievs, "CIEVS-MT", "Informações Estratégicas em Vigilância"),
-        ]
-    )
+    """Header institucional com logomarcas oficiais SES/CIEVS/Governo MT."""
+    banner = logo_data_uri("cievs_rede_ses") or logo_data_uri("ses_governo")
+    ses = logo_data_uri("ses_governo") or logo_data_uri("ses")
+    vigi = logo_data_uri("vigidesastres")
     versao_html = f" · {versao}" if versao else ""
+
+    if banner:
+        logos = (
+            f'<div class="sis-logo-banner">'
+            f'<img src="{banner}" alt="CIEVS · REDE CIEVS · SES · Governo de Mato Grosso" />'
+            f"</div>"
+        )
+    else:
+        logos = "".join(
+            [
+                _logo_item(ses, "SES-MT / Governo de Mato Grosso", "Secretaria de Estado de Saúde"),
+            ]
+        )
+
+    vigi_html = ""
+    if vigi:
+        vigi_html = (
+            f'<div class="sis-logo-vigi"><img src="{vigi}" alt="Vigidesastres" /></div>'
+        )
 
     st.markdown(
         f"""
-<div class="sis-logo-row">{logos}</div>
+<div class="sis-logo-row sis-logo-row-oficial">{logos}{vigi_html}</div>
 <div class="sis-topbar">
   <div class="sis-topbar-left">
     <div class="sis-topbar-titles">
