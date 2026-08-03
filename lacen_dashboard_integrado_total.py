@@ -75,6 +75,8 @@ OPTIONAL_FILES = {
     "ml_risco": "ml_risco_predito.csv",
     "ml_silencio": "ml_silencio_predito.csv",
     "ml_features": "ml_features_latest.csv",
+    "sinan_weekly": "sinan_weekly_municipio.csv",
+    "sim_weekly": "sim_weekly_municipio.csv",
 }
 
 
@@ -1159,6 +1161,8 @@ df_ml_forecast = data.get("ml_forecast")
 df_ml_anomalias = data.get("ml_anomalias")
 df_ml_risco = data.get("ml_risco")
 df_ml_silencio = data.get("ml_silencio")
+df_sinan_weekly = data.get("sinan_weekly")
+df_sim_weekly = data.get("sim_weekly")
 if df_risco is None:
     df_risco = pd.DataFrame()
 if df_silenciosos is None:
@@ -1173,6 +1177,10 @@ if df_ml_risco is None:
     df_ml_risco = pd.DataFrame()
 if df_ml_silencio is None:
     df_ml_silencio = pd.DataFrame()
+if df_sinan_weekly is None:
+    df_sinan_weekly = pd.DataFrame()
+if df_sim_weekly is None:
+    df_sim_weekly = pd.DataFrame()
 
 all_targets = sorted([str(x) for x in weekly["target"].dropna().unique() if str(x).lower() not in {"nan", "none", ""}])
 all_muns = sorted([str(x) for x in weekly["municipio"].dropna().unique() if str(x).upper() not in {"NAN", "NONE", ""}])
@@ -1592,11 +1600,41 @@ with tabs[5]:
         exames = float(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else 0.0
         notif = float(period_df["notificacoes_periodo"].sum()) if "notificacoes_periodo" in period_df.columns else 0.0
         obitos = float(period_df["obitos_sim_periodo"].sum()) if "obitos_sim_periodo" in period_df.columns else 0.0
+
+        # Fonte direta SINAN (não depende do join por alvo laboratorial)
+        sinan_periodo = 0.0
+        if not df_sinan_weekly.empty:
+            sw = df_sinan_weekly.copy()
+            sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
+            sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
+            ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
+            if ncol:
+                sw[ncol] = to_num(sw[ncol])
+                mask = sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)
+                sinan_periodo = float(sw.loc[mask, ncol].fillna(0).sum())
+                if sinan_periodo > notif:
+                    notif = sinan_periodo
+
+        sim_ok = False
+        if not df_sim_weekly.empty:
+            sy = to_num(df_sim_weekly.get("epi_year", pd.Series(dtype=float)))
+            sim_ok = bool((sy.fillna(0) > 1900).any())
+            if sim_ok:
+                sm = df_sim_weekly.copy()
+                sm["epi_year"] = to_num(sm["epi_year"])
+                sm["epi_week"] = to_num(sm["epi_week"])
+                ocol = first_col(sm, ["obitos_sim", "obitos"])
+                if ocol:
+                    mask = sm["epi_year"].eq(analysis_year) & sm["epi_week"].between(week_start, week_end)
+                    obitos = float(to_num(sm.loc[mask, ocol]).fillna(0).sum())
+
         i1, i2, i3, i4 = st.columns(4)
         i1.metric("Exames LACEN", format_int(exames))
         i2.metric("Notificações SINAN", format_int(notif))
-        i3.metric("Óbitos SIM", format_int(obitos))
+        i3.metric("Óbitos SIM", format_int(obitos) if sim_ok else "—")
         i4.metric("Exames / notificação", format_num(safe_div(exames, notif)) if notif else "—")
+        if not sim_ok:
+            st.caption("SIM: arquivo sem anos epidemiológicos válidos — reconstruir `sim_weekly_municipio.csv` no pipeline.")
 
         integ = period_df.groupby("municipio", as_index=False).agg(
             exames=("tests_periodo", "sum") if "tests_periodo" in period_df.columns else ("municipio", "size"),
@@ -1604,6 +1642,26 @@ with tabs[5]:
             notificacoes=("notificacoes_periodo", "sum") if "notificacoes_periodo" in period_df.columns else ("municipio", "size"),
             obitos_sim=("obitos_sim_periodo", "sum") if "obitos_sim_periodo" in period_df.columns else ("municipio", "size"),
         )
+
+        # Complementa notificações por município a partir do SINAN semanal
+        if not df_sinan_weekly.empty:
+            sw = df_sinan_weekly.copy()
+            sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
+            sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
+            mun_s = first_col(sw, ["municipio", "Município"])
+            ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
+            if mun_s and ncol:
+                sw = sw[sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)].copy()
+                sw["municipio"] = sw[mun_s].map(norm_municipio)
+                sw[ncol] = to_num(sw[ncol])
+                by_mun = sw.groupby("municipio", as_index=False).agg(notificacoes_sinan=(ncol, "sum"))
+                integ = integ.merge(by_mun, on="municipio", how="outer")
+                integ["exames"] = integ["exames"].fillna(0)
+                integ["positivos"] = integ["positivos"].fillna(0)
+                integ["notificacoes"] = integ["notificacoes"].fillna(0)
+                integ["notificacoes"] = np.maximum(integ["notificacoes"], integ["notificacoes_sinan"].fillna(0))
+                integ["obitos_sim"] = integ["obitos_sim"].fillna(0)
+
         integ["exames_por_notif"] = safe_div(integ["exames"], integ["notificacoes"].replace(0, np.nan))
         integ["gap_sinan_sem_exame"] = (integ["notificacoes"].fillna(0) > 0) & (integ["exames"].fillna(0) == 0)
 
@@ -1748,18 +1806,31 @@ with tabs[7]:
             fc = df_ml_forecast.copy()
             if selected_targets and "target" in fc.columns:
                 fc = fc[fc["target"].isin(selected_targets)]
-            if require_cols(fc, ["target", "forecast_step", "forecast_tests"], "Forecast ML"):
+            # Limita legenda: top N agravos por volume previsto
+            top_n_fc = st.slider("Agravos no gráfico de forecast", 5, 20, 8, key="top_n_forecast")
+            top_targets: list[str] = []
+            if {"target", "forecast_tests"}.issubset(fc.columns):
+                rank = (
+                    fc.groupby("target", as_index=False)["forecast_tests"]
+                    .max()
+                    .sort_values("forecast_tests", ascending=False)
+                )
+                top_targets = rank["target"].head(int(top_n_fc)).tolist()
+                fc_plot = fc[fc["target"].isin(top_targets)].copy()
+            else:
+                fc_plot = fc
+            if require_cols(fc_plot, ["target", "forecast_step", "forecast_tests"], "Forecast ML"):
                 fig = px.line(
-                    fc.sort_values(["target", "forecast_step"]),
+                    fc_plot.sort_values(["target", "forecast_step"]),
                     x="forecast_step",
                     y="forecast_tests",
                     color="target",
                     markers=True,
-                    title="Exames previstos — próximas semanas (EWMA)",
+                    title=f"Exames previstos — top {max(len(top_targets), 1)} agravos (EWMA)",
                     labels={"forecast_step": "Semanas à frente", "forecast_tests": "Exames previstos", "target": "Agravo"},
                 )
                 safe_plotly(fig, "Forecast demanda")
-            with st.expander("Tabela de forecast"):
+            with st.expander("Tabela de forecast (completa filtrada)"):
                 show_table(fc.head(100), "ml_forecast_demanda", max_rows=100)
 
         st.markdown("##### Anomalias detectadas")

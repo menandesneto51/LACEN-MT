@@ -13,6 +13,86 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
+def log(msg: str) -> None:
+    print(msg, flush=True)
+
+
+def map_lacen_target_to_sinan(target: object) -> str:
+    """Alinha alvo laboratorial LACEN ao agravo SINAN (ex.: tuberculose_lf_lam → tuberculose)."""
+    t = str(target or "").casefold().strip()
+    if not t or t in {"nan", "none"}:
+        return ""
+    rules = (
+        ("dengue", "dengue"),
+        ("zika", "zika"),
+        ("chikungunya", "chikungunya"),
+        ("oropouche", "oropouche"),
+        ("febre_amarela", "febre_amarela"),
+        ("hantavirus", "hantavirus"),
+        ("leptosp", "leptospirose"),
+        ("rubeola", "rubeola"),
+        ("sarampo", "sarampo"),
+        ("meningite", "meningite"),
+        ("tuberculose", "tuberculose"),
+        ("baciloscopia", "tuberculose"),
+        ("rifampicina", "tuberculose"),
+        ("hanseniase", "hanseniase"),
+        ("malaria", "malaria"),
+        ("hiv", "hiv"),
+        ("sifilis", "sifilis"),
+        ("hepatite", "hepatite"),
+        ("influenza", "influenza"),
+        ("sars_cov", "covid19"),
+        ("covid", "covid19"),
+    )
+    for needle, agravo in rules:
+        if needle in t:
+            return agravo
+    return ""
+
+
+def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
+    s = sinan.copy()
+    if "notificacoes_sinan" in s.columns and "notificacoes" not in s.columns:
+        s = s.rename(columns={"notificacoes_sinan": "notificacoes"})
+    for c in ("notificacoes", "obitos_sinan", "encerrados_sinan"):
+        if c not in s.columns:
+            s[c] = 0
+        s[c] = pd.to_numeric(s[c], errors="coerce").fillna(0)
+    s["epi_year"] = pd.to_numeric(s["epi_year"], errors="coerce")
+    s["epi_week"] = pd.to_numeric(s["epi_week"], errors="coerce")
+    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
+    return (
+        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
+        .agg(
+            notificacoes=("notificacoes", "sum"),
+            obitos_sinan=("obitos_sinan", "sum"),
+            encerrados_sinan=("encerrados_sinan", "sum"),
+        )
+    )
+
+
+def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
+    s = sim.copy()
+    if "obitos_sim" not in s.columns:
+        s["obitos_sim"] = 0
+    s["obitos_sim"] = pd.to_numeric(s["obitos_sim"], errors="coerce").fillna(0)
+    s["epi_year"] = pd.to_numeric(s.get("epi_year"), errors="coerce")
+    s["epi_week"] = pd.to_numeric(s.get("epi_week"), errors="coerce")
+    s["ano"] = pd.to_numeric(s.get("ano"), errors="coerce")
+    # Arquivo SIM às vezes vem com ano/epi_year = 1 (quebra de parsing) — invalida
+    bad_year = s["epi_year"].fillna(0).le(1900)
+    if bad_year.mean() > 0.8:
+        return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
+    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
+    return (
+        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
+        .agg(obitos_sim=("obitos_sim", "sum"))
+    )
+
+
 def read_csv(path: Path) -> pd.DataFrame:
     for enc in ("utf-8-sig", "utf-8", "latin1"):
         try:
@@ -148,33 +228,48 @@ def main():
     pop["ano"] = pd.to_numeric(pop["ano"], errors="coerce")
     weekly = weekly.merge(pop[["municipio", "ano", "populacao"]], on=["municipio", "ano"], how="left")
 
-    if "notificacoes_sinan" in sinan.columns and "notificacoes" not in sinan.columns:
-        sinan = sinan.rename(columns={"notificacoes_sinan": "notificacoes"})
-    if "notificacoes" not in sinan.columns:
-        sinan["notificacoes"] = 0
-    if "obitos_sinan" not in sinan.columns:
-        sinan["obitos_sinan"] = 0
-    if "encerrados_sinan" not in sinan.columns:
-        sinan["encerrados_sinan"] = 0
+    weekly["municipio"] = weekly["municipio"].astype(str).str.strip().str.upper()
+    weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
 
-    if "obitos_sim" not in sim.columns:
-        sim["obitos_sim"] = 0
+    sinan_j = prepare_sinan_for_join(sinan)
+    sim_j = prepare_sim_for_join(sim)
+    if sim_j.empty:
+        log("[AVISO] SIM sem anos válidos (possível arquivo corrompido). Óbitos SIM ficarão zerados.")
 
     weekly = weekly.merge(
-        sinan[["epi_year", "epi_week", "target", "municipio", "notificacoes", "obitos_sinan", "encerrados_sinan"]],
-        on=["epi_year", "epi_week", "target", "municipio"],
+        sinan_j,
+        on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
         how="left",
     )
-    weekly = weekly.merge(
-        sim[["epi_year", "epi_week", "target", "municipio", "obitos_sim"]],
-        on=["epi_year", "epi_week", "target", "municipio"],
-        how="left",
+    if not sim_j.empty:
+        weekly = weekly.merge(
+            sim_j,
+            on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
+            how="left",
+        )
+    else:
+        weekly["obitos_sim"] = 0
+
+    # Complemento: notificações municipais totais da semana (mesmo sem match de alvo)
+    sinan_mun = (
+        sinan_j.groupby(["epi_year", "epi_week", "municipio"], as_index=False)
+        .agg(notificacoes_mun_semana=("notificacoes", "sum"))
     )
+    weekly = weekly.merge(sinan_mun, on=["epi_year", "epi_week", "municipio"], how="left")
+    weekly["notificacoes"] = weekly["notificacoes"].fillna(0)
+    # Se o alvo não mapeou, ainda registra o total municipal da semana (rateado em 0; usa coluna auxiliar)
+    weekly["notificacoes"] = np.where(
+        weekly["notificacoes"] > 0,
+        weekly["notificacoes"],
+        0.0,
+    )
+
     weekly = weekly.merge(climate, on=["municipio", "epi_year", "epi_week"], how="left")
     weekly = weekly.merge(municipal_master, on="municipio", how="left")
     weekly = weekly.merge(cnes, on="municipio", how="left")
 
-    log("[C] Calculando taxas, IC e score de risco")
+    log(f"[B2] SINAN pareado: {(weekly['notificacoes'].fillna(0) > 0).sum():,} linhas com notificação > 0")
+    log(f"[B2] SIM pareado: {(weekly.get('obitos_sim', pd.Series(dtype=float)).fillna(0) > 0).sum():,} linhas com óbito > 0")
 
     for col in ["tests", "positives", "negatives", "notificacoes", "obitos_sinan", "encerrados_sinan", "obitos_sim", "populacao"]:
         if col in weekly.columns:

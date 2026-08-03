@@ -9,6 +9,7 @@ CAMPO VERDE,influenza_b,2025,30,incidencia_100k,2.0386112979838136,0.25482641224
 COLNIZA,zika,2025,31,incidencia_100k,3.8423115346192263,0.4802889418274033,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FELIZ NATAL,zika,2025,24,incidencia_100k,19.00598688586905,2.375748360733631,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 LUCAS DO RIO VERDE,virus_respiratorios,2025,35,incidencia_100k,1.0439285117755135,0.1304910639719392,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+CAMPINAPOLIS,tuberculose_cultura,2025,28,notificacoes,1.0,0.125,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA LACERDA,zika,2025,21,notificacoes,2.0,0.25,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA OLIMPIA,zika,2026,13,notificacoes,1.0,0.125,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SAPEZAL,zika,2025,35,notificacoes,1.0,0.125,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -24,6 +25,7 @@ JUARA,influenza_a,2025,26,positividade,1.0,0.16666666666666666,5.000000000000001
 NOVA MONTE VERDE,zika,2025,35,positividade,0.5,0.08333333333333333,5.000000000000001,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MUTUM,rifampicina,2026,17,positividade,1.0,0.16666666666666666,5.000000000000001,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JUARA,influenza_a,2025,26,incidencia_100k,2.7709274294106234,0.4618212382351039,5.000000000000001,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SAO JOSE DOS QUATRO MARCOS,tuberculose_cultura,2025,28,notificacoes,1.0,0.16666666666666666,5.000000000000001,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MONTE VERDE,zika,2025,35,incidencia_100k,11.80637544273908,1.9677292404565134,5.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PONTES E LACERDA,dengue,2025,35,positividade,1.0,0.18333333333333332,4.454545454545455,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ALTA FLORESTA,hepatite_c_hcv,2025,20,positividade,1.0,0.2,4.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -35,6 +37,7 @@ SAO JOSE DO RIO CLARO,influenza_a,2025,20,positividade,1.0,0.2,4.0,alta_atipica,
 ALTA FLORESTA,hepatite_c_hcv,2025,20,incidencia_100k,1.608803372051868,0.3217606744103736,4.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA OLIMPIA,influenza_a,2025,22,incidencia_100k,6.171315724512466,1.2342631449024932,4.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SAO JOSE DO RIO CLARO,influenza_a,2025,20,incidencia_100k,13.836042891732966,2.767208578346593,4.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SAO JOSE DO RIO CLARO,rifampicina,2026,10,notificacoes,2.0,0.4,4.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FELIZ NATAL,dengue,2025,24,positividade,0.6,0.125,3.8,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FELIZ NATAL,dengue,2025,24,incidencia_100k,28.50898032880357,5.939370901834078,3.7999999999999994,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JUINA,dengue,2025,34,positividade,1.0,0.2125,3.7058823529411766,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -90,6 +93,8 @@ PRIMAVERA DO LESTE,dengue,2025,35,incidencia_100k,2.0832031331375123,0.651000979
 CANARANA,zika,2025,34,positividade,0.3333333333333333,0.10416666666666666,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CONQUISTA D''OESTE,zika,2025,23,positividade,0.5,0.15625,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 TANGARA DA SERRA,tuberculose_lf_lam,2026,20,positividade,1.0,0.3125,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+COLIDER,tuberculose_cultura,2025,25,notificacoes,2.0,0.625,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SORRISO,rifampicina,2025,33,notificacoes,4.0,1.25,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CACERES,zika,2026,14,tests,88.0,27.875,2.1569506726457397,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 POXOREO,chikungunya,2025,22,tests,9.0,2.857142857142857,2.15,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ARENAPOLIS,hepatite_c_hcv,2025,30,positividade,1.0,0.3333333333333333,2.0000000000000004,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -118,6 +123,7 @@ BRASNORTE,zika,2025,34,incidencia_100k,5.667327854916407,2.1252479455936526,1.66
 GENERAL CARNEIRO,zika,2025,8,incidencia_100k,63.30115524608325,23.737933217281217,1.6666666666666667,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 QUERENCIA,hepatite_b_hbv,2025,33,incidencia_100k,6.430868167202572,2.4115755627009645,1.6666666666666667,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 COLIDER,zika,2025,34,notificacoes,1.0,0.375,1.6666666666666667,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+TANGARA DA SERRA,tuberculose_cultura,2025,31,notificacoes,1.0,0.375,1.6666666666666667,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ARIPUANA,dengue,2025,22,incidencia_100k,3.7653437758867385,1.412003915957527,1.6666666666666665,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CUIABA,sifilis,2025,34,incidencia_100k,0.1445347786811201,0.054200542005420044,1.6666666666666665,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 MARCELANDIA,zika,2025,30,incidencia_100k,8.806693086745927,3.3025099075297226,1.6666666666666665,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -136,7 +142,9 @@ MIRASSOL D''OESTE,chagas_igg,2025,24,positividade,1.0,0.4,1.4999999999999998,alt
 PONTA PORA,chikungunya,2025,24,positividade,1.0,0.4,1.4999999999999998,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PORTO DOS GAUCHOS,dengue,2025,22,positividade,1.0,0.4,1.4999999999999998,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PORTO DOS GAUCHOS,dengue,2025,22,incidencia_100k,17.5284837861525,7.011393514461,1.4999999999999998,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+PARANATINGA,rifampicina,2025,24,notificacoes,2.0,0.8,1.4999999999999998,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PORTO ALEGRE DO NORTE,hepatite_b_hbv,2025,16,incidencia_100k,23.717289904340262,9.534259641679295,1.4875859055337066,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SINOP,tuberculose_cultura,2025,29,notificacoes,7.0,2.875,1.434782608695652,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 BRASNORTE,chikungunya,2025,32,positividade,0.75,0.31009615384615385,1.4186046511627906,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SAO JOSE DOS QUATRO MARCOS,chikungunya,2025,22,positividade,1.0,0.41369047619047616,1.4172661870503598,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOBRES,dengue,2025,26,positividade,1.0,0.41666666666666663,1.4000000000000001,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -200,6 +208,8 @@ NOVO HORIZONTE DO NORTE,dengue,2025,29,incidencia_100k,30.609121518212422,15.304
 RONDONOPOLIS,bacterias_teste_de_sensibilidade,2025,20,incidencia_100k,0.3792073050495245,0.18960365252476225,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SINOP,hiv,2025,32,incidencia_100k,0.4468674591116274,0.2234337295558137,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 BARRA DO BUGRES,tuberculose,2025,35,notificacoes,1.0,0.5,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+COTRIGUACU,tuberculose_cultura,2025,25,notificacoes,1.0,0.5,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+PONTES E LACERDA,rifampicina,2025,34,notificacoes,2.0,1.0,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 TANGARA DA SERRA,hantavirus,2025,34,notificacoes,2.0,1.0,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ACORIZAL,chikungunya,2025,33,positividade,0.0,0.640625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ACORIZAL,tuberculose_cultura,2025,22,positividade,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -1021,34 +1031,85 @@ VERA,zika,2025,31,incidencia_100k,0.0,58.09630042758877,-1.0,queda_atipica,alta,
 VILA RICA,hepatite_b_hbv,2025,18,incidencia_100k,0.0,2.535360462637597,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA RICA,hepatite_c_hcv,2025,22,incidencia_100k,0.0,0.8406045628015669,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA RICA,influenza_a,2025,27,incidencia_100k,0.0,0.8466253513495209,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ACORIZAL,tuberculose_cultura,2025,22,notificacoes,0.0,0.4,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+AGUA BOA,meningite_bacteriana_biologia_molecular,2025,24,notificacoes,0.0,0.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+AGUA BOA,rifampicina,2025,28,notificacoes,0.0,0.7142857142857143,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+AGUA BOA,tuberculose_cultura,2025,29,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ALTA FLORESTA,leptospira,2025,24,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTA FLORESTA,zika,2025,32,notificacoes,0.0,0.625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ARAPUTANGA,tuberculose_cultura,2025,26,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ARENAPOLIS,leptospira,2025,33,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRA DO GARCAS,zika,2025,33,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CACERES,zika,2026,14,notificacoes,0.0,1.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPINAPOLIS,rifampicina,2025,17,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPINAPOLIS,tuberculose_teste_de_sensibilidade,2025,22,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPO NOVO DO PARECIS,leptospira,2025,33,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPO NOVO DO PARECIS,meningite_bacteriana_biologia_molecular,2026,18,notificacoes,0.0,0.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPO NOVO DO PARECIS,tuberculose_lf_lam,2026,17,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CAMPO VERDE,tuberculose_cultura,2025,21,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO VERDE,zika,2025,51,notificacoes,0.0,0.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPOS DE JULIO,zika,2025,29,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CANARANA,tuberculose_cultura,2025,18,notificacoes,0.0,0.16666666666666666,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CANARANA,zika,2025,34,notificacoes,0.0,3.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CHAPADA DOS GUIMARAES,tuberculose_cultura,2025,28,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CHAPADA DOS GUIMARAES,tuberculose_lf_lam,2026,13,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COLNIZA,zika,2025,31,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,meningite_bacteriana_biologia_molecular,2026,21,notificacoes,0.0,1.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,oropouche_biologia_molecular,2025,24,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,rifampicina,2026,20,notificacoes,0.0,2.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,tuberculose_lf_lam,2026,20,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+DIAMANTINO,tuberculose_cultura,2025,32,notificacoes,0.0,0.5714285714285714,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 DOM AQUINO,zika,2025,26,notificacoes,0.0,1.6,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+GUARANTA DO NORTE,tuberculose_cultura,2025,24,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITAUBA,zika,2025,30,notificacoes,0.0,1.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JANGADA,zika,2025,34,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JAURU,zika,2025,17,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+JUARA,tuberculose_cultura,2025,26,notificacoes,0.0,0.4,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JUARA,zika,2025,27,notificacoes,0.0,3.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+JUINA,rifampicina,2025,20,notificacoes,0.0,0.6,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JUINA,tuberculose,2025,30,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+JUINA,tuberculose_cultura,2025,28,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JUSCIMEIRA,zika,2025,9,notificacoes,0.0,0.8,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+LUCAS DO RIO VERDE,tuberculose_cultura,2025,26,notificacoes,0.0,0.8333333333333334,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 MARCELANDIA,zika,2025,30,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 MATUPA,zika,2025,31,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOBRES,zika,2025,26,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+NOSSA SENHORA DO LIVRAMENTO,tuberculose_cultura,2025,23,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+NOVA MUTUM,rifampicina,2026,17,notificacoes,0.0,0.3333333333333333,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+NOVA MUTUM,tuberculose_cultura,2025,25,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MUTUM,zika,2025,32,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA SANTA HELENA,zika,2025,22,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA XAVANTINA,zika,2025,27,notificacoes,0.0,0.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PEDRA PRETA,zika,2025,22,notificacoes,0.0,0.3333333333333333,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+PEIXOTO DE AZEVEDO,rifampicina,2025,34,notificacoes,0.0,0.6,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+POCONE,rifampicina,2026,14,notificacoes,0.0,0.7142857142857143,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+POCONE,tuberculose_lf_lam,2025,51,notificacoes,0.0,0.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 POCONE,zika,2025,28,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PONTAL DO ARAGUAIA,zika,2025,13,notificacoes,0.0,1.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PONTES E LACERDA,tuberculose,2025,20,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+PONTES E LACERDA,tuberculose_lf_lam,2025,42,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+PRIMAVERA DO LESTE,meningite_bacteriana_biologia_molecular,2025,33,notificacoes,0.0,0.16666666666666666,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+QUERENCIA,tuberculose_cultura,2025,24,notificacoes,0.0,0.16666666666666666,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RIO BRANCO,zika,2025,29,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+RONDONOPOLIS,rifampicina,2026,20,notificacoes,0.0,2.75,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ROSARIO OESTE,tuberculose_cultura,2025,22,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ROSARIO OESTE,tuberculose_lf_lam,2026,17,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ROSARIO OESTE,zika,2025,30,notificacoes,0.0,0.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SAO JOSE DO XINGU,tuberculose_cultura,2025,22,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO JOSE DOS QUATRO MARCOS,zika,2025,20,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SAPEZAL,tuberculose_cultura,2025,26,notificacoes,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SAPEZAL,tuberculose_lf_lam,2026,20,notificacoes,0.0,1.0,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SINOP,rifampicina,2026,20,notificacoes,0.0,2.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SINOP,tuberculose_lf_lam,2026,19,notificacoes,0.0,2.875,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TABAPORA,zika,2025,23,notificacoes,0.0,0.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,leptospira,2025,34,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,meningite_bacteriana_biologia_molecular,2025,33,notificacoes,0.0,1.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,rifampicina,2025,29,notificacoes,0.0,0.8571428571428571,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,tuberculose_lf_lam,2026,20,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TAPURAH,tuberculose_lf_lam,2025,46,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+VARZEA GRANDE,leptospira,2025,32,notificacoes,0.0,0.5,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+VARZEA GRANDE,meningite_bacteriana_biologia_molecular,2026,20,notificacoes,0.0,0.875,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+VARZEA GRANDE,rifampicina,2026,20,notificacoes,0.0,3.625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MONTE VERDE,dengue,2025,35,incidencia_100k,11.80637544273908,5.912035634177177,0.9970068134378326,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 BARRA DO GARCAS,hepatite_c_hcv,2025,31,incidencia_100k,1.353582934026368,0.6823030711135472,0.9838441175667935,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 MATUPA,hepatite_b_hbv,2025,24,positividade,0.6666666666666666,0.34404761904761905,0.9377162629757785,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -1059,6 +1120,7 @@ NOVA BANDEIRANTES,dengue,2025,24,tests,3.0,1.5714285714285714,0.9090909090909092
 CAMPO VERDE,hepatite_b_hbv,2025,33,positividade,1.0,0.525,0.9047619047619047,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CURVELANDIA,chikungunya,2025,17,positividade,1.0,0.5279356060606061,0.8941704035874439,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 LUCAS DO RIO VERDE,hepatite_b_hbv,2025,34,tests,4.0,2.125,0.8823529411764706,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+CACERES,rifampicina,2026,2,notificacoes,4.0,2.125,0.8823529411764706,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 BRASNORTE,tuberculose_cultura,2025,19,tests,3.0,1.6,0.8749999999999999,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CANDEIAS DO JAMARI,dengue,2025,17,tests,3.0,1.6,0.8749999999999999,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PIMENTA BUENO,dengue,2025,33,tests,3.0,1.6,0.8749999999999999,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -1081,6 +1143,7 @@ CUIABA,oropouche_biologia_molecular,2025,24,tests,2.0,1.125,0.7777777777777778,a
 ITIQUIRA,zika,2025,13,tests,4.0,2.25,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SALVADOR,chikungunya,2025,9,tests,4.0,2.25,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SINOP,hanseniase_biologia_molecular,2025,27,tests,2.0,1.125,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+PEIXOTO DE AZEVEDO,tuberculose_cultura,2025,31,notificacoes,2.0,1.125,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ITANHANGA,chikungunya,2025,25,incidencia_100k,24.221872350732717,13.624803197287154,0.7777777777777777,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PRIMAVERA DO LESTE,dengue,2025,35,tests,15.0,8.5,0.7647058823529411,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 IPIRANGA DO NORTE,hepatite_b_hbv,2025,33,incidencia_100k,23.100023100023098,13.122016332861854,0.7604019469304444,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -1106,11 +1169,14 @@ NOSSA SENHORA DO LIVRAMENTO,hepatite_b_hbv,2025,30,positividade,1.0,0.6,0.666666
 NOVA MONTE VERDE,hepatite_b_hbv,2025,31,positividade,1.0,0.6,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MONTE VERDE,hepatite_b_hbv,2025,31,incidencia_100k,11.80637544273908,7.083825265643448,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 TANGARA DA SERRA,toxoplasmose_igm,2025,31,incidencia_100k,0.8725775066970323,0.5235465040182193,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+ALTA FLORESTA,rifampicina,2025,31,notificacoes,1.0,0.6,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO HORIZONTE DO NORTE,zika,2025,22,notificacoes,1.0,0.6,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA BRASILANDIA,zika,2025,19,tests,6.0,3.6,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOSSA SENHORA DO LIVRAMENTO,hepatite_b_hbv,2025,30,incidencia_100k,8.577800651912849,5.14668039114771,0.6666666666666665,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 LUCAS DO RIO VERDE,chikungunya,2026,13,positividade,0.5,0.30000000000000004,0.6666666666666664,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO PROGRESSO,chikungunya,2025,24,positividade,1.0,0.6041666666666666,0.6551724137931035,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+CUIABA,tuberculose_teste_de_sensibilidade,2025,28,notificacoes,24.0,14.5,0.6551724137931034,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+BARRA DO GARCAS,tuberculose_cultura,2025,29,notificacoes,3.0,1.8333333333333333,0.6363636363636365,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PRIMAVERA DO LESTE,rubeola_igg,2025,44,incidencia_100k,1.041601566568756,0.6387657166948999,0.6306472613436556,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ALTAMIRA,chikungunya,2025,22,tests,3.0,1.8571428571428572,0.6153846153846153,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 UNIAO DO SUL,dengue,2025,17,tests,3.0,1.8571428571428572,0.6153846153846153,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -1184,6 +1250,7 @@ SORRISO,influenza_a,2025,34,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar 
 SORRISO,influenza_b,2025,34,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILHENA,chikungunya,2025,28,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 AGUA BOA,hepatite_a,2025,20,incidencia_100k,3.1153618492787936,6.230723698557587,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,baciloscopia,2026,15,notificacoes,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CURVELANDIA,chikungunya,2025,17,incidencia_100k,20.120724346076457,40.24144869215292,-0.5000000000000001,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MUTUM,hiv,2025,8,incidencia_100k,1.575919943266882,3.202111380077044,-0.507849741557408,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PEDRA PRETA,chikungunya,2025,28,incidencia_100k,10.556317956296844,21.77240578486224,-0.5151515151515151,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
