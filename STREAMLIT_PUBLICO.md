@@ -1,53 +1,52 @@
-# Liberar o painel LACEN no Streamlit Community Cloud (público)
+# Liberar o painel LACEN (acesso anônimo)
 
-URL atual:
+URL:
 
 https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
-Se o link redireciona para `share.streamlit.io/-/auth/app`, o app **ainda não está público para anônimos** (ou há autenticação de viewers ligada).
+O repositório GitHub `menandesneto51/LACEN-MT` já está **público**.  
+Se o link ainda vai para `share.streamlit.io/-/auth/app`, o **app** está marcado como privado no Streamlit Cloud (independente do GitHub).
 
-## Checklist completo (conta GitHub `menandesneto51`)
+## Forma mais rápida (recomendado)
 
-### 1) Sharing do app
-1. Abra https://share.streamlit.io/
-2. **My apps** → app **LACEN-MT** (ou nome equivalente)
-3. **⋮** → **Settings** → **Sharing**
-4. Marque **This app is public and searchable**
-5. Salve
+1. Abra o app **logado como dono** (`menandesneto51`):  
+   https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
+2. No canto **superior direito**, clique em **Share**.
+3. Ative / clique em **Make this app public**  
+   (ou equivalente: tornar o app público).
+4. Feche o diálogo.
+5. Abra uma **janela anônima** (Ctrl+Shift+N), cole o mesmo link e confirme que **não** pede login.
 
-### 2) Autenticação de viewers (causa comum do redirect)
-No mesmo **Settings**, verifique se existe:
-- **Viewer authentication** / **Require viewers to log in**
-- **Google / GitHub / password only**
+## Forma pelas Settings
 
-Deixe **desligado** (Anyone can view without signing in).
+1. https://share.streamlit.io/ → sign-in com GitHub `menandesneto51`
+2. Localize o app LACEN-MT
+3. **⋮** (três pontos) → **Settings**
+4. Aba / seção **Sharing**
+5. Em **Who can view this app**, selecione exatamente:
 
-### 3) Workspace / organização
-Se o app estiver em um workspace da SES/empresa:
-- Confirme que não há política “all apps require login”
-- Se possível, mova o app para a conta pessoal ou workspace sem SSO obrigatório
+   **This app is public and searchable**
 
-### 4) Reboot + teste anônimo
-1. **Manage app → Reboot**
-2. Abra o link em **janela anônima** (Ctrl+Shift+N) **sem** estar logado no Streamlit
-3. O painel deve abrir direto, sem tela de login
+   (não deixe marcado: *Only specific people can view this app*)
+6. **Save**
+7. Opcional: **Manage app → Reboot**
+8. Teste em janela anônima
 
-### 5) Alternativa pelo botão Share
-No app aberto (logado como dono): canto superior direito **Share** → tornar público / “Anyone with the link”.
+## Se ainda pedir login
 
-## Separação recomendada (dados de saúde)
+- Confirme que está alterando o app certo (URL `…nrdgik.streamlit.app`).
+- Saia da conta Streamlit na janela anônima (não use perfil logado para o teste).
+- Desative extensões que bloqueiam cookies do domínio `streamlit.app` / `share.streamlit.io`.
+- Como paliativo: em **Share**, convide o e-mail do revisor (ele autentica uma vez).
 
-| Ambiente | Conteúdo | Acesso |
-|----------|----------|--------|
-| **Protótipo público** | Agregados estaduais, rankings sem microdado sensível | Público |
-| **Institucional (SES/VPN)** | Detalhe municipal, SIM/SINAN nominais, DW | Restrito / intranet |
+## Depois de público
 
-O repositório Cloud já usa só CSVs/parquet agregados de `saida_pipeline` (não sobe bases brutas).
+Envie de novo o link ao revisor. Ele deve abrir o painel direto, sem `/auth/app`.
 
-## Validação local (sempre funciona)
+## Avaliação sem Cloud (enquanto isso)
 
 ```bat
 abrir_dashboard_lacen_integrado.bat
 ```
 
-http://localhost:8510
+http://localhost:8510 — prints das abas também servem para a avaliação visual.
