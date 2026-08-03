@@ -12,13 +12,22 @@ logs/
 .streamlit/cache/
 !.streamlit/config.toml
 
-# Bases brutas pesadas (não versionar)
-*.csv
-!saida_pipeline/municipios_em_risco.csv
-!saida_pipeline/municipios_silenciosos.csv
-!saida_pipeline/taxa_utilizacao_lacen.csv
+# Bases brutas pesadas na raiz (não versionar)
+/*.csv
+/CNES*.csv
+/LACEN*.csv
+/SINAN*.csv
+/SIM*.csv
+/geo_social.csv
+/historico_clima*.csv
+/Municipios*.csv
+/Populacao*.csv
+/População*.csv
+/dados_mt.csv
+/lista_compulsoria.csv
+/municipios_mt.csv
 
-# Shapefiles e dados geo
+# Shapefiles e zips
 *.shp
 *.shx
 *.dbf
@@ -26,14 +35,8 @@ logs/
 *.cpg
 *.zip
 
-# Artefatos locais / lixo
+# Artefatos locais
 antigos/
-saida_pipeline/
-!saida_pipeline/
-saida_pipeline/*
-!saida_pipeline/municipios_em_risco.csv
-!saida_pipeline/municipios_silenciosos.csv
-!saida_pipeline/taxa_utilizacao_lacen.csv
 lacen TATI/
 diagnostico_codigo_resultados_gal/
 cd
@@ -41,3 +44,20 @@ python
 *.bak
 .DS_Store
 Thumbs.db
+
+# saida_pipeline: versionar apenas o necessário para o painel Cloud
+saida_pipeline/*
+!saida_pipeline/integrated_weekly_surveillance.csv
+!saida_pipeline/integrated_alerts.csv
+!saida_pipeline/integrated_annual_summary.csv
+!saida_pipeline/integrated_target_municipio_summary.csv
+!saida_pipeline/forecast_integrated_statewide.csv
+!saida_pipeline/municipal_master.csv
+!saida_pipeline/populacao_municipio.csv
+!saida_pipeline/climate_weekly_municipio.csv
+!saida_pipeline/cnes_capacity_municipio.csv
+!saida_pipeline/municipios_em_risco.csv
+!saida_pipeline/municipios_silenciosos.csv
+!saida_pipeline/taxa_utilizacao_lacen.csv
+!saida_pipeline/sinan_weekly_municipio.csv
+!saida_pipeline/sim_weekly_municipio.csv
