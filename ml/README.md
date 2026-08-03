@@ -32,10 +32,29 @@ dashboard (aba Sinais preditivos)
 
 Também é chamado automaticamente por `lacen_integracao_final_only.py` e `atualizar_sistema_lacen.py`.
 
-## Modelos atuais (baseline_v1)
+## Modelos atuais
 
+### baseline_v1 (sempre disponível)
 - **Forecast:** EWMA (span=4) sobre as últimas 8 semanas estaduais por alvo
 - **Anomalia:** desvio vs média móvel 8 semanas
 - **Risco / silêncio:** escore logístico interpretável (pesos fixos)
 
-Próximo passo opcional: treinar sklearn/XGBoost com validação temporal e versionar em `ml/models_store/`.
+### sklearn_v1 (se `scikit-learn` instalado)
+- Gradient Boosting com validação temporal (80/20 por semana epidemiológica)
+- Artefatos em `ml/models_store/` (`risco_gb.joblib`, `silencio_gb.joblib`, `meta.json`)
+- Inferência usa sklearn se o artefato existir; senão cai na baseline
+
+```bat
+.venv\Scripts\python.exe -m pip install scikit-learn joblib
+.venv\Scripts\python.exe -m ml.run_ml_pipeline --outdir saida_pipeline
+```
+
+## Streamlit Cloud — tornar público
+
+1. https://share.streamlit.io/ → login GitHub
+2. App do repositório `menandesneto51/LACEN-MT`
+3. Manage app → **Reboot** (para puxar o commit novo)
+4. Settings → **Sharing** → *This app is public and searchable*
+5. Testar em aba anônima e enviar o link `https://….streamlit.app`
+
+Detalhes: `STREAMLIT_PUBLICO.md`

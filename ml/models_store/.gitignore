@@ -1,0 +1,5 @@
+# Artefatos gerados por ml.train (versionados para inferência no Cloud)
+*
+!.gitignore
+!meta.json
+!*.joblib

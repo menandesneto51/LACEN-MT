@@ -39,9 +39,19 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     features = build_panel_features(weekly)
     snap = latest_week_snapshot(features)
 
-    # Snapshot compacto da última semana (não grava painel histórico completo)
+    _log("[ML] Treinando modelos sklearn (se disponível)...")
+    try:
+        from ml.train import train_and_save
+        meta = train_and_save(features)
+        _log(f"[ML] Treino: sklearn={meta.get('sklearn')} versao={meta.get('modelo_versao')}")
+        if meta.get("models"):
+            for k, v in meta["models"].items():
+                _log(f"[ML]   {k}: {v}")
+    except Exception as exc:
+        _log(f"[ML][AVISO] Treino sklearn pulado: {exc}")
+
+    # Snapshot compacto da última observação por município-alvo
     feat_out = outdir / "ml_features_latest.csv"
-    keep = [c for c in snap.columns if not c.endswith("_lag1") or True]
     snap.to_csv(feat_out, index=False, encoding="utf-8-sig")
     _log(f"[ML] {feat_out.name}: {len(snap):,} linhas")
 

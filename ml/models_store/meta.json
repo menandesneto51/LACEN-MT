@@ -1,0 +1,44 @@
+{
+  "sklearn": true,
+  "modelo_versao": "sklearn_v1",
+  "n_rows": 20481,
+  "models": {
+    "risco": {
+      "status": "ok",
+      "path": "risco_gb.joblib",
+      "features": [
+        "positividade",
+        "positividade_trend",
+        "risco_composto",
+        "tests",
+        "notificacoes",
+        "indice_vulnerabilidade",
+        "tests_trend",
+        "incidencia_100k",
+        "tests_ma8",
+        "positividade_ma8"
+      ],
+      "n_train": 20092,
+      "n_test": 389,
+      "auc_test": 0.8512987012987013,
+      "pos_rate_train": 0.08943858252040614
+    },
+    "silencio": {
+      "status": "ok",
+      "path": "silencio_gb.joblib",
+      "features": [
+        "tests",
+        "tests_ma8",
+        "notificacoes",
+        "semanas_sem_exame",
+        "indice_vulnerabilidade",
+        "solicitacoes_100k",
+        "positividade"
+      ],
+      "n_train": 20092,
+      "n_test": 389,
+      "auc_test": 0.7394131641554321,
+      "pos_rate_train": 0.21869400756520008
+    }
+  }
+}

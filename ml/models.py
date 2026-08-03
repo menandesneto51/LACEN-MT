@@ -134,26 +134,43 @@ def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
     if snap.empty:
         return pd.DataFrame()
 
+    # Preferir modelo sklearn treinado, se existir
+    try:
+        from ml.train import load_bundle, predict_proba_bundle
+        bundle = load_bundle("risco")
+    except Exception:
+        bundle = None
+
+    if bundle is not None:
+        prob = predict_proba_bundle(bundle, snap)
+        logit = np.log(np.clip(prob, 1e-6, 1 - 1e-6) / np.clip(1 - prob, 1e-6, 1))
+        metodo = "sklearn_gb_v1"
+    else:
+        pos = pd.to_numeric(snap.get("positividade", 0), errors="coerce").fillna(0)
+        pos_t = pd.to_numeric(snap.get("positividade_trend", 0), errors="coerce").fillna(0)
+        risco = pd.to_numeric(snap.get("risco_composto", 0), errors="coerce").fillna(0)
+        tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
+        notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
+        vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
+        tests_t = pd.to_numeric(snap.get("tests_trend", 0), errors="coerce").fillna(0)
+
+        logit = (
+            -2.2
+            + 2.8 * pos
+            + 1.5 * np.tanh(pos_t * 5)
+            + 0.35 * risco.clip(0, 10)
+            + 0.15 * np.log1p(tests)
+            + 0.12 * np.log1p(notif)
+            + 0.25 * vuln.clip(-3, 3)
+            + 0.4 * np.tanh(tests_t / 5.0)
+        )
+        prob = _sigmoid(logit)
+        metodo = "baseline_logit_v1"
+        pos, pos_t, risco = pos, pos_t, risco  # for drivers below
+
     pos = pd.to_numeric(snap.get("positividade", 0), errors="coerce").fillna(0)
     pos_t = pd.to_numeric(snap.get("positividade_trend", 0), errors="coerce").fillna(0)
     risco = pd.to_numeric(snap.get("risco_composto", 0), errors="coerce").fillna(0)
-    tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
-    notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
-    vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
-    tests_t = pd.to_numeric(snap.get("tests_trend", 0), errors="coerce").fillna(0)
-
-    # logit linear interpretável (pesos fixos da baseline_v1)
-    logit = (
-        -2.2
-        + 2.8 * pos
-        + 1.5 * np.tanh(pos_t * 5)
-        + 0.35 * risco.clip(0, 10)
-        + 0.15 * np.log1p(tests)
-        + 0.12 * np.log1p(notif)
-        + 0.25 * vuln.clip(-3, 3)
-        + 0.4 * np.tanh(tests_t / 5.0)
-    )
-    prob = _sigmoid(logit)
 
     out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
     out["prob_alerta_proxima_janela"] = np.round(prob, 4)
@@ -177,7 +194,8 @@ def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
             "Manter rotina de vigilância laboratorial.",
         ),
     )
-    out["modelo_versao"] = "baseline_v1"
+    out["metodo"] = metodo
+    out["modelo_versao"] = "sklearn_v1" if metodo.startswith("sklearn") else "baseline_v1"
     return out.sort_values("prob_alerta_proxima_janela", ascending=False).reset_index(drop=True)
 
 
@@ -187,6 +205,12 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
     if snap.empty:
         return pd.DataFrame()
 
+    try:
+        from ml.train import load_bundle, predict_proba_bundle
+        bundle = load_bundle("silencio")
+    except Exception:
+        bundle = None
+
     tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
     tests_ma8 = pd.to_numeric(snap.get("tests_ma8", 0), errors="coerce").fillna(0)
     notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
@@ -194,16 +218,21 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
     vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
     uso = pd.to_numeric(snap.get("solicitacoes_100k", 0), errors="coerce").fillna(0)
 
-    logit = (
-        -1.0
-        + 0.55 * weeks_zero.clip(0, 12)
-        + 0.8 * (tests <= 0).astype(float)
-        + 0.35 * (tests_ma8 < 1).astype(float)
-        + 0.25 * np.log1p(notif)
-        + 0.2 * vuln.clip(-3, 3)
-        - 0.15 * np.log1p(uso.clip(lower=0))
-    )
-    prob = _sigmoid(logit)
+    if bundle is not None:
+        prob = predict_proba_bundle(bundle, snap)
+        metodo = "sklearn_gb_v1"
+    else:
+        logit = (
+            -1.0
+            + 0.55 * weeks_zero.clip(0, 12)
+            + 0.8 * (tests <= 0).astype(float)
+            + 0.35 * (tests_ma8 < 1).astype(float)
+            + 0.25 * np.log1p(notif)
+            + 0.2 * vuln.clip(-3, 3)
+            - 0.15 * np.log1p(uso.clip(lower=0))
+        )
+        prob = _sigmoid(logit)
+        metodo = "baseline_logit_v1"
 
     out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
     out["prob_silencio_proxima_janela"] = np.round(prob, 4)
@@ -225,5 +254,6 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
             "Manter acompanhamento de rotina.",
         ),
     )
-    out["modelo_versao"] = "baseline_v1"
+    out["metodo"] = metodo
+    out["modelo_versao"] = "sklearn_v1" if metodo.startswith("sklearn") else "baseline_v1"
     return out.sort_values("prob_silencio_proxima_janela", ascending=False).reset_index(drop=True)

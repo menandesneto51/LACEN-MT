@@ -1591,8 +1591,9 @@ with tabs[5]:
 with tabs[6]:
     st.subheader("Sinais preditivos — módulo ML baseline")
     st.caption(
-        "Modelos interpretáveis (baseline_v1): forecast EWMA, anomalias vs média móvel, "
-        "risco e silêncio preditos. Resultados gerados em `saida_pipeline` — não treinam no DW."
+        "Modelos: forecast EWMA + anomalias; risco/silêncio usam sklearn (Gradient Boosting) "
+        "quando `ml/models_store` estiver disponível, senão baseline logística. "
+        "Resultados em `saida_pipeline` — não treinam no DW."
     )
     ml_missing = all(df.empty for df in (df_ml_forecast, df_ml_anomalias, df_ml_risco, df_ml_silencio))
     if ml_missing:
