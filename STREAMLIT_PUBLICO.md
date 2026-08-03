@@ -1,5 +1,8 @@
 # Tornar o painel LACEN público no Streamlit Community Cloud
 
+**Reenvio (2026-08-03):** último código em `main` inclui parquet, ML sklearn e aba Integração SINAN/SIM/CNES.
+Após o push, faça **Manage app → Reboot** e confirme Sharing público.
+
 Se o link redireciona para `share.streamlit.io/-/auth/app`, o app está **privado**.
 
 ## Passo a passo
@@ -10,7 +13,8 @@ Se o link redireciona para `share.streamlit.io/-/auth/app`, o app está **privad
 4. Marque:
    - **This app is public and searchable**  
    (ou equivalente: *Anyone can access this app*).
-5. Salve e teste em aba anônima / outro navegador sem login.
+5. **Manage app → Reboot app** (para puxar o commit mais recente).
+6. Teste em aba anônima / outro navegador sem login.
 
 ## Link esperado
 

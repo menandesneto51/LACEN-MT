@@ -1295,6 +1295,7 @@ tabs = st.tabs([
     "Municípios prioritários",
     "Sinais de silêncio",
     "Utilização laboratorial",
+    "Integração SINAN/SIM/CNES",
     "Alertas e recomendações",
     "Sinais preditivos",
     "Análise do período",
@@ -1569,9 +1570,102 @@ with tabs[4]:
 
 
 # =============================================================================
-# Aba 5: Alertas e recomendações
+# Aba 5: Integração SINAN / SIM / CNES
 # =============================================================================
 with tabs[5]:
+    st.subheader("Integração LACEN × SINAN × SIM × CNES")
+    st.caption("Compara exames, notificações, óbitos e capacidade instalada no território.")
+    if period_df.empty:
+        st.warning("Sem dados no período/filtros selecionados.")
+    else:
+        exames = float(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else 0.0
+        notif = float(period_df["notificacoes_periodo"].sum()) if "notificacoes_periodo" in period_df.columns else 0.0
+        obitos = float(period_df["obitos_sim_periodo"].sum()) if "obitos_sim_periodo" in period_df.columns else 0.0
+        i1, i2, i3, i4 = st.columns(4)
+        i1.metric("Exames LACEN", format_int(exames))
+        i2.metric("Notificações SINAN", format_int(notif))
+        i3.metric("Óbitos SIM", format_int(obitos))
+        i4.metric("Exames / notificação", format_num(safe_div(exames, notif)) if notif else "—")
+
+        integ = period_df.groupby("municipio", as_index=False).agg(
+            exames=("tests_periodo", "sum") if "tests_periodo" in period_df.columns else ("municipio", "size"),
+            positivos=("positivos_periodo", "sum") if "positivos_periodo" in period_df.columns else ("municipio", "size"),
+            notificacoes=("notificacoes_periodo", "sum") if "notificacoes_periodo" in period_df.columns else ("municipio", "size"),
+            obitos_sim=("obitos_sim_periodo", "sum") if "obitos_sim_periodo" in period_df.columns else ("municipio", "size"),
+        )
+        integ["exames_por_notif"] = safe_div(integ["exames"], integ["notificacoes"].replace(0, np.nan))
+        integ["gap_sinan_sem_exame"] = (integ["notificacoes"].fillna(0) > 0) & (integ["exames"].fillna(0) == 0)
+
+        cnes_df = cnes_capacity.copy() if cnes_capacity is not None and not getattr(cnes_capacity, "empty", True) else pd.DataFrame()
+        if not cnes_df.empty:
+            mun_c = first_col(cnes_df, ["municipio", "Município", "Municipio"])
+            if mun_c:
+                cnes_df = cnes_df.copy()
+                cnes_df["municipio"] = cnes_df[mun_c].map(norm_municipio)
+                keep_cnes = [c for c in [
+                    "municipio", "cnes_estabelecimentos", "cnes_leitos_total", "cnes_leitos_sus",
+                    "cnes_leitos_uti", "cnes_equipes_esf", "cnes_equipamentos_criticos",
+                ] if c in cnes_df.columns]
+                integ = integ.merge(cnes_df[keep_cnes], on="municipio", how="left")
+
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Municípios com gap SINAN (sem exame)", format_int(integ["gap_sinan_sem_exame"].sum()))
+        if "cnes_estabelecimentos" in integ.columns:
+            c2.metric("Estabelecimentos CNES (soma)", format_int(integ["cnes_estabelecimentos"].sum()))
+            c3.metric("Leitos SUS (soma)", format_int(integ["cnes_leitos_sus"].sum()) if "cnes_leitos_sus" in integ.columns else "—")
+        else:
+            c2.metric("CNES", "não carregado")
+            c3.metric("Leitos SUS", "—")
+
+        top_gap = integ[integ["gap_sinan_sem_exame"]].sort_values("notificacoes", ascending=False).head(20)
+        if not top_gap.empty and require_cols(top_gap, ["municipio", "notificacoes"], "Gap SINAN"):
+            fig = px.bar(
+                top_gap.sort_values("notificacoes"),
+                x="notificacoes",
+                y="municipio",
+                orientation="h",
+                title="Top 20 — notificações SINAN sem exame LACEN no período",
+                labels={"notificacoes": "Notificações", "municipio": "Município"},
+            )
+            safe_plotly(fig, "Gap SINAN sem exame")
+
+        if {"exames", "notificacoes"}.issubset(integ.columns):
+            scatter = integ[(integ["exames"] > 0) | (integ["notificacoes"] > 0)].copy()
+            scatter = scatter.head(200)
+            if not scatter.empty:
+                size_col = None
+                if "obitos_sim" in scatter.columns and float(scatter["obitos_sim"].fillna(0).sum()) > 0:
+                    scatter["_size"] = scatter["obitos_sim"].fillna(0).clip(lower=0) + 1
+                    size_col = "_size"
+                fig = px.scatter(
+                    scatter,
+                    x="notificacoes",
+                    y="exames",
+                    size=size_col,
+                    hover_name="municipio",
+                    title="Exames LACEN vs notificações SINAN"
+                    + (" (tamanho ≈ óbitos SIM)" if size_col else ""),
+                    labels={"notificacoes": "Notificações SINAN", "exames": "Exames LACEN"},
+                )
+                safe_plotly(fig, "LACEN vs SINAN")
+
+        integ_view = with_acao(integ.sort_values(["gap_sinan_sem_exame", "notificacoes"], ascending=[False, False]))
+        with st.expander("Tabela integrada municipal (top 100)"):
+            show_table(
+                integ_view.head(100)[[c for c in [
+                    "municipio", "exames", "positivos", "notificacoes", "obitos_sim",
+                    "exames_por_notif", "gap_sinan_sem_exame",
+                    "cnes_estabelecimentos", "cnes_leitos_sus", "cnes_equipes_esf", "acao_sugerida",
+                ] if c in integ_view.columns]],
+                "integracao_sinan_sim_cnes",
+                max_rows=100,
+            )
+
+
+# =============================================================================
+# Aba 6: Alertas e recomendações
+# =============================================================================
+with tabs[6]:
     st.subheader("Alertas e recomendações operacionais")
     if manager_alerts.empty and (alerts is None or alerts.empty):
         st.info("Nenhum alerta disponível para os filtros atuais.")
@@ -1602,9 +1696,9 @@ with tabs[5]:
 
 
 # =============================================================================
-# Aba 6: Sinais preditivos (ML)
+# Aba 7: Sinais preditivos (ML)
 # =============================================================================
-with tabs[6]:
+with tabs[7]:
     st.subheader("Sinais preditivos — módulo ML baseline")
     st.caption(
         "Modelos: forecast EWMA + anomalias; risco/silêncio usam sklearn (Gradient Boosting) "
@@ -1714,9 +1808,9 @@ with tabs[6]:
 
 
 # =============================================================================
-# Aba 7: período (detalhada)
+# Aba 8: período (detalhada)
 # =============================================================================
-with tabs[7]:
+with tabs[8]:
     st.subheader("Análise do período selecionado")
     st.markdown(
         f"**Período:** {analysis_year}-SE{week_start:02d} a SE{week_end:02d}  \n"
@@ -1799,9 +1893,9 @@ with tabs[7]:
 
 
 # =============================================================================
-# Aba 8: alertas próximos dias
+# Aba 9: alertas próximos dias
 # =============================================================================
-with tabs[8]:
+with tabs[9]:
     st.subheader("Alertas para os próximos dias")
 
     if manager_alerts.empty:
@@ -1844,9 +1938,9 @@ with tabs[8]:
 
 
 # =============================================================================
-# Aba 9: municípios e mapas
+# Aba 10: municípios e mapas
 # =============================================================================
-with tabs[9]:
+with tabs[10]:
     st.subheader("Municípios e mapas por agravo/alvo")
     st.caption("Mapas só são renderizados após selecionar o agravo e confirmar abaixo (reduz carga inicial).")
 
@@ -1957,9 +2051,9 @@ with tabs[9]:
 
 
 # =============================================================================
-# Aba 10: séries e predição
+# Aba 11: séries e predição
 # =============================================================================
-with tabs[10]:
+with tabs[11]:
     st.subheader("Séries históricas e predição operacional curta")
 
     hist_targets = sorted(wf["target"].dropna().astype(str).unique().tolist())
@@ -2058,9 +2152,9 @@ with tabs[10]:
 
 
 # =============================================================================
-# Aba 11: histórico anual
+# Aba 12: histórico anual
 # =============================================================================
-with tabs[11]:
+with tabs[12]:
     st.subheader("Histórico anual por agravo/alvo")
 
     if annual.empty:
@@ -2119,9 +2213,9 @@ with tabs[11]:
 
 
 # =============================================================================
-# Aba 12: clima e ambiente
+# Aba 13: clima e ambiente
 # =============================================================================
-with tabs[12]:
+with tabs[13]:
     st.subheader("Clima, ambiente e vulnerabilidade")
 
     if climate_assoc is not None and not climate_assoc.empty:
@@ -2188,9 +2282,9 @@ with tabs[12]:
 
 
 # =============================================================================
-# Aba 13: tabelas e qualidade
+# Aba 14: tabelas e qualidade
 # =============================================================================
-with tabs[13]:
+with tabs[14]:
     st.subheader("Tabelas, qualidade e exportações")
 
     export_tables = {
