@@ -43,10 +43,7 @@ Se o link ainda vai para `share.streamlit.io/-/auth/app`, o **app** está marcad
 
 Envie de novo o link ao revisor. Ele deve abrir o painel direto, sem `/auth/app`.
 
-## Avaliação sem Cloud (enquanto isso)
+## App dormindo (Zzzz)
 
-```bat
-abrir_dashboard_lacen_integrado.bat
-```
-
-http://localhost:8510 — prints das abas também servem para a avaliação visual.
+Se aparecer **"This app has gone to sleep"**, clique em **Yes, get this app back up!** e aguarde 1–2 minutos.
+Isso é normal no Community Cloud após inatividade — não é tela de login.

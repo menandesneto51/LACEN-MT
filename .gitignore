@@ -64,6 +64,7 @@ saida_pipeline/*
 !saida_pipeline/ml_risco_predito.csv
 !saida_pipeline/ml_silencio_predito.csv
 !saida_pipeline/ml_features_latest.csv
+!saida_pipeline/fila_operacional.csv
 !saida_pipeline/sinan_weekly_municipio.csv
 !saida_pipeline/sim_weekly_municipio.csv
 !saida_pipeline/integrated_weekly_surveillance.parquet
