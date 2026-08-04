@@ -77,6 +77,8 @@ OPTIONAL_FILES = {
     "ml_features": "ml_features_latest.csv",
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
+    "qualidade_dado": "qualidade_dado_municipal.csv",
+    "municipio_vizinhos": "municipio_vizinhos.csv",
 }
 
 
@@ -1086,36 +1088,28 @@ def build_runtime_climate_association(wf: pd.DataFrame, climate_weekly: Optional
     return pd.DataFrame(rows).sort_values(["abs_correlacao", "n"], ascending=[False, False])
 
 
-def sugerir_acao_operacional(row: pd.Series) -> str:
-    """Linguagem operacional para gestores (risco / silêncio / utilização)."""
-    pri = str(row.get("prioridade", "") or "").upper()
-    silencio = bool(row.get("silencio_laboratorial", False))
-    baixo = bool(row.get("baixo_uso_lacen", False))
-    faixa = str(row.get("faixa_risco", "") or row.get("classificacao_silencio", "") or row.get("tipo_sinal", "")).lower()
-    cls = str(row.get("classificacao_uso", "")).lower()
-    cenario = str(row.get("cenario_operacional", "") or row.get("motivo", "") or "").strip()
-
-    if silencio or "silencio_critico" in faixa:
-        return "Priorizar busca ativa e verificar fluxo de coleta/envio ao LACEN."
-    if "silencio_provavel" in faixa or "silencio_moderado" in faixa:
-        return "Sensibilizar vigilância municipal e revisar cobertura de testagem."
-    if baixo or cls in {"baixo", "silencio"}:
-        return "Avaliar subutilização da rede laboratorial e reforçar encaminhamento."
-    if pri in {"CRÍTICO", "ALTO"} or faixa in {"alto_alerta", "alerta"}:
-        if "positividade" in cenario.casefold():
-            return "Validar positivos, revisar tendência e articular resposta com vigilância municipal."
-        return "Monitorar tendência, validar positivos e articular resposta municipal."
-    if cls in {"adequado_ou_alto"}:
-        return "Manter monitoramento de rotina."
-    return "Acompanhar indicadores e reavaliar na próxima janela epidemiológica."
-
-
 def with_acao(df: pd.DataFrame) -> pd.DataFrame:
+    """Aplica protocolo operacional (ação, responsável, prazo, checklist)."""
     if df is None or df.empty:
-        return df
-    out = df.copy()
-    out["acao_sugerida"] = out.apply(sugerir_acao_operacional, axis=1)
-    return out
+        return df if df is not None else pd.DataFrame()
+    try:
+        from lacen_inteligencia import enriquecer_acoes
+        out = df.copy()
+        if "sinal" not in out.columns:
+            if "faixa_risco" in out.columns:
+                out["sinal"] = "risco_territorial"
+            elif "classificacao_silencio" in out.columns or "silencio_laboratorial" in out.columns:
+                out["sinal"] = "silencio_laboratorial"
+            elif "classificacao_uso" in out.columns:
+                out["sinal"] = "utilizacao_lacen"
+            elif "prioridade" in out.columns:
+                out["sinal"] = "alerta_laboratorial"
+        return enriquecer_acoes(out)
+    except Exception:
+        out = df.copy()
+        if "acao_sugerida" not in out.columns:
+            out["acao_sugerida"] = "Acompanhar indicadores e reavaliar na próxima janela epidemiológica."
+        return out
 
 
 def build_fila_operacional(
@@ -1124,7 +1118,7 @@ def build_fila_operacional(
     df_silenciosos: pd.DataFrame,
     top_n: int = 20,
 ) -> pd.DataFrame:
-    """Fila gerencial: município | sinal | motivo | prioridade | ação."""
+    """Fila gerencial: município | sinal | motivo | prioridade | ação | prazo | responsável."""
     rows: list[dict] = []
 
     if period_df is not None and not period_df.empty:
@@ -1166,15 +1160,28 @@ def build_fila_operacional(
         tipo_col = "classificacao_silencio" if "classificacao_silencio" in sil.columns else "tipo_sinal"
         if tipo_col in sil.columns:
             sil = sil[sil[tipo_col].astype(str).isin(["silencio_critico", "silencio_provavel"])]
-        if "score_silencio" in sil.columns:
+        if "silencio_com_vizinho_alerta" in sil.columns and "score_silencio" in sil.columns:
+            sil = sil.sort_values(["silencio_com_vizinho_alerta", "score_silencio"], ascending=[False, False])
+        elif "silencio_com_vizinho_alerta" in sil.columns:
+            sil = sil.sort_values("silencio_com_vizinho_alerta", ascending=False)
+        elif "score_silencio" in sil.columns:
             sil = sil.sort_values("score_silencio", ascending=False)
         for _, r in sil.head(min(10, top_n)).iterrows():
+            motivo = (
+                f"{r.get(tipo_col, 'silencio')} | exames recentes={r.get('tests_recent', 0)} "
+                f"| notif={r.get('notif_recent', r.get('notificacoes', 0))}"
+            )
+            if bool(r.get("silencio_com_vizinho_alerta", False)):
+                motivo += f" | vizinhos em alerta={r.get('vizinhos_em_alerta', 0)}"
             rows.append({
                 "municipio": r.get("municipio"),
                 "agravo_alvo": r.get("target", ""),
                 "sinal": "silencio_laboratorial",
-                "motivo": f"{r.get(tipo_col, 'silencio')} | exames recentes={r.get('tests_recent', 0)} | notif={r.get('notif_recent', r.get('notificacoes', 0))}",
-                "prioridade": "CRÍTICO" if str(r.get(tipo_col, "")).endswith("critico") else "ALTO",
+                "motivo": motivo,
+                "prioridade": "CRÍTICO" if (
+                    str(r.get(tipo_col, "")).endswith("critico")
+                    or bool(r.get("silencio_com_vizinho_alerta", False))
+                ) else "ALTO",
                 "score": r.get("score_silencio", np.nan),
                 "exames": r.get("tests_recent", np.nan),
                 "positividade": np.nan,
@@ -1189,8 +1196,11 @@ def build_fila_operacional(
     out = out.sort_values(["_pr", "score"], ascending=[True, False]).drop(columns=["_pr"])
     out = out.drop_duplicates(subset=["municipio", "sinal", "agravo_alvo"], keep="first")
     out = with_acao(out.head(top_n))
-    # Colunas finais na ordem gerencial
-    cols = ["municipio", "sinal", "motivo", "prioridade", "acao_sugerida", "agravo_alvo", "exames", "positividade", "score"]
+    cols = [
+        "municipio", "sinal", "motivo", "prioridade",
+        "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
+        "agravo_alvo", "exames", "positividade", "score",
+    ]
     return out[[c for c in cols if c in out.columns]].reset_index(drop=True)
 
 # =============================================================================
@@ -1246,6 +1256,8 @@ cnes_capacity = data["cnes_capacity"]
 df_risco = data.get("municipios_risco")
 df_silenciosos = data.get("municipios_silenciosos")
 df_utilizacao = data.get("taxa_utilizacao")
+df_qualidade = data.get("qualidade_dado")
+df_vizinhos = data.get("municipio_vizinhos")
 df_ml_forecast = data.get("ml_forecast")
 df_ml_anomalias = data.get("ml_anomalias")
 df_ml_risco = data.get("ml_risco")
@@ -1258,6 +1270,10 @@ if df_silenciosos is None:
     df_silenciosos = pd.DataFrame()
 if df_utilizacao is None:
     df_utilizacao = pd.DataFrame()
+if df_qualidade is None:
+    df_qualidade = pd.DataFrame()
+if df_vizinhos is None:
+    df_vizinhos = pd.DataFrame()
 if df_ml_forecast is None:
     df_ml_forecast = pd.DataFrame()
 if df_ml_anomalias is None:
@@ -1472,17 +1488,26 @@ with tabs[0]:
         c5.metric("Municípios silenciosos", format_int(silencio_n))
         c6.metric("Prioritários (atenção+)", format_int(alto_risco_n))
 
-        st.markdown("##### Fila operacional — município | motivo | ação")
+        st.markdown("##### Fila operacional — município | motivo | ação | prazo")
         if fila_operacional.empty:
             st.info("Sem fila operacional para a janela atual.")
         else:
             show_table(
                 fila_operacional.head(15)[[c for c in [
-                    "municipio", "sinal", "motivo", "prioridade", "acao_sugerida", "agravo_alvo",
+                    "municipio", "sinal", "motivo", "prioridade",
+                    "acao_sugerida", "responsavel", "prazo_acao", "agravo_alvo",
                 ] if c in fila_operacional.columns]],
                 "Fila operacional (top 15)",
                 max_rows=15,
             )
+            with st.expander("Checklist operacional da fila"):
+                show_table(
+                    fila_operacional.head(15)[[c for c in [
+                        "municipio", "sinal", "checklist_operacional", "prazo_acao", "responsavel",
+                    ] if c in fila_operacional.columns]],
+                    "Checklist",
+                    max_rows=15,
+                )
 
         st.markdown("##### Cinco principais alertas da janela")
         if "prioridade_score" in high_df.columns:
@@ -1495,6 +1520,7 @@ with tabs[0]:
             cols_alert = [c for c in [
                 "prioridade", "municipio", "target", "cenario_operacional",
                 "tests_periodo", "positividade_periodo", "acao_sugerida",
+                "responsavel", "prazo_acao",
             ] if c in top_alertas.columns]
             show_table(top_alertas[cols_alert], "Cinco principais alertas", max_rows=5)
 
@@ -1516,6 +1542,7 @@ with tabs[0]:
                     top_risco[[c for c in [
                         "municipio", "faixa_risco", "score_risco_territorial",
                         "tests_8sem", "positives_8sem", "acao_sugerida",
+                        "responsavel", "prazo_acao",
                     ] if c in top_risco.columns]],
                     "Municípios prioritários",
                     max_rows=10,
@@ -1605,7 +1632,8 @@ with tabs[2]:
             show_table(
                 view[[c for c in [
                     "municipio", "faixa_risco", "score_risco_territorial",
-                    "tests_8sem", "positives_8sem", "notificacoes_8sem", "acao_sugerida",
+                    "tests_8sem", "positives_8sem", "notificacoes_8sem",
+                    "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
                 ] if c in view.columns]],
                 "municipios_em_risco",
                 max_rows=100,
@@ -1639,7 +1667,7 @@ with tabs[3]:
             tgt_ok = view["target"].notna() & view["target"].astype(str).str.strip().ne("") & ~view["target"].astype(str).str.lower().isin(["nan", "none"])
             if bool(tgt_ok.any()):
                 view = view[~tgt_ok | view["target"].isin(selected_targets)]
-        s1, s2, s3 = st.columns(3)
+        s1, s2, s3, s4 = st.columns(4)
         s1.metric("Municípios silenciosos", format_int(view["municipio"].nunique() if "municipio" in view.columns else len(view)))
         notif_col = "notif_recent" if "notif_recent" in view.columns else ("notificacoes" if "notificacoes" in view.columns else None)
         s2.metric("Notificações recentes", format_int(view[notif_col].fillna(0).sum()) if notif_col else "—")
@@ -1648,13 +1676,29 @@ with tabs[3]:
             format_int((view.get(tipo_col, pd.Series(dtype=str)).astype(str) == "silencio_critico").sum())
             if tipo_col in view.columns else 0,
         )
+        if "silencio_com_vizinho_alerta" in view.columns:
+            s4.metric("Com vizinho em alerta", format_int(view["silencio_com_vizinho_alerta"].fillna(False).sum()))
+        else:
+            s4.metric("Com vizinho em alerta", "—")
         cols_show = [c for c in [
             "municipio", "classificacao_silencio", "tipo_sinal", "score_silencio",
             "tests_recent", "notif_recent", "tests_hist", "notif_hist",
-            "populacao", "indice_vulnerabilidade", "acao_sugerida",
+            "populacao", "indice_vulnerabilidade",
+            "vizinhos_em_alerta", "silencio_com_vizinho_alerta", "motivo_territorial",
+            "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
         ] if c in view.columns]
         with st.expander("Tabela de municípios silenciosos (limitada)"):
             show_table(view[cols_show].head(100) if cols_show else view.head(100), "municipios_silenciosos", max_rows=100)
+        if not df_vizinhos.empty and "municipio" in view.columns:
+            with st.expander("Vizinhos territoriais dos silenciosos (amostra)"):
+                muns = set(view["municipio"].astype(str).str.upper().head(30))
+                vz = df_vizinhos.copy()
+                vz["municipio"] = vz["municipio"].astype(str).str.upper()
+                show_table(
+                    vz[vz["municipio"].isin(muns)].head(100),
+                    "municipio_vizinhos (silenciosos)",
+                    max_rows=100,
+                )
 
 
 # =============================================================================
@@ -1708,7 +1752,8 @@ with tabs[4]:
             show_table(
                 view.head(100)[[c for c in [
                     "municipio", "target", "tests", "notificacoes", "taxa_utilizacao",
-                    "exames_por_100k", "classificacao_uso", "acao_sugerida",
+                    "exames_por_100k", "classificacao_uso",
+                    "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
                 ] if c in view.columns]],
                 "taxa_utilizacao_lacen",
                 max_rows=100,
@@ -2506,6 +2551,36 @@ with tabs[13]:
 with tabs[14]:
     st.subheader("Tabelas, qualidade e exportações")
 
+    if not df_qualidade.empty:
+        st.markdown("##### Confiança / qualidade do dado (últimas 8 SE)")
+        q1, q2, q3 = st.columns(3)
+        q1.metric("Municípios avaliados", format_int(len(df_qualidade)))
+        if "faixa_confianca" in df_qualidade.columns:
+            q2.metric(
+                "Confiança baixa",
+                format_int((df_qualidade["faixa_confianca"].astype(str) == "baixa").sum()),
+            )
+        else:
+            q2.metric("Confiança baixa", "—")
+        if "gap_sinan_sem_exame" in df_qualidade.columns:
+            q3.metric(
+                "Gap SINAN sem exame",
+                format_int(df_qualidade["gap_sinan_sem_exame"].fillna(False).sum()),
+            )
+        else:
+            q3.metric("Gap SINAN sem exame", "—")
+        show_table(
+            df_qualidade.head(50)[[c for c in [
+                "municipio", "confianca_dado", "faixa_confianca", "exames", "notif_sinan",
+                "notif_join", "semanas_com_dado", "gap_sinan_sem_exame", "join_sinan_fraco",
+                "interpretacao",
+            ] if c in df_qualidade.columns]],
+            "qualidade_dado_municipal (pior confiança primeiro)",
+            max_rows=50,
+        )
+    else:
+        st.info("Sem `qualidade_dado_municipal.csv`. Rode a integração final para gerar.")
+
     export_tables = {
         "analise_periodo": period_df,
         "alertas_gestores_proximos_dias": manager_alerts,
@@ -2513,6 +2588,8 @@ with tabs[14]:
         "municipios_silenciosos": df_silenciosos,
         "taxa_utilizacao_lacen": df_utilizacao,
         "fila_operacional": fila_operacional,
+        "qualidade_dado_municipal": df_qualidade,
+        "municipio_vizinhos": df_vizinhos,
         "ml_forecast_demanda": df_ml_forecast,
         "ml_anomalias": df_ml_anomalias,
         "ml_risco_predito": df_ml_risco,
@@ -2533,16 +2610,18 @@ with tabs[14]:
     show_table(export_tables[table_choice], table_choice, max_rows=2000)
 
     diag = pd.DataFrame([
-        {"item": "Linhas weekly", "valor": len(weekly)},
-        {"item": "Agravos/alvos weekly", "valor": weekly["target"].nunique()},
-        {"item": "Municípios weekly", "valor": weekly["municipio"].nunique()},
-        {"item": "Ano mínimo", "valor": min_year},
-        {"item": "Ano máximo", "valor": max_year},
-        {"item": "Ano analisado", "valor": analysis_year},
+        {"item": "Linhas weekly", "valor": str(len(weekly))},
+        {"item": "Agravos/alvos weekly", "valor": str(weekly["target"].nunique())},
+        {"item": "Municípios weekly", "valor": str(weekly["municipio"].nunique())},
+        {"item": "Ano mínimo", "valor": str(min_year)},
+        {"item": "Ano máximo", "valor": str(max_year)},
+        {"item": "Ano analisado", "valor": str(analysis_year)},
         {"item": "Período analisado", "valor": f"SE{week_start:02d}-SE{week_end:02d}"},
-        {"item": "Alertas gestores", "valor": len(manager_alerts)},
-        {"item": "Climate association existe", "valor": bool(climate_assoc is not None and not climate_assoc.empty)},
-        {"item": "Climate weekly existe", "valor": bool(climate_weekly is not None and not climate_weekly.empty)},
+        {"item": "Alertas gestores", "valor": str(len(manager_alerts))},
+        {"item": "Qualidade do dado", "valor": str(len(df_qualidade))},
+        {"item": "Arestas de vizinhos", "valor": str(len(df_vizinhos))},
+        {"item": "Climate association existe", "valor": str(bool(climate_assoc is not None and not climate_assoc.empty))},
+        {"item": "Climate weekly existe", "valor": str(bool(climate_weekly is not None and not climate_weekly.empty))},
     ])
     st.dataframe(diag, use_container_width=True)
 

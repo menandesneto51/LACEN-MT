@@ -615,6 +615,26 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
         ["score_silencio", "notif_recent", "tests_recent", "municipio"],
         ascending=[False, False, True, True],
     )
+
+    # Vizinhos + upgrade de silêncio quando cluster vizinho está em alerta
+    try:
+        from lacen_inteligencia import (
+            build_vizinhos,
+            enriquecer_acoes,
+            enriquecer_silencio_com_vizinhos,
+            qualidade_dado_semanal,
+        )
+        viz = build_vizinhos(mm if "latitude" in mm.columns else municipal_master_fallback(outdir))
+        viz.to_csv(outdir / "municipio_vizinhos.csv", index=False, encoding="utf-8-sig")
+        silenciosos = enriquecer_silencio_com_vizinhos(silenciosos, risco, viz)
+        n_viz_alerta = 0
+        if "silencio_com_vizinho_alerta" in silenciosos.columns:
+            n_viz_alerta = int(silenciosos["silencio_com_vizinho_alerta"].fillna(False).sum())
+        log(f"[E] Vizinhos gerados: {len(viz)} arestas; silêncios com vizinho alerta: {n_viz_alerta}")
+    except Exception as exc:
+        log(f"[AVISO] Inteligência territorial (vizinhos) não aplicada: {exc}")
+        viz = pd.DataFrame()
+
     silenciosos.to_csv(outdir / "municipios_silenciosos.csv", index=False, encoding="utf-8-sig")
 
     util = mun_target.copy()
@@ -623,7 +643,6 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
         util["tests"] / util["notificacoes"] * 100.0,
         np.nan,
     )
-    # Taxa por 100 mil hab. (utilização do LACEN)
     util["exames_por_100k"] = np.where(
         util["populacao"].fillna(0) > 0,
         util["tests"] / util["populacao"] * 100000.0,
@@ -639,13 +658,44 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
         ),
     )
     util = util.sort_values(["taxa_utilizacao", "notificacoes"], ascending=[True, False], na_position="first")
+
+    try:
+        from lacen_inteligencia import enriquecer_acoes, qualidade_dado_semanal
+        risco2 = risco.copy()
+        risco2["sinal"] = "risco_territorial"
+        risco = enriquecer_acoes(risco2)
+        sil2 = silenciosos.copy()
+        sil2["sinal"] = "silencio_laboratorial"
+        silenciosos = enriquecer_acoes(sil2)
+        util2 = util.copy()
+        util2["sinal"] = "utilizacao_lacen"
+        if "target" in util2.columns:
+            util2["agravo_alvo"] = util2["target"]
+        util = enriquecer_acoes(util2)
+        sinan_path = outdir / "sinan_weekly_municipio.csv"
+        sinan_df = read_csv(sinan_path) if sinan_path.exists() else None
+        qual = qualidade_dado_semanal(df, sinan_df)
+        qual.to_csv(outdir / "qualidade_dado_municipal.csv", index=False, encoding="utf-8-sig")
+        log(f"[E] Qualidade do dado: {len(qual)} municípios")
+    except Exception as exc:
+        log(f"[AVISO] Protocolos/qualidade não aplicados: {exc}")
+
     util.to_csv(outdir / "taxa_utilizacao_lacen.csv", index=False, encoding="utf-8-sig")
+    risco.to_csv(outdir / "municipios_em_risco.csv", index=False, encoding="utf-8-sig")
+    silenciosos.to_csv(outdir / "municipios_silenciosos.csv", index=False, encoding="utf-8-sig")
 
     log(
         f"[E] Gravados: municipios_em_risco.csv ({len(risco)}), "
         f"municipios_silenciosos.csv ({len(silenciosos)}), "
         f"taxa_utilizacao_lacen.csv ({len(util)})"
     )
+
+
+def municipal_master_fallback(outdir: Path) -> pd.DataFrame:
+    p = outdir / "municipal_master.csv"
+    if p.exists():
+        return read_csv(p)
+    return pd.DataFrame(columns=["municipio", "latitude", "longitude"])
 
 
 if __name__ == "__main__":

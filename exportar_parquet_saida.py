@@ -24,6 +24,9 @@ ESSENTIAL = [
     "municipal_master.csv",
     "populacao_municipio.csv",
     "cnes_capacity_municipio.csv",
+    "qualidade_dado_municipal.csv",
+    "municipio_vizinhos.csv",
+    "fila_operacional.csv",
 ]
 
 

@@ -67,6 +67,8 @@ saida_pipeline/*
 !saida_pipeline/fila_operacional.csv
 !saida_pipeline/sinan_weekly_municipio.csv
 !saida_pipeline/sim_weekly_municipio.csv
+!saida_pipeline/qualidade_dado_municipal.csv
+!saida_pipeline/municipio_vizinhos.csv
 !saida_pipeline/integrated_weekly_surveillance.parquet
 !saida_pipeline/integrated_alerts.parquet
 !saida_pipeline/integrated_annual_summary.parquet
@@ -83,3 +85,5 @@ saida_pipeline/*
 !saida_pipeline/ml_risco_predito.parquet
 !saida_pipeline/ml_silencio_predito.parquet
 !saida_pipeline/ml_features_latest.parquet
+!saida_pipeline/qualidade_dado_municipal.parquet
+!saida_pipeline/municipio_vizinhos.parquet
