@@ -2719,11 +2719,38 @@ elif modulo == "Dados e qualidade":
         df_rede = get_optional(folder, "indicadores_rede")
         if not df_rede.empty:
             st.markdown("##### Desempenho da rede laboratorial (TAT / backlog / rejeição)")
+            r1, r2, r3, r4 = st.columns(4)
+            r1.metric("Municípios MT", format_int(len(df_rede)))
+            r2.metric(
+                "TAT mediano (dias)",
+                format_num(df_rede["tat_mediano_dias"].median()) if "tat_mediano_dias" in df_rede.columns else "—",
+            )
+            r3.metric(
+                "% liberado ≤7d (mediana)",
+                format_pct(df_rede["pct_liberado_7d"].median()) if "pct_liberado_7d" in df_rede.columns else "—",
+            )
+            r4.metric(
+                "Backlog pendente",
+                format_int(df_rede["backlog_estimado"].sum()) if "backlog_estimado" in df_rede.columns else "—",
+            )
+            resumo_path = Path(folder) / "indicadores_rede_resumo.csv"
+            if resumo_path.exists():
+                try:
+                    rs = pd.read_csv(resumo_path, nrows=1)
+                    if not rs.empty and "tat_mediano_estadual" in rs.columns:
+                        st.caption(
+                            f"Resumo estadual GAL: TAT mediano {format_num(rs['tat_mediano_estadual'].iloc[0])} dias "
+                            f"· {format_int(rs['n_municipios'].iloc[0]) if 'n_municipios' in rs.columns else '—'} municípios "
+                            f"· fonte `{rs['fonte'].iloc[0] if 'fonte' in rs.columns else 'gal'}`"
+                        )
+                except Exception:
+                    pass
             show_table(
                 df_rede.head(50)[[c for c in [
                     "municipio", "exames", "tat_mediano_dias", "tat_p90_dias",
-                    "pct_liberado_7d", "pct_rejeitado", "backlog_estimado",
-                    "fonte", "interpretacao",
+                    "tat_lab_mediano_dias", "logistica_mediana_dias",
+                    "pct_liberado_7d", "pct_liberado_14d", "pct_rejeitado",
+                    "backlog_estimado", "fonte", "interpretacao",
                 ] if c in df_rede.columns]],
                 "indicadores_rede_laboratorial",
                 max_rows=50,

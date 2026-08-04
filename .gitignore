@@ -91,6 +91,11 @@ saida_pipeline/*
 !saida_pipeline/ml_backtest_summary.parquet
 !saida_pipeline/indicadores_rede_laboratorial.csv
 !saida_pipeline/indicadores_rede_laboratorial.parquet
+!saida_pipeline/indicadores_rede_resumo.csv
+!saida_pipeline/indicadores_rede_resumo.parquet
+!saida_pipeline/sql/
+!saida_pipeline/sql/create_lacen_ml_tables.sql
+!saida_pipeline/ml_dw_mirror_status.json
 !saida_pipeline/alerta_historico.csv
 !saida_pipeline/executive_state_summary.csv
 !saida_pipeline/executive_state_summary.parquet

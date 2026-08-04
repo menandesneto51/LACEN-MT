@@ -29,8 +29,10 @@ ESSENTIAL = [
     "fila_operacional.csv",
     "ml_backtest_summary.csv",
     "indicadores_rede_laboratorial.csv",
+    "indicadores_rede_resumo.csv",
     "alerta_historico.csv",
     "executive_state_summary.csv",
+    "executive_rede_summary.csv",
     "sim_qualidade.csv",
 ]
 
