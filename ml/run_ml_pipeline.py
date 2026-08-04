@@ -79,6 +79,23 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     silencio.to_csv(silencio_out, index=False, encoding="utf-8-sig")
     _log(f"[ML] {silencio_out.name}: {len(silencio):,} linhas")
 
+    _log("[ML] Backtest temporal...")
+    bt_out = outdir / "ml_backtest_summary.csv"
+    try:
+        from ml.backtest import run_backtest
+        bt = run_backtest(features)
+        bt.to_csv(bt_out, index=False, encoding="utf-8-sig")
+        _log(f"[ML] {bt_out.name}: {len(bt):,} linhas")
+        if not bt.empty and "auc" in bt.columns:
+            for _, r in bt[bt["escopo"].astype(str).eq("global")].iterrows():
+                _log(
+                    f"[ML]   backtest {r.get('modelo')}: auc={r.get('auc')} "
+                    f"confirmacao={r.get('confirmacao')} n={r.get('n')}"
+                )
+    except Exception as exc:
+        _log(f"[ML][AVISO] Backtest pulado: {exc}")
+        bt_out = outdir / "ml_backtest_summary.csv"
+
     # Também atualiza forecast estadual legado com método EWMA (compatível)
     if not fc.empty:
         legacy = fc.rename(columns={
@@ -110,6 +127,7 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
         "anomalias": an_out,
         "risco": risco_out,
         "silencio": silencio_out,
+        "backtest": bt_out,
     }
 
 

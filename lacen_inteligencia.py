@@ -226,6 +226,89 @@ def enriquecer_silencio_com_vizinhos(
     return out
 
 
+def enriquecer_fila_com_ml(
+    fila: pd.DataFrame,
+    ml_risco: Optional[pd.DataFrame] = None,
+    ml_silencio: Optional[pd.DataFrame] = None,
+    limiar_ml: float = 0.55,
+) -> pd.DataFrame:
+    """
+    Cruza fila operacional com ML: alerta híbrido = regra operacional + ML alto.
+    """
+    if fila is None or fila.empty:
+        return fila if fila is not None else pd.DataFrame()
+
+    out = fila.copy()
+    out["municipio"] = out["municipio"].astype(str).str.strip().str.upper()
+    out["prob_ml"] = np.nan
+    out["faixa_ml"] = ""
+    out["alerta_hibrido"] = False
+
+    risco_map = pd.DataFrame()
+    if ml_risco is not None and not ml_risco.empty and "municipio" in ml_risco.columns:
+        rr = ml_risco.copy()
+        rr["municipio"] = rr["municipio"].astype(str).str.strip().str.upper()
+        pcol = "prob_alerta_proxima_janela"
+        if pcol in rr.columns:
+            agg = {pcol: "max"}
+            if "faixa_predita" in rr.columns:
+                # pega faixa do registro de maior probabilidade
+                idx = rr.groupby("municipio")[pcol].idxmax()
+                risco_map = rr.loc[idx, ["municipio", pcol, "faixa_predita"]].rename(
+                    columns={pcol: "prob_ml_risco", "faixa_predita": "faixa_ml_risco"}
+                )
+            else:
+                risco_map = (
+                    rr.groupby("municipio", as_index=False)
+                    .agg(prob_ml_risco=(pcol, "max"))
+                )
+                risco_map["faixa_ml_risco"] = ""
+
+
+    sil_map = pd.DataFrame()
+    if ml_silencio is not None and not ml_silencio.empty and "municipio" in ml_silencio.columns:
+        ss = ml_silencio.copy()
+        ss["municipio"] = ss["municipio"].astype(str).str.strip().str.upper()
+        pcol = "prob_silencio_proxima_janela"
+        if pcol in ss.columns:
+            sil_map = (
+                ss.groupby("municipio", as_index=False)
+                .agg(prob_ml_silencio=(pcol, "max"))
+            )
+
+    if not risco_map.empty:
+        out = out.merge(risco_map, on="municipio", how="left")
+    else:
+        out["prob_ml_risco"] = np.nan
+        out["faixa_ml_risco"] = ""
+
+    if not sil_map.empty:
+        out = out.merge(sil_map, on="municipio", how="left")
+    else:
+        out["prob_ml_silencio"] = np.nan
+
+    # Probabilidade relevante conforme o tipo de sinal
+    sil_mask = out["sinal"].astype(str).str.contains("silencio", case=False, na=False)
+    out.loc[sil_mask, "prob_ml"] = out.loc[sil_mask, "prob_ml_silencio"]
+    out.loc[~sil_mask, "prob_ml"] = out.loc[~sil_mask, "prob_ml_risco"]
+    if "faixa_ml_risco" in out.columns:
+        out.loc[~sil_mask, "faixa_ml"] = out.loc[~sil_mask, "faixa_ml_risco"].fillna("").astype(str)
+
+    out["alerta_hibrido"] = (
+        out["prioridade"].astype(str).isin(["CRÍTICO", "ALTO"])
+        & out["prob_ml"].fillna(0).ge(limiar_ml)
+    )
+    # Reforça prioridade quando híbrido
+    out.loc[out["alerta_hibrido"] & out["prioridade"].astype(str).eq("ALTO"), "prioridade"] = "CRÍTICO"
+    out.loc[out["alerta_hibrido"], "motivo"] = (
+        out.loc[out["alerta_hibrido"], "motivo"].astype(str)
+        + " | ML confirma (prob="
+        + out.loc[out["alerta_hibrido"], "prob_ml"].round(2).astype(str)
+        + ")"
+    )
+    return out
+
+
 def qualidade_dado_semanal(weekly: pd.DataFrame, sinan: Optional[pd.DataFrame] = None) -> pd.DataFrame:
     """Indicadores de confiança/qualidade por município na janela recente."""
     if weekly is None or weekly.empty:

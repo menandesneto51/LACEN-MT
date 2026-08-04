@@ -209,14 +209,39 @@ def read_csv_chunks_resilient(path: Path, chunksize: int = 50000):
     raise ValueError(f"Não foi possível ler {path}: {last_err}")
 
 def safe_to_datetime(s):
-    # Tenta primeiro formato ISO, depois dayfirst
+    """Parse robusto de datas SIM/SINAN; rejeita anos absurdos (<1990)."""
+    raw = s
+    # Formato compacto YYYYMMDD (comum no SIM)
     try:
-        dt = pd.to_datetime(s, errors="coerce", format="%Y-%m-%d")
-        if hasattr(dt, "notna") and dt.notna().sum() > 0:
-            return dt
+        as_str = pd.Series(raw).astype(str).str.replace(r"\.0$", "", regex=True).str.strip()
+        compact = as_str.str.fullmatch(r"\d{8}")
+        if compact is not None and compact.any():
+            dt_c = pd.to_datetime(as_str.where(compact), format="%Y%m%d", errors="coerce")
+            if dt_c.notna().sum() > max(1, int(0.3 * len(as_str))):
+                out = dt_c
+                # preenche restantes
+                rest = ~compact | dt_c.isna()
+                if rest.any():
+                    out = out.fillna(pd.to_datetime(as_str.where(rest), errors="coerce", dayfirst=True))
+                years = out.dt.year
+                out = out.where(years.between(1990, 2100))
+                return out
     except Exception:
         pass
-    return pd.to_datetime(s, errors="coerce", dayfirst=True)
+    try:
+        dt = pd.to_datetime(raw, errors="coerce", format="%Y-%m-%d")
+        if hasattr(dt, "notna") and dt.notna().sum() > 0:
+            years = dt.dt.year
+            dt = dt.where(years.between(1990, 2100))
+            if dt.notna().sum() > 0:
+                return dt
+    except Exception:
+        pass
+    dt = pd.to_datetime(raw, errors="coerce", dayfirst=True)
+    if hasattr(dt, "dt"):
+        years = dt.dt.year
+        dt = dt.where(years.between(1990, 2100))
+    return dt
 
 def robust_z(series: pd.Series) -> pd.Series:
     s = pd.to_numeric(series, errors="coerce")
@@ -592,15 +617,25 @@ def build_sim_weekly(sim_path, outdir):
             age_series = pd.Series(np.nan, index=df.index)
         work["faixa_etaria"] = age_series.map(age_to_group)
         work = work.dropna(subset=["municipio","event_date"]).copy()
+        # Descarta anos inválidos (parsing quebrado → ano 1)
+        years_ok = work["event_date"].dt.year.between(1990, 2100)
+        n_bad = int((~years_ok).sum())
+        if n_bad:
+            log_step(f"[SIM] chunk {i}: descartadas {n_bad} linhas com data/ano inválido")
+        work = work.loc[years_ok].copy()
         if work.empty:
             log_step(f"[SIM] chunk {i}: sem linhas válidas após limpeza")
             continue
         used_chunks += 1
         work["target"] = work["causa_texto"].map(lambda x: infer_target_from_text(x) if str(x).strip() else "nao_classificado_sim")
         iso = work["event_date"].dt.isocalendar()
-        work["ano"] = work["event_date"].dt.year
+        work["ano"] = work["event_date"].dt.year.astype(int)
         work["epi_year"] = iso["year"].astype(int)
         work["epi_week"] = iso["week"].astype(int)
+        # Dupla checagem pós-isocalendar
+        work = work[work["epi_year"].between(1990, 2100)].copy()
+        if work.empty:
+            continue
         work["obitos"] = 1
 
         weekly_parts.append(

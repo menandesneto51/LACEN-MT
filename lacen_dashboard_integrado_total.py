@@ -75,6 +75,7 @@ OPTIONAL_FILES = {
     "ml_risco": "ml_risco_predito.csv",
     "ml_silencio": "ml_silencio_predito.csv",
     "ml_features": "ml_features_latest.csv",
+    "ml_backtest": "ml_backtest_summary.csv",
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
     "qualidade_dado": "qualidade_dado_municipal.csv",
@@ -1117,6 +1118,8 @@ def build_fila_operacional(
     df_risco: pd.DataFrame,
     df_silenciosos: pd.DataFrame,
     top_n: int = 20,
+    df_ml_risco: Optional[pd.DataFrame] = None,
+    df_ml_silencio: Optional[pd.DataFrame] = None,
 ) -> pd.DataFrame:
     """Fila gerencial: município | sinal | motivo | prioridade | ação | prazo | responsável."""
     rows: list[dict] = []
@@ -1196,9 +1199,22 @@ def build_fila_operacional(
     out = out.sort_values(["_pr", "score"], ascending=[True, False]).drop(columns=["_pr"])
     out = out.drop_duplicates(subset=["municipio", "sinal", "agravo_alvo"], keep="first")
     out = with_acao(out.head(top_n))
+    try:
+        from lacen_inteligencia import enriquecer_fila_com_ml
+        out = enriquecer_fila_com_ml(out, df_ml_risco, df_ml_silencio)
+        # Reordena após reforço híbrido
+        pri_rank = {"CRÍTICO": 0, "ALTO": 1, "MODERADO": 2, "MONITORAMENTO": 3}
+        out["_pr"] = out["prioridade"].astype(str).map(pri_rank).fillna(9)
+        out = out.sort_values(
+            ["alerta_hibrido", "_pr", "prob_ml", "score"],
+            ascending=[False, True, False, False],
+        ).drop(columns=["_pr"], errors="ignore")
+    except Exception:
+        pass
     cols = [
         "municipio", "sinal", "motivo", "prioridade",
         "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
+        "alerta_hibrido", "prob_ml", "faixa_ml",
         "agravo_alvo", "exames", "positividade", "score",
     ]
     return out[[c for c in cols if c in out.columns]].reset_index(drop=True)
@@ -1262,6 +1278,7 @@ df_ml_forecast = data.get("ml_forecast")
 df_ml_anomalias = data.get("ml_anomalias")
 df_ml_risco = data.get("ml_risco")
 df_ml_silencio = data.get("ml_silencio")
+df_ml_backtest = data.get("ml_backtest")
 df_sinan_weekly = data.get("sinan_weekly")
 df_sim_weekly = data.get("sim_weekly")
 if df_risco is None:
@@ -1282,6 +1299,8 @@ if df_ml_risco is None:
     df_ml_risco = pd.DataFrame()
 if df_ml_silencio is None:
     df_ml_silencio = pd.DataFrame()
+if df_ml_backtest is None:
+    df_ml_backtest = pd.DataFrame()
 if df_sinan_weekly is None:
     df_sinan_weekly = pd.DataFrame()
 if df_sim_weekly is None:
@@ -1407,7 +1426,10 @@ period_df = ensure_cols(
 )
 
 manager_alerts = build_manager_alert_messages(period_df, folder, int(horizon_days))
-fila_operacional = build_fila_operacional(period_df, df_risco, df_silenciosos, top_n=20)
+fila_operacional = build_fila_operacional(
+    period_df, df_risco, df_silenciosos, top_n=20,
+    df_ml_risco=df_ml_risco, df_ml_silencio=df_ml_silencio,
+)
 
 if not manager_alerts.empty:
     outdir = Path(folder)
@@ -1495,6 +1517,7 @@ with tabs[0]:
             show_table(
                 fila_operacional.head(15)[[c for c in [
                     "municipio", "sinal", "motivo", "prioridade",
+                    "alerta_hibrido", "prob_ml",
                     "acao_sugerida", "responsavel", "prazo_acao", "agravo_alvo",
                 ] if c in fila_operacional.columns]],
                 "Fila operacional (top 15)",
@@ -1970,6 +1993,26 @@ with tabs[7]:
         k3.metric("Risco alto/muito alto", format_int(alto_r))
         crit_s = int((df_ml_silencio.get("faixa_silencio_predita", pd.Series(dtype=str)).astype(str) == "silencio_critico").sum()) if not df_ml_silencio.empty else 0
         k4.metric("Silêncio crítico predito", format_int(crit_s))
+
+        if not df_ml_backtest.empty:
+            st.markdown("##### Backtest temporal (alerta SE t → confirmação SE t+1)")
+            bt = df_ml_backtest.copy()
+            show_table(
+                bt[[c for c in [
+                    "modelo", "escopo", "status", "metodo", "auc", "confirmacao",
+                    "precision", "recall", "brier", "n", "n_alerta_emitido", "n_confirmado",
+                    "n_train_weeks", "n_test_weeks",
+                ] if c in bt.columns]],
+                "ml_backtest_summary",
+                max_rows=50,
+            )
+            glob = bt[bt["escopo"].astype(str).eq("global")] if "escopo" in bt.columns else bt
+            if not glob.empty and "auc" in glob.columns:
+                auc_risco = glob.loc[glob["modelo"].astype(str).eq("risco"), "auc"]
+                auc_sil = glob.loc[glob["modelo"].astype(str).eq("silencio"), "auc"]
+                cbt1, cbt2 = st.columns(2)
+                cbt1.metric("AUC risco (teste)", format_num(float(auc_risco.iloc[0])) if len(auc_risco) and pd.notna(auc_risco.iloc[0]) else "—")
+                cbt2.metric("AUC silêncio (teste)", format_num(float(auc_sil.iloc[0])) if len(auc_sil) and pd.notna(auc_sil.iloc[0]) else "—")
 
         st.markdown("##### Previsão de demanda (estadual por agravo)")
         if df_ml_forecast.empty:
@@ -2594,6 +2637,7 @@ with tabs[14]:
         "ml_anomalias": df_ml_anomalias,
         "ml_risco_predito": df_ml_risco,
         "ml_silencio_predito": df_ml_silencio,
+        "ml_backtest_summary": df_ml_backtest,
         "weekly_filtrado": wf,
         "annual": annual,
         "summary_municipio": summary_mun,

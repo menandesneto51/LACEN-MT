@@ -27,6 +27,7 @@ ESSENTIAL = [
     "qualidade_dado_municipal.csv",
     "municipio_vizinhos.csv",
     "fila_operacional.csv",
+    "ml_backtest_summary.csv",
 ]
 
 

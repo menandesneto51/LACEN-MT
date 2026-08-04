@@ -83,7 +83,12 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s["ano"] = pd.to_numeric(s.get("ano"), errors="coerce")
     # Arquivo SIM às vezes vem com ano/epi_year = 1 (quebra de parsing) — invalida
     bad_year = s["epi_year"].fillna(0).le(1900)
-    if bad_year.mean() > 0.8:
+    if "ano" in s.columns:
+        bad_year = bad_year | s["ano"].fillna(0).le(1900)
+    if bad_year.mean() > 0.5 or s.empty:
+        return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
+    s = s.loc[~bad_year].copy()
+    if s.empty:
         return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
     s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
@@ -203,6 +208,27 @@ def main():
     sinan = read_csv(outdir / "sinan_weekly_municipio.csv")
     sim = read_csv(outdir / "sim_weekly_municipio.csv")
     cnes = read_csv(outdir / "cnes_capacity_municipio.csv")
+
+    # Diagnóstico SIM: arquivo legado com ano=1 não entra no join
+    try:
+        sy = pd.to_numeric(sim.get("epi_year"), errors="coerce")
+        sa = pd.to_numeric(sim.get("ano"), errors="coerce") if "ano" in sim.columns else sy
+        pct_bad = float(((sy.fillna(0) <= 1900) | (sa.fillna(0) <= 1900)).mean()) if len(sim) else 1.0
+        pd.DataFrame([{
+            "fonte": "sim_weekly_municipio.csv",
+            "status": "invalido" if pct_bad > 0.5 else "ok",
+            "pct_ano_invalido": round(pct_bad, 3),
+            "n_linhas": int(len(sim)),
+            "acao": (
+                "Reconstruir com lacen_builder_integrado_total.build_sim_weekly "
+                "(DTOBITO em YYYYMMDD; anos <1990 são descartados)"
+                if pct_bad > 0.5 else "ok"
+            ),
+        }]).to_csv(outdir / "sim_qualidade.csv", index=False, encoding="utf-8-sig")
+        if pct_bad > 0.5:
+            log(f"[AVISO] SIM inválido ({pct_bad:.0%} anos <=1900) — óbitos não serão pareados até reconstrução.")
+    except Exception as exc:
+        log(f"[AVISO] Diagnóstico SIM não gravado: {exc}")
 
     log("[B] Harmonizando colunas")
 

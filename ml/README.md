@@ -23,6 +23,7 @@ dashboard (aba Sinais preditivos)
 | `ml_anomalias.csv` | Picos/quedas atípicas |
 | `ml_risco_predito.csv` | Probabilidade de alerta na próxima janela |
 | `ml_silencio_predito.csv` | Probabilidade de silêncio laboratorial |
+| `ml_backtest_summary.csv` | AUC / confirmação temporal (treino 80% semanas → teste 20%) |
 
 ## Como rodar
 
