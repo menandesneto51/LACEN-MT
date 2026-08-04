@@ -102,6 +102,9 @@ DEFERRED_OPTIONAL_FILES = {
     "ml_backtest": "ml_backtest_summary.csv",
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
+    "indicadores_rede": "indicadores_rede_laboratorial.csv",
+    "alerta_historico": "alerta_historico.csv",
+    "executive_state": "executive_state_summary.csv",
 }
 
 OPTIONAL_FILES = {**STARTUP_OPTIONAL_FILES, **DEFERRED_OPTIONAL_FILES}
@@ -2427,12 +2430,31 @@ elif modulo == "Predição e alertas":
             show_table(msg_df, "Fila de alertas para gestores", max_rows=2000, key="pred_msg")
 
     elif sub_pred == "Sinais preditivos":
-        st.subheader("Sinais preditivos — módulo ML baseline")
+        st.subheader("Sinais preditivos — ML sklearn_v2 (Predito)")
         st.caption(
-            "Modelos: forecast EWMA + anomalias; risco/silêncio usam sklearn (Gradient Boosting) "
-            "quando `ml/models_store` estiver disponível, senão baseline logística. "
-            "Resultados em `saida_pipeline` — não treinam no DW. Indicadores Predito."
+            "Forecast EWMA + anomalias; risco/silêncio com Gradient Boosting calibrado por família. "
+            "Drivers explicam por que o município aparece. Não treina no DW."
         )
+        with st.expander("Assistente de sala de situação (somente agregados)", expanded=False):
+            pergunta = st.text_input(
+                "Pergunta",
+                value="Quais 5 municípios priorizar esta semana e por quê?",
+                key="assistente_pergunta",
+            )
+            if st.button("Responder com evidência", key="assistente_btn"):
+                try:
+                    from lacen_assistente import responder_sala_situacao, talvez_enriquecer_com_llm
+                    resp = responder_sala_situacao(pergunta, folder)
+                    resp = talvez_enriquecer_com_llm(resp, pergunta)
+                    st.markdown(resp.get("resposta", ""))
+                    st.caption(f"Fonte: {resp.get('fonte', '')}")
+                    if resp.get("citacoes"):
+                        with st.expander("Citações (linhas dos CSVs)"):
+                            for c in resp["citacoes"][:10]:
+                                st.code(c)
+                except Exception as exc:
+                    st.warning(f"Assistente indisponível: {exc}")
+
         ml_missing = all(df.empty for df in (df_ml_forecast, df_ml_anomalias, df_ml_risco, df_ml_silencio))
         if ml_missing:
             st.info(
@@ -2453,9 +2475,9 @@ elif modulo == "Predição e alertas":
                 bt = df_ml_backtest.copy()
                 show_table(
                     bt[[c for c in [
-                        "modelo", "escopo", "status", "metodo", "auc", "confirmacao",
-                        "precision", "recall", "brier", "n", "n_alerta_emitido", "n_confirmado",
-                        "n_train_weeks", "n_test_weeks",
+                        "modelo", "escopo", "status", "metodo", "threshold", "auc", "confirmacao",
+                        "precision_at_20", "precision_at_50", "precision", "recall", "brier",
+                        "n", "n_alerta_emitido", "n_confirmado", "n_train_weeks", "n_test_weeks",
                     ] if c in bt.columns]],
                     "ml_backtest_summary",
                     max_rows=50,
@@ -2463,11 +2485,15 @@ elif modulo == "Predição e alertas":
                 )
                 glob = bt[bt["escopo"].astype(str).eq("global")] if "escopo" in bt.columns else bt
                 if not glob.empty and "auc" in glob.columns:
-                    auc_risco = glob.loc[glob["modelo"].astype(str).eq("risco"), "auc"]
-                    auc_sil = glob.loc[glob["modelo"].astype(str).eq("silencio"), "auc"]
-                    cbt1, cbt2 = st.columns(2)
+                    cal = glob[glob["metodo"].astype(str).str.contains("calibrado", na=False)] if "metodo" in glob.columns else glob
+                    use = cal if not cal.empty else glob
+                    auc_risco = use.loc[use["modelo"].astype(str).eq("risco"), "auc"]
+                    auc_sil = use.loc[use["modelo"].astype(str).eq("silencio"), "auc"]
+                    p20 = use.loc[use["modelo"].astype(str).eq("risco"), "precision_at_20"] if "precision_at_20" in use.columns else pd.Series(dtype=float)
+                    cbt1, cbt2, cbt3 = st.columns(3)
                     cbt1.metric("AUC risco (teste)", format_num(float(auc_risco.iloc[0])) if len(auc_risco) and pd.notna(auc_risco.iloc[0]) else "—")
                     cbt2.metric("AUC silêncio (teste)", format_num(float(auc_sil.iloc[0])) if len(auc_sil) and pd.notna(auc_sil.iloc[0]) else "—")
+                    cbt3.metric("Precisão@20 risco", format_num(float(p20.iloc[0])) if len(p20) and pd.notna(p20.iloc[0]) else "—")
 
             st.markdown("##### Previsão de demanda (estadual por agravo)")
             if df_ml_forecast.empty:
@@ -2534,9 +2560,13 @@ elif modulo == "Predição e alertas":
                             labels={"prob_alerta_proxima_janela": "Probabilidade", "municipio": "Município"},
                         )
                         safe_plotly(fig, "Risco predito")
-                    with st.expander("Tabela risco predito"):
+                    with st.expander("Tabela risco predito + drivers"):
                         show_table(
-                            rr.head(50)[[c for c in ["municipio", "target", "prob_alerta_proxima_janela", "faixa_predita", "acao_sugerida"] if c in rr.columns]],
+                            rr.head(50)[[c for c in [
+                                "municipio", "target", "familia", "prob_alerta_proxima_janela",
+                                "limiar_operacional", "acima_limiar", "faixa_predita",
+                                "drivers", "acao_sugerida", "metodo",
+                            ] if c in rr.columns]],
                             "ml_risco_predito",
                             max_rows=50,
                             key="pred_rr",
@@ -2685,6 +2715,20 @@ elif modulo == "Dados e qualidade":
 
     if sub_dados == "Tabelas e qualidade":
         st.subheader("Tabelas, qualidade e exportações")
+
+        df_rede = get_optional(folder, "indicadores_rede")
+        if not df_rede.empty:
+            st.markdown("##### Desempenho da rede laboratorial (TAT / backlog / rejeição)")
+            show_table(
+                df_rede.head(50)[[c for c in [
+                    "municipio", "exames", "tat_mediano_dias", "tat_p90_dias",
+                    "pct_liberado_7d", "pct_rejeitado", "backlog_estimado",
+                    "fonte", "interpretacao",
+                ] if c in df_rede.columns]],
+                "indicadores_rede_laboratorial",
+                max_rows=50,
+                key="dados_rede",
+            )
 
         if not df_qualidade.empty:
             st.markdown("##### Confiança / qualidade do dado (últimas 8 SE)")

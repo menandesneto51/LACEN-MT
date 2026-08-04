@@ -134,68 +134,84 @@ def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
     if snap.empty:
         return pd.DataFrame()
 
-    # Preferir modelo sklearn treinado, se existir
-    try:
-        from ml.train import load_bundle, predict_proba_bundle
-        bundle = load_bundle("risco")
-    except Exception:
+    from ml.train import familia_agravo, explain_row, load_bundle, predict_proba_bundle
+
+    snap = snap.copy()
+    snap["familia"] = snap["target"].map(familia_agravo)
+
+    probs = np.zeros(len(snap), dtype=float)
+    metodos = []
+    thresholds = []
+    drivers_ml = []
+    for i, (_, row) in enumerate(snap.iterrows()):
+        fam = row.get("familia", "outros")
         bundle = None
-
-    if bundle is not None:
-        prob = predict_proba_bundle(bundle, snap)
-        logit = np.log(np.clip(prob, 1e-6, 1 - 1e-6) / np.clip(1 - prob, 1e-6, 1))
-        metodo = "sklearn_gb_v1"
-    else:
-        pos = pd.to_numeric(snap.get("positividade", 0), errors="coerce").fillna(0)
-        pos_t = pd.to_numeric(snap.get("positividade_trend", 0), errors="coerce").fillna(0)
-        risco = pd.to_numeric(snap.get("risco_composto", 0), errors="coerce").fillna(0)
-        tests = pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0)
-        notif = pd.to_numeric(snap.get("notificacoes", 0), errors="coerce").fillna(0)
-        vuln = pd.to_numeric(snap.get("indice_vulnerabilidade", 0), errors="coerce").fillna(0)
-        tests_t = pd.to_numeric(snap.get("tests_trend", 0), errors="coerce").fillna(0)
-
-        logit = (
-            -2.2
-            + 2.8 * pos
-            + 1.5 * np.tanh(pos_t * 5)
-            + 0.35 * risco.clip(0, 10)
-            + 0.15 * np.log1p(tests)
-            + 0.12 * np.log1p(notif)
-            + 0.25 * vuln.clip(-3, 3)
-            + 0.4 * np.tanh(tests_t / 5.0)
-        )
-        prob = _sigmoid(logit)
-        metodo = "baseline_logit_v1"
-        pos, pos_t, risco = pos, pos_t, risco  # for drivers below
+        try:
+            bundle = load_bundle("risco", familia=str(fam))
+            if bundle is None:
+                bundle = load_bundle("risco")
+        except Exception:
+            bundle = None
+        if bundle is not None:
+            p = float(predict_proba_bundle(bundle, pd.DataFrame([row]))[0])
+            probs[i] = p
+            thr = float(bundle.get("threshold", 0.25))
+            thresholds.append(thr)
+            metodos.append("sklearn_gb_v2_familia" if bundle.get("familia") not in (None, "global") else "sklearn_gb_v2")
+            try:
+                drivers_ml.append(explain_row(bundle, row))
+            except Exception:
+                drivers_ml.append("")
+        else:
+            pos = float(pd.to_numeric(row.get("positividade", 0), errors="coerce") or 0)
+            pos_t = float(pd.to_numeric(row.get("positividade_trend", 0), errors="coerce") or 0)
+            risco = float(pd.to_numeric(row.get("risco_composto", 0), errors="coerce") or 0)
+            tests = float(pd.to_numeric(row.get("tests", 0), errors="coerce") or 0)
+            notif = float(pd.to_numeric(row.get("notificacoes", 0), errors="coerce") or 0)
+            vuln = float(pd.to_numeric(row.get("indice_vulnerabilidade", 0), errors="coerce") or 0)
+            tests_t = float(pd.to_numeric(row.get("tests_trend", 0), errors="coerce") or 0)
+            logit = (
+                -2.2 + 2.8 * pos + 1.5 * np.tanh(pos_t * 5) + 0.35 * min(risco, 10)
+                + 0.15 * np.log1p(tests) + 0.12 * np.log1p(notif)
+                + 0.25 * np.clip(vuln, -3, 3) + 0.4 * np.tanh(tests_t / 5.0)
+            )
+            probs[i] = float(_sigmoid(np.array([logit]))[0])
+            thresholds.append(0.25)
+            metodos.append("baseline_logit_v1")
+            drivers_ml.append("")
 
     pos = pd.to_numeric(snap.get("positividade", 0), errors="coerce").fillna(0)
     pos_t = pd.to_numeric(snap.get("positividade_trend", 0), errors="coerce").fillna(0)
     risco = pd.to_numeric(snap.get("risco_composto", 0), errors="coerce").fillna(0)
 
     out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
-    out["prob_alerta_proxima_janela"] = np.round(prob, 4)
-    out["score_logit"] = np.round(logit, 4)
+    out["familia"] = snap["familia"].values
+    out["prob_alerta_proxima_janela"] = np.round(probs, 4)
+    out["limiar_operacional"] = thresholds
+    out["acima_limiar"] = out["prob_alerta_proxima_janela"] >= out["limiar_operacional"]
     out["faixa_predita"] = pd.cut(
         out["prob_alerta_proxima_janela"],
-        bins=[-0.01, 0.25, 0.50, 0.75, 1.01],
+        bins=[-0.01, 0.15, 0.30, 0.50, 1.01],
         labels=["baixo", "moderado", "alto", "muito_alto"],
     ).astype(str)
-    out["drivers"] = (
-        "positividade=" + pos.round(2).astype(str)
-        + "; tendencia_pos=" + pos_t.round(3).astype(str)
-        + "; risco=" + risco.round(2).astype(str)
-    )
+    out["drivers"] = [
+        (d if d else f"positividade={p:.2f}; tendencia_pos={t:.3f}; risco={r:.2f}")
+        for d, p, t, r in zip(drivers_ml, pos, pos_t, risco)
+    ]
+    out["tipo_sinal"] = "predito"
     out["acao_sugerida"] = np.where(
-        out["prob_alerta_proxima_janela"] >= 0.75,
+        out["acima_limiar"],
         "Priorizar monitoramento ativo e articulação com vigilância municipal.",
         np.where(
-            out["prob_alerta_proxima_janela"] >= 0.50,
+            out["prob_alerta_proxima_janela"] >= 0.20,
             "Acompanhar tendência semanal e reforçar coleta se houver sintoma clínico.",
             "Manter rotina de vigilância laboratorial.",
         ),
     )
-    out["metodo"] = metodo
-    out["modelo_versao"] = "sklearn_v1" if metodo.startswith("sklearn") else "baseline_v1"
+    out["metodo"] = metodos
+    out["modelo_versao"] = np.where(
+        pd.Series(metodos).astype(str).str.startswith("sklearn"), "sklearn_v2", "baseline_v1"
+    )
     return out.sort_values("prob_alerta_proxima_janela", ascending=False).reset_index(drop=True)
 
 
@@ -220,7 +236,8 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
 
     if bundle is not None:
         prob = predict_proba_bundle(bundle, snap)
-        metodo = "sklearn_gb_v1"
+        metodo = "sklearn_gb_v2"
+        thr = float(bundle.get("threshold", 0.5))
     else:
         logit = (
             -1.0
@@ -231,11 +248,16 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
             + 0.2 * vuln.clip(-3, 3)
             - 0.15 * np.log1p(uso.clip(lower=0))
         )
+        if "vizinhos_em_alerta" in snap.columns:
+            logit = logit + 0.35 * pd.to_numeric(snap["vizinhos_em_alerta"], errors="coerce").fillna(0).clip(0, 6)
         prob = _sigmoid(logit)
         metodo = "baseline_logit_v1"
+        thr = 0.55
 
     out = snap[["municipio", "target", "epi_year", "epi_week"]].copy()
     out["prob_silencio_proxima_janela"] = np.round(prob, 4)
+    out["limiar_operacional"] = thr
+    out["acima_limiar"] = out["prob_silencio_proxima_janela"] >= thr
     out["tests_ultima_semana"] = tests
     out["tests_ma8"] = tests_ma8
     out["notificacoes_ultima_semana"] = notif
@@ -245,15 +267,16 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
         bins=[-0.01, 0.35, 0.55, 0.75, 1.01],
         labels=["sem_silencio_aparente", "silencio_moderado", "silencio_provavel", "silencio_critico"],
     ).astype(str)
+    out["tipo_sinal"] = "predito"
     out["acao_sugerida"] = np.where(
-        out["prob_silencio_proxima_janela"] >= 0.75,
+        out["acima_limiar"],
         "Busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal.",
         np.where(
-            out["prob_silencio_proxima_janela"] >= 0.55,
+            out["prob_silencio_proxima_janela"] >= 0.45,
             "Revisar cobertura de testagem e histórico de utilização do LACEN.",
             "Manter acompanhamento de rotina.",
         ),
     )
     out["metodo"] = metodo
-    out["modelo_versao"] = "sklearn_v1" if metodo.startswith("sklearn") else "baseline_v1"
+    out["modelo_versao"] = "sklearn_v2" if metodo.startswith("sklearn") else "baseline_v1"
     return out.sort_values("prob_silencio_proxima_janela", ascending=False).reset_index(drop=True)

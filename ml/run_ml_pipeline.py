@@ -35,8 +35,8 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     weekly = pd.read_csv(weekly_path, low_memory=False)
     _log(f"[ML] Linhas semanais: {len(weekly):,}")
 
-    _log("[ML] Construindo features (lags / médias móveis)...")
-    features = build_panel_features(weekly)
+    _log("[ML] Construindo features (lags / médias móveis / clima / CNES / vizinhos)...")
+    features = build_panel_features(weekly, outdir=outdir)
     snap = latest_week_snapshot(features)
 
     _log("[ML] Treinando modelos sklearn (se disponível)...")
@@ -115,6 +115,20 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
         )
 
     _log("[ML] Pipeline preditivo concluído.")
+    try:
+        from ml.mirror_dw import append_alerta_historico, atualizar_desfechos, build_executive_summaries, mirror_to_dw
+        append_alerta_historico(outdir, risco, silencio)
+        atualizar_desfechos(outdir)
+        build_executive_summaries(outdir)
+        st = mirror_to_dw(outdir)
+        _log(f"[ML] Histórico/espelho: dw_ok={st.get('dw_ok')} mirrored={len(st.get('mirrored') or [])}")
+    except Exception as exc:
+        _log(f"[ML][AVISO] Histórico/DW: {exc}")
+    try:
+        from gerar_indicadores_rede_lacen import build_indicadores_rede
+        build_indicadores_rede(outdir=outdir)
+    except Exception as exc:
+        _log(f"[ML][AVISO] Indicadores rede: {exc}")
     try:
         from exportar_parquet_saida import export_outdir
         _log("[ML] Exportando parquet...")

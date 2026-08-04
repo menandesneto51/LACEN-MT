@@ -89,4 +89,15 @@ saida_pipeline/*
 !saida_pipeline/municipio_vizinhos.parquet
 !saida_pipeline/ml_backtest_summary.csv
 !saida_pipeline/ml_backtest_summary.parquet
+!saida_pipeline/indicadores_rede_laboratorial.csv
+!saida_pipeline/indicadores_rede_laboratorial.parquet
+!saida_pipeline/alerta_historico.csv
+!saida_pipeline/executive_state_summary.csv
+!saida_pipeline/executive_state_summary.parquet
+!saida_pipeline/sim_qualidade.csv
+!saida_pipeline/sim_weekly_municipio.csv
+!saida_pipeline/sim_weekly_municipio.parquet
+!ml/models_store/meta.json
+!ml/models_store/thresholds.csv
+!ml/models_store/*.joblib
 !saida_pipeline/sim_qualidade.csv

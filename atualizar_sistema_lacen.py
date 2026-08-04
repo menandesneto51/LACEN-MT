@@ -61,11 +61,21 @@ def main() -> int:
         code = run([str(PY), "-m", "ml.run_ml_pipeline", "--outdir", str(OUT)])
         if code != 0:
             print("[AVISO] Pipeline ML retornou", code, flush=True)
+
+    # SIM: tenta reconstruir se qualidade inválida e bruto local existir
+    sim_fix = BASE / "reparar_sim_weekly.py"
+    sim_raw = BASE / "SIM 2010 a 2025.csv"
+    if sim_fix.exists() and sim_raw.exists():
+        run([str(PY), str(sim_fix), "--sim", str(sim_raw), "--outdir", str(OUT)])
+
     for name in (
         "ml_forecast_demanda.csv",
         "ml_anomalias.csv",
         "ml_risco_predito.csv",
         "ml_silencio_predito.csv",
+        "ml_backtest_summary.csv",
+        "alerta_historico.csv",
+        "indicadores_rede_laboratorial.csv",
     ):
         p = OUT / name
         print(f"{'OK' if p.exists() else 'MISSING'} {name}", flush=True)

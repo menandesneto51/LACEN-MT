@@ -3,27 +3,33 @@
 ## Ideia
 
 O ML **não treina dentro do SQL Server**. Ele roda em Python sobre `saida_pipeline`,
-grava escores em CSV (e depois pode espelhar no DW).
+grava escores em CSV (e pode espelhar no DW quando a VPN estiver disponível).
 
 ```
 integrated_weekly_surveillance.csv
         ↓
-ml/features.py          → ml_features_latest.csv
-ml/models.py            → forecast / anomalias / risco / silêncio
+ml/features.py          → features_v2 (clima, CNES, vizinhos, confiança)
+ml/train.py             → sklearn_v2 (calibrado + por família)
+ml/models.py            → forecast / anomalias / risco / silêncio + drivers
+ml/backtest.py          → AUC + precisão@K + limiar calibrado
+ml/mirror_dw.py         → alerta_historico + executive_* + status DW
         ↓
-dashboard (aba Sinais preditivos)
+dashboard (Predição e alertas + assistente)
 ```
 
 ## Saídas
 
 | Arquivo | Conteúdo |
 |---------|----------|
-| `ml_features_latest.csv` | Features da última semana epidemiológica |
-| `ml_forecast_demanda.csv` | Previsão de exames/positividade (4 semanas) |
+| `ml_features_latest.csv` | Features da última semana |
+| `ml_forecast_demanda.csv` | Previsão EWMA (4 semanas) |
 | `ml_anomalias.csv` | Picos/quedas atípicas |
-| `ml_risco_predito.csv` | Probabilidade de alerta na próxima janela |
-| `ml_silencio_predito.csv` | Probabilidade de silêncio laboratorial |
-| `ml_backtest_summary.csv` | AUC / confirmação temporal (treino 80% semanas → teste 20%) |
+| `ml_risco_predito.csv` | Prob. alerta + limiar + drivers |
+| `ml_silencio_predito.csv` | Prob. silêncio + limiar |
+| `ml_backtest_summary.csv` | AUC / confirmação / P@20 / P@50 |
+| `alerta_historico.csv` | Alertas emitidos × desfecho |
+| `indicadores_rede_laboratorial.csv` | TAT / backlog / rejeição |
+| `executive_state_summary.csv` | Resumo executivo leve |
 
 ## Como rodar
 
@@ -31,31 +37,32 @@ dashboard (aba Sinais preditivos)
 .venv\Scripts\python.exe -m ml.run_ml_pipeline --outdir saida_pipeline
 ```
 
-Também é chamado automaticamente por `lacen_integracao_final_only.py` e `atualizar_sistema_lacen.py`.
+Também: `rodar_ml_lacen.bat`, `lacen_integracao_final_only.py`, `atualizar_sistema_lacen.py`.
 
-## Modelos atuais
-
-### baseline_v1 (sempre disponível)
-- **Forecast:** EWMA (span=4) sobre as últimas 8 semanas estaduais por alvo
-- **Anomalia:** desvio vs média móvel 8 semanas
-- **Risco / silêncio:** escore logístico interpretável (pesos fixos)
-
-### sklearn_v1 (se `scikit-learn` instalado)
-- Gradient Boosting com validação temporal (80/20 por semana epidemiológica)
-- Artefatos em `ml/models_store/` (`risco_gb.joblib`, `silencio_gb.joblib`, `meta.json`)
-- Inferência usa sklearn se o artefato existir; senão cai na baseline
+### SIM (mortalidade)
 
 ```bat
-.venv\Scripts\python.exe -m pip install scikit-learn joblib
-.venv\Scripts\python.exe -m ml.run_ml_pipeline --outdir saida_pipeline
+.venv\Scripts\python.exe reparar_sim_weekly.py --sim "SIM 2010 a 2025.csv" --outdir saida_pipeline
 ```
 
-## Streamlit Cloud — tornar público
+### Rede laboratorial
 
-1. https://share.streamlit.io/ → login GitHub
-2. App do repositório `menandesneto51/LACEN-MT`
-3. Manage app → **Reboot** (para puxar o commit novo)
-4. Settings → **Sharing** → *This app is public and searchable*
-5. Testar em aba anônima e enviar o link `https://….streamlit.app`
+```bat
+.venv\Scripts\python.exe gerar_indicadores_rede_lacen.py --outdir saida_pipeline
+```
 
-Detalhes: `STREAMLIT_PUBLICO.md`
+## Modelos
+
+### baseline_v1
+EWMA + logit interpretável (fallback).
+
+### sklearn_v2
+- Gradient Boosting + calibração isotônica quando possível
+- Limiar operacional por F1 no holdout temporal
+- Modelos por família (arbovirose, TB, hepatite, respiratório)
+- Drivers (importância × valor) no CSV de risco
+
+## Assistente
+
+`lacen_assistente.py` responde só com CSVs agregados (citações obrigatórias).
+Rewrite opcional via `LACEN_LLM_API_KEY` / `OPENAI_API_KEY` — sem inventar número.
