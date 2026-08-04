@@ -1,2 +1,2 @@
 ﻿fonte,status,pct_ano_invalido,n_linhas,acao
-sim_weekly_municipio.csv,invalido,1.0,3127,Reconstruir com build_sim_weekly (DTOBITO YYYYMMDD)
+sim_weekly_municipio.csv,ok,0.0,140647,ok
