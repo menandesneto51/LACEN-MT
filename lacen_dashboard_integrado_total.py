@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
 import unicodedata
 from datetime import date, timedelta
@@ -28,7 +29,23 @@ import streamlit as st
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
 
-VERSAO_DASHBOARD_LACEN = "v5.2-identidade-institucional-ses-cievs"
+VERSAO_DASHBOARD_LACEN = "v5.3-ux-modulos-carga-leve"
+
+# Pasta padrão pública (Cloud / uso normal). Override só em admin ou diagnóstico.
+DATA_DIR = Path("saida_pipeline")
+
+
+def _modo_admin() -> bool:
+    env = str(os.environ.get("MODO_ADMIN", "")).strip().lower()
+    if env in {"1", "true", "yes", "sim", "on"}:
+        return True
+    try:
+        sec = st.secrets.get("MODO_ADMIN", False)
+        if isinstance(sec, bool):
+            return sec
+        return str(sec).strip().lower() in {"1", "true", "yes", "sim", "on"}
+    except Exception:
+        return False
 
 st.set_page_config(
     page_title="LACEN MT | SES-MT · CIEVS-MT",
@@ -51,7 +68,19 @@ CORE_FILES = {
     "summary_mun": "integrated_target_municipio_summary.csv",
 }
 
-OPTIONAL_FILES = {
+# Carregados no start (visão executiva / fila operacional)
+STARTUP_OPTIONAL_FILES = {
+    "municipios_risco": "municipios_em_risco.csv",
+    "municipios_silenciosos": "municipios_silenciosos.csv",
+    "taxa_utilizacao": "taxa_utilizacao_lacen.csv",
+    "qualidade_dado": "qualidade_dado_municipal.csv",
+    "municipio_vizinhos": "municipio_vizinhos.csv",
+    "ml_risco": "ml_risco_predito.csv",
+    "ml_silencio": "ml_silencio_predito.csv",
+}
+
+# Carregados sob demanda pelo módulo aberto (não no startup)
+DEFERRED_OPTIONAL_FILES = {
     "forecast": "forecast_integrated_statewide.csv",
     "municipal_master": "municipal_master.csv",
     "population": "populacao_municipio.csv",
@@ -67,20 +96,15 @@ OPTIONAL_FILES = {
     "weekly_alerts_raw": "weekly_alerts.csv",
     "weekly_tests_raw": "weekly_tests_by_target_municipio.csv",
     "positivity_weekly_raw": "positivity_by_target_epiweek_municipio.csv",
-    "municipios_risco": "municipios_em_risco.csv",
-    "municipios_silenciosos": "municipios_silenciosos.csv",
-    "taxa_utilizacao": "taxa_utilizacao_lacen.csv",
     "ml_forecast": "ml_forecast_demanda.csv",
     "ml_anomalias": "ml_anomalias.csv",
-    "ml_risco": "ml_risco_predito.csv",
-    "ml_silencio": "ml_silencio_predito.csv",
     "ml_features": "ml_features_latest.csv",
     "ml_backtest": "ml_backtest_summary.csv",
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
-    "qualidade_dado": "qualidade_dado_municipal.csv",
-    "municipio_vizinhos": "municipio_vizinhos.csv",
 }
+
+OPTIONAL_FILES = {**STARTUP_OPTIONAL_FILES, **DEFERRED_OPTIONAL_FILES}
 
 
 # =============================================================================
@@ -333,9 +357,22 @@ def safe_plotly(fig, context: str = "Gráfico") -> None:
         st.warning(f"{context}: figura vazia.")
         return
     try:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
+    except TypeError:
+        try:
+            st.plotly_chart(fig, use_container_width=True)
+        except Exception as exc:
+            st.warning(f"{context}: falha ao renderizar ({exc}).")
     except Exception as exc:
         st.warning(f"{context}: falha ao renderizar ({exc}).")
+
+
+def safe_dataframe(df: pd.DataFrame, **kwargs) -> None:
+    """dataframe com width='stretch' e fallback para Streamlit antigo."""
+    try:
+        st.dataframe(df, width="stretch", **kwargs)
+    except TypeError:
+        st.dataframe(df, use_container_width=True, **kwargs)
 
 
 def ensure_alias_columns(df: pd.DataFrame, aliases: dict[str, Sequence[str]]) -> pd.DataFrame:
@@ -350,20 +387,52 @@ def ensure_alias_columns(df: pd.DataFrame, aliases: dict[str, Sequence[str]]) ->
     return out
 
 
-def show_table(df: pd.DataFrame, title: str, max_rows: int = 500) -> None:
+def show_table(df: pd.DataFrame, title: str, max_rows: int = 500, key: Optional[str] = None) -> None:
     st.markdown(f"#### {title}")
     if df is None or df.empty:
         st.info("Tabela vazia para o filtro atual.")
         return
-    st.dataframe(df.head(max_rows), use_container_width=True)
+    safe_dataframe(df.head(max_rows))
     csv = df.to_csv(index=False).encode("utf-8-sig")
     safe_name = norm_key(title) or "tabela"
+    btn_key = key or f"dl_{safe_name}_{len(df)}_{max_rows}"
     st.download_button(
         f"Baixar {title} em CSV",
         data=csv,
         file_name=f"{safe_name}.csv",
         mime="text/csv",
+        key=btn_key,
     )
+
+
+def top_targets_by_volume(
+    df: pd.DataFrame,
+    candidates: Sequence[str],
+    n: int = 5,
+    target_col: str = "target",
+    volume_col: str = "tests",
+) -> list[str]:
+    """Seleciona os N agravos com maior volume entre os candidatos (para gráficos de linha)."""
+    if df is None or df.empty or not candidates:
+        return list(candidates)[:n]
+    work = df[df[target_col].isin(list(candidates))].copy() if target_col in df.columns else df.copy()
+    if work.empty or target_col not in work.columns:
+        return list(candidates)[:n]
+    vol = volume_col if volume_col in work.columns else None
+    if vol is None:
+        for alt in ("tests", "tests_periodo", "exames", "forecast_tests"):
+            if alt in work.columns:
+                vol = alt
+                break
+    if vol is None:
+        return list(candidates)[:n]
+    rank = (
+        work.groupby(target_col, as_index=False)[vol]
+        .sum()
+        .sort_values(vol, ascending=False)
+    )
+    top = [str(x) for x in rank[target_col].head(int(n)).tolist()]
+    return top or list(candidates)[:n]
 
 
 # =============================================================================
@@ -371,32 +440,52 @@ def show_table(df: pd.DataFrame, title: str, max_rows: int = 500) -> None:
 # =============================================================================
 
 @st.cache_data(show_spinner=False)
-def load_data(folder: str):
+def _load_one_table(folder: str, filename: str) -> Optional[pd.DataFrame]:
     base = Path(folder)
+    p = base / filename
+    pq = p.with_suffix(".parquet")
+    if not p.exists() and not pq.exists():
+        return None
+    try:
+        return read_table_resilient(p)
+    except Exception:
+        return None
+
+
+@st.cache_data(show_spinner=False)
+def load_data(folder: str, include_deferred: bool = False):
+    """Carrega core + optionals leves. Arquivos pesados só se include_deferred=True."""
     data: dict[str, Optional[pd.DataFrame]] = {}
     missing: list[str] = []
 
     for key, filename in CORE_FILES.items():
-        p = base / filename
-        pq = p.with_suffix(".parquet")
-        if not p.exists() and not pq.exists():
+        df = _load_one_table(folder, filename)
+        if df is None:
             data[key] = None
             missing.append(filename)
         else:
-            data[key] = read_table_resilient(p)
+            data[key] = df
 
-    for key, filename in OPTIONAL_FILES.items():
-        p = base / filename
-        pq = p.with_suffix(".parquet")
-        if p.exists() or pq.exists():
-            try:
-                data[key] = read_table_resilient(p)
-            except Exception:
-                data[key] = None
-        else:
+    for key, filename in STARTUP_OPTIONAL_FILES.items():
+        data[key] = _load_one_table(folder, filename)
+
+    if include_deferred:
+        for key, filename in DEFERRED_OPTIONAL_FILES.items():
+            data[key] = _load_one_table(folder, filename)
+    else:
+        for key in DEFERRED_OPTIONAL_FILES:
             data[key] = None
 
     return data, missing
+
+
+def get_optional(folder: str, key: str) -> pd.DataFrame:
+    """Carga sob demanda de arquivo opcional (com cache)."""
+    filename = OPTIONAL_FILES.get(key)
+    if not filename:
+        return pd.DataFrame()
+    df = _load_one_table(folder, filename)
+    return df if df is not None else pd.DataFrame()
 
 
 def harmonize_weekly(df: pd.DataFrame) -> pd.DataFrame:
@@ -1234,14 +1323,23 @@ hero(
     versao=VERSAO_DASHBOARD_LACEN,
 )
 
+MODO_ADMIN = _modo_admin()
+folder = str(DATA_DIR)
+
 with st.sidebar:
     st.markdown("### SES-MT · CIEVS · LACEN")
     st.caption("Painel institucional de vigilância laboratorial")
-    folder = st.text_input("Pasta saida_pipeline", value="saida_pipeline")
-    st.caption("Mantém leitura direta dos CSVs já produzidos.")
+    if MODO_ADMIN:
+        folder = st.text_input("Pasta saida_pipeline (admin)", value=str(DATA_DIR))
+        st.caption("MODO_ADMIN ativo — override de pasta permitido.")
+    else:
+        st.caption(f"Dados: `{DATA_DIR}`")
+        with st.expander("Diagnóstico técnico"):
+            folder = st.text_input("Override de pasta (avançado)", value=str(DATA_DIR), key="diag_folder")
+            st.caption("Em uso público a pasta padrão é `saida_pipeline`. Alterar só para diagnóstico local.")
 
 try:
-    data, missing = load_data(folder)
+    data, missing = load_data(folder, include_deferred=False)
 except Exception as exc:
     st.error(f"Falha ao carregar dados de `{folder}`: {exc}")
     st.stop()
@@ -1260,27 +1358,15 @@ except Exception as exc:
 alerts = data["alerts"].copy() if data["alerts"] is not None else pd.DataFrame()
 annual = harmonize_annual(data["annual"]) if data["annual"] is not None else pd.DataFrame()
 summary_mun = data["summary_mun"].copy() if data["summary_mun"] is not None else pd.DataFrame()
-forecast = data["forecast"].copy() if data["forecast"] is not None else pd.DataFrame()
-municipal_master = data["municipal_master"].copy() if data["municipal_master"] is not None else pd.DataFrame()
-climate_weekly = data["climate_weekly"].copy() if data["climate_weekly"] is not None else pd.DataFrame()
-climate_assoc = data["climate_assoc"].copy() if data["climate_assoc"] is not None else pd.DataFrame()
-requests_demo = data["requests_demo"]
-positivity_demo = data["positivity_demo"]
-schema = data["schema"]
-backlog = data["backlog"]
-cnes_capacity = data["cnes_capacity"]
+
+# Optionals leves (startup)
 df_risco = data.get("municipios_risco")
 df_silenciosos = data.get("municipios_silenciosos")
 df_utilizacao = data.get("taxa_utilizacao")
 df_qualidade = data.get("qualidade_dado")
 df_vizinhos = data.get("municipio_vizinhos")
-df_ml_forecast = data.get("ml_forecast")
-df_ml_anomalias = data.get("ml_anomalias")
 df_ml_risco = data.get("ml_risco")
 df_ml_silencio = data.get("ml_silencio")
-df_ml_backtest = data.get("ml_backtest")
-df_sinan_weekly = data.get("sinan_weekly")
-df_sim_weekly = data.get("sim_weekly")
 if df_risco is None:
     df_risco = pd.DataFrame()
 if df_silenciosos is None:
@@ -1291,20 +1377,26 @@ if df_qualidade is None:
     df_qualidade = pd.DataFrame()
 if df_vizinhos is None:
     df_vizinhos = pd.DataFrame()
-if df_ml_forecast is None:
-    df_ml_forecast = pd.DataFrame()
-if df_ml_anomalias is None:
-    df_ml_anomalias = pd.DataFrame()
 if df_ml_risco is None:
     df_ml_risco = pd.DataFrame()
 if df_ml_silencio is None:
     df_ml_silencio = pd.DataFrame()
-if df_ml_backtest is None:
-    df_ml_backtest = pd.DataFrame()
-if df_sinan_weekly is None:
-    df_sinan_weekly = pd.DataFrame()
-if df_sim_weekly is None:
-    df_sim_weekly = pd.DataFrame()
+
+# Placeholders — carregados sob demanda pelo módulo
+forecast = pd.DataFrame()
+municipal_master = pd.DataFrame()
+climate_weekly = pd.DataFrame()
+climate_assoc = pd.DataFrame()
+requests_demo = None
+positivity_demo = None
+schema = None
+backlog = None
+cnes_capacity = None
+df_ml_forecast = pd.DataFrame()
+df_ml_anomalias = pd.DataFrame()
+df_ml_backtest = pd.DataFrame()
+df_sinan_weekly = pd.DataFrame()
+df_sim_weekly = pd.DataFrame()
 
 all_targets = sorted([str(x) for x in weekly["target"].dropna().unique() if str(x).lower() not in {"nan", "none", ""}])
 all_muns = sorted([str(x) for x in weekly["municipio"].dropna().unique() if str(x).upper() not in {"NAN", "NONE", ""}])
@@ -1431,50 +1523,35 @@ fila_operacional = build_fila_operacional(
     df_ml_risco=df_ml_risco, df_ml_silencio=df_ml_silencio,
 )
 
-if not manager_alerts.empty:
-    outdir = Path(folder)
-    try:
-        outdir.mkdir(parents=True, exist_ok=True)
-        alert_path = outdir / f"alertas_gestores_periodo_{analysis_year}_SE{week_start:02d}_SE{week_end:02d}_proximos_{horizon_days}_dias.csv"
-        manager_alerts.to_csv(alert_path, index=False, encoding="utf-8-sig")
-    except Exception:
-        alert_path = None
-else:
-    alert_path = None
+# Default de agravos para gráficos de linha (top 5 por volume); "Todos" permanece nos filtros/tabelas
+default_chart_targets = top_targets_by_volume(
+    period_df if not period_df.empty else wf,
+    selected_targets,
+    n=5,
+    volume_col="tests_periodo" if (not period_df.empty and "tests_periodo" in period_df.columns) else "tests",
+)
 
-if not fila_operacional.empty:
-    try:
-        Path(folder).mkdir(parents=True, exist_ok=True)
-        fila_operacional.to_csv(Path(folder) / "fila_operacional.csv", index=False, encoding="utf-8-sig")
-    except Exception:
-        pass
-
-
-tabs = st.tabs([
+MODULOS = [
     "Visão executiva",
-    "Monitoramento laboratorial",
-    "Municípios prioritários",
-    "Sinais de silêncio",
-    "Utilização laboratorial",
-    "Integração SINAN/SIM/CNES",
-    "Alertas e recomendações",
-    "Sinais preditivos",
-    "Análise do período",
-    "Alertas próximos dias",
-    "Municípios e mapas",
-    "Séries e predição",
-    "Histórico anual",
-    "Clima e ambiente",
-    "Tabelas e qualidade",
-])
+    "Vigilância laboratorial",
+    "Territórios prioritários",
+    "Integração epidemiológica",
+    "Predição e alertas",
+    "Dados e qualidade",
+]
+modulo = st.radio("Módulo", MODULOS, horizontal=True, label_visibility="collapsed", key="modulo_principal")
 
 
 # =============================================================================
-# Aba 0: Visão executiva
+# Módulo: Visão executiva
 # =============================================================================
-with tabs[0]:
+if modulo == "Visão executiva":
     st.subheader("Visão executiva — Sala de Situação Laboratorial")
-    st.caption("Leitura rápida: volume, positividade, municípios ativos, silêncio e alto risco.")
+    st.caption(
+        "Leitura rápida: **o quê** (volume/positividade), **onde** (municípios prioritários/silêncio) "
+        "e **o que fazer** (fila com ação, prazo e responsável). "
+        "Indicadores: Observado · Derivado · Predito."
+    )
     if period_df.empty:
         st.warning("Sem dados no período/filtros selecionados.")
     else:
@@ -1502,26 +1579,50 @@ with tabs[0]:
         else:
             alto_risco_n = int(len(high_df))
 
-        c1, c2, c3, c4, c5, c6 = st.columns(6)
-        c1.metric("Exames", format_int(exames))
-        c2.metric("Positivos", format_int(positivos))
-        c3.metric("Positividade", format_pct(pos_global))
-        c4.metric("Municípios ativos", format_int(mun_ativos))
-        c5.metric("Municípios silenciosos", format_int(silencio_n))
-        c6.metric("Prioritários (atenção+)", format_int(alto_risco_n))
+        n_crit = int((period_df["prioridade"] == "CRÍTICO").sum()) if "prioridade" in period_df.columns else 0
+        n_alto = int((period_df["prioridade"] == "ALTO").sum()) if "prioridade" in period_df.columns else 0
+        n_hibrido = int(fila_operacional["alerta_hibrido"].fillna(False).sum()) if (
+            not fila_operacional.empty and "alerta_hibrido" in fila_operacional.columns
+        ) else 0
 
-        st.markdown("##### Fila operacional — município | motivo | ação | prazo")
+        # Resumo automático da janela
+        top_mun = ""
+        if "prioridade_score" in period_df.columns and "municipio" in period_df.columns:
+            tm = period_df.sort_values("prioridade_score", ascending=False)
+            if not tm.empty:
+                top_mun = str(tm.iloc[0]["municipio"])
+        top_agravo = default_chart_targets[0] if default_chart_targets else "—"
+        st.info(
+            f"**Resumo da janela** {analysis_year}-SE{week_start:02d}–SE{week_end:02d}: "
+            f"{format_int(exames)} exames (Observado), positividade {format_pct(pos_global)} (Derivado), "
+            f"{format_int(n_crit + n_alto)} sinais crítico/alto (Derivado). "
+            f"Prioritário: {top_mun or '—'}; agravo de maior volume: {top_agravo}. "
+            f"Fila operacional: {len(fila_operacional)} itens"
+            + (f" ({n_hibrido} com reforço híbrido ML/Predito)." if n_hibrido else ".")
+        )
+
+        st.markdown("##### Indicadores-chave")
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
+        c1.metric("Exames (Observado)", format_int(exames))
+        c2.metric("Positivos (Observado)", format_int(positivos))
+        c3.metric("Positividade (Derivado)", format_pct(pos_global))
+        c4.metric("Municípios ativos (Observado)", format_int(mun_ativos))
+        c5.metric("Silenciosos (Derivado)", format_int(silencio_n))
+        c6.metric("Prioritários atenção+ (Derivado)", format_int(alto_risco_n))
+
+        st.markdown("##### O que fazer — fila operacional (ação · prazo · responsável)")
         if fila_operacional.empty:
             st.info("Sem fila operacional para a janela atual.")
         else:
             show_table(
                 fila_operacional.head(15)[[c for c in [
                     "municipio", "sinal", "motivo", "prioridade",
-                    "alerta_hibrido", "prob_ml",
+                    "alerta_hibrido", "prob_ml", "faixa_ml",
                     "acao_sugerida", "responsavel", "prazo_acao", "agravo_alvo",
                 ] if c in fila_operacional.columns]],
                 "Fila operacional (top 15)",
                 max_rows=15,
+                key="exec_fila",
             )
             with st.expander("Checklist operacional da fila"):
                 show_table(
@@ -1530,7 +1631,16 @@ with tabs[0]:
                     ] if c in fila_operacional.columns]],
                     "Checklist",
                     max_rows=15,
+                    key="exec_checklist",
                 )
+            # Download in-memory (sem gravar CSV no disco durante navegação)
+            st.download_button(
+                "Baixar fila operacional (CSV)",
+                data=fila_operacional.to_csv(index=False).encode("utf-8-sig"),
+                file_name="fila_operacional.csv",
+                mime="text/csv",
+                key="dl_fila_exec",
+            )
 
         st.markdown("##### Cinco principais alertas da janela")
         if "prioridade_score" in high_df.columns:
@@ -1545,7 +1655,7 @@ with tabs[0]:
                 "tests_periodo", "positividade_periodo", "acao_sugerida",
                 "responsavel", "prazo_acao",
             ] if c in top_alertas.columns]
-            show_table(top_alertas[cols_alert], "Cinco principais alertas", max_rows=5)
+            show_table(top_alertas[cols_alert], "Cinco principais alertas", max_rows=5, key="exec_top5")
 
         if not df_risco.empty and "score_risco_territorial" in df_risco.columns:
             top_risco = with_acao(df_risco.head(10))
@@ -1556,7 +1666,7 @@ with tabs[0]:
                     y="municipio",
                     color="faixa_risco" if "faixa_risco" in top_risco.columns else None,
                     orientation="h",
-                    title="Top 10 municípios prioritários (risco territorial)",
+                    title="Top 10 municípios prioritários (risco territorial · Derivado)",
                     labels={"score_risco_territorial": "Score de risco", "municipio": "Município"},
                 )
                 safe_plotly(fig, "Top risco territorial")
@@ -1569,6 +1679,7 @@ with tabs[0]:
                     ] if c in top_risco.columns]],
                     "Municípios prioritários",
                     max_rows=10,
+                    key="exec_risco",
                 )
         else:
             st.info(
@@ -1578,1095 +1689,1144 @@ with tabs[0]:
 
 
 # =============================================================================
-# Aba 1: Monitoramento laboratorial
+# Módulo: Vigilância laboratorial (Monitoramento + Análise do período)
 # =============================================================================
-with tabs[1]:
-    st.subheader("Monitoramento laboratorial")
-    st.caption("Exames, positivos, positividade e ranking por agravo na janela selecionada.")
-    if period_df.empty:
-        st.warning("Sem dados no período/filtros selecionados.")
-    else:
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Exames na janela", format_int(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else "—")
-        m2.metric("Positivos", format_int(period_df["positivos_periodo"].sum()) if "positivos_periodo" in period_df.columns else "—")
-        if {"positivos_periodo", "tests_periodo"}.issubset(period_df.columns):
-            m3.metric("Positividade", format_pct(safe_div(period_df["positivos_periodo"].sum(), period_df["tests_periodo"].sum())))
+elif modulo == "Vigilância laboratorial":
+    sub_vig = st.radio(
+        "Subvisão",
+        ["Monitoramento", "Análise do período"],
+        horizontal=True,
+        key="sub_vigilancia",
+    )
+
+    if sub_vig == "Monitoramento":
+        st.subheader("Monitoramento laboratorial")
+        st.caption("Exames, positivos, positividade e ranking por agravo na janela selecionada.")
+        if period_df.empty:
+            st.warning("Sem dados no período/filtros selecionados.")
         else:
-            m3.metric("Positividade", "—")
-        m4.metric("Agravos monitorados", format_int(period_df["target"].nunique()) if "target" in period_df.columns else "—")
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Exames na janela (Observado)", format_int(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else "—")
+            m2.metric("Positivos (Observado)", format_int(period_df["positivos_periodo"].sum()) if "positivos_periodo" in period_df.columns else "—")
+            if {"positivos_periodo", "tests_periodo"}.issubset(period_df.columns):
+                m3.metric("Positividade (Derivado)", format_pct(safe_div(period_df["positivos_periodo"].sum(), period_df["tests_periodo"].sum())))
+            else:
+                m3.metric("Positividade (Derivado)", "—")
+            m4.metric("Agravos monitorados", format_int(period_df["target"].nunique()) if "target" in period_df.columns else "—")
 
-        by_tgt = period_df.groupby("target", as_index=False).agg(
-            exames=("tests_periodo", "sum"),
-            positivos=("positivos_periodo", "sum"),
-        ).sort_values("exames", ascending=False).head(20)
-        by_tgt["positividade"] = safe_div(by_tgt["positivos"], by_tgt["exames"])
-        if require_cols(by_tgt, ["target", "exames"], "Exames por agravo"):
-            fig = px.bar(
-                by_tgt.sort_values("exames"),
-                x="exames",
-                y="target",
-                orientation="h",
-                title="Top 20 agravos/alvos por volume de exames",
-                labels={"exames": "Exames", "target": "Agravo/alvo"},
-            )
-            safe_plotly(fig, "Exames por agravo")
-        with st.expander("Tabela detalhada por agravo (top 20)"):
-            show_table(by_tgt, "Monitoramento por agravo", max_rows=20)
+            by_tgt = period_df.groupby("target", as_index=False).agg(
+                exames=("tests_periodo", "sum"),
+                positivos=("positivos_periodo", "sum"),
+            ).sort_values("exames", ascending=False).head(20)
+            by_tgt["positividade"] = safe_div(by_tgt["positivos"], by_tgt["exames"])
+            if require_cols(by_tgt, ["target", "exames"], "Exames por agravo"):
+                fig = px.bar(
+                    by_tgt.sort_values("exames"),
+                    x="exames",
+                    y="target",
+                    orientation="h",
+                    title="Top 20 agravos/alvos por volume de exames",
+                    labels={"exames": "Exames", "target": "Agravo/alvo"},
+                )
+                safe_plotly(fig, "Exames por agravo")
+            with st.expander("Tabela detalhada por agravo (top 20)"):
+                show_table(by_tgt, "Monitoramento por agravo", max_rows=20, key="vig_by_tgt")
 
+    else:
+        st.subheader("Análise do período selecionado")
+        st.markdown(
+            f"**Período:** {analysis_year}-SE{week_start:02d} a SE{week_end:02d}  \n"
+            f"**Comparação:** {baseline_mode}  \n"
+            f"**Horizonte prospectivo dos alertas:** próximos {horizon_days} dias"
+        )
 
-# =============================================================================
-# Aba 2: Municípios prioritários
-# =============================================================================
-with tabs[2]:
-    st.subheader("Municípios prioritários — risco composto")
-    if df_risco.empty:
-        st.info("Sem `municipios_em_risco.csv`. Execute a integração final para gerar.")
-        if not period_df.empty and require_cols(period_df, ["municipio", "prioridade_score"], "Risco derivado do período"):
-            proxy = with_acao(period_df.groupby("municipio", as_index=False).agg(
-                prioridade_score=("prioridade_score", "max"),
+        if period_df.empty:
+            st.warning("Sem dados para o período/filtros selecionados.")
+        else:
+            high_df = period_df[period_df["prioridade"].isin(["CRÍTICO", "ALTO"])]
+            c1, c2, c3, c4, c5, c6 = st.columns(6)
+            c1.metric("Agravos no período", format_int(period_df["target"].nunique()))
+            c2.metric("Municípios no período", format_int(period_df["municipio"].nunique()))
+            c3.metric("Solicitações LACEN (Observado)", format_int(period_df["tests_periodo"].sum()))
+            c4.metric("Positivos (Observado)", format_int(period_df["positivos_periodo"].sum()))
+            pos_global = period_df["positivos_periodo"].sum() / period_df["tests_periodo"].sum() if period_df["tests_periodo"].sum() else np.nan
+            c5.metric("Positividade global (Derivado)", format_pct(pos_global))
+            c6.metric("Alertas crítico/alto (Derivado)", format_int(len(high_df)))
+
+            resumo = period_df.groupby("prioridade", as_index=False).agg(
+                registros=("target", "size"),
+                municipios=("municipio", "nunique"),
+                agravos=("target", "nunique"),
                 tests_periodo=("tests_periodo", "sum"),
                 positivos_periodo=("positivos_periodo", "sum"),
                 notificacoes_periodo=("notificacoes_periodo", "sum"),
-            ).sort_values("prioridade_score", ascending=False).head(50))
-            show_table(proxy, "Proxy de risco a partir do período selecionado", max_rows=50)
-    else:
-        faixa = sorted([str(x) for x in df_risco.get("faixa_risco", pd.Series(dtype=str)).dropna().unique()])
-        sel_faixa = st.multiselect("Faixa de risco", faixa, default=faixa, key="faixa_risco_tab")
-        view = with_acao(df_risco.copy())
-        if sel_faixa and "faixa_risco" in view.columns:
-            view = view[view["faixa_risco"].astype(str).isin(sel_faixa)]
-        m1, m2, m3 = st.columns(3)
-        m1.metric("Municípios listados", format_int(len(view)))
-        m2.metric("Score médio", format_num(view["score_risco_territorial"].mean()) if "score_risco_territorial" in view.columns else "—")
-        m3.metric("Em alerta/alto", format_int(view["faixa_risco"].astype(str).isin(["alerta", "alto_alerta"]).sum()) if "faixa_risco" in view.columns else 0)
-        topn = view.head(20)
-        if require_cols(topn, ["municipio", "score_risco_territorial"], "Ranking de risco"):
+                projecao_solicitacoes=("projecao_solicitacoes_proximos_dias", "sum"),
+                projecao_positivos=("projecao_positivos_proximos_dias", "sum"),
+            )
+            order = pd.CategoricalDtype(["CRÍTICO", "ALTO", "MODERADO", "MONITORAMENTO"], ordered=True)
+            resumo["prioridade"] = resumo["prioridade"].astype(order)
+            resumo = resumo.sort_values("prioridade")
+            safe_dataframe(resumo)
+
+            top = period_df.head(40).copy()
             fig = px.bar(
-                topn.sort_values("score_risco_territorial"),
-                x="score_risco_territorial",
+                top.sort_values("prioridade_score"),
+                x="prioridade_score",
                 y="municipio",
-                color="faixa_risco" if "faixa_risco" in topn.columns else None,
+                color="prioridade",
                 orientation="h",
-                title="Ranking municipal de risco territorial (top 20)",
-                labels={"score_risco_territorial": "Score de risco", "municipio": "Município"},
+                hover_data=[
+                    "target", "cenario_operacional", "tests_periodo", "positivos_periodo",
+                    "positividade_periodo", "delta_positividade_pp", "delta_tests_abs",
+                    "notificacoes_periodo", "projecao_solicitacoes_proximos_dias",
+                ],
+                title="Top sinais operacionais do período",
+                labels={"prioridade_score": "Prioridade", "municipio": "Município"},
             )
-            safe_plotly(fig, "Ranking de risco")
-        with st.expander("Tabela de risco (limitada)"):
-            show_table(
-                view[[c for c in [
-                    "municipio", "faixa_risco", "score_risco_territorial",
-                    "tests_8sem", "positives_8sem", "notificacoes_8sem",
-                    "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
-                ] if c in view.columns]],
-                "municipios_em_risco",
-                max_rows=100,
-            )
+            safe_plotly(fig, "Sinais do período")
 
-
-# =============================================================================
-# Aba 3: Sinais de silêncio
-# =============================================================================
-with tabs[3]:
-    st.subheader("Sinais de silêncio laboratorial")
-    st.caption("Ausência de exame não significa ausência de risco — pode indicar falha de captação.")
-    if df_silenciosos.empty:
-        st.info("Sem `municipios_silenciosos.csv`. Usando sinais do período selecionado.")
-        if not period_df.empty:
-            mask = pd.Series(False, index=period_df.index)
-            if "silencio_laboratorial" in period_df.columns:
-                mask = mask | period_df["silencio_laboratorial"].fillna(False).astype(bool)
-            if "baixo_uso_lacen" in period_df.columns:
-                mask = mask | period_df["baixo_uso_lacen"].fillna(False).astype(bool)
-            show_table(with_acao(period_df.loc[mask]).head(100), "Silêncio/baixo uso no período", max_rows=100)
-    else:
-        tipo_col = "classificacao_silencio" if "classificacao_silencio" in df_silenciosos.columns else "tipo_sinal"
-        tipo = sorted([str(x) for x in df_silenciosos.get(tipo_col, pd.Series(dtype=str)).dropna().unique()])
-        sel_tipo = st.multiselect("Classificação de silêncio", tipo, default=tipo, key="tipo_silencio_tab")
-        view = with_acao(df_silenciosos.copy())
-        if sel_tipo and tipo_col in view.columns:
-            view = view[view[tipo_col].astype(str).isin(sel_tipo)]
-        # Só filtra por agravo se a base de silêncio tiver target preenchido
-        if selected_targets and "target" in view.columns:
-            tgt_ok = view["target"].notna() & view["target"].astype(str).str.strip().ne("") & ~view["target"].astype(str).str.lower().isin(["nan", "none"])
-            if bool(tgt_ok.any()):
-                view = view[~tgt_ok | view["target"].isin(selected_targets)]
-        s1, s2, s3, s4 = st.columns(4)
-        s1.metric("Municípios silenciosos", format_int(view["municipio"].nunique() if "municipio" in view.columns else len(view)))
-        notif_col = "notif_recent" if "notif_recent" in view.columns else ("notificacoes" if "notificacoes" in view.columns else None)
-        s2.metric("Notificações recentes", format_int(view[notif_col].fillna(0).sum()) if notif_col else "—")
-        s3.metric(
-            "Críticos",
-            format_int((view.get(tipo_col, pd.Series(dtype=str)).astype(str) == "silencio_critico").sum())
-            if tipo_col in view.columns else 0,
-        )
-        if "silencio_com_vizinho_alerta" in view.columns:
-            s4.metric("Com vizinho em alerta", format_int(view["silencio_com_vizinho_alerta"].fillna(False).sum()))
-        else:
-            s4.metric("Com vizinho em alerta", "—")
-        cols_show = [c for c in [
-            "municipio", "classificacao_silencio", "tipo_sinal", "score_silencio",
-            "tests_recent", "notif_recent", "tests_hist", "notif_hist",
-            "populacao", "indice_vulnerabilidade",
-            "vizinhos_em_alerta", "silencio_com_vizinho_alerta", "motivo_territorial",
-            "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
-        ] if c in view.columns]
-        with st.expander("Tabela de municípios silenciosos (limitada)"):
-            show_table(view[cols_show].head(100) if cols_show else view.head(100), "municipios_silenciosos", max_rows=100)
-        if not df_vizinhos.empty and "municipio" in view.columns:
-            with st.expander("Vizinhos territoriais dos silenciosos (amostra)"):
-                muns = set(view["municipio"].astype(str).str.upper().head(30))
-                vz = df_vizinhos.copy()
-                vz["municipio"] = vz["municipio"].astype(str).str.upper()
-                show_table(
-                    vz[vz["municipio"].isin(muns)].head(100),
-                    "municipio_vizinhos (silenciosos)",
-                    max_rows=100,
-                )
-
-
-# =============================================================================
-# Aba 4: Utilização laboratorial
-# =============================================================================
-with tabs[4]:
-    st.subheader("Utilização laboratorial do LACEN")
-    st.caption("Exames/notificação e exames por 100 mil habitantes.")
-    if df_utilizacao.empty:
-        st.info("Sem `taxa_utilizacao_lacen.csv`. Execute a integração final.")
-        if not period_df.empty:
-            u = with_acao(period_df.copy())
-            u["taxa_utilizacao_periodo"] = safe_div(u["tests_periodo"], u["notificacoes_periodo"].replace(0, np.nan))
-            show_table(
-                u[[c for c in [
-                    "municipio", "target", "tests_periodo", "notificacoes_periodo",
-                    "taxa_utilizacao_periodo", "baixo_uso_lacen", "acao_sugerida",
-                ] if c in u.columns]].head(100),
-                "Utilização no período (proxy)",
-                max_rows=100,
-            )
-    else:
-        view = with_acao(df_utilizacao.copy())
-        if selected_targets and "target" in view.columns:
-            view = view[view["target"].isin(selected_targets)]
-        classes = sorted([str(x) for x in view.get("classificacao_uso", pd.Series(dtype=str)).dropna().unique()])
-        sel_cls = st.multiselect("Classificação de uso", classes, default=classes, key="cls_uso_tab")
-        if sel_cls and "classificacao_uso" in view.columns:
-            view = view[view["classificacao_uso"].astype(str).isin(sel_cls)]
-        u1, u2, u3 = st.columns(3)
-        u1.metric("Pares município-alvo", format_int(len(view)))
-        u2.metric("Mediana exames/100 mil", format_num(view["exames_por_100k"].median()) if "exames_por_100k" in view.columns else "—")
-        u3.metric(
-            "Baixo uso / silêncio",
-            format_int(view["classificacao_uso"].astype(str).isin(["baixo", "silencio"]).sum())
-            if "classificacao_uso" in view.columns else 0,
-        )
-        if "classificacao_uso" in view.columns:
-            dist = view["classificacao_uso"].astype(str).value_counts().reset_index()
-            dist.columns = ["classificacao_uso", "registros"]
-            fig = px.bar(
-                dist,
+            scenario = period_df.groupby("cenario_operacional", as_index=False).agg(
+                registros=("target", "size"),
+                municipios=("municipio", "nunique"),
+                agravos=("target", "nunique"),
+                tests_periodo=("tests_periodo", "sum"),
+                positivos_periodo=("positivos_periodo", "sum"),
+            ).sort_values("registros", ascending=False)
+            fig2 = px.bar(
+                scenario,
                 x="registros",
-                y="classificacao_uso",
+                y="cenario_operacional",
                 orientation="h",
-                title="Distribuição da classificação de uso do LACEN",
-                labels={"registros": "Registros", "classificacao_uso": "Classificação"},
+                title="Distribuição dos cenários operacionais",
+                labels={"registros": "Registros", "cenario_operacional": "Cenário"},
             )
-            safe_plotly(fig, "Classificação de uso")
-        with st.expander("Tabela de utilização (top 100)"):
-            show_table(
-                view.head(100)[[c for c in [
-                    "municipio", "target", "tests", "notificacoes", "taxa_utilizacao",
-                    "exames_por_100k", "classificacao_uso",
-                    "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
-                ] if c in view.columns]],
-                "taxa_utilizacao_lacen",
-                max_rows=100,
-            )
+            fig2.update_layout(yaxis={"categoryorder": "total ascending"})
+            safe_plotly(fig2, "Cenários operacionais")
+
+            cols = [
+                "prioridade", "municipio", "target", "periodo_analise", "periodo_base", "cenario_operacional",
+                "tests_periodo", "tests_base", "delta_tests_abs", "delta_tests_pct",
+                "positivos_periodo", "positivos_base", "positividade_periodo", "positividade_base", "delta_positividade_pp",
+                "notificacoes_periodo", "notificacoes_base", "delta_notificacoes_abs",
+                "silencio_laboratorial", "baixo_uso_lacen", "projecao_solicitacoes_proximos_dias",
+                "projecao_positivos_proximos_dias", "janela_alerta_proximos_dias",
+            ]
+            show_table(period_df[[c for c in cols if c in period_df.columns]], "Tabela analítica do período", max_rows=1000, key="vig_periodo")
 
 
 # =============================================================================
-# Aba 5: Integração SINAN / SIM / CNES
+# Módulo: Territórios prioritários
 # =============================================================================
-with tabs[5]:
-    st.subheader("Integração LACEN × SINAN × SIM × CNES")
-    st.caption("Compara exames, notificações, óbitos e capacidade instalada no território.")
-    if period_df.empty:
-        st.warning("Sem dados no período/filtros selecionados.")
-    else:
-        exames = float(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else 0.0
-        notif = float(period_df["notificacoes_periodo"].sum()) if "notificacoes_periodo" in period_df.columns else 0.0
-        obitos = float(period_df["obitos_sim_periodo"].sum()) if "obitos_sim_periodo" in period_df.columns else 0.0
-
-        # Fonte direta SINAN (não depende do join por alvo laboratorial)
-        sinan_periodo = 0.0
-        if not df_sinan_weekly.empty:
-            sw = df_sinan_weekly.copy()
-            sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
-            sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
-            ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
-            if ncol:
-                sw[ncol] = to_num(sw[ncol])
-                mask = sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)
-                sinan_periodo = float(sw.loc[mask, ncol].fillna(0).sum())
-                if sinan_periodo > notif:
-                    notif = sinan_periodo
-
-        sim_ok = False
-        if not df_sim_weekly.empty:
-            sy = to_num(df_sim_weekly.get("epi_year", pd.Series(dtype=float)))
-            sim_ok = bool((sy.fillna(0) > 1900).any())
-            if sim_ok:
-                sm = df_sim_weekly.copy()
-                sm["epi_year"] = to_num(sm["epi_year"])
-                sm["epi_week"] = to_num(sm["epi_week"])
-                ocol = first_col(sm, ["obitos_sim", "obitos"])
-                if ocol:
-                    mask = sm["epi_year"].eq(analysis_year) & sm["epi_week"].between(week_start, week_end)
-                    obitos = float(to_num(sm.loc[mask, ocol]).fillna(0).sum())
-
-        i1, i2, i3, i4 = st.columns(4)
-        i1.metric("Exames LACEN", format_int(exames))
-        i2.metric("Notificações SINAN", format_int(notif))
-        i3.metric("Óbitos SIM", format_int(obitos) if sim_ok else "—")
-        i4.metric("Exames / notificação", format_num(safe_div(exames, notif)) if notif else "—")
-        if not sim_ok:
-            st.caption("SIM: arquivo sem anos epidemiológicos válidos — reconstruir `sim_weekly_municipio.csv` no pipeline.")
-
-        integ = period_df.groupby("municipio", as_index=False).agg(
-            exames=("tests_periodo", "sum") if "tests_periodo" in period_df.columns else ("municipio", "size"),
-            positivos=("positivos_periodo", "sum") if "positivos_periodo" in period_df.columns else ("municipio", "size"),
-            notificacoes=("notificacoes_periodo", "sum") if "notificacoes_periodo" in period_df.columns else ("municipio", "size"),
-            obitos_sim=("obitos_sim_periodo", "sum") if "obitos_sim_periodo" in period_df.columns else ("municipio", "size"),
-        )
-
-        # Complementa notificações por município a partir do SINAN semanal
-        if not df_sinan_weekly.empty:
-            sw = df_sinan_weekly.copy()
-            sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
-            sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
-            mun_s = first_col(sw, ["municipio", "Município"])
-            ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
-            if mun_s and ncol:
-                sw = sw[sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)].copy()
-                sw["municipio"] = sw[mun_s].map(norm_municipio)
-                sw[ncol] = to_num(sw[ncol])
-                by_mun = sw.groupby("municipio", as_index=False).agg(notificacoes_sinan=(ncol, "sum"))
-                integ = integ.merge(by_mun, on="municipio", how="outer")
-                integ["exames"] = integ["exames"].fillna(0)
-                integ["positivos"] = integ["positivos"].fillna(0)
-                integ["notificacoes"] = integ["notificacoes"].fillna(0)
-                integ["notificacoes"] = np.maximum(integ["notificacoes"], integ["notificacoes_sinan"].fillna(0))
-                integ["obitos_sim"] = integ["obitos_sim"].fillna(0)
-
-        integ["exames_por_notif"] = safe_div(integ["exames"], integ["notificacoes"].replace(0, np.nan))
-        integ["gap_sinan_sem_exame"] = (integ["notificacoes"].fillna(0) > 0) & (integ["exames"].fillna(0) == 0)
-
-        cnes_df = cnes_capacity.copy() if cnes_capacity is not None and not getattr(cnes_capacity, "empty", True) else pd.DataFrame()
-        if not cnes_df.empty:
-            mun_c = first_col(cnes_df, ["municipio", "Município", "Municipio"])
-            if mun_c:
-                cnes_df = cnes_df.copy()
-                cnes_df["municipio"] = cnes_df[mun_c].map(norm_municipio)
-                keep_cnes = [c for c in [
-                    "municipio", "cnes_estabelecimentos", "cnes_leitos_total", "cnes_leitos_sus",
-                    "cnes_leitos_uti", "cnes_equipes_esf", "cnes_equipamentos_criticos",
-                ] if c in cnes_df.columns]
-                integ = integ.merge(cnes_df[keep_cnes], on="municipio", how="left")
-
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Municípios com gap SINAN (sem exame)", format_int(integ["gap_sinan_sem_exame"].sum()))
-        if not cnes_df.empty and "cnes_estabelecimentos" in cnes_df.columns:
-            c2.metric("Municípios com CNES", format_int(cnes_df["municipio"].nunique() if "municipio" in cnes_df.columns else len(cnes_df)))
-            c3.metric(
-                "Mediana estabelecimentos CNES",
-                format_num(pd.to_numeric(cnes_df["cnes_estabelecimentos"], errors="coerce").median()),
-            )
-            st.caption("Nota: valores absolutos de CNES dependem da qualidade do cadastro consolidado; use mediana e ranking, não a soma bruta.")
-        else:
-            c2.metric("CNES", "não carregado")
-            c3.metric("Estabelecimentos", "—")
-
-        if float(notif) == 0 and float(obitos) == 0:
-            st.info(
-                "SINAN/SIM zerados nesta janela epidemiológica (SE selecionada). "
-                "Amplie o período na barra lateral ou atualize a integração com bases mais recentes."
-            )
-
-        top_gap = integ[integ["gap_sinan_sem_exame"]].sort_values("notificacoes", ascending=False).head(20)
-        if not top_gap.empty and require_cols(top_gap, ["municipio", "notificacoes"], "Gap SINAN"):
-            fig = px.bar(
-                top_gap.sort_values("notificacoes"),
-                x="notificacoes",
-                y="municipio",
-                orientation="h",
-                title="Top 20 — notificações SINAN sem exame LACEN no período",
-                labels={"notificacoes": "Notificações", "municipio": "Município"},
-            )
-            safe_plotly(fig, "Gap SINAN sem exame")
-
-        if {"exames", "notificacoes"}.issubset(integ.columns):
-            scatter = integ[(integ["exames"] > 0) | (integ["notificacoes"] > 0)].copy()
-            scatter = scatter.head(200)
-            if not scatter.empty:
-                size_col = None
-                if "obitos_sim" in scatter.columns and float(scatter["obitos_sim"].fillna(0).sum()) > 0:
-                    scatter["_size"] = scatter["obitos_sim"].fillna(0).clip(lower=0) + 1
-                    size_col = "_size"
-                fig = px.scatter(
-                    scatter,
-                    x="notificacoes",
-                    y="exames",
-                    size=size_col,
-                    hover_name="municipio",
-                    title="Exames LACEN vs notificações SINAN"
-                    + (" (tamanho ≈ óbitos SIM)" if size_col else ""),
-                    labels={"notificacoes": "Notificações SINAN", "exames": "Exames LACEN"},
-                )
-                safe_plotly(fig, "LACEN vs SINAN")
-
-        integ_view = with_acao(integ.sort_values(["gap_sinan_sem_exame", "notificacoes"], ascending=[False, False]))
-        with st.expander("Tabela integrada municipal (top 100)"):
-            show_table(
-                integ_view.head(100)[[c for c in [
-                    "municipio", "exames", "positivos", "notificacoes", "obitos_sim",
-                    "exames_por_notif", "gap_sinan_sem_exame",
-                    "cnes_estabelecimentos", "cnes_leitos_sus", "cnes_equipes_esf", "acao_sugerida",
-                ] if c in integ_view.columns]],
-                "integracao_sinan_sim_cnes",
-                max_rows=100,
-            )
-
-
-# =============================================================================
-# Aba 6: Alertas e recomendações
-# =============================================================================
-with tabs[6]:
-    st.subheader("Alertas e recomendações operacionais")
-    if manager_alerts.empty and (alerts is None or alerts.empty):
-        st.info("Nenhum alerta disponível para os filtros atuais.")
-    else:
-        if not manager_alerts.empty:
-            st.markdown("#### Fila operacional do período")
-            a1, a2, a3 = st.columns(3)
-            a1.metric("Alertas gestores", format_int(len(manager_alerts)))
-            a2.metric("Críticos", format_int((manager_alerts["prioridade"] == "CRÍTICO").sum()) if "prioridade" in manager_alerts.columns else 0)
-            a3.metric("Municípios", format_int(manager_alerts["municipio"].nunique()) if "municipio" in manager_alerts.columns else 0)
-            with st.expander("Tabela de alertas gestores"):
-                show_table(with_acao(manager_alerts).head(100), "Alertas gestores (período)", max_rows=100)
-        if alerts is not None and not alerts.empty:
-            st.markdown("#### Alertas integrados semanais (pipeline)")
-            al = alerts.copy()
-            tgt = first_col(al, ["target", "alvo", "agravo"])
-            mun = first_col(al, ["municipio", "Município", "Municipio"])
-            if tgt and selected_targets:
-                al = al[al[tgt].astype(str).isin(selected_targets)]
-            if mun and selected_muns:
-                al = al[al[mun].map(norm_municipio).isin(selected_muns)]
-            level = first_col(al, ["alert_level", "nivel_risco", "nivel_alerta"])
-            if level:
-                fig = px.histogram(al, x=level, title="Distribuição de níveis de alerta integrado")
-                safe_plotly(fig, "Níveis de alerta")
-            with st.expander("Tabela de alertas do pipeline (amostra)"):
-                show_table(al.head(100), "integrated_alerts (filtrado)", max_rows=100)
-
-
-# =============================================================================
-# Aba 7: Sinais preditivos (ML)
-# =============================================================================
-with tabs[7]:
-    st.subheader("Sinais preditivos — módulo ML baseline")
-    st.caption(
-        "Modelos: forecast EWMA + anomalias; risco/silêncio usam sklearn (Gradient Boosting) "
-        "quando `ml/models_store` estiver disponível, senão baseline logística. "
-        "Resultados em `saida_pipeline` — não treinam no DW."
-    )
-    ml_missing = all(df.empty for df in (df_ml_forecast, df_ml_anomalias, df_ml_risco, df_ml_silencio))
-    if ml_missing:
-        st.info(
-            "Arquivos ML ainda não gerados. Rode: "
-            "`python -m ml.run_ml_pipeline --outdir saida_pipeline`"
-        )
-    else:
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Séries forecast", format_int(len(df_ml_forecast)))
-        k2.metric("Anomalias", format_int(len(df_ml_anomalias)))
-        alto_r = int(df_ml_risco["faixa_predita"].astype(str).isin(["alto", "muito_alto"]).sum()) if not df_ml_risco.empty and "faixa_predita" in df_ml_risco.columns else 0
-        k3.metric("Risco alto/muito alto", format_int(alto_r))
-        crit_s = int((df_ml_silencio.get("faixa_silencio_predita", pd.Series(dtype=str)).astype(str) == "silencio_critico").sum()) if not df_ml_silencio.empty else 0
-        k4.metric("Silêncio crítico predito", format_int(crit_s))
-
-        if not df_ml_backtest.empty:
-            st.markdown("##### Backtest temporal (alerta SE t → confirmação SE t+1)")
-            bt = df_ml_backtest.copy()
-            show_table(
-                bt[[c for c in [
-                    "modelo", "escopo", "status", "metodo", "auc", "confirmacao",
-                    "precision", "recall", "brier", "n", "n_alerta_emitido", "n_confirmado",
-                    "n_train_weeks", "n_test_weeks",
-                ] if c in bt.columns]],
-                "ml_backtest_summary",
-                max_rows=50,
-            )
-            glob = bt[bt["escopo"].astype(str).eq("global")] if "escopo" in bt.columns else bt
-            if not glob.empty and "auc" in glob.columns:
-                auc_risco = glob.loc[glob["modelo"].astype(str).eq("risco"), "auc"]
-                auc_sil = glob.loc[glob["modelo"].astype(str).eq("silencio"), "auc"]
-                cbt1, cbt2 = st.columns(2)
-                cbt1.metric("AUC risco (teste)", format_num(float(auc_risco.iloc[0])) if len(auc_risco) and pd.notna(auc_risco.iloc[0]) else "—")
-                cbt2.metric("AUC silêncio (teste)", format_num(float(auc_sil.iloc[0])) if len(auc_sil) and pd.notna(auc_sil.iloc[0]) else "—")
-
-        st.markdown("##### Previsão de demanda (estadual por agravo)")
-        if df_ml_forecast.empty:
-            st.caption("Sem `ml_forecast_demanda.csv`.")
-        else:
-            fc = df_ml_forecast.copy()
-            if selected_targets and "target" in fc.columns:
-                fc = fc[fc["target"].isin(selected_targets)]
-            # Limita legenda: top N agravos por volume previsto
-            top_n_fc = st.slider("Agravos no gráfico de forecast", 5, 20, 8, key="top_n_forecast")
-            top_targets: list[str] = []
-            if {"target", "forecast_tests"}.issubset(fc.columns):
-                rank = (
-                    fc.groupby("target", as_index=False)["forecast_tests"]
-                    .max()
-                    .sort_values("forecast_tests", ascending=False)
-                )
-                top_targets = rank["target"].head(int(top_n_fc)).tolist()
-                fc_plot = fc[fc["target"].isin(top_targets)].copy()
-            else:
-                fc_plot = fc
-            if require_cols(fc_plot, ["target", "forecast_step", "forecast_tests"], "Forecast ML"):
-                fig = px.line(
-                    fc_plot.sort_values(["target", "forecast_step"]),
-                    x="forecast_step",
-                    y="forecast_tests",
-                    color="target",
-                    markers=True,
-                    title=f"Exames previstos — top {max(len(top_targets), 1)} agravos (EWMA)",
-                    labels={"forecast_step": "Semanas à frente", "forecast_tests": "Exames previstos", "target": "Agravo"},
-                )
-                safe_plotly(fig, "Forecast demanda")
-            with st.expander("Tabela de forecast (completa filtrada)"):
-                show_table(fc.head(100), "ml_forecast_demanda", max_rows=100)
-
-        st.markdown("##### Anomalias detectadas")
-        if df_ml_anomalias.empty:
-            st.caption("Nenhuma anomalia na última semana / arquivo ausente.")
-        else:
-            an = df_ml_anomalias.copy()
-            if selected_targets and "target" in an.columns:
-                an = an[an["target"].isin(selected_targets)]
-            if selected_muns and "municipio" in an.columns:
-                an = an[an["municipio"].map(norm_municipio).isin(selected_muns)]
-            show_table(an.head(50), "Top anomalias", max_rows=50)
-
-        c_a, c_b = st.columns(2)
-        with c_a:
-            st.markdown("##### Risco predito (top 20)")
-            if df_ml_risco.empty:
-                st.caption("Sem `ml_risco_predito.csv`.")
-            else:
-                rr = df_ml_risco.copy()
-                if selected_targets and "target" in rr.columns:
-                    rr = rr[rr["target"].isin(selected_targets)]
-                top_rr = rr.head(20)
-                if require_cols(top_rr, ["municipio", "prob_alerta_proxima_janela"], "Risco predito"):
-                    fig = px.bar(
-                        top_rr.sort_values("prob_alerta_proxima_janela"),
-                        x="prob_alerta_proxima_janela",
-                        y="municipio",
-                        color="faixa_predita" if "faixa_predita" in top_rr.columns else None,
-                        orientation="h",
-                        title="Probabilidade de alerta — próxima janela",
-                        labels={"prob_alerta_proxima_janela": "Probabilidade", "municipio": "Município"},
-                    )
-                    safe_plotly(fig, "Risco predito")
-                with st.expander("Tabela risco predito"):
-                    show_table(
-                        rr.head(50)[[c for c in ["municipio", "target", "prob_alerta_proxima_janela", "faixa_predita", "acao_sugerida"] if c in rr.columns]],
-                        "ml_risco_predito",
-                        max_rows=50,
-                    )
-        with c_b:
-            st.markdown("##### Silêncio predito (top 20)")
-            if df_ml_silencio.empty:
-                st.caption("Sem `ml_silencio_predito.csv`.")
-            else:
-                ss = df_ml_silencio.copy()
-                if selected_targets and "target" in ss.columns:
-                    ss = ss[ss["target"].isin(selected_targets)]
-                top_ss = ss.head(20)
-                if require_cols(top_ss, ["municipio", "prob_silencio_proxima_janela"], "Silêncio predito"):
-                    fig = px.bar(
-                        top_ss.sort_values("prob_silencio_proxima_janela"),
-                        x="prob_silencio_proxima_janela",
-                        y="municipio",
-                        color="faixa_silencio_predita" if "faixa_silencio_predita" in top_ss.columns else None,
-                        orientation="h",
-                        title="Probabilidade de silêncio — próxima janela",
-                        labels={"prob_silencio_proxima_janela": "Probabilidade", "municipio": "Município"},
-                    )
-                    safe_plotly(fig, "Silêncio predito")
-                with st.expander("Tabela silêncio predito"):
-                    show_table(
-                        ss.head(50)[[c for c in ["municipio", "target", "prob_silencio_proxima_janela", "faixa_silencio_predita", "acao_sugerida"] if c in ss.columns]],
-                        "ml_silencio_predito",
-                        max_rows=50,
-                    )
-
-
-# =============================================================================
-# Aba 8: período (detalhada)
-# =============================================================================
-with tabs[8]:
-    st.subheader("Análise do período selecionado")
-    st.markdown(
-        f"**Período:** {analysis_year}-SE{week_start:02d} a SE{week_end:02d}  \n"
-        f"**Comparação:** {baseline_mode}  \n"
-        f"**Horizonte prospectivo dos alertas:** próximos {horizon_days} dias"
+elif modulo == "Territórios prioritários":
+    sub_terr = st.radio(
+        "Subvisão",
+        ["Risco territorial", "Sinais de silêncio", "Utilização", "Municípios e mapas"],
+        horizontal=True,
+        key="sub_territorios",
     )
 
-    if period_df.empty:
-        st.warning("Sem dados para o período/filtros selecionados.")
-    else:
-        high_df = period_df[period_df["prioridade"].isin(["CRÍTICO", "ALTO"])]
-        c1, c2, c3, c4, c5, c6 = st.columns(6)
-        c1.metric("Agravos no período", format_int(period_df["target"].nunique()))
-        c2.metric("Municípios no período", format_int(period_df["municipio"].nunique()))
-        c3.metric("Solicitações LACEN", format_int(period_df["tests_periodo"].sum()))
-        c4.metric("Positivos", format_int(period_df["positivos_periodo"].sum()))
-        pos_global = period_df["positivos_periodo"].sum() / period_df["tests_periodo"].sum() if period_df["tests_periodo"].sum() else np.nan
-        c5.metric("Positividade global", format_pct(pos_global))
-        c6.metric("Alertas crítico/alto", format_int(len(high_df)))
-
-        resumo = period_df.groupby("prioridade", as_index=False).agg(
-            registros=("target", "size"),
-            municipios=("municipio", "nunique"),
-            agravos=("target", "nunique"),
-            tests_periodo=("tests_periodo", "sum"),
-            positivos_periodo=("positivos_periodo", "sum"),
-            notificacoes_periodo=("notificacoes_periodo", "sum"),
-            projecao_solicitacoes=("projecao_solicitacoes_proximos_dias", "sum"),
-            projecao_positivos=("projecao_positivos_proximos_dias", "sum"),
-        )
-        order = pd.CategoricalDtype(["CRÍTICO", "ALTO", "MODERADO", "MONITORAMENTO"], ordered=True)
-        resumo["prioridade"] = resumo["prioridade"].astype(order)
-        resumo = resumo.sort_values("prioridade")
-        st.dataframe(resumo, use_container_width=True)
-
-        top = period_df.head(40).copy()
-        fig = px.bar(
-            top.sort_values("prioridade_score"),
-            x="prioridade_score",
-            y="municipio",
-            color="prioridade",
-            orientation="h",
-            hover_data=[
-                "target", "cenario_operacional", "tests_periodo", "positivos_periodo",
-                "positividade_periodo", "delta_positividade_pp", "delta_tests_abs",
-                "notificacoes_periodo", "projecao_solicitacoes_proximos_dias",
-            ],
-            title="Top sinais operacionais do período",
-            labels={"prioridade_score": "Prioridade", "municipio": "Município"},
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-        scenario = period_df.groupby("cenario_operacional", as_index=False).agg(
-            registros=("target", "size"),
-            municipios=("municipio", "nunique"),
-            agravos=("target", "nunique"),
-            tests_periodo=("tests_periodo", "sum"),
-            positivos_periodo=("positivos_periodo", "sum"),
-        ).sort_values("registros", ascending=False)
-        fig2 = px.bar(
-            scenario,
-            x="registros",
-            y="cenario_operacional",
-            orientation="h",
-            title="Distribuição dos cenários operacionais",
-            labels={"registros": "Registros", "cenario_operacional": "Cenário"},
-        )
-        fig2.update_layout(yaxis={"categoryorder": "total ascending"})
-        st.plotly_chart(fig2, use_container_width=True)
-
-        cols = [
-            "prioridade", "municipio", "target", "periodo_analise", "periodo_base", "cenario_operacional",
-            "tests_periodo", "tests_base", "delta_tests_abs", "delta_tests_pct",
-            "positivos_periodo", "positivos_base", "positividade_periodo", "positividade_base", "delta_positividade_pp",
-            "notificacoes_periodo", "notificacoes_base", "delta_notificacoes_abs",
-            "silencio_laboratorial", "baixo_uso_lacen", "projecao_solicitacoes_proximos_dias",
-            "projecao_positivos_proximos_dias", "janela_alerta_proximos_dias",
-        ]
-        show_table(period_df[[c for c in cols if c in period_df.columns]], "Tabela analítica do período", max_rows=1000)
-
-
-# =============================================================================
-# Aba 9: alertas próximos dias
-# =============================================================================
-with tabs[9]:
-    st.subheader("Alertas para os próximos dias")
-
-    if manager_alerts.empty:
-        st.info("Nenhum alerta crítico/alto/moderado no período/filtros atuais.")
-    else:
-        a1, a2, a3, a4, a5 = st.columns(5)
-        a1.metric("Alertas para validação", format_int(len(manager_alerts)))
-        a2.metric("Municípios", format_int(manager_alerts["municipio"].nunique()))
-        a3.metric("Agravos/alvos", format_int(manager_alerts["target"].nunique()))
-        a4.metric("Críticos", format_int((manager_alerts["prioridade"] == "CRÍTICO").sum()))
-        a5.metric("Horizonte", f"{horizon_days} dias")
-
-        if alert_path:
-            st.success(f"Arquivo operacional gerado: {alert_path}")
-
-        priority_filter = st.multiselect(
-            "Prioridade",
-            ["CRÍTICO", "ALTO", "MODERADO"],
-            default=["CRÍTICO", "ALTO", "MODERADO"],
-        )
-        target_filter_alert = st.multiselect(
-            "Filtrar agravos dos alertas",
-            sorted(manager_alerts["target"].dropna().astype(str).unique().tolist()),
-            default=[],
-        )
-
-        msg_df = manager_alerts[manager_alerts["prioridade"].isin(priority_filter)].copy()
-        if target_filter_alert:
-            msg_df = msg_df[msg_df["target"].isin(target_filter_alert)]
-
-        st.markdown("#### Mensagens prontas para validação técnica")
-        for _, row in msg_df.head(20).iterrows():
-            with st.expander(f"{row['prioridade']} — {row['municipio']} — {row['target']}"):
-                st.markdown(f"**Assunto:** {row['assunto_email']}")
-                st.write(row["mensagem_gestor"])
-                st.markdown(f"**Ação sugerida:** {row['acao_sugerida']}")
-                st.markdown(f"**Canal sugerido:** {row['canal_sugerido']}")
-
-        show_table(msg_df, "Fila de alertas para gestores", max_rows=2000)
-
-
-# =============================================================================
-# Aba 10: municípios e mapas
-# =============================================================================
-with tabs[10]:
-    st.subheader("Municípios e mapas por agravo/alvo")
-    st.caption("Mapas só são renderizados após selecionar o agravo e confirmar abaixo (reduz carga inicial).")
-
-    if period_df.empty:
-        st.warning("Sem dados para mapa no período/filtro atual.")
-    else:
-        map_targets = sorted(period_df["target"].dropna().astype(str).unique().tolist())
-        map_target = st.selectbox("Agravo/alvo para o mapa", map_targets, index=0)
-        map_metric = st.selectbox(
-            "Indicador do mapa",
-            [
-                "prioridade_score",
-                "positividade_periodo",
-                "delta_positividade_pp",
-                "tests_periodo",
-                "delta_tests_abs",
-                "notificacoes_periodo",
-                "projecao_solicitacoes_proximos_dias",
-                "projecao_positivos_proximos_dias",
-                "solicitacoes_periodo_100k",
-            ],
-            index=0,
-        )
-        render_map = st.checkbox("Renderizar mapa agora", value=False, key="render_map_now")
-        map_df = period_df[period_df["target"].astype(str).eq(map_target)].copy()
-        if not render_map:
-            st.info("Selecione o agravo/indicador e marque **Renderizar mapa agora** para carregar a malha.")
-            with st.expander("Prévia tabular do agravo (sem mapa)"):
-                show_table(map_df.head(50), "Prévia municipal", max_rows=50)
+    if sub_terr == "Risco territorial":
+        st.subheader("Municípios prioritários — risco composto")
+        if df_risco.empty:
+            st.info("Sem `municipios_em_risco.csv`. Execute a integração final para gerar.")
+            if not period_df.empty and require_cols(period_df, ["municipio", "prioridade_score"], "Risco derivado do período"):
+                proxy = with_acao(period_df.groupby("municipio", as_index=False).agg(
+                    prioridade_score=("prioridade_score", "max"),
+                    tests_periodo=("tests_periodo", "sum"),
+                    positivos_periodo=("positivos_periodo", "sum"),
+                    notificacoes_periodo=("notificacoes_periodo", "sum"),
+                ).sort_values("prioridade_score", ascending=False).head(50))
+                show_table(proxy, "Proxy de risco a partir do período selecionado", max_rows=50, key="terr_proxy")
         else:
-            geojson = None
-            props_df = pd.DataFrame()
-            if found_geo:
-                geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
-                st.caption(geo_msg)
-
-            if geojson is not None and not props_df.empty:
-                merged = join_shape_with_period(props_df, map_df)
-                fig = make_choropleth(
-                    geojson,
-                    merged,
-                    map_metric,
-                    f"Mapa municipal — {map_target} | {map_metric} | {analysis_year}-SE{week_start:02d} a SE{week_end:02d}",
+            faixa = sorted([str(x) for x in df_risco.get("faixa_risco", pd.Series(dtype=str)).dropna().unique()])
+            sel_faixa = st.multiselect("Faixa de risco", faixa, default=faixa, key="faixa_risco_tab")
+            view = with_acao(df_risco.copy())
+            if sel_faixa and "faixa_risco" in view.columns:
+                view = view[view["faixa_risco"].astype(str).isin(sel_faixa)]
+            m1, m2, m3 = st.columns(3)
+            m1.metric("Municípios listados", format_int(len(view)))
+            m2.metric("Score médio (Derivado)", format_num(view["score_risco_territorial"].mean()) if "score_risco_territorial" in view.columns else "—")
+            m3.metric("Em alerta/alto", format_int(view["faixa_risco"].astype(str).isin(["alerta", "alto_alerta"]).sum()) if "faixa_risco" in view.columns else 0)
+            topn = view.head(20)
+            if require_cols(topn, ["municipio", "score_risco_territorial"], "Ranking de risco"):
+                fig = px.bar(
+                    topn.sort_values("score_risco_territorial"),
+                    x="score_risco_territorial",
+                    y="municipio",
+                    color="faixa_risco" if "faixa_risco" in topn.columns else None,
+                    orientation="h",
+                    title="Ranking municipal de risco territorial (top 20)",
+                    labels={"score_risco_territorial": "Score de risco", "municipio": "Município"},
                 )
-                if fig is not None:
-                    st.plotly_chart(fig, use_container_width=True)
-                else:
-                    st.warning("A malha foi carregada, mas não foi possível cruzar os municípios com os dados do dashboard.")
-                    show_table(map_df, "Tabela usada no mapa")
-            else:
-                if municipal_master is None or municipal_master.empty:
-                    st.info("Sem shapefile/GeoJSON e sem municipal_master.csv para mapa de pontos.")
-                    show_table(map_df, "Tabela municipal filtrada")
-                else:
-                    mm = municipal_master.copy()
-                    mc = first_col(mm, ["municipio", "Município", "Municipio"])
-                    if mc and mc != "municipio":
-                        mm["municipio"] = mm[mc].map(norm_municipio)
-                    elif "municipio" in mm.columns:
-                        mm["municipio"] = mm["municipio"].map(norm_municipio)
-                    lat_col, lon_col = find_lat_lon_cols(mm)
-                    if not lat_col or not lon_col:
-                        st.info("Sem shapefile/GeoJSON e sem latitude/longitude em municipal_master.csv.")
-                        show_table(map_df, "Tabela municipal filtrada")
-                    else:
-                        mm[lat_col] = to_num(mm[lat_col])
-                        mm[lon_col] = to_num(mm[lon_col])
-                        plot = map_df.merge(mm[["municipio", lat_col, lon_col]], on="municipio", how="left")
-                        plot = plot.dropna(subset=[lat_col, lon_col])
-                        plot = safe_marker_size(plot, map_metric, "marker_size", 7, 24)
-                        fig = px.scatter_mapbox(
-                            plot,
-                            lat=lat_col,
-                            lon=lon_col,
-                            color=map_metric,
-                            size="marker_size",
-                            hover_name="municipio",
-                            hover_data={
-                                "target": True,
-                                "prioridade": True,
-                                "cenario_operacional": True,
-                                "tests_periodo": True,
-                                "positividade_periodo": ":.1%",
-                                "delta_positividade_pp": ":.2f",
-                                "projecao_solicitacoes_proximos_dias": ":.1f",
-                                "marker_size": False,
-                                lat_col: False,
-                                lon_col: False,
-                            },
-                            mapbox_style="open-street-map",
-                            zoom=4.6,
-                            center={"lat": -13.2, "lon": -56.1},
-                            height=630,
-                            title=f"Mapa de pontos — {map_target} | {map_metric}",
-                        )
-                        st.plotly_chart(fig, use_container_width=True)
-
-            col_a, col_b = st.columns(2)
-            with col_a:
+                safe_plotly(fig, "Ranking de risco")
+            with st.expander("Tabela de risco (limitada)"):
                 show_table(
-                    map_df.sort_values(["prioridade_score", map_metric], ascending=[False, False]).head(50),
-                    "Municípios do agravo selecionado",
-                    max_rows=50,
+                    view[[c for c in [
+                        "municipio", "faixa_risco", "score_risco_territorial",
+                        "tests_8sem", "positives_8sem", "notificacoes_8sem",
+                        "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
+                    ] if c in view.columns]],
+                    "municipios_em_risco",
+                    max_rows=100,
+                    key="terr_risco",
                 )
-            with col_b:
-                silent = map_df[(map_df["silencio_laboratorial"]) | (map_df["baixo_uso_lacen"])]
-                show_table(silent.head(50), "Silêncio laboratorial ou baixo uso do LACEN", max_rows=50)
 
-
-# =============================================================================
-# Aba 11: séries e predição
-# =============================================================================
-with tabs[11]:
-    st.subheader("Séries históricas e predição operacional curta")
-
-    hist_targets = sorted(wf["target"].dropna().astype(str).unique().tolist())
-    chosen_hist_targets = st.multiselect(
-        "Agravos/alvos para série histórica",
-        hist_targets,
-        default=hist_targets[: min(6, len(hist_targets))],
-    )
-    metric = st.selectbox(
-        "Indicador da série",
-        ["tests", "positives", "positividade", "notificacoes", "obitos_sim", "incidencia_100k"],
-        index=2,
-    )
-    hist_year_range = st.slider("Intervalo de anos da série", min_year, max_year, (min_year, max_year))
-
-    hist = wf.copy()
-    if chosen_hist_targets:
-        hist = hist[hist["target"].isin(chosen_hist_targets)]
-    hist = hist[hist["epi_year"].between(hist_year_range[0], hist_year_range[1])]
-
-    if hist.empty:
-        st.info("Sem série histórica para o filtro atual.")
-    else:
-        agg_hist = hist.groupby(["epi_year", "epi_week", "periodo", "target"], as_index=False).agg(
-            tests=("tests", "sum"),
-            positives=("positives", "sum"),
-            notificacoes=("notificacoes", "sum"),
-            obitos_sim=("obitos_sim", "sum"),
-            incidencia_100k=("incidencia_100k", "mean"),
-        )
-        agg_hist["positividade"] = safe_div(agg_hist["positives"], agg_hist["tests"])
-        agg_hist["periodo_data"] = [iso_monday(y, w) for y, w in zip(agg_hist["epi_year"], agg_hist["epi_week"])]
-
-        fig = px.line(
-            agg_hist.sort_values(["target", "periodo_data"]),
-            x="periodo_data",
-            y=metric,
-            color="target",
-            markers=False,
-            title=f"Série histórica semanal — {metric}",
-            labels={"periodo_data": "Semana epidemiológica", metric: metric, "target": "Agravo/alvo"},
-        )
-        if metric == "positividade":
-            fig.update_yaxes(tickformat=".0%")
-        st.plotly_chart(fig, use_container_width=True)
-
-        pred = period_df[period_df["target"].isin(chosen_hist_targets)] if chosen_hist_targets else period_df
-        pred_cols = [
-            "prioridade", "municipio", "target", "periodo_analise", "cenario_operacional",
-            "projecao_solicitacoes_proximos_dias", "projecao_positivos_proximos_dias",
-            "positividade_projetada_proximos_dias", "janela_alerta_proximos_dias",
-        ]
-        show_table(pred[[c for c in pred_cols if c in pred.columns]].head(500), "Projeção operacional para próximos dias", max_rows=500)
-
-    if forecast is not None and not forecast.empty:
-        st.markdown("#### Forecast integrado existente")
-        fc = forecast.copy()
-        ft = first_col(fc, ["target", "alvo", "agravo"])
-        fy = first_col(fc, ["epi_year", "ano", "year"])
-        fw = first_col(fc, ["epi_week", "semana", "week"])
-        if ft and ft != "target":
-            fc["target"] = fc[ft]
-        if fy and fy != "epi_year":
-            fc["epi_year"] = to_num(fc[fy])
-        if fw and fw != "epi_week":
-            fc["epi_week"] = to_num(fc[fw])
-        value_candidates = [
-            "predicted_tests", "forecast_tests", "tests_pred", "testes_previstos",
-            "predicted", "forecast", "valor_previsto", "yhat", "previsao"
-        ]
-        numeric_cols = [c for c in fc.columns if pd.api.types.is_numeric_dtype(fc[c])]
-        fc_value_options = [c for c in value_candidates if c in fc.columns] or numeric_cols
-        if fc_value_options:
-            fc_value = st.selectbox("Coluna do forecast", fc_value_options, index=0)
-            fc["valor_previsto"] = to_num(fc[fc_value])
-            if "target" in fc.columns and chosen_hist_targets:
-                fc = fc[fc["target"].isin(chosen_hist_targets)]
-            if {"epi_year", "epi_week"}.issubset(fc.columns):
-                fc["periodo"] = [iso_week_label(y, w) for y, w in zip(fc["epi_year"], fc["epi_week"])]
+    elif sub_terr == "Sinais de silêncio":
+        st.subheader("Sinais de silêncio laboratorial")
+        st.caption("Ausência de exame não significa ausência de risco — pode indicar falha de captação.")
+        if df_silenciosos.empty:
+            st.info("Sem `municipios_silenciosos.csv`. Usando sinais do período selecionado.")
+            if not period_df.empty:
+                mask = pd.Series(False, index=period_df.index)
+                if "silencio_laboratorial" in period_df.columns:
+                    mask = mask | period_df["silencio_laboratorial"].fillna(False).astype(bool)
+                if "baixo_uso_lacen" in period_df.columns:
+                    mask = mask | period_df["baixo_uso_lacen"].fillna(False).astype(bool)
+                show_table(with_acao(period_df.loc[mask]).head(100), "Silêncio/baixo uso no período", max_rows=100, key="terr_sil_period")
+        else:
+            tipo_col = "classificacao_silencio" if "classificacao_silencio" in df_silenciosos.columns else "tipo_sinal"
+            tipo = sorted([str(x) for x in df_silenciosos.get(tipo_col, pd.Series(dtype=str)).dropna().unique()])
+            sel_tipo = st.multiselect("Classificação de silêncio", tipo, default=tipo, key="tipo_silencio_tab")
+            view = with_acao(df_silenciosos.copy())
+            if sel_tipo and tipo_col in view.columns:
+                view = view[view[tipo_col].astype(str).isin(sel_tipo)]
+            if selected_targets and "target" in view.columns:
+                tgt_ok = view["target"].notna() & view["target"].astype(str).str.strip().ne("") & ~view["target"].astype(str).str.lower().isin(["nan", "none"])
+                if bool(tgt_ok.any()):
+                    view = view[~tgt_ok | view["target"].isin(selected_targets)]
+            s1, s2, s3, s4 = st.columns(4)
+            s1.metric("Municípios silenciosos", format_int(view["municipio"].nunique() if "municipio" in view.columns else len(view)))
+            notif_col = "notif_recent" if "notif_recent" in view.columns else ("notificacoes" if "notificacoes" in view.columns else None)
+            s2.metric("Notificações recentes", format_int(view[notif_col].fillna(0).sum()) if notif_col else "—")
+            s3.metric(
+                "Críticos",
+                format_int((view.get(tipo_col, pd.Series(dtype=str)).astype(str) == "silencio_critico").sum())
+                if tipo_col in view.columns else 0,
+            )
+            if "silencio_com_vizinho_alerta" in view.columns:
+                s4.metric("Com vizinho em alerta", format_int(view["silencio_com_vizinho_alerta"].fillna(False).sum()))
             else:
-                fc["periodo"] = np.arange(len(fc)).astype(str)
+                s4.metric("Com vizinho em alerta", "—")
+            cols_show = [c for c in [
+                "municipio", "classificacao_silencio", "tipo_sinal", "score_silencio",
+                "tests_recent", "notif_recent", "tests_hist", "notif_hist",
+                "populacao", "indice_vulnerabilidade",
+                "vizinhos_em_alerta", "silencio_com_vizinho_alerta", "motivo_territorial",
+                "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
+            ] if c in view.columns]
+            with st.expander("Tabela de municípios silenciosos (limitada)"):
+                show_table(view[cols_show].head(100) if cols_show else view.head(100), "municipios_silenciosos", max_rows=100, key="terr_sil")
+            if not df_vizinhos.empty and "municipio" in view.columns:
+                with st.expander("Vizinhos territoriais dos silenciosos (amostra)"):
+                    muns = set(view["municipio"].astype(str).str.upper().head(30))
+                    vz = df_vizinhos.copy()
+                    vz["municipio"] = vz["municipio"].astype(str).str.upper()
+                    show_table(
+                        vz[vz["municipio"].isin(muns)].head(100),
+                        "municipio_vizinhos (silenciosos)",
+                        max_rows=100,
+                        key="terr_viz",
+                    )
+
+    elif sub_terr == "Utilização":
+        st.subheader("Utilização laboratorial do LACEN")
+        st.caption("Exames/notificação e exames por 100 mil habitantes.")
+        if df_utilizacao.empty:
+            st.info("Sem `taxa_utilizacao_lacen.csv`. Execute a integração final.")
+            if not period_df.empty:
+                u = with_acao(period_df.copy())
+                u["taxa_utilizacao_periodo"] = safe_div(u["tests_periodo"], u["notificacoes_periodo"].replace(0, np.nan))
+                show_table(
+                    u[[c for c in [
+                        "municipio", "target", "tests_periodo", "notificacoes_periodo",
+                        "taxa_utilizacao_periodo", "baixo_uso_lacen", "acao_sugerida",
+                    ] if c in u.columns]].head(100),
+                    "Utilização no período (proxy)",
+                    max_rows=100,
+                    key="terr_uso_proxy",
+                )
+        else:
+            view = with_acao(df_utilizacao.copy())
+            if selected_targets and "target" in view.columns:
+                view = view[view["target"].isin(selected_targets)]
+            classes = sorted([str(x) for x in view.get("classificacao_uso", pd.Series(dtype=str)).dropna().unique()])
+            sel_cls = st.multiselect("Classificação de uso", classes, default=classes, key="cls_uso_tab")
+            if sel_cls and "classificacao_uso" in view.columns:
+                view = view[view["classificacao_uso"].astype(str).isin(sel_cls)]
+            u1, u2, u3 = st.columns(3)
+            u1.metric("Pares município-alvo", format_int(len(view)))
+            u2.metric("Mediana exames/100 mil", format_num(view["exames_por_100k"].median()) if "exames_por_100k" in view.columns else "—")
+            u3.metric(
+                "Baixo uso / silêncio",
+                format_int(view["classificacao_uso"].astype(str).isin(["baixo", "silencio"]).sum())
+                if "classificacao_uso" in view.columns else 0,
+            )
+            if "classificacao_uso" in view.columns:
+                dist = view["classificacao_uso"].astype(str).value_counts().reset_index()
+                dist.columns = ["classificacao_uso", "registros"]
+                fig = px.bar(
+                    dist,
+                    x="registros",
+                    y="classificacao_uso",
+                    orientation="h",
+                    title="Distribuição da classificação de uso do LACEN",
+                    labels={"registros": "Registros", "classificacao_uso": "Classificação"},
+                )
+                safe_plotly(fig, "Classificação de uso")
+            with st.expander("Tabela de utilização (top 100)"):
+                show_table(
+                    view.head(100)[[c for c in [
+                        "municipio", "target", "tests", "notificacoes", "taxa_utilizacao",
+                        "exames_por_100k", "classificacao_uso",
+                        "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
+                    ] if c in view.columns]],
+                    "taxa_utilizacao_lacen",
+                    max_rows=100,
+                    key="terr_uso",
+                )
+
+    else:  # Municípios e mapas
+        st.subheader("Municípios e mapas por agravo/alvo")
+        st.caption("Mapas só são renderizados após selecionar o agravo e confirmar abaixo (reduz carga inicial).")
+        municipal_master = get_optional(folder, "municipal_master")
+
+        if period_df.empty:
+            st.warning("Sem dados para mapa no período/filtro atual.")
+        else:
+            map_targets = sorted(period_df["target"].dropna().astype(str).unique().tolist())
+            map_default_idx = 0
+            if default_chart_targets and default_chart_targets[0] in map_targets:
+                map_default_idx = map_targets.index(default_chart_targets[0])
+            map_target = st.selectbox("Agravo/alvo para o mapa", map_targets, index=map_default_idx)
+            map_metric = st.selectbox(
+                "Indicador do mapa",
+                [
+                    "prioridade_score",
+                    "positividade_periodo",
+                    "delta_positividade_pp",
+                    "tests_periodo",
+                    "delta_tests_abs",
+                    "notificacoes_periodo",
+                    "projecao_solicitacoes_proximos_dias",
+                    "projecao_positivos_proximos_dias",
+                    "solicitacoes_periodo_100k",
+                ],
+                index=0,
+            )
+            render_map = st.checkbox("Renderizar mapa agora", value=False, key="render_map_now")
+            map_df = period_df[period_df["target"].astype(str).eq(map_target)].copy()
+            if not render_map:
+                st.info("Selecione o agravo/indicador e marque **Renderizar mapa agora** para carregar a malha.")
+                with st.expander("Prévia tabular do agravo (sem mapa)"):
+                    show_table(map_df.head(50), "Prévia municipal", max_rows=50, key="map_prev")
+            else:
+                geojson = None
+                props_df = pd.DataFrame()
+                if found_geo:
+                    geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
+                    st.caption(geo_msg)
+
+                if geojson is not None and not props_df.empty:
+                    merged = join_shape_with_period(props_df, map_df)
+                    fig = make_choropleth(
+                        geojson,
+                        merged,
+                        map_metric,
+                        f"Mapa municipal — {map_target} | {map_metric} | {analysis_year}-SE{week_start:02d} a SE{week_end:02d}",
+                    )
+                    if fig is not None:
+                        safe_plotly(fig, "Mapa coroplético")
+                    else:
+                        st.warning("A malha foi carregada, mas não foi possível cruzar os municípios com os dados do dashboard.")
+                        show_table(map_df, "Tabela usada no mapa", key="map_fail")
+                else:
+                    if municipal_master is None or municipal_master.empty:
+                        st.info("Sem shapefile/GeoJSON e sem municipal_master.csv para mapa de pontos.")
+                        show_table(map_df, "Tabela municipal filtrada", key="map_nomm")
+                    else:
+                        mm = municipal_master.copy()
+                        mc = first_col(mm, ["municipio", "Município", "Municipio"])
+                        if mc and mc != "municipio":
+                            mm["municipio"] = mm[mc].map(norm_municipio)
+                        elif "municipio" in mm.columns:
+                            mm["municipio"] = mm["municipio"].map(norm_municipio)
+                        lat_col, lon_col = find_lat_lon_cols(mm)
+                        if not lat_col or not lon_col:
+                            st.info("Sem shapefile/GeoJSON e sem latitude/longitude em municipal_master.csv.")
+                            show_table(map_df, "Tabela municipal filtrada", key="map_noll")
+                        else:
+                            mm[lat_col] = to_num(mm[lat_col])
+                            mm[lon_col] = to_num(mm[lon_col])
+                            plot = map_df.merge(mm[["municipio", lat_col, lon_col]], on="municipio", how="left")
+                            plot = plot.dropna(subset=[lat_col, lon_col])
+                            plot = safe_marker_size(plot, map_metric, "marker_size", 7, 24)
+                            fig = px.scatter_mapbox(
+                                plot,
+                                lat=lat_col,
+                                lon=lon_col,
+                                color=map_metric,
+                                size="marker_size",
+                                hover_name="municipio",
+                                hover_data={
+                                    "target": True,
+                                    "prioridade": True,
+                                    "cenario_operacional": True,
+                                    "tests_periodo": True,
+                                    "positividade_periodo": ":.1%",
+                                    "delta_positividade_pp": ":.2f",
+                                    "projecao_solicitacoes_proximos_dias": ":.1f",
+                                    "marker_size": False,
+                                    lat_col: False,
+                                    lon_col: False,
+                                },
+                                mapbox_style="open-street-map",
+                                zoom=4.6,
+                                center={"lat": -13.2, "lon": -56.1},
+                                height=630,
+                                title=f"Mapa de pontos — {map_target} | {map_metric}",
+                            )
+                            safe_plotly(fig, "Mapa de pontos")
+
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    show_table(
+                        map_df.sort_values(["prioridade_score", map_metric], ascending=[False, False]).head(50),
+                        "Municípios do agravo selecionado",
+                        max_rows=50,
+                        key="map_muns",
+                    )
+                with col_b:
+                    silent = map_df[(map_df["silencio_laboratorial"]) | (map_df["baixo_uso_lacen"])]
+                    show_table(silent.head(50), "Silêncio laboratorial ou baixo uso do LACEN", max_rows=50, key="map_sil")
+
+
+# =============================================================================
+# Módulo: Integração epidemiológica (SINAN/SIM/CNES + Clima)
+# =============================================================================
+elif modulo == "Integração epidemiológica":
+    sub_int = st.radio(
+        "Subvisão",
+        ["SINAN / SIM / CNES", "Clima e ambiente"],
+        horizontal=True,
+        key="sub_integracao",
+    )
+    df_sinan_weekly = get_optional(folder, "sinan_weekly")
+    df_sim_weekly = get_optional(folder, "sim_weekly")
+    cnes_capacity = get_optional(folder, "cnes_capacity")
+    climate_weekly = get_optional(folder, "climate_weekly")
+    climate_assoc = get_optional(folder, "climate_assoc")
+
+    if sub_int == "SINAN / SIM / CNES":
+        st.subheader("Integração LACEN × SINAN × SIM × CNES")
+        st.caption("Compara exames, notificações, óbitos e capacidade instalada no território.")
+        if period_df.empty:
+            st.warning("Sem dados no período/filtros selecionados.")
+        else:
+            exames = float(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else 0.0
+            notif = float(period_df["notificacoes_periodo"].sum()) if "notificacoes_periodo" in period_df.columns else 0.0
+            obitos = float(period_df["obitos_sim_periodo"].sum()) if "obitos_sim_periodo" in period_df.columns else 0.0
+
+            sinan_periodo = 0.0
+            if not df_sinan_weekly.empty:
+                sw = df_sinan_weekly.copy()
+                sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
+                sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
+                ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
+                if ncol:
+                    sw[ncol] = to_num(sw[ncol])
+                    mask = sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)
+                    sinan_periodo = float(sw.loc[mask, ncol].fillna(0).sum())
+                    if sinan_periodo > notif:
+                        notif = sinan_periodo
+
+            sim_ok = False
+            if not df_sim_weekly.empty:
+                sy = to_num(df_sim_weekly.get("epi_year", pd.Series(dtype=float)))
+                sim_ok = bool((sy.fillna(0) > 1900).any())
+                if sim_ok:
+                    sm = df_sim_weekly.copy()
+                    sm["epi_year"] = to_num(sm["epi_year"])
+                    sm["epi_week"] = to_num(sm["epi_week"])
+                    ocol = first_col(sm, ["obitos_sim", "obitos"])
+                    if ocol:
+                        mask = sm["epi_year"].eq(analysis_year) & sm["epi_week"].between(week_start, week_end)
+                        obitos = float(to_num(sm.loc[mask, ocol]).fillna(0).sum())
+
+            i1, i2, i3, i4 = st.columns(4)
+            i1.metric("Exames LACEN (Observado)", format_int(exames))
+            i2.metric("Notificações SINAN (Observado)", format_int(notif))
+            i3.metric("Óbitos SIM (Observado)", format_int(obitos) if sim_ok else "—")
+            i4.metric("Exames / notificação (Derivado)", format_num(safe_div(exames, notif)) if notif else "—")
+            if not sim_ok:
+                st.caption("SIM: arquivo sem anos epidemiológicos válidos — reconstruir `sim_weekly_municipio.csv` no pipeline.")
+
+            integ = period_df.groupby("municipio", as_index=False).agg(
+                exames=("tests_periodo", "sum") if "tests_periodo" in period_df.columns else ("municipio", "size"),
+                positivos=("positivos_periodo", "sum") if "positivos_periodo" in period_df.columns else ("municipio", "size"),
+                notificacoes=("notificacoes_periodo", "sum") if "notificacoes_periodo" in period_df.columns else ("municipio", "size"),
+                obitos_sim=("obitos_sim_periodo", "sum") if "obitos_sim_periodo" in period_df.columns else ("municipio", "size"),
+            )
+
+            if not df_sinan_weekly.empty:
+                sw = df_sinan_weekly.copy()
+                sw["epi_year"] = to_num(sw.get("epi_year", pd.Series(dtype=float)))
+                sw["epi_week"] = to_num(sw.get("epi_week", pd.Series(dtype=float)))
+                mun_s = first_col(sw, ["municipio", "Município"])
+                ncol = first_col(sw, ["notificacoes_sinan", "notificacoes"])
+                if mun_s and ncol:
+                    sw = sw[sw["epi_year"].eq(analysis_year) & sw["epi_week"].between(week_start, week_end)].copy()
+                    sw["municipio"] = sw[mun_s].map(norm_municipio)
+                    sw[ncol] = to_num(sw[ncol])
+                    by_mun = sw.groupby("municipio", as_index=False).agg(notificacoes_sinan=(ncol, "sum"))
+                    integ = integ.merge(by_mun, on="municipio", how="outer")
+                    integ["exames"] = integ["exames"].fillna(0)
+                    integ["positivos"] = integ["positivos"].fillna(0)
+                    integ["notificacoes"] = integ["notificacoes"].fillna(0)
+                    integ["notificacoes"] = np.maximum(integ["notificacoes"], integ["notificacoes_sinan"].fillna(0))
+                    integ["obitos_sim"] = integ["obitos_sim"].fillna(0)
+
+            integ["exames_por_notif"] = safe_div(integ["exames"], integ["notificacoes"].replace(0, np.nan))
+            integ["gap_sinan_sem_exame"] = (integ["notificacoes"].fillna(0) > 0) & (integ["exames"].fillna(0) == 0)
+
+            cnes_df = cnes_capacity.copy() if cnes_capacity is not None and not getattr(cnes_capacity, "empty", True) else pd.DataFrame()
+            if not cnes_df.empty:
+                mun_c = first_col(cnes_df, ["municipio", "Município", "Municipio"])
+                if mun_c:
+                    cnes_df = cnes_df.copy()
+                    cnes_df["municipio"] = cnes_df[mun_c].map(norm_municipio)
+                    keep_cnes = [c for c in [
+                        "municipio", "cnes_estabelecimentos", "cnes_leitos_total", "cnes_leitos_sus",
+                        "cnes_leitos_uti", "cnes_equipes_esf", "cnes_equipamentos_criticos",
+                    ] if c in cnes_df.columns]
+                    integ = integ.merge(cnes_df[keep_cnes], on="municipio", how="left")
+
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Municípios com gap SINAN (sem exame)", format_int(integ["gap_sinan_sem_exame"].sum()))
+            if not cnes_df.empty and "cnes_estabelecimentos" in cnes_df.columns:
+                c2.metric("Municípios com CNES", format_int(cnes_df["municipio"].nunique() if "municipio" in cnes_df.columns else len(cnes_df)))
+                c3.metric(
+                    "Mediana estabelecimentos CNES",
+                    format_num(pd.to_numeric(cnes_df["cnes_estabelecimentos"], errors="coerce").median()),
+                )
+                st.caption("Nota: valores absolutos de CNES dependem da qualidade do cadastro consolidado; use mediana e ranking, não a soma bruta.")
+            else:
+                c2.metric("CNES", "não carregado")
+                c3.metric("Estabelecimentos", "—")
+
+            if float(notif) == 0 and float(obitos) == 0:
+                st.info(
+                    "SINAN/SIM zerados nesta janela epidemiológica (SE selecionada). "
+                    "Amplie o período na barra lateral ou atualize a integração com bases mais recentes."
+                )
+
+            top_gap = integ[integ["gap_sinan_sem_exame"]].sort_values("notificacoes", ascending=False).head(20)
+            if not top_gap.empty and require_cols(top_gap, ["municipio", "notificacoes"], "Gap SINAN"):
+                fig = px.bar(
+                    top_gap.sort_values("notificacoes"),
+                    x="notificacoes",
+                    y="municipio",
+                    orientation="h",
+                    title="Top 20 — notificações SINAN sem exame LACEN no período",
+                    labels={"notificacoes": "Notificações", "municipio": "Município"},
+                )
+                safe_plotly(fig, "Gap SINAN sem exame")
+
+            if {"exames", "notificacoes"}.issubset(integ.columns):
+                scatter = integ[(integ["exames"] > 0) | (integ["notificacoes"] > 0)].copy()
+                scatter = scatter.head(200)
+                if not scatter.empty:
+                    size_col = None
+                    if "obitos_sim" in scatter.columns and float(scatter["obitos_sim"].fillna(0).sum()) > 0:
+                        scatter["_size"] = scatter["obitos_sim"].fillna(0).clip(lower=0) + 1
+                        size_col = "_size"
+                    fig = px.scatter(
+                        scatter,
+                        x="notificacoes",
+                        y="exames",
+                        size=size_col,
+                        hover_name="municipio",
+                        title="Exames LACEN vs notificações SINAN"
+                        + (" (tamanho ≈ óbitos SIM)" if size_col else ""),
+                        labels={"notificacoes": "Notificações SINAN", "exames": "Exames LACEN"},
+                    )
+                    safe_plotly(fig, "LACEN vs SINAN")
+
+            integ_view = with_acao(integ.sort_values(["gap_sinan_sem_exame", "notificacoes"], ascending=[False, False]))
+            with st.expander("Tabela integrada municipal (top 100)"):
+                show_table(
+                    integ_view.head(100)[[c for c in [
+                        "municipio", "exames", "positivos", "notificacoes", "obitos_sim",
+                        "exames_por_notif", "gap_sinan_sem_exame",
+                        "cnes_estabelecimentos", "cnes_leitos_sus", "cnes_equipes_esf", "acao_sugerida",
+                    ] if c in integ_view.columns]],
+                    "integracao_sinan_sim_cnes",
+                    max_rows=100,
+                    key="int_sinan",
+                )
+
+    else:  # Clima
+        st.subheader("Clima, ambiente e vulnerabilidade")
+
+        if climate_assoc is not None and not climate_assoc.empty:
+            ca = climate_assoc.copy()
+            tgt = first_col(ca, ["target", "alvo", "agravo"])
+            if tgt and selected_targets:
+                ca = ca[ca[tgt].isin(selected_targets)]
+            show_table(ca, "Associação clima-doença pré-calculada", max_rows=1000, key="clim_assoc")
+        else:
+            st.info(
+                "climate_association_summary.csv não encontrado ou vazio. "
+                "Gerando associação exploratória em tempo de execução com climate_weekly_municipio.csv."
+            )
+            wf_period_year = wf[wf["epi_year"].eq(analysis_year)].copy()
+            runtime_ca = build_runtime_climate_association(wf_period_year, climate_weekly, selected_targets, selected_muns)
+            if runtime_ca.empty:
+                st.warning(
+                    "Não foi possível calcular associação clima-indicador. Verifique se climate_weekly_municipio.csv "
+                    "tem município, ano/semana e variáveis climáticas numéricas."
+                )
+            else:
+                show_table(runtime_ca, "Associação exploratória clima x indicadores", max_rows=1000, key="clim_runtime")
+                top_ca = runtime_ca.head(40)
+                fig = px.bar(
+                    top_ca,
+                    x="correlacao_spearman",
+                    y="variavel_climatica",
+                    color="target",
+                    orientation="h",
+                    hover_data=["indicador", "lag_semanas", "n"],
+                    title="Maiores correlações exploratórias clima x indicadores",
+                )
+                fig.update_layout(yaxis={"categoryorder": "total ascending"})
+                safe_plotly(fig, "Clima correlações")
+
+        if climate_weekly is not None and not climate_weekly.empty:
+            cw = climate_weekly.copy()
+            mc = first_col(cw, ["municipio", "Município", "Municipio"])
+            yc = first_col(cw, ["epi_year", "ano", "year"])
+            wc = first_col(cw, ["epi_week", "semana", "week"])
+            if mc:
+                cw["municipio"] = cw[mc].map(norm_municipio)
+                if selected_muns:
+                    cw = cw[cw["municipio"].isin(selected_muns)]
+            if yc:
+                cw["epi_year"] = to_num(cw[yc])
+            if wc:
+                cw["epi_week"] = to_num(cw[wc])
+            if yc and wc:
+                cw["periodo"] = [iso_week_label(y, w) for y, w in zip(cw["epi_year"], cw["epi_week"])]
+            numeric_climate_cols = []
+            for c in cw.columns:
+                if norm_key(c) in {"municipio", "epi_year", "epi_week", "ano", "semana", "periodo"}:
+                    continue
+                s = to_num(cw[c])
+                if s.notna().sum() >= 5:
+                    cw[c] = s
+                    numeric_climate_cols.append(c)
+            if numeric_climate_cols and "periodo" in cw.columns:
+                clim_var = st.selectbox("Variável climática para série", numeric_climate_cols, index=0)
+                plot = cw.groupby(["epi_year", "epi_week", "periodo"], as_index=False)[clim_var].mean()
+                fig = px.line(plot.sort_values(["epi_year", "epi_week"]), x="periodo", y=clim_var, markers=True, title=f"Série climática — {clim_var}")
+                safe_plotly(fig, "Série climática")
+
+
+# =============================================================================
+# Módulo: Predição e alertas
+# =============================================================================
+elif modulo == "Predição e alertas":
+    sub_pred = st.radio(
+        "Subvisão",
+        ["Alertas e recomendações", "Alertas próximos dias", "Sinais preditivos", "Séries e predição"],
+        horizontal=True,
+        key="sub_predicao",
+    )
+    df_ml_forecast = get_optional(folder, "ml_forecast")
+    df_ml_anomalias = get_optional(folder, "ml_anomalias")
+    df_ml_backtest = get_optional(folder, "ml_backtest")
+    forecast = get_optional(folder, "forecast")
+
+    if sub_pred == "Alertas e recomendações":
+        st.subheader("Alertas e recomendações operacionais")
+        if manager_alerts.empty and (alerts is None or alerts.empty):
+            st.info("Nenhum alerta disponível para os filtros atuais.")
+        else:
+            if not manager_alerts.empty:
+                st.markdown("#### Fila operacional do período")
+                a1, a2, a3 = st.columns(3)
+                a1.metric("Alertas gestores", format_int(len(manager_alerts)))
+                a2.metric("Críticos", format_int((manager_alerts["prioridade"] == "CRÍTICO").sum()) if "prioridade" in manager_alerts.columns else 0)
+                a3.metric("Municípios", format_int(manager_alerts["municipio"].nunique()) if "municipio" in manager_alerts.columns else 0)
+                with st.expander("Tabela de alertas gestores"):
+                    show_table(with_acao(manager_alerts).head(100), "Alertas gestores (período)", max_rows=100, key="pred_alertas")
+                st.download_button(
+                    "Baixar alertas gestores (CSV)",
+                    data=manager_alerts.to_csv(index=False).encode("utf-8-sig"),
+                    file_name=f"alertas_gestores_periodo_{analysis_year}_SE{week_start:02d}_SE{week_end:02d}_proximos_{horizon_days}_dias.csv",
+                    mime="text/csv",
+                    key="dl_alertas_gestores",
+                )
+            if alerts is not None and not alerts.empty:
+                st.markdown("#### Alertas integrados semanais (pipeline)")
+                al = alerts.copy()
+                tgt = first_col(al, ["target", "alvo", "agravo"])
+                mun = first_col(al, ["municipio", "Município", "Municipio"])
+                if tgt and selected_targets:
+                    al = al[al[tgt].astype(str).isin(selected_targets)]
+                if mun and selected_muns:
+                    al = al[al[mun].map(norm_municipio).isin(selected_muns)]
+                level = first_col(al, ["alert_level", "nivel_risco", "nivel_alerta"])
+                if level:
+                    fig = px.histogram(al, x=level, title="Distribuição de níveis de alerta integrado")
+                    safe_plotly(fig, "Níveis de alerta")
+                with st.expander("Tabela de alertas do pipeline (amostra)"):
+                    show_table(al.head(100), "integrated_alerts (filtrado)", max_rows=100, key="pred_integ_al")
+
+    elif sub_pred == "Alertas próximos dias":
+        st.subheader("Alertas para os próximos dias")
+        if manager_alerts.empty:
+            st.info("Nenhum alerta crítico/alto/moderado no período/filtros atuais.")
+        else:
+            a1, a2, a3, a4, a5 = st.columns(5)
+            a1.metric("Alertas para validação", format_int(len(manager_alerts)))
+            a2.metric("Municípios", format_int(manager_alerts["municipio"].nunique()))
+            a3.metric("Agravos/alvos", format_int(manager_alerts["target"].nunique()))
+            a4.metric("Críticos", format_int((manager_alerts["prioridade"] == "CRÍTICO").sum()))
+            a5.metric("Horizonte", f"{horizon_days} dias")
+
+            st.download_button(
+                "Baixar alertas gestores (CSV em memória)",
+                data=manager_alerts.to_csv(index=False).encode("utf-8-sig"),
+                file_name=f"alertas_gestores_periodo_{analysis_year}_SE{week_start:02d}_SE{week_end:02d}_proximos_{horizon_days}_dias.csv",
+                mime="text/csv",
+                key="dl_alertas_prox",
+            )
+
+            priority_filter = st.multiselect(
+                "Prioridade",
+                ["CRÍTICO", "ALTO", "MODERADO"],
+                default=["CRÍTICO", "ALTO", "MODERADO"],
+            )
+            target_filter_alert = st.multiselect(
+                "Filtrar agravos dos alertas",
+                sorted(manager_alerts["target"].dropna().astype(str).unique().tolist()),
+                default=[],
+            )
+
+            msg_df = manager_alerts[manager_alerts["prioridade"].isin(priority_filter)].copy()
+            if target_filter_alert:
+                msg_df = msg_df[msg_df["target"].isin(target_filter_alert)]
+
+            st.markdown("#### Mensagens prontas para validação técnica")
+            for _, row in msg_df.head(20).iterrows():
+                with st.expander(f"{row['prioridade']} — {row['municipio']} — {row['target']}"):
+                    st.markdown(f"**Assunto:** {row['assunto_email']}")
+                    st.write(row["mensagem_gestor"])
+                    st.markdown(f"**Ação sugerida:** {row['acao_sugerida']}")
+                    st.markdown(f"**Canal sugerido:** {row['canal_sugerido']}")
+
+            show_table(msg_df, "Fila de alertas para gestores", max_rows=2000, key="pred_msg")
+
+    elif sub_pred == "Sinais preditivos":
+        st.subheader("Sinais preditivos — módulo ML baseline")
+        st.caption(
+            "Modelos: forecast EWMA + anomalias; risco/silêncio usam sklearn (Gradient Boosting) "
+            "quando `ml/models_store` estiver disponível, senão baseline logística. "
+            "Resultados em `saida_pipeline` — não treinam no DW. Indicadores Predito."
+        )
+        ml_missing = all(df.empty for df in (df_ml_forecast, df_ml_anomalias, df_ml_risco, df_ml_silencio))
+        if ml_missing:
+            st.info(
+                "Arquivos ML ainda não gerados. Rode: "
+                "`python -m ml.run_ml_pipeline --outdir saida_pipeline`"
+            )
+        else:
+            k1, k2, k3, k4 = st.columns(4)
+            k1.metric("Séries forecast (Predito)", format_int(len(df_ml_forecast)))
+            k2.metric("Anomalias (Derivado)", format_int(len(df_ml_anomalias)))
+            alto_r = int(df_ml_risco["faixa_predita"].astype(str).isin(["alto", "muito_alto"]).sum()) if not df_ml_risco.empty and "faixa_predita" in df_ml_risco.columns else 0
+            k3.metric("Risco alto/muito alto (Predito)", format_int(alto_r))
+            crit_s = int((df_ml_silencio.get("faixa_silencio_predita", pd.Series(dtype=str)).astype(str) == "silencio_critico").sum()) if not df_ml_silencio.empty else 0
+            k4.metric("Silêncio crítico predito", format_int(crit_s))
+
+            if not df_ml_backtest.empty:
+                st.markdown("##### Backtest temporal (alerta SE t → confirmação SE t+1)")
+                bt = df_ml_backtest.copy()
+                show_table(
+                    bt[[c for c in [
+                        "modelo", "escopo", "status", "metodo", "auc", "confirmacao",
+                        "precision", "recall", "brier", "n", "n_alerta_emitido", "n_confirmado",
+                        "n_train_weeks", "n_test_weeks",
+                    ] if c in bt.columns]],
+                    "ml_backtest_summary",
+                    max_rows=50,
+                    key="pred_bt",
+                )
+                glob = bt[bt["escopo"].astype(str).eq("global")] if "escopo" in bt.columns else bt
+                if not glob.empty and "auc" in glob.columns:
+                    auc_risco = glob.loc[glob["modelo"].astype(str).eq("risco"), "auc"]
+                    auc_sil = glob.loc[glob["modelo"].astype(str).eq("silencio"), "auc"]
+                    cbt1, cbt2 = st.columns(2)
+                    cbt1.metric("AUC risco (teste)", format_num(float(auc_risco.iloc[0])) if len(auc_risco) and pd.notna(auc_risco.iloc[0]) else "—")
+                    cbt2.metric("AUC silêncio (teste)", format_num(float(auc_sil.iloc[0])) if len(auc_sil) and pd.notna(auc_sil.iloc[0]) else "—")
+
+            st.markdown("##### Previsão de demanda (estadual por agravo)")
+            if df_ml_forecast.empty:
+                st.caption("Sem `ml_forecast_demanda.csv`.")
+            else:
+                fc = df_ml_forecast.copy()
+                if selected_targets and "target" in fc.columns:
+                    fc = fc[fc["target"].isin(selected_targets)]
+                top_n_fc = st.slider("Agravos no gráfico de forecast", 5, 20, 5, key="top_n_forecast")
+                top_targets: list[str] = []
+                if {"target", "forecast_tests"}.issubset(fc.columns):
+                    rank = (
+                        fc.groupby("target", as_index=False)["forecast_tests"]
+                        .max()
+                        .sort_values("forecast_tests", ascending=False)
+                    )
+                    top_targets = rank["target"].head(int(top_n_fc)).tolist()
+                    fc_plot = fc[fc["target"].isin(top_targets)].copy()
+                else:
+                    fc_plot = fc
+                if require_cols(fc_plot, ["target", "forecast_step", "forecast_tests"], "Forecast ML"):
+                    fig = px.line(
+                        fc_plot.sort_values(["target", "forecast_step"]),
+                        x="forecast_step",
+                        y="forecast_tests",
+                        color="target",
+                        markers=True,
+                        title=f"Exames previstos — top {max(len(top_targets), 1)} agravos (EWMA · Predito)",
+                        labels={"forecast_step": "Semanas à frente", "forecast_tests": "Exames previstos", "target": "Agravo"},
+                    )
+                    safe_plotly(fig, "Forecast demanda")
+                with st.expander("Tabela de forecast (completa filtrada)"):
+                    show_table(fc.head(100), "ml_forecast_demanda", max_rows=100, key="pred_fc")
+
+            st.markdown("##### Anomalias detectadas")
+            if df_ml_anomalias.empty:
+                st.caption("Nenhuma anomalia na última semana / arquivo ausente.")
+            else:
+                an = df_ml_anomalias.copy()
+                if selected_targets and "target" in an.columns:
+                    an = an[an["target"].isin(selected_targets)]
+                if selected_muns and "municipio" in an.columns:
+                    an = an[an["municipio"].map(norm_municipio).isin(selected_muns)]
+                show_table(an.head(50), "Top anomalias", max_rows=50, key="pred_an")
+
+            c_a, c_b = st.columns(2)
+            with c_a:
+                st.markdown("##### Risco predito (top 20)")
+                if df_ml_risco.empty:
+                    st.caption("Sem `ml_risco_predito.csv`.")
+                else:
+                    rr = df_ml_risco.copy()
+                    if selected_targets and "target" in rr.columns:
+                        rr = rr[rr["target"].isin(selected_targets)]
+                    top_rr = rr.head(20)
+                    if require_cols(top_rr, ["municipio", "prob_alerta_proxima_janela"], "Risco predito"):
+                        fig = px.bar(
+                            top_rr.sort_values("prob_alerta_proxima_janela"),
+                            x="prob_alerta_proxima_janela",
+                            y="municipio",
+                            color="faixa_predita" if "faixa_predita" in top_rr.columns else None,
+                            orientation="h",
+                            title="Probabilidade de alerta — próxima janela (Predito)",
+                            labels={"prob_alerta_proxima_janela": "Probabilidade", "municipio": "Município"},
+                        )
+                        safe_plotly(fig, "Risco predito")
+                    with st.expander("Tabela risco predito"):
+                        show_table(
+                            rr.head(50)[[c for c in ["municipio", "target", "prob_alerta_proxima_janela", "faixa_predita", "acao_sugerida"] if c in rr.columns]],
+                            "ml_risco_predito",
+                            max_rows=50,
+                            key="pred_rr",
+                        )
+            with c_b:
+                st.markdown("##### Silêncio predito (top 20)")
+                if df_ml_silencio.empty:
+                    st.caption("Sem `ml_silencio_predito.csv`.")
+                else:
+                    ss = df_ml_silencio.copy()
+                    if selected_targets and "target" in ss.columns:
+                        ss = ss[ss["target"].isin(selected_targets)]
+                    top_ss = ss.head(20)
+                    if require_cols(top_ss, ["municipio", "prob_silencio_proxima_janela"], "Silêncio predito"):
+                        fig = px.bar(
+                            top_ss.sort_values("prob_silencio_proxima_janela"),
+                            x="prob_silencio_proxima_janela",
+                            y="municipio",
+                            color="faixa_silencio_predita" if "faixa_silencio_predita" in top_ss.columns else None,
+                            orientation="h",
+                            title="Probabilidade de silêncio — próxima janela (Predito)",
+                            labels={"prob_silencio_proxima_janela": "Probabilidade", "municipio": "Município"},
+                        )
+                        safe_plotly(fig, "Silêncio predito")
+                    with st.expander("Tabela silêncio predito"):
+                        show_table(
+                            ss.head(50)[[c for c in ["municipio", "target", "prob_silencio_proxima_janela", "faixa_silencio_predita", "acao_sugerida"] if c in ss.columns]],
+                            "ml_silencio_predito",
+                            max_rows=50,
+                            key="pred_ss",
+                        )
+
+    else:  # Séries e predição
+        st.subheader("Séries históricas e predição operacional curta")
+
+        hist_targets = sorted(wf["target"].dropna().astype(str).unique().tolist())
+        chart_default = [t for t in default_chart_targets if t in hist_targets] or hist_targets[: min(5, len(hist_targets))]
+        chosen_hist_targets = st.multiselect(
+            "Agravos/alvos para série histórica (padrão: top 5 por volume)",
+            hist_targets,
+            default=chart_default,
+            key="hist_targets_sel",
+        )
+        metric = st.selectbox(
+            "Indicador da série",
+            ["tests", "positives", "positividade", "notificacoes", "obitos_sim", "incidencia_100k"],
+            index=2,
+        )
+        hist_year_range = st.slider("Intervalo de anos da série", min_year, max_year, (min_year, max_year))
+
+        hist = wf.copy()
+        if chosen_hist_targets:
+            hist = hist[hist["target"].isin(chosen_hist_targets)]
+        hist = hist[hist["epi_year"].between(hist_year_range[0], hist_year_range[1])]
+
+        if hist.empty:
+            st.info("Sem série histórica para o filtro atual.")
+        else:
+            agg_hist = hist.groupby(["epi_year", "epi_week", "periodo", "target"], as_index=False).agg(
+                tests=("tests", "sum"),
+                positives=("positives", "sum"),
+                notificacoes=("notificacoes", "sum"),
+                obitos_sim=("obitos_sim", "sum"),
+                incidencia_100k=("incidencia_100k", "mean"),
+            )
+            agg_hist["positividade"] = safe_div(agg_hist["positives"], agg_hist["tests"])
+            agg_hist["periodo_data"] = [iso_monday(y, w) for y, w in zip(agg_hist["epi_year"], agg_hist["epi_week"])]
+
             fig = px.line(
-                fc.sort_values(["target", "periodo"]) if "target" in fc.columns else fc,
-                x="periodo",
-                y="valor_previsto",
-                color="target" if "target" in fc.columns else None,
-                markers=True,
-                title=f"Forecast integrado — {fc_value}",
-            )
-            st.plotly_chart(fig, use_container_width=True)
-            show_table(fc, "Tabela forecast integrada", max_rows=1000)
-        else:
-            st.info("Forecast encontrado, mas não foi possível identificar uma coluna numérica de previsão.")
-    else:
-        st.info("forecast_integrated_statewide.csv não encontrado. O painel usa projeção operacional curta baseada no período selecionado.")
-
-
-# =============================================================================
-# Aba 12: histórico anual
-# =============================================================================
-with tabs[12]:
-    st.subheader("Histórico anual por agravo/alvo")
-
-    if annual.empty:
-        st.info("integrated_annual_summary.csv vazio ou ausente.")
-    else:
-        af = annual[annual["target"].isin(selected_targets)].copy()
-        if af.empty:
-            st.info("Sem dados anuais para o filtro atual.")
-        else:
-            c1, c2 = st.columns(2)
-            with c1:
-                fig = px.line(
-                    af.sort_values(["target", "ano"]),
-                    x="ano",
-                    y="positividade_media",
-                    color="target",
-                    markers=True,
-                    title="Positividade anual por agravo/alvo",
-                )
-                fig.update_yaxes(tickformat=".0%")
-                st.plotly_chart(fig, use_container_width=True)
-            with c2:
-                fig = px.line(
-                    af.sort_values(["target", "ano"]),
-                    x="ano",
-                    y="testes",
-                    color="target",
-                    markers=True,
-                    title="Solicitações/testes anuais por agravo/alvo",
-                )
-                st.plotly_chart(fig, use_container_width=True)
-
-            c3, c4 = st.columns(2)
-            with c3:
-                fig = px.line(
-                    af.sort_values(["target", "ano"]),
-                    x="ano",
-                    y="notificacoes",
-                    color="target",
-                    markers=True,
-                    title="Notificações anuais por agravo/alvo",
-                )
-                st.plotly_chart(fig, use_container_width=True)
-            with c4:
-                fig = px.line(
-                    af.sort_values(["target", "ano"]),
-                    x="ano",
-                    y="incidencia_100k",
-                    color="target",
-                    markers=True,
-                    title="Incidência anual por 100 mil",
-                )
-                st.plotly_chart(fig, use_container_width=True)
-
-            show_table(af, "Resumo anual integrado", max_rows=1000)
-
-
-# =============================================================================
-# Aba 13: clima e ambiente
-# =============================================================================
-with tabs[13]:
-    st.subheader("Clima, ambiente e vulnerabilidade")
-
-    if climate_assoc is not None and not climate_assoc.empty:
-        ca = climate_assoc.copy()
-        tgt = first_col(ca, ["target", "alvo", "agravo"])
-        if tgt and selected_targets:
-            ca = ca[ca[tgt].isin(selected_targets)]
-        show_table(ca, "Associação clima-doença pré-calculada", max_rows=1000)
-    else:
-        st.info(
-            "climate_association_summary.csv não encontrado ou vazio. "
-            "Gerando associação exploratória em tempo de execução com climate_weekly_municipio.csv."
-        )
-        wf_period_year = wf[wf["epi_year"].eq(analysis_year)].copy()
-        runtime_ca = build_runtime_climate_association(wf_period_year, climate_weekly, selected_targets, selected_muns)
-        if runtime_ca.empty:
-            st.warning(
-                "Não foi possível calcular associação clima-indicador. Verifique se climate_weekly_municipio.csv "
-                "tem município, ano/semana e variáveis climáticas numéricas."
-            )
-        else:
-            show_table(runtime_ca, "Associação exploratória clima x indicadores", max_rows=1000)
-            top_ca = runtime_ca.head(40)
-            fig = px.bar(
-                top_ca,
-                x="correlacao_spearman",
-                y="variavel_climatica",
+                agg_hist.sort_values(["target", "periodo_data"]),
+                x="periodo_data",
+                y=metric,
                 color="target",
-                orientation="h",
-                hover_data=["indicador", "lag_semanas", "n"],
-                title="Maiores correlações exploratórias clima x indicadores",
+                markers=False,
+                title=f"Série histórica semanal — {metric} (Observado/Derivado)",
+                labels={"periodo_data": "Semana epidemiológica", metric: metric, "target": "Agravo/alvo"},
             )
-            fig.update_layout(yaxis={"categoryorder": "total ascending"})
-            st.plotly_chart(fig, use_container_width=True)
+            if metric == "positividade":
+                fig.update_yaxes(tickformat=".0%")
+            safe_plotly(fig, "Série histórica")
 
-    if climate_weekly is not None and not climate_weekly.empty:
-        cw = climate_weekly.copy()
-        mc = first_col(cw, ["municipio", "Município", "Municipio"])
-        yc = first_col(cw, ["epi_year", "ano", "year"])
-        wc = first_col(cw, ["epi_week", "semana", "week"])
-        if mc:
-            cw["municipio"] = cw[mc].map(norm_municipio)
-            if selected_muns:
-                cw = cw[cw["municipio"].isin(selected_muns)]
-        if yc:
-            cw["epi_year"] = to_num(cw[yc])
-        if wc:
-            cw["epi_week"] = to_num(cw[wc])
-        if yc and wc:
-            cw["periodo"] = [iso_week_label(y, w) for y, w in zip(cw["epi_year"], cw["epi_week"])]
-        numeric_climate_cols = []
-        for c in cw.columns:
-            if norm_key(c) in {"municipio", "epi_year", "epi_week", "ano", "semana", "periodo"}:
-                continue
-            s = to_num(cw[c])
-            if s.notna().sum() >= 5:
-                cw[c] = s
-                numeric_climate_cols.append(c)
-        if numeric_climate_cols and "periodo" in cw.columns:
-            clim_var = st.selectbox("Variável climática para série", numeric_climate_cols, index=0)
-            plot = cw.groupby(["epi_year", "epi_week", "periodo"], as_index=False)[clim_var].mean()
-            fig = px.line(plot.sort_values(["epi_year", "epi_week"]), x="periodo", y=clim_var, markers=True, title=f"Série climática — {clim_var}")
-            st.plotly_chart(fig, use_container_width=True)
+            pred = period_df[period_df["target"].isin(chosen_hist_targets)] if chosen_hist_targets else period_df
+            pred_cols = [
+                "prioridade", "municipio", "target", "periodo_analise", "cenario_operacional",
+                "projecao_solicitacoes_proximos_dias", "projecao_positivos_proximos_dias",
+                "positividade_projetada_proximos_dias", "janela_alerta_proximos_dias",
+            ]
+            show_table(pred[[c for c in pred_cols if c in pred.columns]].head(500), "Projeção operacional para próximos dias (Predito)", max_rows=500, key="series_pred")
+
+        if forecast is not None and not forecast.empty:
+            st.markdown("#### Forecast integrado existente")
+            fc = forecast.copy()
+            ft = first_col(fc, ["target", "alvo", "agravo"])
+            fy = first_col(fc, ["epi_year", "ano", "year"])
+            fw = first_col(fc, ["epi_week", "semana", "week"])
+            if ft and ft != "target":
+                fc["target"] = fc[ft]
+            if fy and fy != "epi_year":
+                fc["epi_year"] = to_num(fc[fy])
+            if fw and fw != "epi_week":
+                fc["epi_week"] = to_num(fc[fw])
+            value_candidates = [
+                "predicted_tests", "forecast_tests", "tests_pred", "testes_previstos",
+                "predicted", "forecast", "valor_previsto", "yhat", "previsao"
+            ]
+            numeric_cols = [c for c in fc.columns if pd.api.types.is_numeric_dtype(fc[c])]
+            fc_value_options = [c for c in value_candidates if c in fc.columns] or numeric_cols
+            if fc_value_options:
+                fc_value = st.selectbox("Coluna do forecast", fc_value_options, index=0)
+                fc["valor_previsto"] = to_num(fc[fc_value])
+                if "target" in fc.columns and chosen_hist_targets:
+                    fc = fc[fc["target"].isin(chosen_hist_targets)]
+                if {"epi_year", "epi_week"}.issubset(fc.columns):
+                    fc["periodo"] = [iso_week_label(y, w) for y, w in zip(fc["epi_year"], fc["epi_week"])]
+                else:
+                    fc["periodo"] = np.arange(len(fc)).astype(str)
+                fig = px.line(
+                    fc.sort_values(["target", "periodo"]) if "target" in fc.columns else fc,
+                    x="periodo",
+                    y="valor_previsto",
+                    color="target" if "target" in fc.columns else None,
+                    markers=True,
+                    title=f"Forecast integrado — {fc_value} (Predito)",
+                )
+                safe_plotly(fig, "Forecast integrado")
+                show_table(fc, "Tabela forecast integrada", max_rows=1000, key="series_fc")
+            else:
+                st.info("Forecast encontrado, mas não foi possível identificar uma coluna numérica de previsão.")
+        else:
+            st.info("forecast_integrated_statewide.csv não encontrado. O painel usa projeção operacional curta baseada no período selecionado.")
 
 
 # =============================================================================
-# Aba 14: tabelas e qualidade
+# Módulo: Dados e qualidade
 # =============================================================================
-with tabs[14]:
-    st.subheader("Tabelas, qualidade e exportações")
+elif modulo == "Dados e qualidade":
+    sub_dados = st.radio(
+        "Subvisão",
+        ["Tabelas e qualidade", "Histórico anual"],
+        horizontal=True,
+        key="sub_dados",
+    )
+    schema = get_optional(folder, "schema")
+    backlog = get_optional(folder, "backlog")
+    cnes_capacity = get_optional(folder, "cnes_capacity")
 
-    if not df_qualidade.empty:
-        st.markdown("##### Confiança / qualidade do dado (últimas 8 SE)")
-        q1, q2, q3 = st.columns(3)
-        q1.metric("Municípios avaliados", format_int(len(df_qualidade)))
-        if "faixa_confianca" in df_qualidade.columns:
-            q2.metric(
-                "Confiança baixa",
-                format_int((df_qualidade["faixa_confianca"].astype(str) == "baixa").sum()),
+    if sub_dados == "Tabelas e qualidade":
+        st.subheader("Tabelas, qualidade e exportações")
+
+        if not df_qualidade.empty:
+            st.markdown("##### Confiança / qualidade do dado (últimas 8 SE)")
+            q1, q2, q3 = st.columns(3)
+            q1.metric("Municípios avaliados", format_int(len(df_qualidade)))
+            if "faixa_confianca" in df_qualidade.columns:
+                q2.metric(
+                    "Confiança baixa",
+                    format_int((df_qualidade["faixa_confianca"].astype(str) == "baixa").sum()),
+                )
+            else:
+                q2.metric("Confiança baixa", "—")
+            if "gap_sinan_sem_exame" in df_qualidade.columns:
+                q3.metric(
+                    "Gap SINAN sem exame",
+                    format_int(df_qualidade["gap_sinan_sem_exame"].fillna(False).sum()),
+                )
+            else:
+                q3.metric("Gap SINAN sem exame", "—")
+            show_table(
+                df_qualidade.head(50)[[c for c in [
+                    "municipio", "confianca_dado", "faixa_confianca", "exames", "notif_sinan",
+                    "notif_join", "semanas_com_dado", "gap_sinan_sem_exame", "join_sinan_fraco",
+                    "interpretacao",
+                ] if c in df_qualidade.columns]],
+                "qualidade_dado_municipal (pior confiança primeiro)",
+                max_rows=50,
+                key="dados_qual",
             )
         else:
-            q2.metric("Confiança baixa", "—")
-        if "gap_sinan_sem_exame" in df_qualidade.columns:
-            q3.metric(
-                "Gap SINAN sem exame",
-                format_int(df_qualidade["gap_sinan_sem_exame"].fillna(False).sum()),
-            )
+            st.info("Sem `qualidade_dado_municipal.csv`. Rode a integração final para gerar.")
+
+        export_tables = {
+            "analise_periodo": period_df,
+            "alertas_gestores_proximos_dias": manager_alerts,
+            "municipios_em_risco": df_risco,
+            "municipios_silenciosos": df_silenciosos,
+            "taxa_utilizacao_lacen": df_utilizacao,
+            "fila_operacional": fila_operacional,
+            "qualidade_dado_municipal": df_qualidade,
+            "municipio_vizinhos": df_vizinhos,
+            "ml_risco_predito": df_ml_risco,
+            "ml_silencio_predito": df_ml_silencio,
+            "weekly_filtrado": wf,
+            "annual": annual,
+            "summary_municipio": summary_mun,
+            "integrated_alerts": alerts,
+        }
+        table_choice = st.selectbox("Tabela para visualizar", list(export_tables.keys()) + [
+            "ml_forecast_demanda", "ml_anomalias", "ml_backtest_summary",
+            "schema_catalog", "backlog", "cnes_capacity",
+        ])
+        if table_choice in export_tables:
+            show_table(export_tables[table_choice], table_choice, max_rows=2000, key=f"dados_{table_choice}")
+        elif table_choice == "ml_forecast_demanda":
+            show_table(get_optional(folder, "ml_forecast"), table_choice, max_rows=2000, key="dados_ml_fc")
+        elif table_choice == "ml_anomalias":
+            show_table(get_optional(folder, "ml_anomalias"), table_choice, max_rows=2000, key="dados_ml_an")
+        elif table_choice == "ml_backtest_summary":
+            show_table(get_optional(folder, "ml_backtest"), table_choice, max_rows=2000, key="dados_ml_bt")
+        elif table_choice == "schema_catalog":
+            show_table(schema if schema is not None else pd.DataFrame(), table_choice, max_rows=2000, key="dados_schema")
+        elif table_choice == "backlog":
+            show_table(backlog if backlog is not None else pd.DataFrame(), table_choice, max_rows=2000, key="dados_backlog")
+        elif table_choice == "cnes_capacity":
+            show_table(cnes_capacity if cnes_capacity is not None else pd.DataFrame(), table_choice, max_rows=2000, key="dados_cnes")
+
+        diag = pd.DataFrame([
+            {"item": "Linhas weekly", "valor": str(len(weekly))},
+            {"item": "Agravos/alvos weekly", "valor": str(weekly["target"].nunique())},
+            {"item": "Municípios weekly", "valor": str(weekly["municipio"].nunique())},
+            {"item": "Ano mínimo", "valor": str(min_year)},
+            {"item": "Ano máximo", "valor": str(max_year)},
+            {"item": "Ano analisado", "valor": str(analysis_year)},
+            {"item": "Período analisado", "valor": f"SE{week_start:02d}-SE{week_end:02d}"},
+            {"item": "Alertas gestores", "valor": str(len(manager_alerts))},
+            {"item": "Qualidade do dado", "valor": str(len(df_qualidade))},
+            {"item": "Arestas de vizinhos", "valor": str(len(df_vizinhos))},
+            {"item": "Pasta de dados", "valor": str(folder)},
+            {"item": "MODO_ADMIN", "valor": str(MODO_ADMIN)},
+        ])
+        safe_dataframe(diag)
+
+    else:  # Histórico anual
+        st.subheader("Histórico anual por agravo/alvo")
+
+        if annual.empty:
+            st.info("integrated_annual_summary.csv vazio ou ausente.")
         else:
-            q3.metric("Gap SINAN sem exame", "—")
-        show_table(
-            df_qualidade.head(50)[[c for c in [
-                "municipio", "confianca_dado", "faixa_confianca", "exames", "notif_sinan",
-                "notif_join", "semanas_com_dado", "gap_sinan_sem_exame", "join_sinan_fraco",
-                "interpretacao",
-            ] if c in df_qualidade.columns]],
-            "qualidade_dado_municipal (pior confiança primeiro)",
-            max_rows=50,
-        )
-    else:
-        st.info("Sem `qualidade_dado_municipal.csv`. Rode a integração final para gerar.")
+            af = annual[annual["target"].isin(selected_targets)].copy()
+            if af.empty:
+                st.info("Sem dados anuais para o filtro atual.")
+            else:
+                chart_tgts = top_targets_by_volume(af, selected_targets, n=5, volume_col="testes")
+                af_chart = af[af["target"].isin(chart_tgts)].copy()
+                st.caption(f"Gráficos: top {len(chart_tgts)} agravos por volume ({', '.join(chart_tgts)}). Tabela abaixo mantém o filtro completo.")
+                c1, c2 = st.columns(2)
+                with c1:
+                    fig = px.line(
+                        af_chart.sort_values(["target", "ano"]),
+                        x="ano",
+                        y="positividade_media",
+                        color="target",
+                        markers=True,
+                        title="Positividade anual por agravo/alvo",
+                    )
+                    fig.update_yaxes(tickformat=".0%")
+                    safe_plotly(fig, "Positividade anual")
+                with c2:
+                    fig = px.line(
+                        af_chart.sort_values(["target", "ano"]),
+                        x="ano",
+                        y="testes",
+                        color="target",
+                        markers=True,
+                        title="Solicitações/testes anuais por agravo/alvo",
+                    )
+                    safe_plotly(fig, "Testes anuais")
 
-    export_tables = {
-        "analise_periodo": period_df,
-        "alertas_gestores_proximos_dias": manager_alerts,
-        "municipios_em_risco": df_risco,
-        "municipios_silenciosos": df_silenciosos,
-        "taxa_utilizacao_lacen": df_utilizacao,
-        "fila_operacional": fila_operacional,
-        "qualidade_dado_municipal": df_qualidade,
-        "municipio_vizinhos": df_vizinhos,
-        "ml_forecast_demanda": df_ml_forecast,
-        "ml_anomalias": df_ml_anomalias,
-        "ml_risco_predito": df_ml_risco,
-        "ml_silencio_predito": df_ml_silencio,
-        "ml_backtest_summary": df_ml_backtest,
-        "weekly_filtrado": wf,
-        "annual": annual,
-        "summary_municipio": summary_mun,
-        "integrated_alerts": alerts,
-    }
-    if schema is not None and not schema.empty:
-        export_tables["schema_catalog"] = schema
-    if backlog is not None and not backlog.empty:
-        export_tables["backlog"] = backlog
-    if cnes_capacity is not None and not cnes_capacity.empty:
-        export_tables["cnes_capacity"] = cnes_capacity
+                c3, c4 = st.columns(2)
+                with c3:
+                    fig = px.line(
+                        af_chart.sort_values(["target", "ano"]),
+                        x="ano",
+                        y="notificacoes",
+                        color="target",
+                        markers=True,
+                        title="Notificações anuais por agravo/alvo",
+                    )
+                    safe_plotly(fig, "Notificações anuais")
+                with c4:
+                    fig = px.line(
+                        af_chart.sort_values(["target", "ano"]),
+                        x="ano",
+                        y="incidencia_100k",
+                        color="target",
+                        markers=True,
+                        title="Incidência anual por 100 mil",
+                    )
+                    safe_plotly(fig, "Incidência anual")
 
-    table_choice = st.selectbox("Tabela para visualizar", list(export_tables.keys()))
-    show_table(export_tables[table_choice], table_choice, max_rows=2000)
+                show_table(af, "Resumo anual integrado", max_rows=1000, key="dados_anual")
 
-    diag = pd.DataFrame([
-        {"item": "Linhas weekly", "valor": str(len(weekly))},
-        {"item": "Agravos/alvos weekly", "valor": str(weekly["target"].nunique())},
-        {"item": "Municípios weekly", "valor": str(weekly["municipio"].nunique())},
-        {"item": "Ano mínimo", "valor": str(min_year)},
-        {"item": "Ano máximo", "valor": str(max_year)},
-        {"item": "Ano analisado", "valor": str(analysis_year)},
-        {"item": "Período analisado", "valor": f"SE{week_start:02d}-SE{week_end:02d}"},
-        {"item": "Alertas gestores", "valor": str(len(manager_alerts))},
-        {"item": "Qualidade do dado", "valor": str(len(df_qualidade))},
-        {"item": "Arestas de vizinhos", "valor": str(len(df_vizinhos))},
-        {"item": "Climate association existe", "valor": str(bool(climate_assoc is not None and not climate_assoc.empty))},
-        {"item": "Climate weekly existe", "valor": str(bool(climate_weekly is not None and not climate_weekly.empty))},
-    ])
-    st.dataframe(diag, use_container_width=True)
 
 footer_institucional()
