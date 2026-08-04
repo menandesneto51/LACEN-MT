@@ -89,3 +89,4 @@ saida_pipeline/*
 !saida_pipeline/municipio_vizinhos.parquet
 !saida_pipeline/ml_backtest_summary.csv
 !saida_pipeline/ml_backtest_summary.parquet
+!saida_pipeline/sim_qualidade.csv
