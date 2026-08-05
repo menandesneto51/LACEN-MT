@@ -10,7 +10,9 @@ __pycache__/
 logs/
 *.log
 .streamlit/cache/
+.streamlit/secrets.toml
 !.streamlit/config.toml
+!.streamlit/secrets.toml.example
 
 # Bases brutas pesadas na raiz (não versionar)
 /*.csv

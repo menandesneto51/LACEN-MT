@@ -30,6 +30,35 @@ O Cloud instala `requirements.txt` (inclui `scikit-learn`, `pyarrow`, `joblib`).
 
 O app lê preferencialmente `.parquet` em `saida_pipeline` (mais rápido) e cai para `.csv`.
 
+## Autenticação institucional (opcional)
+
+Por padrão o app fica **público/anônimo** (sem secrets → sem login). Isso evita lockout no Cloud antes de configurar.
+
+Para exigir acesso SES/CIEVS:
+
+1. **Manage app → Settings → Secrets**
+2. Cole um bloco como o de `.streamlit/secrets.toml.example`, por exemplo:
+
+```toml
+[auth]
+password = "troque-esta-senha"
+```
+
+ou usuários nomeados:
+
+```toml
+[auth.users]
+cievs = "senha-cievs"
+lacen = "senha-lacen"
+```
+
+3. **Manage app → Reboot app**
+4. (Opcional) `LACEN_REQUIRE_AUTH = "1"` força o gate mesmo se a senha estiver vazia — use só com credenciais já definidas.
+
+Local: copie `.streamlit/secrets.toml.example` → `.streamlit/secrets.toml`, ou use env `LACEN_DASHBOARD_PASSWORD` / `LACEN_AUTH_USERS=user:pass,user2:pass2` e `LACEN_REQUIRE_AUTH=1`.
+
+Desligar: remova o bloco `[auth]` / senhas dos Secrets e faça **Reboot** (ou apague `LACEN_REQUIRE_AUTH`).
+
 ## Atualizar dados locais antes do push
 
 ```bat

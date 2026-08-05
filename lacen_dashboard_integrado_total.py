@@ -26,10 +26,11 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from lacen_auth import auth_sidebar_status, require_auth
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
 
-VERSAO_DASHBOARD_LACEN = "v5.3-ux-modulos-carga-leve"
+VERSAO_DASHBOARD_LACEN = "v5.4-auth-institucional"
 
 # Pasta padrão pública (Cloud / uso normal). Override só em admin ou diagnóstico.
 DATA_DIR = Path("saida_pipeline")
@@ -1379,6 +1380,8 @@ def build_fila_operacional(
 # App
 # =============================================================================
 
+require_auth()
+
 hero(
     "Sala de Situação Laboratorial Inteligente",
     "Monitoramento de exames, positividade, risco territorial, municípios silenciosos "
@@ -1396,6 +1399,7 @@ folder = str(DATA_DIR)
 with st.sidebar:
     st.markdown("### SES-MT · CIEVS · LACEN")
     st.caption("Painel institucional de vigilância laboratorial")
+    auth_sidebar_status()
     if MODO_ADMIN:
         folder = st.text_input("Pasta saida_pipeline (admin)", value=str(DATA_DIR))
         st.caption("MODO_ADMIN ativo — override de pasta permitido.")

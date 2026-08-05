@@ -26,3 +26,7 @@ Abas novas: Visão executiva, Municípios em risco, Municípios silenciosos, Uti
 ## Segredos / integrações
 Use `.env.example` como modelo. Não grave senhas no código.
 Padrão alinhado a TITAN_V40_DEV / Sentinela / SISREG (`DW_*`, Telegram, e-mail).
+
+### Auth do dashboard (SES/CIEVS)
+Sem secrets → painel **público**. Com `[auth]` em Streamlit Secrets (ou `LACEN_DASHBOARD_PASSWORD` / `LACEN_REQUIRE_AUTH=1`) → login institucional.
+Modelo: `.streamlit/secrets.toml.example`. Cloud: `STREAMLIT_CLOUD.md`. Servidor SES: `scripts/deploy_ses.md`.
