@@ -532,6 +532,32 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
         labels=["habitual", "atencao", "alerta", "alto_alerta"],
         include_lowest=True,
     )
+    # Bandas institucionais: absoluto (risco_max) + percentil estadual do score
+    rmax = risco["risco_max"].fillna(0)
+    risco["banda_absoluta"] = np.where(
+        rmax >= 3.0, "Crítico",
+        np.where(rmax >= 2.0, "Alto", np.where(rmax >= 1.0, "Moderado", "Baixo")),
+    )
+    pct = s.rank(method="average", pct=True) * 100.0
+    risco["percentil_estadual"] = np.round(pct, 1)
+    risco["banda_percentil"] = np.where(
+        pct >= 90, "Crítico",
+        np.where(pct >= 75, "Alto", np.where(pct >= 50, "Moderado", "Baixo")),
+    )
+    _rank = {"Baixo": 0, "Moderado": 1, "Alto": 2, "Crítico": 3}
+    risco["banda_risco"] = [
+        a if _rank.get(a, 0) >= _rank.get(p, 0) else p
+        for a, p in zip(risco["banda_absoluta"], risco["banda_percentil"])
+    ]
+    risco["criterio_banda"] = np.where(
+        risco["banda_absoluta"].map(_rank) > risco["banda_percentil"].map(_rank),
+        "absoluto",
+        np.where(
+            risco["banda_percentil"].map(_rank) > risco["banda_absoluta"].map(_rank),
+            "percentil",
+            "ambos",
+        ),
+    )
     risco = risco.sort_values(["score_risco_territorial", "risco_max"], ascending=False)
     risco.to_csv(outdir / "municipios_em_risco.csv", index=False, encoding="utf-8-sig")
 

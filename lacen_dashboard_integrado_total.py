@@ -649,6 +649,7 @@ def aggregate_period(df: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
         risco_composto=("risco_composto", "max"),
         semana_min=("epi_week", "min"),
         semana_max=("epi_week", "max"),
+        **({"codigo_ibge": ("codigo_ibge", "max")} if "codigo_ibge" in df.columns else {}),
     )
     g["positividade"] = safe_div(g["positives"], g["tests"])
     g["incidencia_100k"] = np.where(g["populacao"] > 0, g["notificacoes"] / g["populacao"] * 100000, np.nan)
@@ -977,11 +978,21 @@ def find_geo_file(user_path: str = "") -> Optional[Path]:
         p = Path(user_path)
         if p.exists() and p.suffix.lower() in {".shp", ".geojson", ".json"}:
             return p
-    for d in [Path("shapefiles"), Path("malhas"), Path("."), Path("geo")]:
+    preferred = [
+        Path("geo") / "mt_municipios.geojson",
+        Path("assets") / "mt_municipios.geojson",
+        Path("malhas") / "mt_municipios.geojson",
+    ]
+    for p in preferred:
+        if p.exists():
+            return p
+    for d in [Path("geo"), Path("shapefiles"), Path("malhas"), Path("assets"), Path(".")]:
         if not d.exists():
             continue
         for ext in ("*.geojson", "*.json", "*.shp"):
             files = sorted(d.glob(ext))
+            # Evita JSON de config genérico na raiz
+            files = [f for f in files if "municip" in f.name.lower() or f.suffix.lower() in {".geojson", ".shp"} or d.name in {"geo", "malhas", "shapefiles"}]
             if files:
                 return files[0]
     return None
@@ -1003,6 +1014,13 @@ def load_geojson_or_shp(path_str: str):
             for idx, feat in enumerate(geojson.get("features", [])):
                 props = dict(feat.get("properties", {}) or {})
                 props["__id"] = str(idx)
+                # Normaliza código IBGE (tbrugz/geodata-br usa "id")
+                ibge_raw = props.get("id") or props.get("CD_MUN") or props.get("codigo_ibge") or props.get("codarea")
+                if ibge_raw is not None and str(ibge_raw).strip():
+                    try:
+                        props["codigo_ibge"] = str(int(float(str(ibge_raw).strip())))
+                    except Exception:
+                        props["codigo_ibge"] = str(ibge_raw).strip()
                 feat["properties"] = props
                 rows.append(props)
             props_df = pd.DataFrame(rows)
@@ -1026,6 +1044,12 @@ def load_geojson_or_shp(path_str: str):
             for idx, sr in enumerate(reader.iterShapeRecords()):
                 props = {fields[i]: sr.record[i] for i in range(len(fields))}
                 props["__id"] = str(idx)
+                ibge_raw = props.get("CD_MUN") or props.get("codigo_ibge") or props.get("GEOCODIGO")
+                if ibge_raw is not None and str(ibge_raw).strip():
+                    try:
+                        props["codigo_ibge"] = str(int(float(str(ibge_raw).strip())))
+                    except Exception:
+                        props["codigo_ibge"] = str(ibge_raw).strip()
                 try:
                     geom = sr.shape.__geo_interface__
                 except Exception:
@@ -1045,47 +1069,87 @@ def load_geojson_or_shp(path_str: str):
     return None, pd.DataFrame(), "Formato de malha não suportado."
 
 
+def _norm_ibge(series: pd.Series) -> pd.Series:
+    out = pd.to_numeric(series, errors="coerce")
+    return out.apply(lambda x: str(int(x)) if pd.notna(x) else "")
+
+
 def join_shape_with_period(props_df: pd.DataFrame, period_df: pd.DataFrame) -> pd.DataFrame:
     if props_df is None or props_df.empty or period_df is None or period_df.empty:
         return pd.DataFrame()
     props = props_df.copy()
+    risk = period_df.copy()
+
+    # Preferência: join por código IBGE (mais estável que nome)
+    if "codigo_ibge" in props.columns and "codigo_ibge" in risk.columns:
+        props["codigo_ibge_join"] = _norm_ibge(props["codigo_ibge"])
+        risk["codigo_ibge_join"] = _norm_ibge(risk["codigo_ibge"])
+        merged = props[["__id", "codigo_ibge_join"]].merge(
+            risk, on="codigo_ibge_join", how="left"
+        )
+        if merged["codigo_ibge_join"].ne("").any() and merged.drop(columns=["__id", "codigo_ibge_join"], errors="ignore").notna().any().any():
+            hit = int(merged.drop(columns=["__id"], errors="ignore").notna().any(axis=1).sum()) if len(merged) else 0
+            # Se poucos matches, cai no nome
+            if hit >= max(5, int(0.1 * len(props))):
+                return merged
+
     if "municipio_join" not in props.columns:
         mc = infer_shape_municipio_col(props)
         if not mc:
             return pd.DataFrame()
         props["municipio_join"] = props[mc].map(norm_join_municipio)
-    risk = period_df.copy()
+    if "municipio" not in risk.columns:
+        return pd.DataFrame()
     risk["municipio_join"] = risk["municipio"].map(norm_join_municipio)
-    return props[["__id", "municipio_join"]].merge(risk, on="municipio_join", how="left")
+    keep_props = ["__id", "municipio_join"] + (["codigo_ibge"] if "codigo_ibge" in props.columns else [])
+    return props[keep_props].merge(risk, on="municipio_join", how="left")
 
 
 def make_choropleth(geojson: dict, merged: pd.DataFrame, value_col: str, title: str):
     if geojson is None or merged is None or merged.empty or value_col not in merged.columns:
         return None
     plot_df = merged.copy()
-    plot_df[value_col] = to_num(plot_df[value_col])
-    if plot_df[value_col].notna().sum() == 0:
-        return None
+    # Categorical risk bands (object ou pandas StringDtype)
+    cat_cols = {"banda_risco", "faixa_risco", "prioridade", "banda_absoluta", "banda_percentil"}
+    is_categorical = value_col in cat_cols or not pd.api.types.is_numeric_dtype(plot_df[value_col])
+    if is_categorical and value_col in cat_cols:
+        plot_df[value_col] = plot_df[value_col].astype(str).replace({"nan": pd.NA, "None": pd.NA, "<NA>": pd.NA})
+        if plot_df[value_col].notna().sum() == 0:
+            return None
+        color_kw = {
+            "color": value_col,
+            "category_orders": {value_col: [k for k in [
+                "Baixo", "Moderado", "Alto", "Crítico",
+                "habitual", "atencao", "alerta", "alto_alerta",
+                "MODERADO", "ALTO", "CRÍTICO",
+            ] if k in set(plot_df[value_col].dropna().astype(str))]},
+        }
+    else:
+        plot_df[value_col] = to_num(plot_df[value_col])
+        if plot_df[value_col].notna().sum() == 0:
+            return None
+        color_kw = {"color": value_col}
     hover_cols = [c for c in [
-        "municipio", "target", "prioridade", "cenario_operacional", "tests_periodo",
+        "municipio", "target", "prioridade", "banda_risco", "faixa_risco",
+        "cenario_operacional", "tests_periodo",
         "positivos_periodo", "positividade_periodo", "delta_positividade_pp",
         "delta_tests_abs", "notificacoes_periodo", "projecao_solicitacoes_proximos_dias",
-        "janela_alerta_proximos_dias",
+        "janela_alerta_proximos_dias", "percentil_estadual", "codigo_ibge",
     ] if c in plot_df.columns]
     fig = px.choropleth_mapbox(
         plot_df,
         geojson=geojson,
         locations="__id",
         featureidkey="properties.__id",
-        color=value_col,
         hover_name="municipio" if "municipio" in plot_df.columns else None,
         hover_data={c: True for c in hover_cols if c != "municipio"},
         mapbox_style="open-street-map",
-        zoom=4.6,
-        center={"lat": -13.2, "lon": -56.1},
+        zoom=4.8,
+        center={"lat": -12.8, "lon": -56.0},
         opacity=0.72,
         height=630,
         title=title,
+        **color_kw,
     )
     fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
     return fig
@@ -1613,6 +1677,23 @@ if modulo == "Visão executiva":
         c5.metric("Silenciosos (Derivado)", format_int(silencio_n))
         c6.metric("Prioritários atenção+ (Derivado)", format_int(alto_risco_n))
 
+        # Bandas absoluto + percentil (ML e/ou territorial)
+        banda_src = df_ml_risco if not df_ml_risco.empty and "banda_risco" in df_ml_risco.columns else (
+            df_risco if not df_risco.empty and "banda_risco" in df_risco.columns else pd.DataFrame()
+        )
+        if not banda_src.empty:
+            st.caption(
+                "Bandas de risco (Baixo / Moderado / Alto / Crítico): combinam severidade **absoluta** "
+                "(risco composto, positividade, limiar ML) e **percentil** estadual da probabilidade/score. "
+                "A banda final é o maior entre os dois critérios."
+            )
+            bc1, bc2, bc3, bc4 = st.columns(4)
+            counts = banda_src["banda_risco"].astype(str).value_counts()
+            bc1.metric("Banda Crítico", format_int(int(counts.get("Crítico", 0))))
+            bc2.metric("Banda Alto", format_int(int(counts.get("Alto", 0))))
+            bc3.metric("Banda Moderado", format_int(int(counts.get("Moderado", 0))))
+            bc4.metric("Banda Baixo", format_int(int(counts.get("Baixo", 0))))
+
         st.markdown("##### O que fazer — fila operacional (ação · prazo · responsável)")
         if fila_operacional.empty:
             st.info("Sem fila operacional para a janela atual.")
@@ -1620,7 +1701,7 @@ if modulo == "Visão executiva":
             show_table(
                 fila_operacional.head(15)[[c for c in [
                     "municipio", "sinal", "motivo", "prioridade",
-                    "alerta_hibrido", "prob_ml", "faixa_ml",
+                    "alerta_hibrido", "prob_ml", "faixa_ml", "banda_risco",
                     "acao_sugerida", "responsavel", "prazo_acao", "agravo_alvo",
                 ] if c in fila_operacional.columns]],
                 "Fila operacional (top 15)",
@@ -1850,13 +1931,27 @@ elif modulo == "Territórios prioritários":
             m1.metric("Municípios listados", format_int(len(view)))
             m2.metric("Score médio (Derivado)", format_num(view["score_risco_territorial"].mean()) if "score_risco_territorial" in view.columns else "—")
             m3.metric("Em alerta/alto", format_int(view["faixa_risco"].astype(str).isin(["alerta", "alto_alerta"]).sum()) if "faixa_risco" in view.columns else 0)
+            if "banda_risco" in view.columns:
+                st.caption(
+                    "Legenda: **banda absoluta** usa risco composto (cortes 1/2/3); "
+                    "**banda percentil** usa ranking estadual do score; "
+                    "**banda final** = max(absoluto, percentil)."
+                )
+                b1, b2, b3, b4 = st.columns(4)
+                vc = view["banda_risco"].astype(str).value_counts()
+                b1.metric("Crítico", format_int(int(vc.get("Crítico", 0))))
+                b2.metric("Alto", format_int(int(vc.get("Alto", 0))))
+                b3.metric("Moderado", format_int(int(vc.get("Moderado", 0))))
+                b4.metric("Baixo", format_int(int(vc.get("Baixo", 0))))
             topn = view.head(20)
             if require_cols(topn, ["municipio", "score_risco_territorial"], "Ranking de risco"):
                 fig = px.bar(
                     topn.sort_values("score_risco_territorial"),
                     x="score_risco_territorial",
                     y="municipio",
-                    color="faixa_risco" if "faixa_risco" in topn.columns else None,
+                    color="banda_risco" if "banda_risco" in topn.columns else (
+                        "faixa_risco" if "faixa_risco" in topn.columns else None
+                    ),
                     orientation="h",
                     title="Ranking municipal de risco territorial (top 20)",
                     labels={"score_risco_territorial": "Score de risco", "municipio": "Município"},
@@ -1865,7 +1960,9 @@ elif modulo == "Territórios prioritários":
             with st.expander("Tabela de risco (limitada)"):
                 show_table(
                     view[[c for c in [
-                        "municipio", "faixa_risco", "score_risco_territorial",
+                        "municipio", "banda_risco", "banda_absoluta", "banda_percentil",
+                        "percentil_estadual", "criterio_banda", "faixa_risco",
+                        "score_risco_territorial",
                         "tests_8sem", "positives_8sem", "notificacoes_8sem",
                         "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
                     ] if c in view.columns]],
@@ -2004,6 +2101,7 @@ elif modulo == "Territórios prioritários":
             map_metric = st.selectbox(
                 "Indicador do mapa",
                 [
+                    "banda_risco",
                     "prioridade_score",
                     "positividade_periodo",
                     "delta_positividade_pp",
@@ -2018,6 +2116,37 @@ elif modulo == "Territórios prioritários":
             )
             render_map = st.checkbox("Renderizar mapa agora", value=False, key="render_map_now")
             map_df = period_df[period_df["target"].astype(str).eq(map_target)].copy()
+            # Anexa IBGE + banda territorial/ML para coroplético
+            if "codigo_ibge" not in map_df.columns:
+                mm_ibge = get_optional(folder, "municipal_master")
+                if mm_ibge is not None and not mm_ibge.empty and {"municipio", "codigo_ibge"}.issubset(mm_ibge.columns):
+                    mmj = mm_ibge[["municipio", "codigo_ibge"]].copy()
+                    mmj["municipio"] = mmj["municipio"].map(norm_municipio)
+                    map_df["municipio"] = map_df["municipio"].map(norm_municipio)
+                    map_df = map_df.merge(mmj, on="municipio", how="left")
+            if "banda_risco" not in map_df.columns:
+                if not df_risco.empty and "banda_risco" in df_risco.columns:
+                    br = df_risco[["municipio", "banda_risco"] + (
+                        ["percentil_estadual"] if "percentil_estadual" in df_risco.columns else []
+                    )].copy()
+                    br["municipio"] = br["municipio"].map(norm_municipio)
+                    map_df["municipio"] = map_df["municipio"].map(norm_municipio)
+                    map_df = map_df.merge(br, on="municipio", how="left")
+                elif not df_ml_risco.empty and "banda_risco" in df_ml_risco.columns:
+                    br = df_ml_risco.copy()
+                    if "target" in br.columns:
+                        br = br[br["target"].astype(str).eq(map_target)]
+                    if "prob_alerta_proxima_janela" in br.columns:
+                        br = br.sort_values("prob_alerta_proxima_janela", ascending=False)
+                    keep = ["municipio", "banda_risco"] + [
+                        c for c in ("percentil_estadual", "banda_absoluta", "banda_percentil") if c in br.columns
+                    ]
+                    br = br.drop_duplicates("municipio", keep="first")[keep]
+                    br["municipio"] = br["municipio"].map(norm_municipio)
+                    map_df["municipio"] = map_df["municipio"].map(norm_municipio)
+                    map_df = map_df.merge(br, on="municipio", how="left")
+            if map_metric == "banda_risco" and "banda_risco" not in map_df.columns:
+                st.warning("Coluna `banda_risco` ainda não disponível — rode o ML/integração ou escolha outro indicador.")
             if not render_map:
                 st.info("Selecione o agravo/indicador e marque **Renderizar mapa agora** para carregar a malha.")
                 with st.expander("Prévia tabular do agravo (sem mapa)"):
@@ -2028,6 +2157,11 @@ elif modulo == "Territórios prioritários":
                 if found_geo:
                     geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
                     st.caption(geo_msg)
+                else:
+                    st.caption(
+                        "Malha ausente: coloque `geo/mt_municipios.geojson` (municípios de MT com código IBGE) "
+                        "para ativar o coroplético."
+                    )
 
                 if geojson is not None and not props_df.empty:
                     merged = join_shape_with_period(props_df, map_df)
@@ -2554,17 +2688,26 @@ elif modulo == "Predição e alertas":
                             top_rr.sort_values("prob_alerta_proxima_janela"),
                             x="prob_alerta_proxima_janela",
                             y="municipio",
-                            color="faixa_predita" if "faixa_predita" in top_rr.columns else None,
+                            color="banda_risco" if "banda_risco" in top_rr.columns else (
+                                "faixa_predita" if "faixa_predita" in top_rr.columns else None
+                            ),
                             orientation="h",
                             title="Probabilidade de alerta — próxima janela (Predito)",
                             labels={"prob_alerta_proxima_janela": "Probabilidade", "municipio": "Município"},
                         )
                         safe_plotly(fig, "Risco predito")
+                    if "banda_risco" in rr.columns:
+                        st.caption(
+                            "Bandas: absoluto (risco/positividade/limiar) × percentil estadual da prob. ML; "
+                            "final = max dos dois."
+                        )
                     with st.expander("Tabela risco predito + drivers"):
                         show_table(
                             rr.head(50)[[c for c in [
                                 "municipio", "target", "familia", "prob_alerta_proxima_janela",
                                 "limiar_operacional", "acima_limiar", "faixa_predita",
+                                "banda_risco", "banda_absoluta", "banda_percentil",
+                                "percentil_estadual", "criterio_banda", "risco_composto",
                                 "drivers", "acao_sugerida", "metodo",
                             ] if c in rr.columns]],
                             "ml_risco_predito",

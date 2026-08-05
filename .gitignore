@@ -35,6 +35,11 @@ logs/
 *.cpg
 *.zip
 
+# Malha municipal leve (MT) — versionar GeoJSON pequeno
+!geo/
+!geo/mt_municipios.geojson
+!geo/README.md
+
 # Artefatos locais
 antigos/
 lacen TATI/

@@ -128,6 +128,116 @@ def detect_anomalias(features: pd.DataFrame, z_threshold: float = 2.5) -> pd.Dat
     return out.reset_index(drop=True)
 
 
+# Bandas institucionais (absoluto ∩ percentil estadual)
+BANDAS_RISCO = ("Baixo", "Moderado", "Alto", "Crítico")
+BAND_RANK = {b: i for i, b in enumerate(BANDAS_RISCO)}
+LEGENDA_BANDAS_RISCO = (
+    "Bandas combinam severidade absoluta (risco composto / positividade / limiar ML) "
+    "e percentil estadual da probabilidade predita na família do agravo. "
+    "A banda final é o maior entre absoluto e percentil."
+)
+
+
+def _banda_absoluta_row(
+    risco_composto: float,
+    positividade: float,
+    tests: float,
+    acima_limiar: bool,
+    nivel_risco: str = "",
+) -> str:
+    """Severidade operacional absoluta (não relativa à distribuição)."""
+    nivel = str(nivel_risco or "").strip().lower()
+    r = float(risco_composto or 0.0)
+    pos = float(positividade or 0.0)
+    t = float(tests or 0.0)
+    # Alinha aos cortes de nivel_risco do weekly (1 / 2 / 3)
+    if nivel == "alto_alerta" or r >= 3.0 or (acima_limiar and r >= 2.0 and pos >= 0.35 and t >= 3):
+        return "Crítico"
+    if nivel == "alerta" or r >= 2.0 or acima_limiar or (pos >= 0.50 and t >= 2):
+        return "Alto"
+    if nivel == "atencao" or r >= 1.0 or (pos >= 0.25 and t >= 1):
+        return "Moderado"
+    return "Baixo"
+
+
+def _banda_from_percentil(pct: float) -> str:
+    """Posição relativa estadual (0–100)."""
+    p = float(pct if pd.notna(pct) else 0.0)
+    if p >= 90:
+        return "Crítico"
+    if p >= 75:
+        return "Alto"
+    if p >= 50:
+        return "Moderado"
+    return "Baixo"
+
+
+def _max_banda(a: str, b: str) -> str:
+    return a if BAND_RANK.get(a, 0) >= BAND_RANK.get(b, 0) else b
+
+
+def aplicar_bandas_risco(out: pd.DataFrame, snap: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+    """
+    Enriquece ml_risco_predito com bandas absoluta + percentil + combinada.
+    Preferencialmente usa colunas do snapshot de features (risco_composto, etc.).
+    """
+    if out is None or out.empty:
+        return out if out is not None else pd.DataFrame()
+
+    df = out.copy()
+    if snap is not None and not snap.empty:
+        keys = [c for c in ("municipio", "target", "epi_year", "epi_week") if c in df.columns and c in snap.columns]
+        extras = [c for c in ("risco_composto", "positividade", "tests", "nivel_risco") if c in snap.columns]
+        if keys and extras:
+            meta = snap[keys + extras].drop_duplicates(subset=keys, keep="last")
+            df = df.merge(meta, on=keys, how="left", suffixes=("", "_snap"))
+
+    risco = pd.to_numeric(df.get("risco_composto", 0), errors="coerce").fillna(0)
+    pos = pd.to_numeric(df.get("positividade", 0), errors="coerce").fillna(0)
+    tests = pd.to_numeric(df.get("tests", 0), errors="coerce").fillna(0)
+    acima = df.get("acima_limiar", False)
+    if not isinstance(acima, pd.Series):
+        acima = pd.Series(False, index=df.index)
+    else:
+        acima = acima.fillna(False).astype(bool)
+    nivel = df["nivel_risco"].astype(str) if "nivel_risco" in df.columns else pd.Series("", index=df.index)
+
+    df["risco_composto"] = np.round(risco, 4)
+    df["banda_absoluta"] = [
+        _banda_absoluta_row(r, p, t, bool(a), n)
+        for r, p, t, a, n in zip(risco, pos, tests, acima, nivel)
+    ]
+
+    # Percentil estadual da probabilidade predita (por família; fallback global)
+    prob = pd.to_numeric(df.get("prob_alerta_proxima_janela", 0), errors="coerce")
+    pct = pd.Series(np.nan, index=df.index, dtype=float)
+    if "familia" in df.columns:
+        for _, idx in df.groupby("familia", dropna=False).groups.items():
+            sub = prob.loc[idx]
+            if sub.notna().sum() >= 2:
+                pct.loc[idx] = sub.rank(method="average", pct=True) * 100.0
+            elif sub.notna().sum() == 1:
+                pct.loc[idx] = 50.0
+    if pct.isna().all() and prob.notna().any():
+        pct = prob.rank(method="average", pct=True) * 100.0
+    df["percentil_estadual"] = np.round(pct.fillna(0), 1)
+    df["banda_percentil"] = df["percentil_estadual"].map(_banda_from_percentil)
+    df["banda_risco"] = [
+        _max_banda(a, p) for a, p in zip(df["banda_absoluta"], df["banda_percentil"])
+    ]
+    df["criterio_banda"] = np.where(
+        df["banda_absoluta"].map(BAND_RANK) > df["banda_percentil"].map(BAND_RANK),
+        "absoluto",
+        np.where(
+            df["banda_percentil"].map(BAND_RANK) > df["banda_absoluta"].map(BAND_RANK),
+            "percentil",
+            "ambos",
+        ),
+    )
+    df["legenda_banda"] = LEGENDA_BANDAS_RISCO
+    return df
+
+
 def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
     """Probabilidade operacional de município-alvo estar em alerta na próxima janela."""
     snap = latest_week_snapshot(features)
@@ -212,6 +322,7 @@ def score_risco_predito(features: pd.DataFrame) -> pd.DataFrame:
     out["modelo_versao"] = np.where(
         pd.Series(metodos).astype(str).str.startswith("sklearn"), "sklearn_v2", "baseline_v1"
     )
+    out = aplicar_bandas_risco(out, snap)
     return out.sort_values("prob_alerta_proxima_janela", ascending=False).reset_index(drop=True)
 
 

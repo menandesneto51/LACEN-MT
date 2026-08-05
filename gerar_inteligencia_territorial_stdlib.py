@@ -188,6 +188,43 @@ def main():
             "faixa_risco": faixa,
         })
     risco_rows.sort(key=lambda r: (r["score_risco_territorial"], r["risco_max"]), reverse=True)
+    # Bandas absoluto + percentil estadual
+    scores = [r["score_risco_territorial"] for r in risco_rows]
+    n = len(scores)
+    ranked = sorted(scores)
+    for r in risco_rows:
+        rmax = float(r["risco_max"] or 0)
+        if rmax >= 3.0:
+            ba = "Crítico"
+        elif rmax >= 2.0:
+            ba = "Alto"
+        elif rmax >= 1.0:
+            ba = "Moderado"
+        else:
+            ba = "Baixo"
+        # percentil empírico
+        sc = float(r["score_risco_territorial"] or 0)
+        if n <= 1:
+            pct = 50.0
+        else:
+            pct = 100.0 * sum(1 for x in ranked if x <= sc) / n
+        if pct >= 90:
+            bp = "Crítico"
+        elif pct >= 75:
+            bp = "Alto"
+        elif pct >= 50:
+            bp = "Moderado"
+        else:
+            bp = "Baixo"
+        order = {"Baixo": 0, "Moderado": 1, "Alto": 2, "Crítico": 3}
+        br = ba if order[ba] >= order[bp] else bp
+        r["banda_absoluta"] = ba
+        r["percentil_estadual"] = round(pct, 1)
+        r["banda_percentil"] = bp
+        r["banda_risco"] = br
+        r["criterio_banda"] = (
+            "absoluto" if order[ba] > order[bp] else ("percentil" if order[bp] > order[ba] else "ambos")
+        )
 
     # Atividade recente/histórica por município
     recent_by_mun: dict[str, dict] = defaultdict(lambda: {"tests": 0.0, "notif": 0.0, "positives": 0.0, "alvos": set()})
@@ -289,6 +326,7 @@ def main():
             "municipio", "alvos_monitorados", "tests_8sem", "positives_8sem", "notificacoes_8sem",
             "populacao", "risco_medio", "risco_max", "positividade_media", "alvos_alto_alerta",
             "alvos_alerta", "score_risco_territorial", "faixa_risco",
+            "banda_absoluta", "percentil_estadual", "banda_percentil", "banda_risco", "criterio_banda",
         ],
     )
     write_csv(

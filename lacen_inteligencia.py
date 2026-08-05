@@ -250,18 +250,22 @@ def enriquecer_fila_com_ml(
         rr["municipio"] = rr["municipio"].astype(str).str.strip().str.upper()
         pcol = "prob_alerta_proxima_janela"
         if pcol in rr.columns:
-            agg = {pcol: "max"}
-            if "faixa_predita" in rr.columns:
-                # pega faixa do registro de maior probabilidade
-                idx = rr.groupby("municipio")[pcol].idxmax()
-                risco_map = rr.loc[idx, ["municipio", pcol, "faixa_predita"]].rename(
-                    columns={pcol: "prob_ml_risco", "faixa_predita": "faixa_ml_risco"}
-                )
-            else:
-                risco_map = (
-                    rr.groupby("municipio", as_index=False)
-                    .agg(prob_ml_risco=(pcol, "max"))
-                )
+            idx = rr.groupby("municipio")[pcol].idxmax()
+            keep = ["municipio", pcol]
+            rename = {pcol: "prob_ml_risco"}
+            for src, dst in (
+                ("faixa_predita", "faixa_ml_risco"),
+                ("banda_risco", "banda_risco"),
+                ("banda_absoluta", "banda_absoluta"),
+                ("banda_percentil", "banda_percentil"),
+                ("percentil_estadual", "percentil_estadual"),
+                ("criterio_banda", "criterio_banda"),
+            ):
+                if src in rr.columns:
+                    keep.append(src)
+                    rename[src] = dst
+            risco_map = rr.loc[idx, keep].rename(columns=rename)
+            if "faixa_ml_risco" not in risco_map.columns:
                 risco_map["faixa_ml_risco"] = ""
 
 
@@ -281,6 +285,7 @@ def enriquecer_fila_com_ml(
     else:
         out["prob_ml_risco"] = np.nan
         out["faixa_ml_risco"] = ""
+        out["banda_risco"] = ""
 
     if not sil_map.empty:
         out = out.merge(sil_map, on="municipio", how="left")
@@ -293,11 +298,19 @@ def enriquecer_fila_com_ml(
     out.loc[~sil_mask, "prob_ml"] = out.loc[~sil_mask, "prob_ml_risco"]
     if "faixa_ml_risco" in out.columns:
         out.loc[~sil_mask, "faixa_ml"] = out.loc[~sil_mask, "faixa_ml_risco"].fillna("").astype(str)
+    if "banda_risco" in out.columns:
+        out["banda_risco"] = out["banda_risco"].fillna("").astype(str)
 
     out["alerta_hibrido"] = (
         out["prioridade"].astype(str).isin(["CRÍTICO", "ALTO"])
         & out["prob_ml"].fillna(0).ge(limiar_ml)
     )
+    # Eleva prioridade quando banda combinada é Crítico
+    if "banda_risco" in out.columns:
+        out.loc[
+            out["banda_risco"].astype(str).eq("Crítico") & out["prioridade"].astype(str).eq("ALTO"),
+            "prioridade",
+        ] = "CRÍTICO"
     # Reforça prioridade quando híbrido
     out.loc[out["alerta_hibrido"] & out["prioridade"].astype(str).eq("ALTO"), "prioridade"] = "CRÍTICO"
     out.loc[out["alerta_hibrido"], "motivo"] = (
