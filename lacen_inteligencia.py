@@ -61,6 +61,15 @@ PROTOCOLOS = {
         "checklist": "1) Acompanhar indicadores; 2) Reavaliar na próxima janela epidemiológica",
         "acao": "Acompanhar indicadores e reavaliar na próxima janela epidemiológica.",
     },
+    "emergencia": {
+        "responsavel": "CIEVS / Sala de Situação + LACEN",
+        "prazo": "24–48h",
+        "checklist": (
+            "1) Conferir SLA ≤48h e TAT p90; 2) Avaliar índice de pressão da rede; "
+            "3) Verificar silêncio GAL vs vizinhos; 4) Cruzar divergência GAL×notificação"
+        ),
+        "acao": "Ativar resposta de emergência laboratorial: SLA, pressão da rede e silêncio GAL em 24–48h.",
+    },
 }
 
 
@@ -88,11 +97,18 @@ def protocolo_para_linha(row: pd.Series) -> dict:
     cls = str(row.get("classificacao_uso", "") or "").casefold()
     fam = familia_agravo(row.get("agravo_alvo") or row.get("target") or "")
 
-    if "silencio" in sinal or "silencio" in faixa or bool(row.get("silencio_laboratorial", False)):
+    if (
+        "emergencia" in sinal
+        or "pressao" in sinal
+        or "sla" in sinal
+        or bool(row.get("sla_crise", False))
+    ):
+        key = "emergencia"
+    elif "silencio" in sinal or "silencio" in faixa or bool(row.get("silencio_laboratorial", False)):
         key = "silencio"
     elif "risco" in sinal or faixa in {"alerta", "alto_alerta", "atencao"}:
         key = fam if fam in PROTOCOLOS else "risco"
-    elif "utiliz" in sinal or cls in {"baixo", "silencio"} or bool(row.get("baixo_uso_lacen", False)):
+    elif "utiliz" in sinal or "diverg" in sinal or cls in {"baixo", "silencio"} or bool(row.get("baixo_uso_lacen", False)):
         key = "utilizacao"
     elif fam:
         key = fam

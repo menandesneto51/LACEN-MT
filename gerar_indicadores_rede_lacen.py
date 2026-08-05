@@ -11,6 +11,21 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
 
+try:
+    from lacen_inteligencia import familia_agravo
+except Exception:  # pragma: no cover
+    def familia_agravo(target: object) -> str:  # type: ignore
+        t = str(target or "").casefold()
+        if any(x in t for x in ("tuberculose", "baciloscopia", "rifampicina", "lf_lam")):
+            return "tuberculose"
+        if "hepatite" in t:
+            return "hepatite"
+        if any(x in t for x in ("dengue", "zika", "chikungunya", "oropouche", "mayaro", "febre_amarela")):
+            return "arbovirose"
+        if any(x in t for x in ("influenza", "sars_cov", "covid", "respirat", "virus_respiratorio")):
+            return "respiratorio"
+        return "outros"
+
 # Colunas mínimas do export GAL LACEN MT
 GAL_USECOLS = [
     "Municipio_Residencia_Paciente",
@@ -104,6 +119,8 @@ def build_indicadores_rede(
         recent = w.merge(weeks, on=["epi_year", "epi_week"], how="inner")
         g = recent.groupby("municipio", as_index=False).agg(exames=("tests", "sum"))
         g["tat_mediano_dias"] = np.nan
+        g["tat_p90_dias"] = np.nan
+        g["pct_liberado_48h"] = np.nan
         g["pct_liberado_7d"] = np.nan
         g["pct_rejeitado"] = np.nan
         g["backlog_estimado"] = np.nan
@@ -127,7 +144,8 @@ def build_indicadores_rede(
             receb = _pick_col(header.columns, "Data_Recebimento_dt", "Data_Recebimento")
             liber = _pick_col(header.columns, "Data_Liberacao_dt", "Data_Liberacao")
             status = _pick_col(header.columns, "Status_Exame")
-            usecols = [c for c in (mun, coleta, receb, liber, status) if c]
+            agravo = _pick_col(header.columns, "Agravo_Requisicao")
+            usecols = [c for c in (mun, coleta, receb, liber, status, agravo) if c]
         if len(usecols) < 3:
             print(f"[AVISO] Colunas insuficientes em {path.name}", flush=True)
             continue
@@ -148,6 +166,7 @@ def build_indicadores_rede(
             col_receb = _pick_col(chunk.columns, "Data_Recebimento_dt", "Data_Recebimento")
             col_lib = _pick_col(chunk.columns, "Data_Liberacao_dt", "Data_Liberacao")
             col_status = _pick_col(chunk.columns, "Status_Exame", "status")
+            col_agravo = _pick_col(chunk.columns, "Agravo_Requisicao", "agravo", "target")
             if mun_col is None:
                 continue
 
@@ -171,6 +190,12 @@ def build_indicadores_rede(
             tmp["status"] = chunk.loc[tmp.index, col_status].map(_norm_status) if col_status else np.where(
                 dt_lib.notna(), "liberado", "pendente"
             )
+            if col_agravo:
+                tmp["agravo_raw"] = chunk.loc[tmp.index, col_agravo].astype(str)
+                tmp["familia"] = tmp["agravo_raw"].map(familia_agravo).replace("", "outros")
+            else:
+                tmp["agravo_raw"] = ""
+                tmp["familia"] = "outros"
             # TAT coleta→liberação e recebimento→liberação
             tat_cl = (dt_lib - dt_coleta).dt.total_seconds() / 86400.0
             tat_rl = (dt_lib - dt_receb).dt.total_seconds() / 86400.0
@@ -203,14 +228,23 @@ def build_indicadores_rede(
         except Exception as exc:
             print(f"[AVISO] Filtro MT não aplicado: {exc}", flush=True)
 
+    def _pct_le(s: pd.Series, dias: float) -> float:
+        v = s.dropna()
+        return float((v <= dias).mean()) if len(v) else np.nan
+
+    if "familia" not in all_df.columns:
+        all_df["familia"] = "outros"
+
     g = all_df.groupby("municipio", as_index=False).agg(
         exames=("municipio", "size"),
         tat_mediano_dias=("tat_dias", "median"),
         tat_p90_dias=("tat_dias", lambda s: s.quantile(0.9)),
         tat_lab_mediano_dias=("tat_receb_liberacao_dias", "median"),
         logistica_mediana_dias=("logistica_dias", "median"),
-        pct_liberado_7d=("tat_dias", lambda s: float((s.dropna() <= 7).mean()) if s.notna().any() else np.nan),
-        pct_liberado_14d=("tat_dias", lambda s: float((s.dropna() <= 14).mean()) if s.notna().any() else np.nan),
+        pct_liberado_48h=("tat_receb_liberacao_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_48h_coleta=("tat_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_7d=("tat_dias", lambda s: _pct_le(s, 7.0)),
+        pct_liberado_14d=("tat_dias", lambda s: _pct_le(s, 14.0)),
         pct_rejeitado=("status", lambda s: float((s == "rejeitado").mean())),
         backlog_estimado=("status", lambda s: int((s == "pendente").sum())),
         pct_inconclusivo=("status", lambda s: float((s == "inconclusivo").mean())),
@@ -218,14 +252,18 @@ def build_indicadores_rede(
     )
     g["fonte"] = "gal_lacen_microdados"
     g["anos_referencia"] = f">={year_min}"
+    # Se TAT laboratorial (receb→lib) estiver vazio, usa coleta→lib como fallback
+    g["pct_liberado_48h"] = g["pct_liberado_48h"].fillna(g["pct_liberado_48h_coleta"])
     g["interpretacao"] = np.select(
         [
+            g["pct_liberado_48h"].fillna(1) < 0.40,
             g["tat_mediano_dias"].fillna(99) > 14,
             g["pct_rejeitado"].fillna(0) > 0.05,
             g["logistica_mediana_dias"].fillna(0) > 5,
             g["backlog_estimado"].fillna(0) > 50,
         ],
         [
+            "SLA crise: baixa liberação ≤48h — priorizar liberação/triagem",
             "TAT mediano elevado — revisar fluxo coleta→liberação",
             "Rejeição elevada — capacitar coleta/envio de amostras",
             "Atraso logístico coleta→recebimento — revisar transporte",
@@ -241,11 +279,51 @@ def build_indicadores_rede(
     except Exception:
         pass
 
-    # Ranking estadual resumido
+    # SLA por família de agravo (+ rollup municipal×família com volume mínimo)
+    fam = all_df.groupby(["familia"], as_index=False).agg(
+        exames=("municipio", "size"),
+        n_municipios=("municipio", "nunique"),
+        tat_mediano_dias=("tat_dias", "median"),
+        tat_p90_dias=("tat_dias", lambda s: s.quantile(0.9)),
+        pct_liberado_48h=("tat_receb_liberacao_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_48h_coleta=("tat_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_7d=("tat_dias", lambda s: _pct_le(s, 7.0)),
+        pct_rejeitado=("status", lambda s: float((s == "rejeitado").mean())),
+        backlog_estimado=("status", lambda s: int((s == "pendente").sum())),
+    )
+    fam["granularidade"] = "familia"
+    fam["municipio"] = "ESTADO_MT"
+    fam["pct_liberado_48h"] = fam["pct_liberado_48h"].fillna(fam["pct_liberado_48h_coleta"])
+    fam_mun = all_df.groupby(["municipio", "familia"], as_index=False).agg(
+        exames=("municipio", "size"),
+        tat_mediano_dias=("tat_dias", "median"),
+        tat_p90_dias=("tat_dias", lambda s: s.quantile(0.9)),
+        pct_liberado_48h=("tat_receb_liberacao_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_48h_coleta=("tat_dias", lambda s: _pct_le(s, 2.0)),
+        pct_liberado_7d=("tat_dias", lambda s: _pct_le(s, 7.0)),
+        pct_rejeitado=("status", lambda s: float((s == "rejeitado").mean())),
+        backlog_estimado=("status", lambda s: int((s == "pendente").sum())),
+    )
+    fam_mun["granularidade"] = "municipio_familia"
+    fam_mun["n_municipios"] = 1
+    fam_mun["pct_liberado_48h"] = fam_mun["pct_liberado_48h"].fillna(fam_mun["pct_liberado_48h_coleta"])
+    fam_mun = fam_mun[fam_mun["exames"] >= 20]
+    por_fam = pd.concat([fam, fam_mun], ignore_index=True, sort=False)
+    por_fam["fonte"] = "gal_lacen_microdados"
+    por_fam["anos_referencia"] = f">={year_min}"
+    por_fam = por_fam.sort_values(["granularidade", "exames"], ascending=[True, False])
+    por_fam.to_csv(outdir / "indicadores_rede_por_familia.csv", index=False, encoding="utf-8-sig")
+    try:
+        por_fam.to_parquet(outdir / "indicadores_rede_por_familia.parquet", index=False)
+    except Exception:
+        pass
+
     resumo = pd.DataFrame([{
         "n_municipios": int(len(g)),
         "exames_total": int(g["exames"].sum()),
         "tat_mediano_estadual": float(g["tat_mediano_dias"].median()) if g["tat_mediano_dias"].notna().any() else None,
+        "tat_p90_estadual": float(g["tat_p90_dias"].median()) if g["tat_p90_dias"].notna().any() else None,
+        "pct_liberado_48h_mediano": float(g["pct_liberado_48h"].median()) if g["pct_liberado_48h"].notna().any() else None,
         "pct_liberado_7d_mediano": float(g["pct_liberado_7d"].median()) if g["pct_liberado_7d"].notna().any() else None,
         "pct_rejeitado_mediano": float(g["pct_rejeitado"].median()) if g["pct_rejeitado"].notna().any() else None,
         "backlog_total": int(g["backlog_estimado"].sum()),
@@ -253,9 +331,15 @@ def build_indicadores_rede(
         "anos_referencia": f">={year_min}",
     }])
     resumo.to_csv(outdir / "indicadores_rede_resumo.csv", index=False, encoding="utf-8-sig")
+    try:
+        resumo.to_parquet(outdir / "indicadores_rede_resumo.parquet", index=False)
+    except Exception:
+        pass
     print(
         f"[REDE] {len(g)} municípios | exames={int(g['exames'].sum()):,} | "
-        f"TAT mediano estadual={resumo['tat_mediano_estadual'].iloc[0]}",
+        f"TAT mediano estadual={resumo['tat_mediano_estadual'].iloc[0]} | "
+        f"%≤48h mediano={resumo['pct_liberado_48h_mediano'].iloc[0]} | "
+        f"famílias={fam['familia'].nunique()}",
         flush=True,
     )
     return g

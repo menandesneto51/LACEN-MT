@@ -78,6 +78,9 @@ STARTUP_OPTIONAL_FILES = {
     "municipio_vizinhos": "municipio_vizinhos.csv",
     "ml_risco": "ml_risco_predito.csv",
     "ml_silencio": "ml_silencio_predito.csv",
+    "indicadores_emergencia": "indicadores_emergencia.csv",
+    "indicadores_emergencia_resumo": "indicadores_emergencia_resumo.csv",
+    "indicadores_emergencia_acoes": "indicadores_emergencia_acoes.csv",
 }
 
 # Carregados sob demanda pelo módulo aberto (não no startup)
@@ -104,6 +107,8 @@ DEFERRED_OPTIONAL_FILES = {
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
     "indicadores_rede": "indicadores_rede_laboratorial.csv",
+    "indicadores_rede_familia": "indicadores_rede_por_familia.csv",
+    "indicadores_emergencia_familia": "indicadores_emergencia_familia.csv",
     "alerta_historico": "alerta_historico.csv",
     "executive_state": "executive_state_summary.csv",
 }
@@ -1438,6 +1443,9 @@ df_qualidade = data.get("qualidade_dado")
 df_vizinhos = data.get("municipio_vizinhos")
 df_ml_risco = data.get("ml_risco")
 df_ml_silencio = data.get("ml_silencio")
+df_emergencia = data.get("indicadores_emergencia")
+df_emergencia_resumo = data.get("indicadores_emergencia_resumo")
+df_emergencia_acoes = data.get("indicadores_emergencia_acoes")
 if df_risco is None:
     df_risco = pd.DataFrame()
 if df_silenciosos is None:
@@ -1452,6 +1460,12 @@ if df_ml_risco is None:
     df_ml_risco = pd.DataFrame()
 if df_ml_silencio is None:
     df_ml_silencio = pd.DataFrame()
+if df_emergencia is None:
+    df_emergencia = pd.DataFrame()
+if df_emergencia_resumo is None:
+    df_emergencia_resumo = pd.DataFrame()
+if df_emergencia_acoes is None:
+    df_emergencia_acoes = pd.DataFrame()
 
 # Placeholders — carregados sob demanda pelo módulo
 forecast = pd.DataFrame()
@@ -1680,6 +1694,91 @@ if modulo == "Visão executiva":
         c4.metric("Municípios ativos (Observado)", format_int(mun_ativos))
         c5.metric("Silenciosos (Derivado)", format_int(silencio_n))
         c6.metric("Prioritários atenção+ (Derivado)", format_int(alto_risco_n))
+
+        # --- Cartão executivo de emergência (5 KPIs + ações) ---
+        st.markdown("##### Emergência em saúde pública — cartão executivo")
+        st.caption(
+            "SLA de crise, pressão da rede, silêncio GAL e divergência GAL×notificação. "
+            "Rotulagem: Observado (GAL/rede) · Derivado (índices/alertas) · Predito (ML na fila)."
+        )
+        if df_emergencia_resumo.empty and df_emergencia.empty:
+            st.info(
+                "Arquivos `indicadores_emergencia*.csv` ainda não gerados. "
+                "Execute `python gerar_indicadores_emergencia.py` "
+                "(e, para %≤48h, `python gerar_indicadores_rede_lacen.py --years 3`)."
+            )
+        else:
+            rs = df_emergencia_resumo.iloc[0] if not df_emergencia_resumo.empty else None
+            if rs is not None:
+                e1, e2, e3, e4, e5 = st.columns(5)
+                pct48 = rs.get("kpi_pct_liberado_48h")
+                tat90 = rs.get("kpi_tat_p90_dias")
+                press = rs.get("kpi_indice_pressao_rede")
+                n_sil_g = rs.get("kpi_n_silencio_gal")
+                n_div_g = rs.get("kpi_n_divergencia_gal_notif")
+                e1.metric(
+                    "% liberado ≤48h (Observado)",
+                    format_pct(pct48) if pd.notna(pct48) else "n/d",
+                )
+                e2.metric(
+                    "TAT p90 dias (Observado)",
+                    format_num(tat90) if pd.notna(tat90) else "n/d",
+                )
+                e3.metric(
+                    "Pressão rede 0–100 (Derivado)",
+                    format_num(press) if pd.notna(press) else "n/d",
+                )
+                e4.metric("Silêncio GAL (Derivado)", format_int(n_sil_g or 0))
+                e5.metric("Divergência GAL×notif (Derivado)", format_int(n_div_g or 0))
+                if "formula_pressao" in rs.index and pd.notna(rs.get("formula_pressao")):
+                    with st.expander("Legenda — fórmula do índice de pressão da rede"):
+                        st.caption(str(rs.get("formula_pressao")))
+                if rs.get("sla_48h_disponivel") is False or (
+                    pd.isna(pct48) and not df_emergencia.empty
+                    and "sla_48h_fonte" in df_emergencia.columns
+                    and str(df_emergencia["sla_48h_fonte"].iloc[0]).startswith("indisponivel")
+                ):
+                    st.caption(
+                        "Nota: %≤48h ainda não disponível no artefato de rede — "
+                        "use proxy Derivado (%≤7d/TAT p90) até regenerar GAL."
+                    )
+                if "interpretacao" in rs.index and pd.notna(rs.get("interpretacao")):
+                    st.info(str(rs.get("interpretacao")))
+
+            # SLA por família (se existir)
+            df_fam_em = get_optional(folder, "indicadores_emergencia_familia")
+            if not df_fam_em.empty and "familia" in df_fam_em.columns:
+                st.caption("SLA de crise por família de agravo (Observado · GAL)")
+                show_table(
+                    df_fam_em.head(12)[[c for c in [
+                        "familia", "exames", "pct_liberado_48h", "tat_p90_dias",
+                        "pct_liberado_7d", "pct_rejeitado", "backlog_estimado", "sla_crise",
+                    ] if c in df_fam_em.columns]],
+                    "SLA por família",
+                    max_rows=12,
+                    key="exec_sla_fam",
+                )
+
+            if not df_emergencia_acoes.empty:
+                acoes_src = df_emergencia_acoes
+            elif not df_emergencia.empty and "prioridade_emergencia" in df_emergencia.columns:
+                acoes_src = df_emergencia[
+                    df_emergencia["prioridade_emergencia"].astype(str).isin(["CRÍTICO", "ALTO"])
+                ].head(8)
+            else:
+                acoes_src = pd.DataFrame()
+            if not acoes_src.empty:
+                st.markdown("###### Ações prioritárias de emergência (prazo · responsável)")
+                show_table(
+                    acoes_src.head(8)[[c for c in [
+                        "municipio", "prioridade_emergencia", "sla_crise",
+                        "indice_pressao_rede", "silencio_gal_alerta", "divergencia_gal_notif",
+                        "acao_sugerida", "responsavel", "prazo_acao",
+                    ] if c in acoes_src.columns]],
+                    "Ações emergência",
+                    max_rows=8,
+                    key="exec_emerg_acoes",
+                )
 
         # Bandas absoluto + percentil (ML e/ou territorial)
         banda_src = df_ml_risco if not df_ml_risco.empty and "banda_risco" in df_ml_risco.columns else (
@@ -2892,17 +2991,49 @@ elif modulo == "Dados e qualidade":
                         )
                 except Exception:
                     pass
+            if "pct_liberado_48h" in df_rede.columns and df_rede["pct_liberado_48h"].notna().any():
+                st.caption(
+                    f"% liberado ≤48h (mediana municipal · Observado): "
+                    f"{format_pct(df_rede['pct_liberado_48h'].median())} · "
+                    f"TAT p90 mediano: {format_num(df_rede['tat_p90_dias'].median()) if 'tat_p90_dias' in df_rede.columns else '—'} dias"
+                )
             show_table(
                 df_rede.head(50)[[c for c in [
                     "municipio", "exames", "tat_mediano_dias", "tat_p90_dias",
                     "tat_lab_mediano_dias", "logistica_mediana_dias",
-                    "pct_liberado_7d", "pct_liberado_14d", "pct_rejeitado",
+                    "pct_liberado_48h", "pct_liberado_7d", "pct_liberado_14d", "pct_rejeitado",
                     "backlog_estimado", "fonte", "interpretacao",
                 ] if c in df_rede.columns]],
                 "indicadores_rede_laboratorial",
                 max_rows=50,
                 key="dados_rede",
             )
+            df_rede_fam = get_optional(folder, "indicadores_rede_familia")
+            if not df_rede_fam.empty:
+                st.markdown("##### SLA por família de agravo (Observado · GAL)")
+                show_table(
+                    df_rede_fam.head(40)[[c for c in [
+                        "granularidade", "familia", "municipio", "exames",
+                        "pct_liberado_48h", "tat_p90_dias", "pct_liberado_7d",
+                        "pct_rejeitado", "backlog_estimado",
+                    ] if c in df_rede_fam.columns]],
+                    "indicadores_rede_por_familia",
+                    max_rows=40,
+                    key="dados_rede_fam",
+                )
+            if not df_emergencia.empty:
+                st.markdown("##### Indicadores de emergência (Derivado)")
+                show_table(
+                    df_emergencia.head(40)[[c for c in [
+                        "municipio", "indice_pressao_rede", "faixa_pressao",
+                        "pct_liberado_48h", "tat_p90_dias", "sla_crise",
+                        "silencio_gal_alerta", "divergencia_gal_notif",
+                        "prioridade_emergencia", "acao_sugerida", "prazo_acao",
+                    ] if c in df_emergencia.columns]],
+                    "indicadores_emergencia",
+                    max_rows=40,
+                    key="dados_emerg",
+                )
 
         if not df_qualidade.empty:
             st.markdown("##### Confiança / qualidade do dado (últimas 8 SE)")

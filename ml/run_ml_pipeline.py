@@ -130,6 +130,11 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     except Exception as exc:
         _log(f"[ML][AVISO] Indicadores rede: {exc}")
     try:
+        from gerar_indicadores_emergencia import build_indicadores_emergencia
+        build_indicadores_emergencia(outdir=outdir)
+    except Exception as exc:
+        _log(f"[ML][AVISO] Indicadores emergência: {exc}")
+    try:
         from exportar_parquet_saida import export_outdir
         _log("[ML] Exportando parquet...")
         export_outdir(outdir)

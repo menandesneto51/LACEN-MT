@@ -100,6 +100,16 @@ saida_pipeline/*
 !saida_pipeline/indicadores_rede_laboratorial.parquet
 !saida_pipeline/indicadores_rede_resumo.csv
 !saida_pipeline/indicadores_rede_resumo.parquet
+!saida_pipeline/indicadores_rede_por_familia.csv
+!saida_pipeline/indicadores_rede_por_familia.parquet
+!saida_pipeline/indicadores_emergencia.csv
+!saida_pipeline/indicadores_emergencia.parquet
+!saida_pipeline/indicadores_emergencia_resumo.csv
+!saida_pipeline/indicadores_emergencia_resumo.parquet
+!saida_pipeline/indicadores_emergencia_familia.csv
+!saida_pipeline/indicadores_emergencia_familia.parquet
+!saida_pipeline/indicadores_emergencia_acoes.csv
+!saida_pipeline/indicadores_emergencia_acoes.parquet
 !saida_pipeline/sql/
 !saida_pipeline/sql/create_lacen_ml_tables.sql
 !saida_pipeline/ml_dw_mirror_status.json
