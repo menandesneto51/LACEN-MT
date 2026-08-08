@@ -424,6 +424,44 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
 
     base = _acoes_emergencia(base)
     base["formula_pressao"] = FORMULA_PRESSAO
+    base["tipo_sinal_pressao"] = "Derivado"
+
+    # Enriquece com pressão Predito (ML), se já gerada
+    pressao_ml = _read(outdir, "ml_pressao_rede_predito.csv")
+    if not pressao_ml.empty and "municipio" in pressao_ml.columns:
+        pressao_ml = pressao_ml.copy()
+        pressao_ml["municipio"] = pressao_ml["municipio"].astype(str).str.strip().str.upper()
+        keep_p = [
+            c for c in (
+                "municipio", "prob_pressao_alta_proxima_janela", "limiar_operacional",
+                "acima_limiar", "faixa_pressao_predita", "drivers", "acao_sugerida",
+            ) if c in pressao_ml.columns
+        ]
+        pm = pressao_ml[keep_p].drop_duplicates("municipio")
+        rename = {
+            "acima_limiar": "pressao_predita_acima_limiar",
+            "drivers": "drivers_pressao_predita",
+            "acao_sugerida": "acao_pressao_predita",
+            "limiar_operacional": "limiar_pressao_predita",
+        }
+        pm = pm.rename(columns={k: v for k, v in rename.items() if k in pm.columns})
+        base = base.merge(pm, on="municipio", how="left")
+        base["tipo_sinal_pressao_predita"] = "Predito"
+        # Eleva prioridade se Predito alta e ainda só monitoramento
+        pred_alta = (
+            base.get("pressao_predita_acima_limiar", pd.Series(False, index=base.index))
+            .fillna(False).astype(bool)
+        )
+        faixa_cur = base.get("faixa_pressao", pd.Series("", index=base.index)).astype(str)
+        mon = base["prioridade_emergencia"].astype(str).eq("MONITORAMENTO")
+        base.loc[pred_alta & mon, "prioridade_emergencia"] = "MODERADO"
+        base.loc[
+            pred_alta
+            & base["prioridade_emergencia"].astype(str).eq("MODERADO")
+            & faixa_cur.isin(["alta", "critica"]),
+            "prioridade_emergencia",
+        ] = "ALTO"
+
     pri = {"CRÍTICO": 0, "ALTO": 1, "MODERADO": 2, "MONITORAMENTO": 3}
     base["_pr"] = base["prioridade_emergencia"].map(pri).fillna(9)
     base = base.sort_values(["_pr", "indice_pressao_rede"], ascending=[True, False]).drop(columns=["_pr"])
@@ -478,6 +516,32 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
     n_pressao = int(
         base.get("faixa_pressao", pd.Series(dtype=str)).astype(str).isin(["alta", "critica"]).sum()
     ) if "faixa_pressao" in base.columns else 0
+    n_pressao_pred = int(
+        base.get("pressao_predita_acima_limiar", pd.Series(False, index=base.index))
+        .fillna(False).astype(bool).sum()
+    ) if "pressao_predita_acima_limiar" in base.columns else 0
+    prob_press_med = (
+        float(pd.to_numeric(base["prob_pressao_alta_proxima_janela"], errors="coerce").median())
+        if "prob_pressao_alta_proxima_janela" in base.columns
+        and base["prob_pressao_alta_proxima_janela"].notna().any()
+        else None
+    )
+
+    # Confirmação semanal (se já gerada nesta rodada ou anterior)
+    conf = _read(outdir, "emergencia_confirmacao_resumo.csv")
+    taxa_conf = None
+    taxa_conf_sil = None
+    if not conf.empty:
+        taxa_conf = conf.iloc[0].get("taxa_confirmacao_geral")
+        taxa_conf_sil = conf.iloc[0].get("taxa_confirmacao_silencio_gal")
+        try:
+            taxa_conf = float(taxa_conf) if pd.notna(taxa_conf) else None
+        except Exception:
+            taxa_conf = None
+        try:
+            taxa_conf_sil = float(taxa_conf_sil) if pd.notna(taxa_conf_sil) else None
+        except Exception:
+            taxa_conf_sil = None
 
     # Top ações (fila + emergência)
     top_acoes = base[base["prioridade_emergencia"].isin(["CRÍTICO", "ALTO"])].head(8).copy()
@@ -495,6 +559,10 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
         "kpi_indice_pressao_rede": pressao_med,
         "kpi_n_silencio_gal": n_sil,
         "kpi_n_divergencia_gal_notif": n_div,
+        "kpi_n_pressao_predita_alta": n_pressao_pred,
+        "kpi_prob_pressao_predita_mediana": prob_press_med,
+        "kpi_taxa_confirmacao_emergencia": taxa_conf,
+        "kpi_taxa_confirmacao_silencio_gal": taxa_conf_sil,
         "n_municipios_sla_crise": n_sla,
         "n_municipios_pressao_alta_critica": n_pressao,
         "n_municipios": int(base["municipio"].nunique()),
@@ -503,12 +571,17 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
         "formula_pressao": FORMULA_PRESSAO,
         "sla_48h_disponivel": bool(pct48_med is not None),
         "fonte": "saida_pipeline_consolidado",
-        "tipo_sinal": "Observado/Derivado",
+        "tipo_sinal": "Observado/Derivado/Predito",
         "interpretacao": (
             f"Cartão emergência: %≤48h={pct48_med if pct48_med is not None else 'n/d'}; "
             f"TAT p90={tat_p90_med if tat_p90_med is not None else 'n/d'}d; "
-            f"pressão={pressao_med if pressao_med is not None else 'n/d'}; "
-            f"silêncio GAL={n_sil}; divergência GAL×notif={n_div}; SLA crise={n_sla} mun."
+            f"pressão obs={pressao_med if pressao_med is not None else 'n/d'}; "
+            f"pressão predita alta={n_pressao_pred} mun; "
+            f"silêncio GAL={n_sil}; divergência GAL×notif={n_div}; SLA crise={n_sla} mun"
+            + (
+                f"; confirmação alertas={taxa_conf:.0%}."
+                if taxa_conf is not None else "."
+            )
         ),
     }])
     resumo.to_csv(outdir / "indicadores_emergencia_resumo.csv", index=False, encoding="utf-8-sig")
@@ -521,7 +594,8 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
     acoes_cols = [
         c for c in [
             "municipio", "prioridade_emergencia", "sla_crise", "indice_pressao_rede",
-            "faixa_pressao", "pct_liberado_48h", "tat_p90_dias",
+            "faixa_pressao", "prob_pressao_alta_proxima_janela", "faixa_pressao_predita",
+            "pct_liberado_48h", "tat_p90_dias",
             "silencio_gal_alerta", "divergencia_gal_notif",
             "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
         ] if c in top_acoes.columns

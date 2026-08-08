@@ -79,6 +79,28 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     silencio.to_csv(silencio_out, index=False, encoding="utf-8-sig")
     _log(f"[ML] {silencio_out.name}: {len(silencio):,} linhas")
 
+    pressao_out = outdir / "ml_pressao_rede_predito.csv"
+    try:
+        _log("[ML] Pressão de rede predita...")
+        from ml.pressao_rede import run_pressao_pipeline
+        pr_paths = run_pressao_pipeline(weekly, outdir=outdir)
+        pressao_out = pr_paths.get("pressao", pressao_out)
+        _log(f"[ML] {pressao_out.name} gerado")
+        bt_pr = outdir / "ml_pressao_rede_backtest.csv"
+        if bt_pr.exists():
+            try:
+                _btp = pd.read_csv(bt_pr)
+                if not _btp.empty and "auc" in _btp.columns:
+                    r0 = _btp.iloc[0]
+                    _log(
+                        f"[ML]   pressao backtest: auc={r0.get('auc')} "
+                        f"confirmacao={r0.get('confirmacao')} P@20={r0.get('precision_at_20')}"
+                    )
+            except Exception:
+                pass
+    except Exception as exc:
+        _log(f"[ML][AVISO] Pressão predita pulada: {exc}")
+
     _log("[ML] Backtest temporal...")
     bt_out = outdir / "ml_backtest_summary.csv"
     try:
@@ -92,6 +114,16 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
                     f"[ML]   backtest {r.get('modelo')}: auc={r.get('auc')} "
                     f"confirmacao={r.get('confirmacao')} n={r.get('n')}"
                 )
+        # Reanexa backtest de pressão se já gerado
+        bt_pr = outdir / "ml_pressao_rede_backtest.csv"
+        if bt_pr.exists():
+            try:
+                _btp = pd.read_csv(bt_pr)
+                if not _btp.empty:
+                    bt2 = pd.concat([bt, _btp], ignore_index=True)
+                    bt2.to_csv(bt_out, index=False, encoding="utf-8-sig")
+            except Exception:
+                pass
     except Exception as exc:
         _log(f"[ML][AVISO] Backtest pulado: {exc}")
         bt_out = outdir / "ml_backtest_summary.csv"
@@ -135,6 +167,15 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     except Exception as exc:
         _log(f"[ML][AVISO] Indicadores emergência: {exc}")
     try:
+        from gerar_confirmacao_emergencia import build_confirmacao_emergencia
+        _log("[ML] Confirmação semanal de emergência...")
+        build_confirmacao_emergencia(outdir=outdir)
+        # Reconsolida cartão executivo com KPIs de confirmação + Predito
+        from gerar_indicadores_emergencia import build_indicadores_emergencia
+        build_indicadores_emergencia(outdir=outdir)
+    except Exception as exc:
+        _log(f"[ML][AVISO] Confirmação emergência: {exc}")
+    try:
         from exportar_parquet_saida import export_outdir
         _log("[ML] Exportando parquet...")
         export_outdir(outdir)
@@ -146,6 +187,7 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
         "anomalias": an_out,
         "risco": risco_out,
         "silencio": silencio_out,
+        "pressao": pressao_out,
         "backtest": bt_out,
     }
 

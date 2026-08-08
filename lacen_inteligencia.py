@@ -247,6 +247,7 @@ def enriquecer_fila_com_ml(
     ml_risco: Optional[pd.DataFrame] = None,
     ml_silencio: Optional[pd.DataFrame] = None,
     limiar_ml: float = 0.55,
+    ml_pressao: Optional[pd.DataFrame] = None,
 ) -> pd.DataFrame:
     """
     Cruza fila operacional com ML: alerta híbrido = regra operacional + ML alto.
@@ -259,6 +260,8 @@ def enriquecer_fila_com_ml(
     out["prob_ml"] = np.nan
     out["faixa_ml"] = ""
     out["alerta_hibrido"] = False
+    out["prob_pressao_predita"] = np.nan
+    out["faixa_pressao_predita"] = ""
 
     risco_map = pd.DataFrame()
     if ml_risco is not None and not ml_risco.empty and "municipio" in ml_risco.columns:
@@ -335,6 +338,29 @@ def enriquecer_fila_com_ml(
         + out.loc[out["alerta_hibrido"], "prob_ml"].round(2).astype(str)
         + ")"
     )
+
+    if ml_pressao is not None and not ml_pressao.empty and "municipio" in ml_pressao.columns:
+        pp = ml_pressao.copy()
+        pp["municipio"] = pp["municipio"].astype(str).str.strip().str.upper()
+        pcol = "prob_pressao_alta_proxima_janela"
+        if pcol in pp.columns:
+            keep = ["municipio", pcol]
+            if "faixa_pressao_predita" in pp.columns:
+                keep.append("faixa_pressao_predita")
+            idx = pp.groupby("municipio")[pcol].idxmax()
+            pmap = pp.loc[idx, keep].rename(columns={pcol: "prob_pressao_predita"})
+            out = out.drop(columns=["prob_pressao_predita", "faixa_pressao_predita"], errors="ignore")
+            out = out.merge(pmap, on="municipio", how="left")
+            alta = out["prob_pressao_predita"].fillna(0).ge(
+                float(pp["limiar_operacional"].median()) if "limiar_operacional" in pp.columns else 0.40
+            )
+            out.loc[alta & out["prioridade"].astype(str).eq("MONITORAMENTO"), "prioridade"] = "MODERADO"
+            out.loc[alta, "motivo"] = (
+                out.loc[alta, "motivo"].astype(str)
+                + " | Pressão predita (prob="
+                + out.loc[alta, "prob_pressao_predita"].round(2).astype(str)
+                + ")"
+            )
     return out
 
 

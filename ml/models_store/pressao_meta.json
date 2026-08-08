@@ -1,0 +1,151 @@
+{
+  "sklearn": true,
+  "modelo_versao": "pressao_v1",
+  "label": "y_pressao_alta = próxima SE com indice_pressao_proxy≥55 OU tests_pct_estadual≥0,75 OU (tests≥1,5·MA8 e tests≥5). Proxy = 100×(0,40·volume_norm + 0,25·backlog_norm + 0,20·tat_p90_norm + 0,15·rejeicao_norm); volume varia por semana; TAT/backlog/rejeição vêm da rede GAL (estrutural).",
+  "status": "ok",
+  "n_rows": 5708,
+  "n_train": 5509,
+  "n_test": 199,
+  "n_train_weeks": 83,
+  "n_test_weeks": 21,
+  "auc_test": 0.8075111843654345,
+  "threshold": 0.5499999999999999,
+  "f1_at_threshold": 0.7007299270072993,
+  "precision_at_20": 0.7,
+  "precision_at_50": 0.68,
+  "pos_rate_train": 0.3236522054819386,
+  "pos_rate_test": 0.31155778894472363,
+  "importance": [
+    {
+      "feature": "tests_pct_estadual",
+      "importance": 0.44484
+    },
+    {
+      "feature": "tests",
+      "importance": 0.15323
+    },
+    {
+      "feature": "tests_ma8",
+      "importance": 0.09994
+    },
+    {
+      "feature": "tests_ma4",
+      "importance": 0.09052
+    },
+    {
+      "feature": "backlog_estimado",
+      "importance": 0.06884
+    },
+    {
+      "feature": "tests_lag1",
+      "importance": 0.03196
+    },
+    {
+      "feature": "tests_trend",
+      "importance": 0.0295
+    },
+    {
+      "feature": "cnes_leitos_total",
+      "importance": 0.02924
+    },
+    {
+      "feature": "indice_pressao_proxy",
+      "importance": 0.0197
+    },
+    {
+      "feature": "volume_norm",
+      "importance": 0.00686
+    },
+    {
+      "feature": "tat_mediano_dias",
+      "importance": 0.00527
+    },
+    {
+      "feature": "notificacoes_ma4",
+      "importance": 0.00478
+    },
+    {
+      "feature": "cnes_estabelecimentos",
+      "importance": 0.00411
+    },
+    {
+      "feature": "backlog_norm",
+      "importance": 0.00219
+    },
+    {
+      "feature": "notificacoes",
+      "importance": 0.00131
+    }
+  ],
+  "features": [
+    "tests",
+    "tests_lag1",
+    "tests_ma4",
+    "tests_ma8",
+    "tests_trend",
+    "tests_pct_estadual",
+    "notificacoes",
+    "notificacoes_ma4",
+    "precipitation_sum_mm",
+    "temperature_2m_max",
+    "n_eventos_climaticos",
+    "cnes_estabelecimentos",
+    "cnes_leitos_total",
+    "cnes_equipes_esf",
+    "vizinhos_em_alerta",
+    "confianca_dado",
+    "tat_p90_dias",
+    "tat_mediano_dias",
+    "pct_liberado_48h",
+    "pct_liberado_7d",
+    "pct_rejeitado",
+    "backlog_estimado",
+    "volume_norm",
+    "backlog_norm",
+    "tat_p90_norm",
+    "rejeicao_norm",
+    "indice_pressao_proxy"
+  ],
+  "familia_models": {
+    "arbovirose": {
+      "status": "skipped",
+      "reason": "amostra"
+    },
+    "hepatite": {
+      "status": "ok",
+      "auc_test": 0.7469135802469136,
+      "threshold": 0.2,
+      "f1_at_threshold": 0.7352941176470589,
+      "n_train": 1560,
+      "n_test": 63,
+      "precision_at_20": 0.65
+    },
+    "outros": {
+      "status": "ok",
+      "auc_test": 0.7897340754483612,
+      "threshold": 0.3,
+      "f1_at_threshold": 0.7407407407407406,
+      "n_train": 1024,
+      "n_test": 82,
+      "precision_at_20": 0.65
+    },
+    "respiratorio": {
+      "status": "ok",
+      "auc_test": 0.9258241758241759,
+      "threshold": 0.85,
+      "f1_at_threshold": 0.9032258064516129,
+      "n_train": 1130,
+      "n_test": 27,
+      "precision_at_20": 0.7
+    },
+    "tuberculose": {
+      "status": "ok",
+      "auc_test": 0.8061119671289163,
+      "threshold": 0.44999999999999996,
+      "f1_at_threshold": 0.7250000000000001,
+      "n_train": 1028,
+      "n_test": 92,
+      "precision_at_20": 0.65
+    }
+  }
+}

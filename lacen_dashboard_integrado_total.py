@@ -78,9 +78,11 @@ STARTUP_OPTIONAL_FILES = {
     "municipio_vizinhos": "municipio_vizinhos.csv",
     "ml_risco": "ml_risco_predito.csv",
     "ml_silencio": "ml_silencio_predito.csv",
+    "ml_pressao": "ml_pressao_rede_predito.csv",
     "indicadores_emergencia": "indicadores_emergencia.csv",
     "indicadores_emergencia_resumo": "indicadores_emergencia_resumo.csv",
     "indicadores_emergencia_acoes": "indicadores_emergencia_acoes.csv",
+    "emergencia_confirmacao": "emergencia_confirmacao_resumo.csv",
 }
 
 # Carregados sob demanda pelo módulo aberto (não no startup)
@@ -104,6 +106,8 @@ DEFERRED_OPTIONAL_FILES = {
     "ml_anomalias": "ml_anomalias.csv",
     "ml_features": "ml_features_latest.csv",
     "ml_backtest": "ml_backtest_summary.csv",
+    "ml_pressao_familia": "ml_pressao_rede_familia_predito.csv",
+    "ml_pressao_backtest": "ml_pressao_rede_backtest.csv",
     "sinan_weekly": "sinan_weekly_municipio.csv",
     "sim_weekly": "sim_weekly_municipio.csv",
     "indicadores_rede": "indicadores_rede_laboratorial.csv",
@@ -1282,6 +1286,7 @@ def build_fila_operacional(
     top_n: int = 20,
     df_ml_risco: Optional[pd.DataFrame] = None,
     df_ml_silencio: Optional[pd.DataFrame] = None,
+    df_ml_pressao: Optional[pd.DataFrame] = None,
 ) -> pd.DataFrame:
     """Fila gerencial: município | sinal | motivo | prioridade | ação | prazo | responsável."""
     rows: list[dict] = []
@@ -1363,7 +1368,9 @@ def build_fila_operacional(
     out = with_acao(out.head(top_n))
     try:
         from lacen_inteligencia import enriquecer_fila_com_ml
-        out = enriquecer_fila_com_ml(out, df_ml_risco, df_ml_silencio)
+        out = enriquecer_fila_com_ml(
+            out, df_ml_risco, df_ml_silencio, ml_pressao=df_ml_pressao
+        )
         # Reordena após reforço híbrido
         pri_rank = {"CRÍTICO": 0, "ALTO": 1, "MODERADO": 2, "MONITORAMENTO": 3}
         out["_pr"] = out["prioridade"].astype(str).map(pri_rank).fillna(9)
@@ -1377,6 +1384,7 @@ def build_fila_operacional(
         "municipio", "sinal", "motivo", "prioridade",
         "acao_sugerida", "responsavel", "prazo_acao", "checklist_operacional",
         "alerta_hibrido", "prob_ml", "faixa_ml",
+        "prob_pressao_predita", "faixa_pressao_predita",
         "agravo_alvo", "exames", "positividade", "score",
     ]
     return out[[c for c in cols if c in out.columns]].reset_index(drop=True)
@@ -1443,9 +1451,11 @@ df_qualidade = data.get("qualidade_dado")
 df_vizinhos = data.get("municipio_vizinhos")
 df_ml_risco = data.get("ml_risco")
 df_ml_silencio = data.get("ml_silencio")
+df_ml_pressao = data.get("ml_pressao")
 df_emergencia = data.get("indicadores_emergencia")
 df_emergencia_resumo = data.get("indicadores_emergencia_resumo")
 df_emergencia_acoes = data.get("indicadores_emergencia_acoes")
+df_emergencia_confirmacao = data.get("emergencia_confirmacao")
 if df_risco is None:
     df_risco = pd.DataFrame()
 if df_silenciosos is None:
@@ -1460,12 +1470,16 @@ if df_ml_risco is None:
     df_ml_risco = pd.DataFrame()
 if df_ml_silencio is None:
     df_ml_silencio = pd.DataFrame()
+if df_ml_pressao is None:
+    df_ml_pressao = pd.DataFrame()
 if df_emergencia is None:
     df_emergencia = pd.DataFrame()
 if df_emergencia_resumo is None:
     df_emergencia_resumo = pd.DataFrame()
 if df_emergencia_acoes is None:
     df_emergencia_acoes = pd.DataFrame()
+if df_emergencia_confirmacao is None:
+    df_emergencia_confirmacao = pd.DataFrame()
 
 # Placeholders — carregados sob demanda pelo módulo
 forecast = pd.DataFrame()
@@ -1606,6 +1620,7 @@ manager_alerts = build_manager_alert_messages(period_df, folder, int(horizon_day
 fila_operacional = build_fila_operacional(
     period_df, df_risco, df_silenciosos, top_n=20,
     df_ml_risco=df_ml_risco, df_ml_silencio=df_ml_silencio,
+    df_ml_pressao=df_ml_pressao,
 )
 
 # Default de agravos para gráficos de linha (top 5 por volume); "Todos" permanece nos filtros/tabelas
@@ -1698,8 +1713,7 @@ if modulo == "Visão executiva":
         # --- Cartão executivo de emergência (5 KPIs + ações) ---
         st.markdown("##### Emergência em saúde pública — cartão executivo")
         st.caption(
-            "SLA de crise, pressão da rede, silêncio GAL e divergência GAL×notificação. "
-            "Rotulagem: Observado (GAL/rede) · Derivado (índices/alertas) · Predito (ML na fila)."
+            "SLA de crise, pressão da rede (Observado/Derivado/Predito), silêncio GAL e divergência GAL×notificação."
         )
         if df_emergencia_resumo.empty and df_emergencia.empty:
             st.info(
@@ -1730,6 +1744,32 @@ if modulo == "Visão executiva":
                 )
                 e4.metric("Silêncio GAL (Derivado)", format_int(n_sil_g or 0))
                 e5.metric("Divergência GAL×notif (Derivado)", format_int(n_div_g or 0))
+
+                n_pred = rs.get("kpi_n_pressao_predita_alta")
+                taxa_conf = rs.get("kpi_taxa_confirmacao_emergencia")
+                if pd.isna(taxa_conf) and not df_emergencia_confirmacao.empty:
+                    taxa_conf = df_emergencia_confirmacao.iloc[0].get("taxa_confirmacao_geral")
+                p1, p2, p3 = st.columns(3)
+                p1.metric(
+                    "Pressão predita alta (Predito)",
+                    format_int(n_pred or 0),
+                )
+                if not df_ml_pressao.empty and "prob_pressao_alta_proxima_janela" in df_ml_pressao.columns:
+                    p2.metric(
+                        "Prob. pressão mediana (Predito)",
+                        format_num(df_ml_pressao["prob_pressao_alta_proxima_janela"].median()),
+                    )
+                else:
+                    prob_med = rs.get("kpi_prob_pressao_predita_mediana")
+                    p2.metric(
+                        "Prob. pressão mediana (Predito)",
+                        format_num(prob_med) if pd.notna(prob_med) else "n/d",
+                    )
+                p3.metric(
+                    "Confirmação alertas (Derivado)",
+                    format_pct(taxa_conf) if pd.notna(taxa_conf) else "n/d",
+                )
+
                 if "formula_pressao" in rs.index and pd.notna(rs.get("formula_pressao")):
                     with st.expander("Legenda — fórmula do índice de pressão da rede"):
                         st.caption(str(rs.get("formula_pressao")))
@@ -1744,6 +1784,19 @@ if modulo == "Visão executiva":
                     )
                 if "interpretacao" in rs.index and pd.notna(rs.get("interpretacao")):
                     st.info(str(rs.get("interpretacao")))
+
+            if not df_ml_pressao.empty:
+                st.caption("Top municípios — pressão de rede predita (Predito · próxima SE)")
+                show_table(
+                    df_ml_pressao.head(12)[[c for c in [
+                        "municipio", "prob_pressao_alta_proxima_janela", "faixa_pressao_predita",
+                        "indice_pressao_rede", "faixa_pressao", "acima_limiar",
+                        "drivers", "acao_sugerida",
+                    ] if c in df_ml_pressao.columns]],
+                    "Pressão predita",
+                    max_rows=12,
+                    key="exec_pressao_pred",
+                )
 
             # SLA por família (se existir)
             df_fam_em = get_optional(folder, "indicadores_emergencia_familia")
@@ -1772,7 +1825,9 @@ if modulo == "Visão executiva":
                 show_table(
                     acoes_src.head(8)[[c for c in [
                         "municipio", "prioridade_emergencia", "sla_crise",
-                        "indice_pressao_rede", "silencio_gal_alerta", "divergencia_gal_notif",
+                        "indice_pressao_rede", "prob_pressao_alta_proxima_janela",
+                        "faixa_pressao_predita",
+                        "silencio_gal_alerta", "divergencia_gal_notif",
                         "acao_sugerida", "responsavel", "prazo_acao",
                     ] if c in acoes_src.columns]],
                     "Ações emergência",
@@ -1805,6 +1860,7 @@ if modulo == "Visão executiva":
                 fila_operacional.head(15)[[c for c in [
                     "municipio", "sinal", "motivo", "prioridade",
                     "alerta_hibrido", "prob_ml", "faixa_ml", "banda_risco",
+                    "prob_pressao_predita", "faixa_pressao_predita",
                     "acao_sugerida", "responsavel", "prazo_acao", "agravo_alvo",
                 ] if c in fila_operacional.columns]],
                 "Fila operacional (top 15)",
@@ -2072,6 +2128,22 @@ elif modulo == "Territórios prioritários":
                     "municipios_em_risco",
                     max_rows=100,
                     key="terr_risco",
+                )
+            if not df_ml_pressao.empty:
+                st.markdown("##### Pressão de rede predita (Predito)")
+                st.caption(
+                    "Probabilidade de alta pressão laboratorial na próxima SE "
+                    "(volume + TAT/backlog estrutural)."
+                )
+                show_table(
+                    df_ml_pressao.head(30)[[c for c in [
+                        "municipio", "prob_pressao_alta_proxima_janela", "faixa_pressao_predita",
+                        "indice_pressao_rede", "faixa_pressao", "acima_limiar",
+                        "acao_sugerida",
+                    ] if c in df_ml_pressao.columns]],
+                    "Pressão predita por município",
+                    max_rows=30,
+                    key="terr_pressao_pred",
                 )
 
     elif sub_terr == "Sinais de silêncio":
@@ -3022,10 +3094,11 @@ elif modulo == "Dados e qualidade":
                     key="dados_rede_fam",
                 )
             if not df_emergencia.empty:
-                st.markdown("##### Indicadores de emergência (Derivado)")
+                st.markdown("##### Indicadores de emergência (Observado · Derivado · Predito)")
                 show_table(
                     df_emergencia.head(40)[[c for c in [
                         "municipio", "indice_pressao_rede", "faixa_pressao",
+                        "prob_pressao_alta_proxima_janela", "faixa_pressao_predita",
                         "pct_liberado_48h", "tat_p90_dias", "sla_crise",
                         "silencio_gal_alerta", "divergencia_gal_notif",
                         "prioridade_emergencia", "acao_sugerida", "prazo_acao",
@@ -3033,6 +3106,37 @@ elif modulo == "Dados e qualidade":
                     "indicadores_emergencia",
                     max_rows=40,
                     key="dados_emerg",
+                )
+            if not df_emergencia_confirmacao.empty:
+                st.markdown("##### Confirmação semanal de alertas de emergência (Derivado)")
+                rc = df_emergencia_confirmacao.iloc[0]
+                c1, c2, c3 = st.columns(3)
+                c1.metric(
+                    "Taxa confirmação geral",
+                    format_pct(rc.get("taxa_confirmacao_geral"))
+                    if pd.notna(rc.get("taxa_confirmacao_geral")) else "n/d",
+                )
+                c2.metric(
+                    "Confirmação silêncio GAL",
+                    format_pct(rc.get("taxa_confirmacao_silencio_gal"))
+                    if pd.notna(rc.get("taxa_confirmacao_silencio_gal")) else "n/d",
+                )
+                c3.metric(
+                    "Alertas avaliados",
+                    format_int(rc.get("n_alertas_avaliados") or 0),
+                )
+                if pd.notna(rc.get("interpretacao")):
+                    st.caption(str(rc.get("interpretacao")))
+            if not df_ml_pressao.empty:
+                st.markdown("##### Pressão de rede predita (Predito)")
+                show_table(
+                    df_ml_pressao.head(40)[[c for c in [
+                        "municipio", "prob_pressao_alta_proxima_janela", "faixa_pressao_predita",
+                        "indice_pressao_rede", "acima_limiar", "drivers", "metodo",
+                    ] if c in df_ml_pressao.columns]],
+                    "ml_pressao_rede_predito",
+                    max_rows=40,
+                    key="dados_pressao_ml",
                 )
 
         if not df_qualidade.empty:

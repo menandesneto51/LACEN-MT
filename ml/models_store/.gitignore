@@ -2,5 +2,6 @@
 *
 !.gitignore
 !meta.json
+!pressao_meta.json
 !thresholds.csv
 !*.joblib
