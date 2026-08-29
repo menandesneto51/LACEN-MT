@@ -124,6 +124,8 @@ saida_pipeline/*
 !saida_pipeline/sql/create_lacen_ml_tables.sql
 !saida_pipeline/ml_dw_mirror_status.json
 !saida_pipeline/alerta_historico.csv
+!saida_pipeline/alerta_emergencia_historico.csv
+!saida_pipeline/alerta_emergencia_historico.parquet
 !saida_pipeline/executive_state_summary.csv
 !saida_pipeline/executive_state_summary.parquet
 !saida_pipeline/sim_qualidade.csv

@@ -114,6 +114,7 @@ DEFERRED_OPTIONAL_FILES = {
     "indicadores_rede_familia": "indicadores_rede_por_familia.csv",
     "indicadores_emergencia_familia": "indicadores_emergencia_familia.csv",
     "alerta_historico": "alerta_historico.csv",
+    "alerta_emergencia_historico": "alerta_emergencia_historico.csv",
     "executive_state": "executive_state_summary.csv",
 }
 
@@ -1749,7 +1750,16 @@ if modulo == "Visão executiva":
                 taxa_conf = rs.get("kpi_taxa_confirmacao_emergencia")
                 if pd.isna(taxa_conf) and not df_emergencia_confirmacao.empty:
                     taxa_conf = df_emergencia_confirmacao.iloc[0].get("taxa_confirmacao_geral")
-                p1, p2, p3 = st.columns(3)
+                tipo_conf = rs.get("kpi_tipo_sinal_confirmacao")
+                if (pd.isna(tipo_conf) or not tipo_conf) and not df_emergencia_confirmacao.empty:
+                    tipo_conf = df_emergencia_confirmacao.iloc[0].get("tipo_sinal")
+                tipo_conf = str(tipo_conf) if pd.notna(tipo_conf) and tipo_conf else "Derivado"
+                taxa_sil_conf = rs.get("kpi_taxa_confirmacao_silencio_gal")
+                if pd.isna(taxa_sil_conf) and not df_emergencia_confirmacao.empty:
+                    taxa_sil_conf = df_emergencia_confirmacao.iloc[0].get(
+                        "taxa_confirmacao_silencio_gal"
+                    )
+                p1, p2, p3, p4 = st.columns(4)
                 p1.metric(
                     "Pressão predita alta (Predito)",
                     format_int(n_pred or 0),
@@ -1766,8 +1776,12 @@ if modulo == "Visão executiva":
                         format_num(prob_med) if pd.notna(prob_med) else "n/d",
                     )
                 p3.metric(
-                    "Confirmação alertas (Derivado)",
+                    f"Confirmação alertas ({tipo_conf})",
                     format_pct(taxa_conf) if pd.notna(taxa_conf) else "n/d",
+                )
+                p4.metric(
+                    f"Confirmação silêncio GAL ({tipo_conf})",
+                    format_pct(taxa_sil_conf) if pd.notna(taxa_sil_conf) else "n/d",
                 )
 
                 if "formula_pressao" in rs.index and pd.notna(rs.get("formula_pressao")):
@@ -3108,16 +3122,19 @@ elif modulo == "Dados e qualidade":
                     key="dados_emerg",
                 )
             if not df_emergencia_confirmacao.empty:
-                st.markdown("##### Confirmação semanal de alertas de emergência (Derivado)")
                 rc = df_emergencia_confirmacao.iloc[0]
-                c1, c2, c3 = st.columns(3)
+                tipo_c = str(rc.get("tipo_sinal") or "Derivado")
+                st.markdown(
+                    f"##### Confirmação semanal de alertas de emergência ({tipo_c})"
+                )
+                c1, c2, c3, c4 = st.columns(4)
                 c1.metric(
-                    "Taxa confirmação geral",
+                    f"Taxa confirmação geral ({tipo_c})",
                     format_pct(rc.get("taxa_confirmacao_geral"))
                     if pd.notna(rc.get("taxa_confirmacao_geral")) else "n/d",
                 )
                 c2.metric(
-                    "Confirmação silêncio GAL",
+                    f"Confirmação silêncio GAL ({tipo_c})",
                     format_pct(rc.get("taxa_confirmacao_silencio_gal"))
                     if pd.notna(rc.get("taxa_confirmacao_silencio_gal")) else "n/d",
                 )
@@ -3125,8 +3142,16 @@ elif modulo == "Dados e qualidade":
                     "Alertas avaliados",
                     format_int(rc.get("n_alertas_avaliados") or 0),
                 )
+                c4.metric(
+                    "SE carimbadas (histórico)",
+                    format_int(rc.get("n_se_historico_carimbado") or 0),
+                )
                 if pd.notna(rc.get("interpretacao")):
                     st.caption(str(rc.get("interpretacao")))
+                if pd.notna(rc.get("nota")):
+                    st.caption(str(rc.get("nota")))
+                if pd.notna(rc.get("modo_confirmacao")):
+                    st.caption(f"Modo: {rc.get('modo_confirmacao')} · fonte={rc.get('fonte')}")
             if not df_ml_pressao.empty:
                 st.markdown("##### Pressão de rede predita (Predito)")
                 show_table(

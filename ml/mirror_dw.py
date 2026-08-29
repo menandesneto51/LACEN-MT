@@ -18,6 +18,7 @@ MIRROR_TABLES = {
     "ml_silencio_predito.csv": "lacen_ml_silencio_predito",
     "ml_backtest_summary.csv": "lacen_ml_backtest_summary",
     "alerta_historico.csv": "lacen_alerta_historico",
+    "alerta_emergencia_historico.csv": "lacen_alerta_emergencia_historico",
     "fila_operacional.csv": "lacen_fila_operacional",
     "indicadores_rede_laboratorial.csv": "lacen_indicadores_rede",
     "qualidade_dado_municipal.csv": "lacen_qualidade_dado",
@@ -54,6 +55,206 @@ def _load_dw_env() -> dict:
         "driver": os.getenv("DW_ODBC_DRIVER", "ODBC Driver 17 for SQL Server"),
         "schema": os.getenv("DW_SCHEMA", "dbo"),
     }
+
+
+def append_alerta_emergencia_historico(
+    outdir: Path | str,
+    emergencia: Optional[pd.DataFrame] = None,
+) -> Path:
+    """Persiste snapshot semanal de flags de emergência (append/upsert por SE+IBGE).
+
+    Chave: ano_se + semana_epidemiologica + codigo_ibge (fallback municipio).
+    Não apaga histórico de outras semanas.
+    """
+    outdir = Path(outdir)
+    hist_path = outdir / "alerta_emergencia_historico.csv"
+    if emergencia is None:
+        emerg_path = outdir / "indicadores_emergencia.csv"
+        if not emerg_path.exists():
+            return hist_path
+        emergencia = pd.read_csv(emerg_path, low_memory=False)
+    if emergencia is None or emergencia.empty:
+        return hist_path
+
+    df = emergencia.copy()
+    df["municipio"] = df["municipio"].astype(str).str.strip().str.upper()
+
+    # SE de referência (silêncio GAL / weekly); fallback = última SE do weekly
+    if "epi_year_ref" in df.columns and df["epi_year_ref"].notna().any():
+        ano = int(pd.to_numeric(df["epi_year_ref"], errors="coerce").dropna().iloc[0])
+        se = int(pd.to_numeric(df["epi_week_ref"], errors="coerce").dropna().iloc[0])
+    else:
+        weekly_path = outdir / "integrated_weekly_surveillance.csv"
+        if weekly_path.exists():
+            w = pd.read_csv(
+                weekly_path,
+                usecols=lambda c: c in {"epi_year", "epi_week"},
+                low_memory=False,
+            )
+            wk = (
+                w[["epi_year", "epi_week"]].dropna()
+                .drop_duplicates()
+                .sort_values(["epi_year", "epi_week"])
+            )
+            if wk.empty:
+                return hist_path
+            ano, se = int(wk.iloc[-1]["epi_year"]), int(wk.iloc[-1]["epi_week"])
+        else:
+            return hist_path
+
+    # IBGE
+    mun_path = outdir / "municipal_master.csv"
+    ibge_map = {}
+    if mun_path.exists():
+        try:
+            mm = pd.read_csv(mun_path, usecols=["municipio", "codigo_ibge"], low_memory=False)
+            mm["municipio"] = mm["municipio"].astype(str).str.strip().str.upper()
+            ibge_map = dict(zip(mm["municipio"], mm["codigo_ibge"]))
+        except Exception:
+            ibge_map = {}
+
+    faixa = df.get("faixa_pressao", pd.Series("", index=df.index)).astype(str)
+    pressao_alta = faixa.isin(["alta", "critica"])
+    if "indice_pressao_rede" in df.columns:
+        pressao_alta = pressao_alta | (
+            pd.to_numeric(df["indice_pressao_rede"], errors="coerce").fillna(0) >= 55
+        )
+
+    ts = datetime.now().isoformat(timespec="seconds")
+    rows = []
+    for _, r in df.iterrows():
+        mun = r["municipio"]
+        rows.append({
+            "ano_se": ano,
+            "semana_epidemiologica": se,
+            "codigo_ibge": ibge_map.get(mun, r.get("codigo_ibge", "")),
+            "municipio": mun,
+            "sla_crise": bool(r.get("sla_crise", False)),
+            "silencio_gal_alerta": bool(r.get("silencio_gal_alerta", False)),
+            "divergencia_gal_notif": bool(r.get("divergencia_gal_notif", False)),
+            "faixa_pressao": str(r.get("faixa_pressao", "") or ""),
+            "pressao_alta": bool(pressao_alta.loc[r.name] if r.name in pressao_alta.index else False),
+            "indice_pressao_rede": r.get("indice_pressao_rede"),
+            "prob_pressao_alta_proxima_janela": r.get("prob_pressao_alta_proxima_janela"),
+            "faixa_pressao_predita": r.get("faixa_pressao_predita"),
+            "pressao_predita_acima_limiar": r.get("pressao_predita_acima_limiar"),
+            "prioridade_emergencia": r.get("prioridade_emergencia"),
+            "ts_geracao": ts,
+            "tipo_sinal": "Observado",
+        })
+
+    novo = pd.DataFrame(rows)
+    novo["fonte_stamp"] = "indicadores_emergencia"
+    # Upsert: mesma SE+mun substitui; outras SE permanecem
+    key = ["ano_se", "semana_epidemiologica", "municipio"]
+    if hist_path.exists():
+        try:
+            old = pd.read_csv(hist_path, low_memory=False)
+        except Exception:
+            old = pd.DataFrame()
+        if not old.empty:
+            comb = pd.concat([old, novo], ignore_index=True)
+            comb = comb.drop_duplicates(subset=[c for c in key if c in comb.columns], keep="last")
+        else:
+            comb = novo
+    else:
+        comb = novo
+
+    comb.to_csv(hist_path, index=False, encoding="utf-8-sig")
+    try:
+        comb.to_parquet(outdir / "alerta_emergencia_historico.parquet", index=False)
+    except Exception:
+        pass
+
+    # Se histórico ainda curto (<2 SE), faz seed retroativo das SE anteriores
+    # para habilitar confirmação prospectiva Observado sem esperar semanas.
+    try:
+        n_se = int(
+            comb[["ano_se", "semana_epidemiologica"]].dropna().drop_duplicates().shape[0]
+        )
+        if n_se < 2:
+            comb = _seed_emergencia_historico_retro(outdir, comb, n_weeks=8)
+            comb.to_csv(hist_path, index=False, encoding="utf-8-sig")
+            try:
+                comb.to_parquet(outdir / "alerta_emergencia_historico.parquet", index=False)
+            except Exception:
+                pass
+    except Exception:
+        pass
+    return hist_path
+
+
+def _seed_emergencia_historico_retro(
+    outdir: Path,
+    existing: pd.DataFrame,
+    n_weeks: int = 8,
+) -> pd.DataFrame:
+    """Carimba SE anteriores via flags retrospectivos (uma vez, se histórico curto)."""
+    import numpy as np
+    from gerar_confirmacao_emergencia import _flags_for_week, _mun_week_vol, _read
+
+    weekly = _read(outdir, "integrated_weekly_surveillance.csv")
+    if weekly.empty:
+        return existing
+    rede = _read(outdir, "indicadores_emergencia.csv")
+    if rede.empty:
+        rede = _read(outdir, "indicadores_rede_laboratorial.csv")
+    vol = _mun_week_vol(weekly)
+    all_weeks = (
+        vol[["epi_year", "epi_week"]].drop_duplicates()
+        .sort_values(["epi_year", "epi_week"]).reset_index(drop=True)
+    )
+    if len(all_weeks) < 3:
+        return existing
+
+    seed_weeks = all_weeks.iloc[max(0, len(all_weeks) - n_weeks - 1) : -1]
+    mun_path = outdir / "municipal_master.csv"
+    ibge_map = {}
+    if mun_path.exists():
+        try:
+            mm = pd.read_csv(mun_path, usecols=["municipio", "codigo_ibge"], low_memory=False)
+            mm["municipio"] = mm["municipio"].astype(str).str.strip().str.upper()
+            ibge_map = dict(zip(mm["municipio"], mm["codigo_ibge"]))
+        except Exception:
+            pass
+
+    ts = datetime.now().isoformat(timespec="seconds")
+    rows = []
+    for _, wk in seed_weeks.iterrows():
+        y, w = int(wk["epi_year"]), int(wk["epi_week"])
+        flags = _flags_for_week(vol, y, w, rede, all_weeks)
+        if flags.empty:
+            continue
+        for _, r in flags.iterrows():
+            mun = str(r["municipio"]).strip().upper()
+            rows.append({
+                "ano_se": y,
+                "semana_epidemiologica": w,
+                "codigo_ibge": ibge_map.get(mun, ""),
+                "municipio": mun,
+                "sla_crise": bool(r.get("sla_crise", False)),
+                "silencio_gal_alerta": bool(r.get("silencio_gal", False)),
+                "divergencia_gal_notif": bool(r.get("divergencia", False)),
+                "faixa_pressao": str(r.get("faixa_pressao", "") or ""),
+                "pressao_alta": bool(r.get("pressao_alta", False)),
+                "indice_pressao_rede": r.get("indice_pressao_rede"),
+                "prob_pressao_alta_proxima_janela": np.nan,
+                "faixa_pressao_predita": "",
+                "pressao_predita_acima_limiar": "",
+                "prioridade_emergencia": "",
+                "ts_geracao": ts,
+                "tipo_sinal": "Observado",
+                "fonte_stamp": "seed_retro_inicial",
+            })
+    if not rows:
+        return existing
+    novo = pd.DataFrame(rows)
+    if "fonte_stamp" not in existing.columns:
+        existing = existing.copy()
+        existing["fonte_stamp"] = "indicadores_emergencia"
+    comb = pd.concat([existing, novo], ignore_index=True)
+    key = ["ano_se", "semana_epidemiologica", "municipio"]
+    return comb.drop_duplicates(subset=[c for c in key if c in comb.columns], keep="first")
 
 
 def append_alerta_historico(

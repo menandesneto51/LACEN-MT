@@ -434,28 +434,67 @@ def train_pressao_familia(
     ] if c in labeled.columns]
 
     results = {}
-    weeks = (
-        labeled[["epi_year", "epi_week"]].drop_duplicates()
-        .sort_values(["epi_year", "epi_week"]).reset_index(drop=True)
+    # Prioriza famílias com volume (arbovirose primeiro na documentação/meta)
+    fam_order = ["arbovirose", "respiratorio", "tuberculose", "hepatite", "outros"]
+    familias = sorted(
+        labeled["familia"].dropna().unique(),
+        key=lambda f: fam_order.index(str(f)) if str(f) in fam_order else 99,
     )
-    cut = max(1, int(len(weeks) * 0.8))
-    train_w, test_w = weeks.iloc[:cut], weeks.iloc[cut:]
 
-    for fam, sub in labeled.groupby("familia"):
-        tr = sub.merge(train_w, on=["epi_year", "epi_week"], how="inner")
-        te = sub.merge(test_w, on=["epi_year", "epi_week"], how="inner")
-        if len(tr) < 80 or len(te) < 15 or tr["y_pressao_alta"].nunique() < 2:
-            results[str(fam)] = {"status": "skipped", "reason": "amostra"}
+    for fam in familias:
+        sub = labeled[labeled["familia"] == fam].copy()
+        # Split temporal por semanas da própria família (evita holdout vazio em SE recentes
+        # quando uma família tem cobertura densa no passado e esparsa no presente).
+        fam_weeks = (
+            sub[["epi_year", "epi_week"]].drop_duplicates()
+            .sort_values(["epi_year", "epi_week"]).reset_index(drop=True)
+        )
+        if len(fam_weeks) < 6:
+            results[str(fam)] = {
+                "status": "skipped",
+                "reason": "poucas semanas na família",
+                "n_weeks": int(len(fam_weeks)),
+                "n_rows": int(len(sub)),
+            }
+            continue
+        # Mira ≥15 linhas de teste; se 20% for fino, amplia holdout até 35%
+        cut_frac = 0.80
+        tr = te = pd.DataFrame()
+        for frac in (0.80, 0.75, 0.70, 0.65):
+            cut = max(1, int(len(fam_weeks) * frac))
+            if cut >= len(fam_weeks):
+                cut = len(fam_weeks) - 1
+            train_w, test_w = fam_weeks.iloc[:cut], fam_weeks.iloc[cut:]
+            tr = sub.merge(train_w, on=["epi_year", "epi_week"], how="inner")
+            te = sub.merge(test_w, on=["epi_year", "epi_week"], how="inner")
+            if len(te) >= 15 and len(tr) >= 80:
+                cut_frac = frac
+                break
+        if len(tr) < 80 or len(te) < 10 or tr["y_pressao_alta"].nunique() < 2:
+            results[str(fam)] = {
+                "status": "skipped",
+                "reason": "amostra",
+                "n_train": int(len(tr)),
+                "n_test": int(len(te)),
+                "n_rows": int(len(sub)),
+                "nota": (
+                    "Amostra insuficiente para treino/holdout estável; "
+                    "pipeline segue com modelo global ou baseline logit."
+                ),
+            }
             continue
         Xtr, used = _matrix(tr, cols)
         ytr = tr["y_pressao_alta"].astype(int)
         Xte, _ = _matrix(te, used)
         yte = te["y_pressao_alta"].astype(int)
+        if ytr.nunique() < 2:
+            results[str(fam)] = {"status": "skipped", "reason": "pouca variabilidade treino"}
+            continue
         clf, base = _fit_gb(Xtr, ytr, calibrate=True)
         Xte = Xte.reindex(columns=used, fill_value=0.0)
         prob = clf.predict_proba(Xte)[:, 1]
         auc = None
-        if yte.nunique() > 1 and len(yte) >= 15:
+        if yte.nunique() > 1 and len(yte) >= 10:
             try:
                 auc = float(roc_auc_score(yte, prob))
             except Exception:
@@ -469,6 +508,7 @@ def train_pressao_familia(
         results[str(fam)] = {
             "status": "ok", "auc_test": auc, "threshold": thr,
             "f1_at_threshold": f1, "n_train": int(len(Xtr)), "n_test": int(len(Xte)),
+            "cut_frac_train": cut_frac,
             "precision_at_20": _precision_at_k(yte.to_numpy(), prob, 20),
         }
     return results

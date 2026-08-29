@@ -1,102 +1,69 @@
-﻿municipio,epi_year_ref,epi_week_ref,tipo_alerta,confirmado,exames_ref,exames_futuro,tipo_sinal
-ARAPUTANGA,2026,9,pressao_alta,0,3.0,1.0,Derivado
-ARAPUTANGA,2026,9,sla_crise,0,3.0,1.0,Derivado
-CACERES,2026,9,pressao_alta,0,5.0,3.0,Derivado
-CAMPO NOVO DO PARECIS,2026,9,pressao_alta,0,2.0,2.0,Derivado
-CUIABA,2026,9,pressao_alta,1,5.0,62.0,Derivado
-CUIABA,2026,9,sla_crise,1,5.0,62.0,Derivado
-PONTES E LACERDA,2026,9,pressao_alta,0,2.0,1.0,Derivado
-PONTES E LACERDA,2026,9,sla_crise,0,2.0,1.0,Derivado
-TANGARA DA SERRA,2026,9,pressao_alta,1,8.0,21.0,Derivado
-TANGARA DA SERRA,2026,9,sla_crise,1,8.0,21.0,Derivado
-VARZEA GRANDE,2026,9,pressao_alta,0,4.0,1.0,Derivado
-CACERES,2026,10,pressao_alta,0,2.0,4.0,Derivado
-CUIABA,2026,10,pressao_alta,0,37.0,25.0,Derivado
-CUIABA,2026,10,sla_crise,1,37.0,25.0,Derivado
-SAPEZAL,2026,10,sla_crise,0,1.0,1.0,Derivado
-SINOP,2026,10,pressao_alta,0,1.0,2.0,Derivado
-TANGARA DA SERRA,2026,10,pressao_alta,1,12.0,27.0,Derivado
-TANGARA DA SERRA,2026,10,sla_crise,1,12.0,27.0,Derivado
-VARZEA GRANDE,2026,10,pressao_alta,0,1.0,4.0,Derivado
-CACERES,2026,11,pressao_alta,1,1.0,211.0,Derivado
-CUIABA,2026,11,pressao_alta,0,25.0,17.0,Derivado
-CUIABA,2026,11,sla_crise,1,25.0,17.0,Derivado
-DIAMANTINO,2026,11,sla_crise,0,1.0,2.0,Derivado
-SINOP,2026,11,pressao_alta,0,1.0,4.0,Derivado
-TANGARA DA SERRA,2026,11,pressao_alta,1,9.0,30.0,Derivado
-TANGARA DA SERRA,2026,11,sla_crise,1,9.0,30.0,Derivado
-CACERES,2026,12,pressao_alta,1,3.0,401.0,Derivado
-CHAPADA DOS GUIMARAES,2026,12,pressao_alta,0,1.0,1.0,Derivado
-CHAPADA DOS GUIMARAES,2026,12,sla_crise,0,1.0,1.0,Derivado
-SINOP,2026,12,pressao_alta,0,1.0,3.0,Derivado
-TANGARA DA SERRA,2026,12,pressao_alta,0,18.0,16.0,Derivado
-TANGARA DA SERRA,2026,12,sla_crise,1,18.0,16.0,Derivado
-VARZEA GRANDE,2026,12,pressao_alta,1,4.0,6.0,Derivado
-CACERES,2026,13,pressao_alta,1,208.0,197.0,Derivado
-CAMPO NOVO DO PARECIS,2026,13,pressao_alta,0,1.0,3.0,Derivado
-CUIABA,2026,13,pressao_alta,0,17.0,10.0,Derivado
-CUIABA,2026,13,sla_crise,1,17.0,10.0,Derivado
-NOVA OLIMPIA,2026,13,sla_crise,0,3.0,2.0,Derivado
-SINOP,2026,13,pressao_alta,0,3.0,1.0,Derivado
-TANGARA DA SERRA,2026,13,pressao_alta,0,12.0,12.0,Derivado
-TANGARA DA SERRA,2026,13,sla_crise,1,12.0,12.0,Derivado
-VARZEA GRANDE,2026,13,pressao_alta,0,5.0,2.0,Derivado
-BARRA DO BUGRES,2026,14,sla_crise,1,2.0,7.0,Derivado
-CACERES,2026,14,pressao_alta,0,193.0,11.0,Derivado
-CAMPO NOVO DO PARECIS,2026,14,pressao_alta,0,2.0,5.0,Derivado
-CUIABA,2026,14,pressao_alta,1,8.0,8.0,Derivado
-CUIABA,2026,14,sla_crise,1,8.0,8.0,Derivado
-TANGARA DA SERRA,2026,14,pressao_alta,1,4.0,21.0,Derivado
-TANGARA DA SERRA,2026,14,sla_crise,1,4.0,21.0,Derivado
-VARZEA GRANDE,2026,14,pressao_alta,0,1.0,2.0,Derivado
-CACERES,2026,15,pressao_alta,1,4.0,11.0,Derivado
-CAMPO NOVO DO PARECIS,2026,15,pressao_alta,0,1.0,8.0,Derivado
-CUIABA,2026,15,silencio_gal,0,2.0,9.0,Derivado
-CUIABA,2026,15,pressao_alta,1,2.0,9.0,Derivado
-CUIABA,2026,15,sla_crise,1,2.0,9.0,Derivado
-SINOP,2026,15,pressao_alta,1,1.0,13.0,Derivado
-TANGARA DA SERRA,2026,15,pressao_alta,1,8.0,24.0,Derivado
-TANGARA DA SERRA,2026,15,sla_crise,1,8.0,24.0,Derivado
-VARZEA GRANDE,2026,15,pressao_alta,0,1.0,1.0,Derivado
-CACERES,2026,16,pressao_alta,0,7.0,9.0,Derivado
-CAMPO NOVO DO PARECIS,2026,16,pressao_alta,0,4.0,5.0,Derivado
-CUIABA,2026,16,pressao_alta,0,6.0,4.0,Derivado
-CUIABA,2026,16,sla_crise,1,6.0,4.0,Derivado
-PONTES E LACERDA,2026,16,pressao_alta,0,2.0,1.0,Derivado
-PONTES E LACERDA,2026,16,sla_crise,0,2.0,1.0,Derivado
-SINOP,2026,16,pressao_alta,1,4.0,12.0,Derivado
-TANGARA DA SERRA,2026,16,pressao_alta,1,13.0,13.0,Derivado
-TANGARA DA SERRA,2026,16,sla_crise,1,13.0,13.0,Derivado
-VARZEA GRANDE,2026,16,pressao_alta,0,1.0,4.0,Derivado
-CACERES,2026,17,pressao_alta,1,4.0,7.0,Derivado
-CAMPO NOVO DO PARECIS,2026,17,pressao_alta,0,4.0,2.0,Derivado
-CUIABA,2026,17,pressao_alta,1,3.0,11.0,Derivado
-CUIABA,2026,17,sla_crise,1,3.0,11.0,Derivado
-NOVA MUTUM,2026,17,pressao_alta,0,1.0,3.0,Derivado
-NOVA MUTUM,2026,17,sla_crise,1,1.0,3.0,Derivado
-SINOP,2026,17,pressao_alta,0,9.0,6.0,Derivado
-TANGARA DA SERRA,2026,17,pressao_alta,0,11.0,8.0,Derivado
-TANGARA DA SERRA,2026,17,sla_crise,1,11.0,8.0,Derivado
-CACERES,2026,18,pressao_alta,1,5.0,7.0,Derivado
-CAMPO NOVO DO PARECIS,2026,18,pressao_alta,0,1.0,1.0,Derivado
-CUIABA,2026,18,silencio_gal,0,1.0,16.0,Derivado
-CUIABA,2026,18,pressao_alta,1,1.0,16.0,Derivado
-CUIABA,2026,18,sla_crise,1,1.0,16.0,Derivado
-PONTES E LACERDA,2026,18,pressao_alta,0,1.0,1.0,Derivado
-PONTES E LACERDA,2026,18,sla_crise,0,1.0,1.0,Derivado
-SINOP,2026,18,pressao_alta,0,3.0,6.0,Derivado
-TANGARA DA SERRA,2026,18,silencio_gal,0,2.0,14.0,Derivado
-TANGARA DA SERRA,2026,18,pressao_alta,1,2.0,14.0,Derivado
-TANGARA DA SERRA,2026,18,sla_crise,1,2.0,14.0,Derivado
-VARZEA GRANDE,2026,18,pressao_alta,1,4.0,8.0,Derivado
-CACERES,2026,19,pressao_alta,1,2.0,8.0,Derivado
-CUIABA,2026,19,pressao_alta,0,10.0,7.0,Derivado
-CUIABA,2026,19,sla_crise,1,10.0,7.0,Derivado
-NOVA OLIMPIA,2026,19,sla_crise,0,3.0,2.0,Derivado
-SINOP,2026,19,pressao_alta,0,3.0,3.0,Derivado
-TANGARA DA SERRA,2026,19,pressao_alta,1,6.0,8.0,Derivado
-TANGARA DA SERRA,2026,19,sla_crise,1,6.0,8.0,Derivado
-VARZEA GRANDE,2026,19,pressao_alta,1,3.0,5.0,Derivado
-CACERES,2026,20,pressao_alta,0,5.0,3.0,Derivado
-CUIABA,2026,20,pressao_alta,0,6.0,1.0,Derivado
-CUIABA,2026,20,sla_crise,0,6.0,1.0,Derivado
+﻿municipio,codigo_ibge,epi_year_ref,epi_week_ref,tipo_alerta,confirmado,exames_ref,exames_futuro,tipo_sinal,fonte_flag
+CACERES,5102504.0,2026,13,pressao_alta,1,208.0,197.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,13,pressao_alta,0,1.0,3.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,13,pressao_alta,0,17.0,10.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,13,sla_crise,1,17.0,10.0,Observado,alerta_emergencia_historico
+NOVA OLIMPIA,5106265.0,2026,13,sla_crise,0,3.0,2.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,13,pressao_alta,0,3.0,1.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,13,pressao_alta,0,12.0,12.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,13,sla_crise,1,12.0,12.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,13,pressao_alta,0,5.0,2.0,Observado,alerta_emergencia_historico
+BARRA DO BUGRES,5101704.0,2026,14,sla_crise,1,2.0,7.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,14,pressao_alta,0,193.0,11.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,14,pressao_alta,0,2.0,5.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,14,pressao_alta,1,8.0,8.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,14,sla_crise,1,8.0,8.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,14,pressao_alta,1,4.0,21.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,14,sla_crise,1,4.0,21.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,14,pressao_alta,0,1.0,2.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,15,pressao_alta,1,4.0,11.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,15,pressao_alta,0,1.0,8.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,silencio_gal,0,2.0,9.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,pressao_alta,1,2.0,9.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,sla_crise,1,2.0,9.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,15,pressao_alta,1,1.0,13.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,15,pressao_alta,1,8.0,24.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,15,sla_crise,1,8.0,24.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,15,pressao_alta,0,1.0,1.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,16,pressao_alta,0,7.0,9.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,16,pressao_alta,0,4.0,5.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,16,pressao_alta,0,6.0,4.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,16,sla_crise,1,6.0,4.0,Observado,alerta_emergencia_historico
+PONTES E LACERDA,5106851.0,2026,16,pressao_alta,0,2.0,1.0,Observado,alerta_emergencia_historico
+PONTES E LACERDA,5106851.0,2026,16,sla_crise,0,2.0,1.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,16,pressao_alta,1,4.0,12.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,16,pressao_alta,1,13.0,13.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,16,sla_crise,1,13.0,13.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,16,pressao_alta,0,1.0,4.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,17,pressao_alta,1,4.0,7.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,17,pressao_alta,0,4.0,2.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,17,pressao_alta,1,3.0,11.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,17,sla_crise,1,3.0,11.0,Observado,alerta_emergencia_historico
+NOVA MUTUM,5106257.0,2026,17,pressao_alta,0,1.0,3.0,Observado,alerta_emergencia_historico
+NOVA MUTUM,5106257.0,2026,17,sla_crise,1,1.0,3.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,17,pressao_alta,0,9.0,6.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,17,pressao_alta,0,11.0,8.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,17,sla_crise,1,11.0,8.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,18,pressao_alta,1,5.0,7.0,Observado,alerta_emergencia_historico
+CAMPO NOVO DO PARECIS,5102637.0,2026,18,pressao_alta,0,1.0,1.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,18,silencio_gal,0,1.0,16.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,18,pressao_alta,1,1.0,16.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,18,sla_crise,1,1.0,16.0,Observado,alerta_emergencia_historico
+PONTES E LACERDA,5106851.0,2026,18,pressao_alta,0,1.0,1.0,Observado,alerta_emergencia_historico
+PONTES E LACERDA,5106851.0,2026,18,sla_crise,0,1.0,1.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,18,pressao_alta,0,3.0,6.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,18,silencio_gal,0,2.0,14.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,18,pressao_alta,1,2.0,14.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,18,sla_crise,1,2.0,14.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,18,pressao_alta,1,4.0,8.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,19,pressao_alta,1,2.0,8.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,19,pressao_alta,0,10.0,7.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,19,sla_crise,1,10.0,7.0,Observado,alerta_emergencia_historico
+NOVA OLIMPIA,5106265.0,2026,19,sla_crise,0,3.0,2.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,19,pressao_alta,0,3.0,3.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,19,pressao_alta,1,6.0,8.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,19,sla_crise,1,6.0,8.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,19,pressao_alta,1,3.0,5.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,20,pressao_alta,0,5.0,3.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,20,pressao_alta,0,6.0,1.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,20,sla_crise,0,6.0,1.0,Observado,alerta_emergencia_historico

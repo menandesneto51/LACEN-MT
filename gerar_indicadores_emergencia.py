@@ -473,6 +473,14 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
     except Exception:
         pass
 
+    # Snapshot semanal carimbado (append/upsert por SE+município) — não apaga histórico
+    try:
+        from ml.mirror_dw import append_alerta_emergencia_historico
+        hist_p = append_alerta_emergencia_historico(outdir, base)
+        print(f"[EMERG] Histórico flags: {hist_p.name}", flush=True)
+    except Exception as exc:
+        print(f"[EMERG][AVISO] Histórico flags: {exc}", flush=True)
+
     # --- Por família (SLA crise) ---
     if not familia.empty:
         fam = familia.copy()
@@ -531,9 +539,15 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
     conf = _read(outdir, "emergencia_confirmacao_resumo.csv")
     taxa_conf = None
     taxa_conf_sil = None
+    tipo_sinal_conf = None
+    modo_conf = None
+    n_se_hist_conf = None
     if not conf.empty:
         taxa_conf = conf.iloc[0].get("taxa_confirmacao_geral")
         taxa_conf_sil = conf.iloc[0].get("taxa_confirmacao_silencio_gal")
+        tipo_sinal_conf = conf.iloc[0].get("tipo_sinal")
+        modo_conf = conf.iloc[0].get("modo_confirmacao")
+        n_se_hist_conf = conf.iloc[0].get("n_se_historico_carimbado")
         try:
             taxa_conf = float(taxa_conf) if pd.notna(taxa_conf) else None
         except Exception:
@@ -542,6 +556,10 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
             taxa_conf_sil = float(taxa_conf_sil) if pd.notna(taxa_conf_sil) else None
         except Exception:
             taxa_conf_sil = None
+        try:
+            n_se_hist_conf = int(n_se_hist_conf) if pd.notna(n_se_hist_conf) else None
+        except Exception:
+            n_se_hist_conf = None
 
     # Top ações (fila + emergência)
     top_acoes = base[base["prioridade_emergencia"].isin(["CRÍTICO", "ALTO"])].head(8).copy()
@@ -563,6 +581,9 @@ def build_indicadores_emergencia(outdir: Path | str = "saida_pipeline") -> dict[
         "kpi_prob_pressao_predita_mediana": prob_press_med,
         "kpi_taxa_confirmacao_emergencia": taxa_conf,
         "kpi_taxa_confirmacao_silencio_gal": taxa_conf_sil,
+        "kpi_tipo_sinal_confirmacao": tipo_sinal_conf or "Derivado",
+        "kpi_modo_confirmacao": modo_conf or "",
+        "kpi_n_se_historico_carimbado": n_se_hist_conf,
         "n_municipios_sla_crise": n_sla,
         "n_municipios_pressao_alta_critica": n_pressao,
         "n_municipios": int(base["municipio"].nunique()),

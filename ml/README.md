@@ -27,8 +27,10 @@ dashboard (Predição e alertas + assistente)
 | `ml_risco_predito.csv` | Prob. alerta + limiar + drivers |
 | `ml_silencio_predito.csv` | Prob. silêncio + limiar |
 | `ml_pressao_rede_predito.csv` | Prob. pressão alta próxima SE + banda + drivers |
+| `ml_pressao_rede_familia_predito.csv` | Pressão predita por família (arbovirose etc.) |
 | `ml_pressao_rede_backtest.csv` | AUC / confirmação pressão |
-| `emergencia_confirmacao_resumo.csv` | Taxa de confirmação de alertas de emergência |
+| `emergencia_confirmacao_resumo.csv` | Taxa de confirmação (Observado se histórico ≥2 SE) |
+| `alerta_emergencia_historico.csv` | Flags de emergência carimbados por SE×município |
 | `ml_backtest_summary.csv` | AUC / confirmação / P@20 / P@50 |
 | `alerta_historico.csv` | Alertas emitidos × desfecho |
 | `indicadores_rede_laboratorial.csv` | TAT / backlog / rejeição |

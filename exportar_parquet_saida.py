@@ -41,6 +41,7 @@ ESSENTIAL = [
     "emergencia_confirmacao_resumo.csv",
     "emergencia_confirmacao_detalhe.csv",
     "alerta_historico.csv",
+    "alerta_emergencia_historico.csv",
     "executive_state_summary.csv",
     "executive_rede_summary.csv",
     "sim_qualidade.csv",

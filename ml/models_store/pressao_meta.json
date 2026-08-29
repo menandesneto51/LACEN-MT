@@ -108,16 +108,43 @@
   ],
   "familia_models": {
     "arbovirose": {
-      "status": "skipped",
-      "reason": "amostra"
+      "status": "ok",
+      "auc_test": 0.8576838270539737,
+      "threshold": 0.5499999999999999,
+      "f1_at_threshold": 0.6551724137931034,
+      "n_train": 3650,
+      "n_test": 240,
+      "cut_frac_train": 0.8,
+      "precision_at_20": 0.85
+    },
+    "respiratorio": {
+      "status": "ok",
+      "auc_test": 0.9453125,
+      "threshold": 0.85,
+      "f1_at_threshold": 0.9090909090909091,
+      "n_train": 1125,
+      "n_test": 32,
+      "cut_frac_train": 0.8,
+      "precision_at_20": 0.8
+    },
+    "tuberculose": {
+      "status": "ok",
+      "auc_test": 0.8523076923076923,
+      "threshold": 0.49999999999999994,
+      "f1_at_threshold": 0.7045454545454545,
+      "n_train": 1020,
+      "n_test": 100,
+      "cut_frac_train": 0.8,
+      "precision_at_20": 0.8
     },
     "hepatite": {
       "status": "ok",
-      "auc_test": 0.7469135802469136,
+      "auc_test": 0.7468239564428313,
       "threshold": 0.2,
-      "f1_at_threshold": 0.7352941176470589,
-      "n_train": 1560,
-      "n_test": 63,
+      "f1_at_threshold": 0.7200000000000001,
+      "n_train": 1556,
+      "n_test": 67,
+      "cut_frac_train": 0.8,
       "precision_at_20": 0.65
     },
     "outros": {
@@ -127,24 +154,7 @@
       "f1_at_threshold": 0.7407407407407406,
       "n_train": 1024,
       "n_test": 82,
-      "precision_at_20": 0.65
-    },
-    "respiratorio": {
-      "status": "ok",
-      "auc_test": 0.9258241758241759,
-      "threshold": 0.85,
-      "f1_at_threshold": 0.9032258064516129,
-      "n_train": 1130,
-      "n_test": 27,
-      "precision_at_20": 0.7
-    },
-    "tuberculose": {
-      "status": "ok",
-      "auc_test": 0.8061119671289163,
-      "threshold": 0.44999999999999996,
-      "f1_at_threshold": 0.7250000000000001,
-      "n_train": 1028,
-      "n_test": 92,
+      "cut_frac_train": 0.8,
       "precision_at_20": 0.65
     }
   }
