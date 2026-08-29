@@ -27,6 +27,18 @@ Abas novas: Visão executiva, Municípios em risco, Municípios silenciosos, Uti
 Use `.env.example` como modelo. Não grave senhas no código.
 Padrão alinhado a TITAN_V40_DEV / Sentinela / SISREG (`DW_*`, Telegram, e-mail).
 
+### Teste de alerta (Telegram + e-mail)
+Os alertas (fila operacional, emergência, banda de risco, silêncio, pressão predita) são **gerados em CSV** e exibidos no dashboard — **não há disparo automático** em produção ainda.
+
+Envio manual de teste (uma mensagem, marcada como TESTE), a partir dos top alertas em `saida_pipeline/`:
+
+```bat
+python scripts/enviar_alerta_teste.py
+python scripts/enviar_alerta_teste.py --dry-run
+```
+
+Requer no `.env`: `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` e/ou SMTP (`EMAIL_USER`/`EMAIL_SENHA` ou `SMTP_*`). Ver `.env.example`.
+
 ### Auth do dashboard (SES/CIEVS)
 Sem secrets → painel **público**. Com `[auth]` em Streamlit Secrets (ou `LACEN_DASHBOARD_PASSWORD` / `LACEN_REQUIRE_AUTH=1`) → login institucional.
 Modelo: `.streamlit/secrets.toml.example`. Cloud: `STREAMLIT_CLOUD.md`. Servidor SES: `scripts/deploy_ses.md`.

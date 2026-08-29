@@ -59,6 +59,13 @@ Local: copie `.streamlit/secrets.toml.example` → `.streamlit/secrets.toml`, ou
 
 Desligar: remova o bloco `[auth]` / senhas dos Secrets e faça **Reboot** (ou apague `LACEN_REQUIRE_AUTH`).
 
+## Alertas e notificações
+
+O Cloud **exibe** alertas (fila, emergência, risco, silêncio, pressão) lidos de `saida_pipeline/`.
+Disparo Telegram/e-mail **não** roda no Streamlit Cloud; use localmente:
+
+`python scripts/enviar_alerta_teste.py` (credenciais em `.env` — ver `.env.example`).
+
 ## Atualizar dados locais antes do push
 
 ```bat
