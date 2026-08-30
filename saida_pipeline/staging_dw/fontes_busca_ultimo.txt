@@ -1,0 +1,30 @@
+LACEN MT — busca de fontes adicionais (IndicaSUS / SISREG / DW leftovers)
+gerado_em: 2026-08-30T19:46:23
+
+=== DW estadual ===
+tcp/connect: ok=True
+objects_inventory: 55
+sources_extracted (11): dbo.VW_SINAN_LEISHMANIOSETEGUMENTAR, dbo.VW_SINAN_SIFILISGESTANTE, dbo.VW_SINAN_SIFILISCONGENITA, dbo.VW_SINAN_AIDSCRIANCA, dbo.VW_SINAN_ESQUISTOSSOMOSE, dbo.VW_SINAN_FEBREMACULOSA, dbo.VW_SINAN_INTOXICACAOEXOGENA, dbo.VW_SINAN_ANIMAISPECONHENTOS, dbo.VW_SINAN_DOENCARELACIONADATRABALHOLERDORT, dbo.VW_SINAN_VIOLENCIADOMESTICASEXUALEOUOUTRAS, dbo.VW_SINASC
+leftovers_attempted: ['VW_SINAN_LEISHMANIOSETEGUMENTAR', 'VW_SINAN_SIFILISGESTANTE', 'VW_SINAN_SIFILISCONGENITA', 'VW_SINAN_AIDSCRIANCA', 'VW_SINAN_ESQUISTOSSOMOSE', 'VW_SINAN_FEBREMACULOSA', 'VW_SINAN_INTOXICACAOEXOGENA', 'VW_SINAN_ANIMAISPECONHENTOS', 'VW_SINAN_DOENCARELACIONADATRABALHOLERDORT', 'VW_SINAN_VIOLENCIADOMESTICASEXUALEOUOUTRAS', 'VW_SINASC'] | extracted: 11 | failures: []
+
+=== IndicaSUS ===
+connected: True | host=10.15.0.222 | db=BdSES | user=roneydamaceno | auth=native
+objects_listed: 356
+  extracted: ind.Indicador → indicasus_indicador (1759 rows)
+  extracted: form.V_MunicipioRegiao → indicasus_municipio_regiao (143 rows)
+  extracted: ind.Tema → indicasus_tema (31 rows)
+  extracted: ind.Periodicidade → indicasus_periodicidade (5 rows)
+  extracted: ind.ImportacaoCalculado → indicasus_importacao_calculado (2 rows)
+  extracted: ind.EntradaDados → indicasus_entrada_dados (30000 rows)
+  extracted: form.HistoricoOcupacao → indicasus_historico_ocupacao_sample (20000 rows)
+  extracted: form.HistoricoOcupacao/agg → indicasus_ocupacao_agg (402 rows)
+  failure: ind.MetaIndicadorValor: vazio
+
+=== SISREG ===
+connected: True | host=10.15.1.71 | db=SES | user=sisreg_sureg | auth=None
+objects_listed: 15
+  extracted: dbo.VW_SAMU_FILA_HOSPITALAR → sisreg_samu_fila (38003 rows)
+  extracted: dbo.VW_AMBULATORIAL_SOLICITACAO/agg → sisreg_amb_mun_status_agg (28890 rows)
+  extracted: dbo.VW_HOSPITALAR_SINTETICO/agg → sisreg_hosp_mun_status_agg (3254 rows)
+  extracted: dbo.VW_HOSPITALAR_SINTETICO/sample → sisreg_hosp_recent (25000 rows)
+

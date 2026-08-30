@@ -1156,14 +1156,15 @@ def inventariar_cruzamento_bases(
         ("CNES", ("cnes",), "Capacidade da rede (leitos/equipes)"),
         (
             "IndicaSUS",
-            ("indica", "pactuac"),
-            "Pactuação / INDICADORES* no DW (host IndicaSUS separado)",
+            ("indica", "pactuac", "indicasus_"),
+            "Pactuação / INDICADORES* no DW + host IndicaSUS (indicasus_*)",
         ),
         (
             "SISREG",
             ("sisreg",),
-            "Regulação — host SISREG_* separado (sem view no DW; ping opcional)",
+            "Regulação — host SISREG_* (sisreg_* no staging; sem view no DW)",
         ),
+        ("SINASC", ("sinasc",), "Nascidos vivos — contexto perinatal"),
         ("POPULACAO", ("populac",), "Denominadores municipais"),
     ]
     files = []

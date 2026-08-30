@@ -70,12 +70,26 @@ Arquivos: `dw_views_inventory.csv` (todas as **26** views) · `dw_objects_uteis_
 
 ## IndicaSUS e SISREG (fora do catálogo de views)
 
-- **IndicaSUS**: host próprio (`INDICASUS_HOST` ~ `*.222`, DB `*dSES`) nos projetos AESOP/TITAN/Araras/ondas. No DW, o mais próximo é `INDICADORES*` / `INDICADORESPACTUACAO`.
-- **SISREG**: host próprio (`SISREG_HOST` ~ `*.71`, DB local + paths `SISREG_BASE`/`SISREG_PARQUET`). Nenhuma view/tabela `*SISREG*` no Datawarehouse inventariado.
+- **IndicaSUS**: host próprio (`INDICASUS_HOST` ~ `*.222`, DB `BdSES`). Preferir credenciais `INDICASUS_USER`/`PASSWORD` nativas — `INDICASUS_USE_DW_CREDENTIALS` costuma falhar (login DW no host IndicaSUS). Extratos leves: `staging_dw/indicasus_*` (catálogo `ind.Indicador`, mun/região, amostra ocupação). No DW, proxy: `INDICADORES*` / `INDICADORESPACTUACAO`.
+- **SISREG**: host próprio (`SISREG_HOST` ~ `*.71`, DB `SES`). Views úteis: `VW_AMBULATORIAL_SOLICITACAO`, `VW_HOSPITALAR_SINTETICO`, `VW_SAMU_FILA_HOSPITALAR`. Extratos: `staging_dw/sisreg_*` (inventário + aggs mun×status; **sem** dump das dezenas de milhões de linhas). Ping TCP opcional; falha **não bloqueia** ETL/CIEVS.
 - **SIH**: não há objeto com nome `SIH`/`AIH`; usar `VW_INTERNACAO` (e opcionalmente `SIH_DW_TABLE=VW_INTERNACAO` no `.env`).
+
+---
+
+## Fontes adicionais (pós SIH/SIA)
+
+ETL: `etl/dw_extract.py` + `etl/external_extract.py`. Relatório da última busca: `staging_dw/fontes_busca_ultimo.txt`.
+
+| Fonte | Staging | Nota |
+|-------|---------|------|
+| Demais `VW_SINAN_*` | `vw_sinan_*.parquet` | TOP N por agravo |
+| `VW_SINASC` | `vw_sinasc.*` | perinatal |
+| IndicaSUS | `indicasus_*` | host separado |
+| SISREG | `sisreg_*` | host separado; aggs leves |
 
 ---
 
 ## Extensão sugerida no ETL
 
-`etl/dw_extract.py` → candidatos: `VW_INTERNACAO`, `SIA`, `SIA_APAC`, `VW_SINASC`, `INDICADORESPACTUACAO` (além de GAL/SINAN já cobertos). Extrair só amostra `TOP N`, não full dump.
+`etl/dw_extract.py` → GAL/SINAN/SIH/SIA/INDICADORES* + leftovers SINASC/SINAN.  
+`etl/external_extract.py` → IndicaSUS + SISREG. Extrair só amostra `TOP N` / janela recente, não full dump.

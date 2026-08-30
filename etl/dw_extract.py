@@ -127,6 +127,26 @@ SINAN_PRIORITY_VIEWS: tuple[str, ...] = (
     "VW_SINAN_LEISHMANIOSEVISCERAL",
     "VW_SINAN_HANSENIASE",
     "VW_SINAN_HANTAVIROSE",
+    # leftovers nice-to-have (TOP N)
+    "VW_SINAN_LEISHMANIOSETEGUMENTAR",
+    "VW_SINAN_SIFILISGESTANTE",
+    "VW_SINAN_SIFILISCONGENITA",
+    "VW_SINAN_AIDSADULTO",
+    "VW_SINAN_AIDSCRIANCA",
+    "VW_SINAN_ESQUISTOSSOMOSE",
+    "VW_SINAN_FEBREMACULOSA",
+    "VW_SINAN_INTOXICACAOEXOGENA",
+    "VW_SINAN_ANIMAISPECONHENTOS",
+    "VW_SINAN_ACIDENTETRABALHOGRAVE",
+    "VW_SINAN_ACIDENTETRABALHOEXPOSICAOMATERIALBIOLOGICO",
+    "VW_SINAN_DOENCARELACIONADATRABALHOLERDORT",
+    "VW_SINAN_VIOLENCIADOMESTICASEXUALEOUOUTRAS",
+)
+
+# Leftovers explícitos pós-SIH/SIA (amostra TOP N)
+DW_LEFTOVER_MUST: tuple[str, ...] = (
+    "VW_SINASC",
+    "SIVEP_MALARIA",
 )
 
 
@@ -1202,15 +1222,20 @@ def run_extract(
             if cand in names and cand not in already:
                 extra_names.append(cand)
                 already.add(cand)
-        # 3) Fuzzy — até 2 por grupo (exceto SINAN: já coberto)
+        # 3) Leftovers must (SINASC / SIVEP)
+        for cand in DW_LEFTOVER_MUST:
+            if cand in names and cand not in already:
+                extra_names.append(cand)
+                already.add(cand)
+        # 4) Fuzzy — até 2 por grupo (exceto SINAN: já coberto)
         for label, needles in fuzzy_groups:
             matches = sorted(
                 n for n in names
                 if n not in already and any(nd in n for nd in needles)
             )
             if label == "SINAN":
-                # Complementa com mais views SINAN além das prioritárias
-                for pick in matches[:8]:
+                # Complementa com TODAS as views SINAN restantes (TOP N cada)
+                for pick in matches:
                     if pick not in already:
                         extra_names.append(pick)
                         already.add(pick)
@@ -1225,13 +1250,17 @@ def run_extract(
                     already.add(pick)
 
         meta["sources_attempted"] = extra_names
-        for cand in extra_names[:20]:
+        leftover_fail: list[str] = []
+        leftover_ok: list[str] = []
+        # Limite alto o bastante para cobrir ~23 VW_SINAN + SINASC + extras
+        for cand in extra_names[:40]:
             schema = "dbo"
             if not inv.empty and "TABLE_NAME" in inv.columns:
                 hit = inv[inv["TABLE_NAME"].astype(str).str.upper() == cand]
                 if not hit.empty and "TABLE_SCHEMA" in hit.columns:
                     schema = str(hit.iloc[0]["TABLE_SCHEMA"])
-            df = extract_optional_view(mode, queryable, cand, schema=schema)
+            top = 30_000 if cand.startswith("VW_SINAN") or cand == "VW_SINASC" else 50_000
+            df = extract_optional_view(mode, queryable, cand, schema=schema, top=top)
             if df is not None and not df.empty:
                 safe = re.sub(r"[^a-z0-9_]+", "_", cand.lower())
                 p = stage / f"{safe}.parquet"
@@ -1239,14 +1268,56 @@ def run_extract(
                 df.to_csv(stage / f"{safe}.csv", index=False, encoding="utf-8-sig")
                 meta["files"][safe] = str(p.name)
                 extracted_sources.append(f"{schema}.{cand}")
+                leftover_ok.append(cand)
                 _log(f"[DW] Extraído {schema}.{cand} → {p.name} ({len(df)} linhas)")
+            else:
+                leftover_fail.append(cand)
         meta["sources_extracted"] = extracted_sources
+        meta["dw_leftovers"] = {
+            "attempted": list(extra_names[:40]),
+            "extracted_count": len(leftover_ok),
+            "extracted": leftover_ok,
+            "failures": leftover_fail,
+        }
     finally:
         if mode == "pyodbc" and queryable is not None:
             try:
                 queryable.close()
             except Exception:
                 pass
+
+    # Hosts externos (IndicaSUS / SISREG) — fail soft
+    external: dict[str, Any] = {}
+    try:
+        from etl.external_extract import run_external_extract, write_fontes_busca_report
+
+        external = run_external_extract(outdir)
+        meta["external"] = {
+            "indicasus_ok": bool((external.get("indicasus") or {}).get("ok")),
+            "sisreg_ok": bool((external.get("sisreg") or {}).get("ok")),
+            "indicasus_objects": (external.get("indicasus") or {}).get("objects_listed"),
+            "sisreg_objects": (external.get("sisreg") or {}).get("objects_listed"),
+            "indicasus_extracted": [
+                e.get("stem") for e in ((external.get("indicasus") or {}).get("extracted") or [])
+            ],
+            "sisreg_extracted": [
+                e.get("stem") for e in ((external.get("sisreg") or {}).get("extracted") or [])
+            ],
+        }
+        # Propagar files dos externos no meta
+        for key in ("indicasus", "sisreg"):
+            for stem, fname in ((external.get(key) or {}).get("files") or {}).items():
+                meta["files"][stem] = fname
+        write_fontes_busca_report(stage, dw_meta=meta, external=external)
+    except Exception as exc:
+        meta["external"] = {"error": type(exc).__name__}
+        _log(f"[EXTERNAL] skip: {type(exc).__name__}")
+        try:
+            from etl.external_extract import write_fontes_busca_report
+
+            write_fontes_busca_report(stage, dw_meta=meta, external=external)
+        except Exception:
+            pass
 
     meta_path = stage / "extract_meta.json"
     meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False, default=str), encoding="utf-8")

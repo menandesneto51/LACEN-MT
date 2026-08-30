@@ -1,0 +1,357 @@
+﻿TABLE_SCHEMA,TABLE_NAME,TABLE_TYPE
+dbo,__MigrationHistory,BASE TABLE
+dbo,Alvara,BASE TABLE
+dbo,AlvaraJson,BASE TABLE
+dbo,AnaliseDocumental,BASE TABLE
+dbo,AnaliseDocumentalDocumento,BASE TABLE
+dbo,AnaliseDocumentalEquipe,BASE TABLE
+dbo,AutorPBA,BASE TABLE
+dbo,AutorPGRSS,BASE TABLE
+dbo,Banco,BASE TABLE
+dbo,BlocoNotificacaoReceita,BASE TABLE
+dbo,BlocoRemessaERS,BASE TABLE
+dbo,BlocoRemessaERSRecebido,BASE TABLE
+dbo,CadastroEmail,BASE TABLE
+dbo,Cargo,BASE TABLE
+dbo,Categoria,BASE TABLE
+dbo,CBO,BASE TABLE
+dbo,CBOFamilia,BASE TABLE
+dbo,CBOGrupo,BASE TABLE
+dbo,CBOSubgrupo,BASE TABLE
+dbo,CBOSubgrupoPrincipal,BASE TABLE
+dbo,ClasseAtividadeProduto,BASE TABLE
+dbo,ClasseProduto,BASE TABLE
+dbo,CNAE,BASE TABLE
+dbo,CNAEObjetoLicenca,BASE TABLE
+dbo,CNAETipoInteresse,BASE TABLE
+dbo,ConfirmacaoEmail,BASE TABLE
+dbo,ConselhoProfissao,BASE TABLE
+dbo,Contato,BASE TABLE
+dbo,ControlePasta,BASE TABLE
+dbo,ControlePastaAnexo,BASE TABLE
+dbo,CredenciamentoUdt,BASE TABLE
+dbo,CredenciamentoUdtDocumento,BASE TABLE
+dbo,Curso,BASE TABLE
+dbo,DAR,BASE TABLE
+dbo,Endereco,BASE TABLE
+dbo,EnderecoLocalidade,BASE TABLE
+dbo,EsferaAdministrativa,BASE TABLE
+dbo,Estabelecimento,BASE TABLE
+dbo,EstabelecimentoCNAESecundario,BASE TABLE
+dbo,EstabelecimentoCNPJ,BASE TABLE
+dbo,EstabelecimentoImport,BASE TABLE
+dbo,EstabelecimentoJucemat,BASE TABLE
+dbo,EstabelecimentoProfissional,BASE TABLE
+dbo,EstabelecimentoServico,BASE TABLE
+dbo,EstabelecimentoTipoInteresse,BASE TABLE
+dbo,FaqPergunta,BASE TABLE
+dbo,Funcao,BASE TABLE
+dbo,Funcionalidade,BASE TABLE
+dbo,FuncionalidadePerfil,BASE TABLE
+dbo,GrupoProduto,BASE TABLE
+dbo,InspecaoSanitaria,BASE TABLE
+dbo,InspecaoSanitariaAnaliseDocumental,BASE TABLE
+dbo,InspecaoSanitariaAvisoRecebimento,BASE TABLE
+dbo,InspecaoSanitariaEquipe,BASE TABLE
+dbo,InspecaoSanitariaEstabelecimento,BASE TABLE
+dbo,InspecaoSanitariaExecucaoEquipe,BASE TABLE
+dbo,InspecaoSanitariaIrregularidade,BASE TABLE
+dbo,InspecaoSanitariaIrregularidadeApreensao,BASE TABLE
+dbo,InspecaoSanitariaIrregularidadeLegislacao,BASE TABLE
+dbo,InspecaoSanitariaIrregularidadeMotivacao,BASE TABLE
+dbo,InspecaoSanitariaTermo,BASE TABLE
+dbo,InspecaoSanitariaTermoIrregularidade,BASE TABLE
+dbo,InstituicaoCurso,BASE TABLE
+dbo,Legislacao,BASE TABLE
+dbo,LiberacaoAutomatica,BASE TABLE
+dbo,Localidade,BASE TABLE
+dbo,Log,BASE TABLE
+dbo,LogJob,BASE TABLE
+dbo,MemorialFotografico,BASE TABLE
+dbo,MotivoInativo,BASE TABLE
+dbo,MotivoInspecao,BASE TABLE
+dbo,MSreplication_objects,BASE TABLE
+dbo,MSreplication_subscriptions,BASE TABLE
+dbo,MSsavedforeignkeycolumns,BASE TABLE
+dbo,MSsavedforeignkeyextendedproperties,BASE TABLE
+dbo,MSsavedforeignkeys,BASE TABLE
+dbo,MSsnapshotdeliveryprogress,BASE TABLE
+dbo,MSsubscription_agents,BASE TABLE
+dbo,MunicipioBloqueio,BASE TABLE
+dbo,MunicipioSefaz,BASE TABLE
+dbo,NaturezaOrganizacao,BASE TABLE
+dbo,Notificacao,BASE TABLE
+dbo,NotificacaoUsuario,BASE TABLE
+dbo,NumeracaoAnvisa,BASE TABLE
+dbo,Orgao,BASE TABLE
+dbo,OutrosDocumentosProtocolo,BASE TABLE
+dbo,Ouvidoria,BASE TABLE
+dbo,OuvidoriaDemandante,BASE TABLE
+dbo,OuvidoriaHomologacao,BASE TABLE
+dbo,OuvidoriaTramite,BASE TABLE
+dbo,Parametro,BASE TABLE
+dbo,Perfil,BASE TABLE
+dbo,Pessoa,BASE TABLE
+dbo,PessoaCurso,BASE TABLE
+dbo,PessoaDadosComplementares,BASE TABLE
+dbo,PGRSS,BASE TABLE
+dbo,PGRSSAutor,BASE TABLE
+dbo,PGRSSDocumento,BASE TABLE
+dbo,PorteEmpresa,BASE TABLE
+dbo,ProcessoAdministrativoSanitario,BASE TABLE
+dbo,ProcessoAdministrativoSanitarioAndamento,BASE TABLE
+dbo,ProcessoAdministrativoSanitarioInstancia,BASE TABLE
+dbo,ProcessoAdministrativoSanitarioParecer,BASE TABLE
+dbo,ProcessoAdministrativoSanitarioPenalidade,BASE TABLE
+dbo,ProdutoObjetoLicenca,BASE TABLE
+dbo,Profissional,BASE TABLE
+dbo,ProgramacaoAcao,BASE TABLE
+dbo,ProgramacaoAcaoAnexo,BASE TABLE
+dbo,ProgramacaoAcaoGeral,BASE TABLE
+dbo,ProgramacaoAcaoGeralRealizado,BASE TABLE
+dbo,ProgramacaoAcaoGeralRealizadoEquipe,BASE TABLE
+dbo,ProgramacaoAcaoInspecaoSanitaria,BASE TABLE
+dbo,ProjetoArquitetonico,BASE TABLE
+dbo,ProjetoArquitetonicoAnalise,BASE TABLE
+dbo,ProjetoArquitetonicoAutor,BASE TABLE
+dbo,ProjetoArquitetonicoDocumento,BASE TABLE
+dbo,ProjetoArquitetonicoDocumentoAtualiza,BASE TABLE
+dbo,ProjetoArquitetonicoEquipe,BASE TABLE
+dbo,ProjetoArquitetonicoResponsavelLegal,BASE TABLE
+dbo,ProjetoArquitetonicoRevalida,BASE TABLE
+dbo,ProjetoArquitetonicoUnidadeAmbiente,BASE TABLE
+dbo,Protocolo,BASE TABLE
+dbo,ProtocoloDocumento,BASE TABLE
+dbo,ProtocoloTramite,BASE TABLE
+dbo,QRTZ_BLOB_TRIGGERS,BASE TABLE
+dbo,QRTZ_CALENDARS,BASE TABLE
+dbo,QRTZ_CRON_TRIGGERS,BASE TABLE
+dbo,QRTZ_FIRED_TRIGGERS,BASE TABLE
+dbo,QRTZ_JOB_DETAILS,BASE TABLE
+dbo,QRTZ_LOCKS,BASE TABLE
+dbo,QRTZ_PAUSED_TRIGGER_GRPS,BASE TABLE
+dbo,QRTZ_SCHEDULER_STATE,BASE TABLE
+dbo,QRTZ_SIMPLE_TRIGGERS,BASE TABLE
+dbo,QRTZ_SIMPROP_TRIGGERS,BASE TABLE
+dbo,QRTZ_TRIGGERS,BASE TABLE
+dbo,RelatorioJson,BASE TABLE
+dbo,RequisicaoNotificacaoReceita,BASE TABLE
+dbo,RequisicaoNotificacaoReceitaNumeracao,BASE TABLE
+dbo,ResponsavelLegalPBA,BASE TABLE
+dbo,RoteiroEstabelecimento,BASE TABLE
+dbo,RoteiroEstabelecimentoEquipeTecnica,BASE TABLE
+dbo,RoteiroEstabelecimentoResposta,BASE TABLE
+dbo,RoteiroInspecaoCC,BASE TABLE
+dbo,RoteiroInspecaoCME,BASE TABLE
+dbo,RoteiroInspecaoSanitaria,BASE TABLE
+dbo,RoteiroInspecaoUTI,BASE TABLE
+dbo,RoteiroItem,BASE TABLE
+dbo,RoteiroItemResposta,BASE TABLE
+dbo,ServicoFarmaceuticoObjetoLicenca,BASE TABLE
+dbo,ServicoObjetoLicenca,BASE TABLE
+dbo,Setor,BASE TABLE
+dbo,SISREG_Hosp_Procedimento,BASE TABLE
+dbo,Sistema,BASE TABLE
+dbo,SolicitacaoAcesso,BASE TABLE
+dbo,SolicitacaoAcessoDocumento,BASE TABLE
+dbo,Suporte,BASE TABLE
+dbo,sysdiagrams,BASE TABLE
+dbo,TermoAdesao,BASE TABLE
+dbo,TermoOuvidoria,BASE TABLE
+dbo,TextoAjuda,BASE TABLE
+dbo,TextoInformativo,BASE TABLE
+dbo,TextoInformativoImagem,BASE TABLE
+dbo,TipoAcao,BASE TABLE
+dbo,TipoAndamento,BASE TABLE
+dbo,TipoAtividade,BASE TABLE
+dbo,TipoBaixaBlocoNR,BASE TABLE
+dbo,TipoCanalRecebimento,BASE TABLE
+dbo,TipoClassificacaoRisco,BASE TABLE
+dbo,TipoDocumento,BASE TABLE
+dbo,TipoDocumentoControlePasta,BASE TABLE
+dbo,TipoDocumentoProgramacaoAcao,BASE TABLE
+dbo,TipoDocumentoSolicitacaoAcesso,BASE TABLE
+dbo,TipoEstabelecimento,BASE TABLE
+dbo,TipoEstabelecimentoSefaz,BASE TABLE
+dbo,TipoInciso,BASE TABLE
+dbo,TipoInteresse,BASE TABLE
+dbo,TipoIrregularidade,BASE TABLE
+dbo,TipoNivelCriticidade,BASE TABLE
+dbo,TipoNotificacaoCBO,BASE TABLE
+dbo,TipoNotificacaoReceita,BASE TABLE
+dbo,TipoParecer,BASE TABLE
+dbo,TipoPenalidade,BASE TABLE
+dbo,TipoPronunciamento,BASE TABLE
+dbo,TipoReceituario,BASE TABLE
+dbo,TipoResultado,BASE TABLE
+dbo,TipoServico,BASE TABLE
+dbo,TipoServicoFarmaceutico,BASE TABLE
+dbo,TipoServicoUnidadeSaude,BASE TABLE
+dbo,TipoSolicitacao,BASE TABLE
+dbo,TipoSolicitacaoDocumento,BASE TABLE
+dbo,TipoSuporte,BASE TABLE
+dbo,TipoTramite,BASE TABLE
+dbo,TipoUnidadeAmbiente,BASE TABLE
+dbo,TipoUnidadeFuncional,BASE TABLE
+dbo,TipoUnidadeSaudeAcidenteTrabalho,BASE TABLE
+dbo,TrabalhadorVisa,BASE TABLE
+dbo,UnidadeSaude,BASE TABLE
+dbo,UnidadeSaudeContato,BASE TABLE
+dbo,UnidadeSaudeServico,BASE TABLE
+dbo,Usuario,BASE TABLE
+dbo,UsuarioBloqueio,BASE TABLE
+dbo,ValorUPF,BASE TABLE
+dbo,vAlvara,VIEW
+dbo,vAnaliseDocumental,VIEW
+dbo,vAtividades,VIEW
+dbo,vAtividadesSecundarias,VIEW
+dbo,vEstabelecimento,VIEW
+dbo,vEstabelecimentoRisco,VIEW
+dbo,vInspecaoSanitaria,VIEW
+dbo,vProjetoArquitetonico,VIEW
+dbo,VW_INDICASUS_VIOLENCIA_DOMESTICA_API,VIEW
+form,FichaNotificacaoSuspeita,BASE TABLE
+form,FormCategoria,BASE TABLE
+form,FormHospitalSolicitacaoAcesso,BASE TABLE
+form,FormularioDinamico,BASE TABLE
+form,FormularioDinamicoSuspeita,BASE TABLE
+form,HistoricoOcupacao,BASE TABLE
+form,Hospital,BASE TABLE
+form,Internacao,BASE TABLE
+form,InternacaoCuiaba,VIEW
+form,InternacaoHistoricoOcupacao,VIEW
+form,InternacaoHistoricoOcupacaoTudo,VIEW
+form,InternacaoHospital,BASE TABLE
+form,InternacaoUltimoHospital,VIEW
+form,Leitos,BASE TABLE
+form,NotificacaoCovid,BASE TABLE
+form,NotificacaoCuiaba,VIEW
+form,NotificacaoInternacao,BASE TABLE
+form,NotificacaoPessoa,VIEW
+form,Pessoa,BASE TABLE
+form,PreNotificacao,BASE TABLE
+form,PreNotificacaoPessoa,VIEW
+form,TotalLeitos,BASE TABLE
+form,V_MunicipioRegiao,VIEW
+form,V_RegioesEMunicipios,VIEW
+form,vac,BASE TABLE
+form,Vacinacao,BASE TABLE
+form,VacinacaoNotificacaoPessoa,VIEW
+form,VacinacaoPessoa,VIEW
+form,VW_GBSAG_Hospital,VIEW
+form,VW_GBSAG_Pessoa,VIEW
+form,VW_GBSAG_V_MunicipioRegiao,VIEW
+form,VW_X_GBSAG_Hospital,VIEW
+form,VW_X_GBSAG_Pessoa,VIEW
+form,VW_X_GBSAG_V_MunicipioRegiao,VIEW
+ind,AcompanhamentoLeito,BASE TABLE
+ind,AcompanhamentoSuspeitaDiagnostica,BASE TABLE
+ind,Atendimento,BASE TABLE
+ind,AtendimentoFichaNotificacao,BASE TABLE
+ind,AtendimentoSuspeitaDiagnostica,BASE TABLE
+ind,CategoriaCNES,BASE TABLE
+ind,Classificacao,BASE TABLE
+ind,ClassificacaoRisco,BASE TABLE
+ind,CodigoSISREG,BASE TABLE
+ind,ConsultaImportacao,BASE TABLE
+ind,ConsultaIndicador,BASE TABLE
+ind,DataSource,BASE TABLE
+ind,DataSourceSolicitacaoAcesso,BASE TABLE
+ind,EntradaDados,BASE TABLE
+ind,EquacaoFuncao,BASE TABLE
+ind,Especialidade,BASE TABLE
+ind,EspecialidadeUnidadeNotificadora,BASE TABLE
+ind,ETL,BASE TABLE
+ind,ETLArquivo,BASE TABLE
+ind,ETLParametro,BASE TABLE
+ind,ETLResumo,BASE TABLE
+ind,FichaNotificacao,BASE TABLE
+ind,GrupoMeta,BASE TABLE
+ind,GrupoMetaMeta,BASE TABLE
+ind,Importacao,BASE TABLE
+ind,ImportacaoCalculado,BASE TABLE
+ind,ImportacaoCalculadoIndicador,BASE TABLE
+ind,Indicador,BASE TABLE
+ind,IndicadorParametro,BASE TABLE
+ind,IndicadorParametroFaixa,BASE TABLE
+ind,IndicadorReferencia,BASE TABLE
+ind,IndicadorSistema,BASE TABLE
+ind,IndicadorSistemaIndicador,BASE TABLE
+ind,IndicadorTema,BASE TABLE
+ind,IndicadorTermo,BASE TABLE
+ind,InternacaoFichaNotificacao,BASE TABLE
+ind,InternacaoGeral,BASE TABLE
+ind,InternacaoGeralPaciente,VIEW
+ind,InternacaoGeralUnidade,VIEW
+ind,InternacaoGeralUnidade_V2,VIEW
+ind,InternacaoUnidadeNotificadora,BASE TABLE
+ind,InternacaoUnidadeNotificadoraNumeroAIH,BASE TABLE
+ind,JustificativaLeitoIncorreto,BASE TABLE
+ind,Leito,BASE TABLE
+ind,LogETLPentahoChannels,BASE TABLE
+ind,LogETLPentahoJob,BASE TABLE
+ind,LogETLPentahoTransformation,BASE TABLE
+ind,Meta,BASE TABLE
+ind,MetaIndicador,BASE TABLE
+ind,MetaIndicadorTermo,BASE TABLE
+ind,MetaIndicadorValor,BASE TABLE
+ind,MotivoBloqueio,BASE TABLE
+ind,MotivoRecusa,BASE TABLE
+ind,MotivoReserva,BASE TABLE
+ind,NumeracaoLeitoUnidadeNotificadora,BASE TABLE
+ind,OuvidoriaInterna,BASE TABLE
+ind,OuvidoriaInternaResposta,BASE TABLE
+ind,OuvidoriaInternaTipo,BASE TABLE
+ind,OuvidoriaInternaTramite,BASE TABLE
+ind,PainelIndicador,BASE TABLE
+ind,PainelIndicadorPerfil,BASE TABLE
+ind,PainelIndicadorTema,BASE TABLE
+ind,Periodicidade,BASE TABLE
+ind,PeriodicidadeValor,BASE TABLE
+ind,RelatorioDinamico,BASE TABLE
+ind,RelatorioDinamicoIndicador,BASE TABLE
+ind,RelatorioDinamicoLocalidade,BASE TABLE
+ind,RelatorioDinamicoPeriodo,BASE TABLE
+ind,RelatorioDinamicoTema,BASE TABLE
+ind,SISREG_Tipo_UTI,BASE TABLE
+ind,SolicitacaoAcessoTema,BASE TABLE
+ind,SupervisaoLeito,BASE TABLE
+ind,SuspeitaDiagnostica,BASE TABLE
+ind,TabelaDinamica,BASE TABLE
+ind,TabelaDinamicaTema,BASE TABLE
+ind,Tema,BASE TABLE
+ind,TipoInformacao,BASE TABLE
+ind,TipoInformacaoIndicador,BASE TABLE
+ind,TipoPainel,BASE TABLE
+ind,UnidadeNotificadoraLeito,BASE TABLE
+ind,UnidadeNotificadoraLeitoDataReferencia,BASE TABLE
+ind,VW_GBSAG_AcompanhamentoLeito,VIEW
+ind,VW_GBSAG_CategoriaCNES,VIEW
+ind,VW_GBSAG_Classificacao,VIEW
+ind,VW_GBSAG_Especialidade,VIEW
+ind,VW_GBSAG_InternacaoGeral,VIEW
+ind,VW_GBSAG_InternacaoUnidadeNotificadora,VIEW
+ind,VW_GBSAG_Leito,VIEW
+ind,VW_GBSAG_NumeracaoLeitoUnidadeNotificadora,VIEW
+ind,VW_GBSAG_UnidadeNotificadoraLeito,VIEW
+ind,VW_GBSAG_UnidadeNotificadoraLeitoDataReferencia,VIEW
+ind,VW_X_GBSAG_AcompanhamentoLeito,VIEW
+ind,VW_X_GBSAG_CategoriaCNES,VIEW
+ind,VW_X_GBSAG_Especialidade,VIEW
+ind,VW_X_GBSAG_InternacaoGeral,VIEW
+ind,VW_X_GBSAG_InternacaoUnidadeNotificadora,VIEW
+ind,VW_X_GBSAG_Leito,VIEW
+ind,VW_X_GBSAG_NumeracaoLeitoUnidadeNotificadora,VIEW
+ind,VW_X_GBSAG_UnidadeNotificadoraLeito,VIEW
+ind,VW_X_GBSAG_UnidadeNotificadoraLeitoDataReferencia,VIEW
+notific,BRONQUIOLITE_V4,BASE TABLE
+notific,BronquioliteV1F1,BASE TABLE
+notific,BronquioliteV1F3,BASE TABLE
+notific,BronquioliteV1T1,BASE TABLE
+notific,brucelose_copia,BASE TABLE
+notific,BRUCELOSE_HUMANA,BASE TABLE
+notific,BRUCELOSE_HUMANA_V1,BASE TABLE
+notific,Fichanotificacaodecancerdebasepopulacionalv3,BASE TABLE
+notific,FichaRegistroInvestigacaoAnomaliasCongenitasV5T,BASE TABLE
+notific,FichaRegistroInvestigacaoAnomaliasCongenitasV5T2,BASE TABLE
+notific,SentinelaMulher,BASE TABLE

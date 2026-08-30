@@ -14,9 +14,17 @@ Inventário da SE: `briefing_cruzamento_bases.csv` / seção 7d do parecer VE.
 | 4 | **SIVEP / SRAG** | Respiratório grave (influenza, COVID, SRAG) — complementar a SINAN SRAG e exames moleculares. | mun × SE / classificação |
 | 5 | **SIM** | Óbitos — letalidade contextual (não atribuição causal automática). | mun × CID × semana/mês |
 | 6 | **CNES** | Capacidade da rede (leitos, UTI, equipes) — interpreta pressão e silêncio. | mun IBGE |
-| 7 | **IndicaSUS / pactuação** | Indicadores pactuados — no DW: `INDICADORES*` / `INDICADORESPACTUACAO` (proxy). Host IndicaSUS separado no `.env`. | mun / indicador / competência |
-| 8 | **SISREG** | Regulação de vagas e filas — **fora do DW** (nenhuma view `*SISREG*`). Host `SISREG_*`; ping TCP opcional, **nunca bloqueia** ETL/CIEVS. | mun / procedimento |
+| 7 | **IndicaSUS / pactuação** | Indicadores pactuados — no DW: `INDICADORES*` / `INDICADORESPACTUACAO` (proxy). Host IndicaSUS → `staging_dw/indicasus_*`. | mun / indicador / competência |
+| 8 | **SISREG** | Regulação de vagas e filas — **fora do DW**. Host `SISREG_*` → `staging_dw/sisreg_*` (aggs mun×status; falha **não bloqueia**). | mun / procedimento |
 | 9 | **SIA** (`dbo.SIA`, `dbo.SIA_APAC`) | Produção ambulatorial / APAC correlata (CID×mun; extrato `TOP N` / janela recente). | mun × CID / procedimento |
+| 10 | **SINASC** (`dbo.VW_SINASC`) | Nascidos — contexto perinatal (amostra `TOP N`). | mun × SE/mês |
+
+## Fontes adicionais (IndicaSUS / SISREG / leftovers)
+
+- Extrator: `etl/external_extract.py` (chamado por `dw_extract.run_extract`).
+- Artefatos: `indicasus_inventory.csv`, `indicasus_indicador.*`, `sisreg_inventory.csv`, `sisreg_amb_mun_status_agg.*`, `sisreg_hosp_mun_status_agg.*`, `sisreg_samu_fila.*`, `vw_sinasc.*`.
+- Log da última busca: `staging_dw/fontes_busca_ultimo.txt` (hosts, objetos, linhas, falhas — sem senhas).
+- Caveat: metas IndicaSUS (`MetaIndicadorValor`) podem estar vazias no BdSES; catálogo `ind.Indicador` + ocupação amostral ainda úteis. SISREG: nunca full-scan das views de 10–40M linhas.
 
 ## SIH via VW_INTERNACAO
 
