@@ -94,6 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     _load_dotenv(ROOT / ".env")
+    # Credenciais Telegram/SMTP alinhadas ao Sentinela (mesmo host SES)
+    _load_dotenv(ROOT.parent / "Sentinela" / ".env")
 
     outdir = args.outdir if args.outdir.is_absolute() else (ROOT / args.outdir)
     prefer_dw = not args.no_dw

@@ -1,111 +1,118 @@
-[CIEVS Relatório 2×/semana] 2026-SE21 — rede sob pressão — LACEN-MT · 2026-08-29 20:57 Hora Padrão Brasil Central
-============================================================
-LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
-SE de referência: 2026-SE21
-Gerado em: 2026-08-29 20:57 Hora Padrão Brasil Central
+[CIEVS Relatório 2×/semana] 2026-SE20 — rede sob pressão — LACEN-MT · 2026-08-29 22:12 Hora Padrão Brasil Central
+------------------------------------------------------------
+SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
+SE de referência: 2026-SE20 (única para KPIs e rankings A–D)
+Gerado em: 2026-08-29 22:12 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
-Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais.
+Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi e top municípios alinhados à SE de referência 2026-SE20 (série integrated_weekly; soma estadual = soma municipal da mesma SE).
 
-================================================================
-BLOCO A — Situação lab-epi [Observado / Derivado]
-----------------------------------------------------------------
-Observado: positivos estaduais SE21=1 vs SE20=7 (-86%)
-Municípios 1ª detecção/alerta (SE ref.): 100
+KPIs: Positivos SE 7 (+17%) · Exames 51 · Mun. 16 · TAT p50/p90 10,5/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 50%
+Aviso: Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 1 pos.) — referência = 2026-SE20 (última completa).
 
-Top municípios (positivos / positividade):
-  1. CACERES — +5 · pos=33% · fam=hepatite_b_hbv [Observado]
-  2. TANGARA DA SERRA — +3 · pos=19% · fam=pesquisa_de_multipatogenos_ist [Observado]
-  3. CUIABA — +2 · pos=11% · fam=rifampicina [Observado]
-  4. CAMPO NOVO DO PARECIS — +1 · pos=50% · fam=meningite_bacteriana_biologia_molecular [Observado]
-  5. SINOP — +1 · pos=11% · fam=tuberculose_lf_lam [Observado]
-
+— A · Situação lab-epi [Observado] —
+Observado: positivos estaduais SE20=7 vs SE19=6 (+17%)
+1ª detecção/alerta (SE ref.): 0 mun.
+Top positivos:
+  1. TANGARA DA SERRA — +3 · pos=38% · fam=pesquisa_de_multipatogenos_ist
+  2. CUIABA — +1 · pos=17% · fam=rifampicina
+  3. CACERES — +1 · pos=20% · fam=hepatite_c_hcv
+  4. GUAIRA — +1 · pos=100% · fam=hepatite_b_hbv
+  5. CASSILANDIA — +1 · pos=100% · fam=tuberculose_lf_lam
 Top divergências GAL×SINAN:
-  1. LUCAS DO RIO VERDE — sinan_sem_exame · notif=241 · exames=0 [Observado]
-  2. BARRA DO GARCAS — sinan_sem_exame · notif=177 · exames=0 [Observado]
-  3. COLIDER — sinan_sem_exame · notif=88 · exames=0 [Observado]
-  4. NOBRES — sinan_sem_exame · notif=66 · exames=0 [Observado]
-  5. ALTA FLORESTA — sinan_sem_exame · notif=53 · exames=0 [Observado]
+  1. LUCAS DO RIO VERDE — sinan_sem_exame · notif=241 · exames=0
+  2. BARRA DO GARCAS — sinan_sem_exame · notif=177 · exames=0
+  3. COLIDER — sinan_sem_exame · notif=88 · exames=0
+  4. NOBRES — sinan_sem_exame · notif=66 · exames=0
+  5. ALTA FLORESTA — sinan_sem_exame · notif=53 · exames=0
 
-================================================================
-BLOCO B — Rede [Derivado / Observado]
-----------------------------------------------------------------
-TAT mediano estadual: 10.5 d
-TAT p90 estadual: 118.3 d
-% liberado ≤48h: 36%
-
-Top pressão / backlog / rejeição:
-  1. VARZEA GRANDE — critica · índice=80.8 · backlog=22465 · rejeição=11% [Derivado]
-  2. CACERES — critica · índice=76.2 · backlog=4729 · rejeição=8% [Derivado]
-  3. CUIABA — critica · índice=75.4 · backlog=34944 · rejeição=6% [Derivado]
-  4. TANGARA DA SERRA — alta · índice=72.4 · backlog=1100 · rejeição=12% [Derivado]
-  5. SINOP — alta · índice=72.3 · backlog=6944 · rejeição=4% [Derivado]
-
+— B · Rede [Derivado / Observado] —
+TAT p50=10,5d · p90=118,3d · %≤48h=36%
+Pressão alta/crítica:
+  1. VARZEA GRANDE — critica · índice=80,8 · backlog=22.465 · rejeição=11%
+  2. CACERES — critica · índice=76,2 · backlog=4.729 · rejeição=8%
+  3. CUIABA — critica · índice=75,4 · backlog=34.944 · rejeição=6%
+  4. TANGARA DA SERRA — alta · índice=72,4 · backlog=1.100 · rejeição=12%
+  5. SINOP — alta · índice=72,3 · backlog=6.944 · rejeição=4%
+SLA por família:
+  · arbovirose: exames=295.574 · %≤48h=23% · TAT p90=123,4d · crise=sim
+  · tuberculose: exames=60.114 · %≤48h=78% · TAT p90=94,7d · crise=não
+  · outros: exames=26.712 · %≤48h=46% · TAT p90=145,7d · crise=não
+  · respiratorio: exames=25.913 · %≤48h=57% · TAT p90=178,8d · crise=sim
 Silêncio GAL (vizinho quente):
-  1. VILA BELA DA SANTISSIMA TRINDADE — queda_absoluta · vizinho=não identificado [Observado]
-  2. PORTO ESPERIDIAO — queda_absoluta · vizinho=SAO JOSE DOS QUATRO MARCOS(moderada), ARAPUTANGA(alta), JAURU(moderada) [Observado]
+  1. VILA BELA DA SANTISSIMA TRINDADE — queda_absoluta · vizinho=não identificado
+  2. PORTO ESPERIDIAO — queda_absoluta · vizinho=SAO JOSE DOS QUATRO MARCOS(moderada), ARAPUTANGA(alta), JAURU(moderada)
 
-================================================================
-BLOCO C — Ações [Observado / Derivado / Predito]
-----------------------------------------------------------------
-Fila operacional (top 10):
-  1. NOSSA SENHORA DO LIVRAMENTO | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  2. SANTO ANTONIO DO LEVERGER | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  3. CHAPADA DOS GUIMARAES | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  4. COMODORO | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  5. JANGADA | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  6. LUCAS DO RIO VERDE | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  7. NOBRES | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  8. PORTO ESTRELA | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  9. SAO JOSE DOS QUATRO MARCOS | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias. | Vigilância municipal + referência LACEN | 7 dias [Observado]
-  10. CASSILANDIA | alerta_laboratorial | CRÍTICO | Ativar busca ativa de TB e validar fluxo de coleta/envio ao LACEN em até 48h. | Vigilância municipal de TB + LACEN | 48h [Observado]
+— C · Ações —
+Fila operacional:
+  1. NOSSA SENHORA DO LIVRAMENTO | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  2. SANTO ANTONIO DO LEVERGER | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  3. CHAPADA DOS GUIMARAES | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  4. COMODORO | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  5. JANGADA | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  6. LUCAS DO RIO VERDE | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  7. NOBRES | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  8. PORTO ESTRELA | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  9. SAO JOSE DOS QUATRO MARCOS | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
+  10. CASSILANDIA | alerta_laboratorial | CRÍTICO | Ativar busca ativa de TB e validar fluxo de coleta/envio ao LACEN em até 48h. | 48h [Observado]
+Predito Alta/Crítica:
+  1. VARZEA GRANDE | Crítico | outros | estabelecimentos CNES: 6.790; equipes ESF: 3.050 | prob=87%
+  2. SINOP | Crítico | hepatite | estabelecimentos CNES: 17.600; leitos CNES: 11.200 | prob=60%
+  3. VARZEA GRANDE | Crítico | tuberculose | leitos CNES: 15.100; equipes ESF: 3.050 | prob=51%
+  4. PONTES E LACERDA | Alto | hepatite | estabelecimentos CNES: 2.850; leitos CNES: 2.140 | prob=42%
+  5. CUIABA | Crítico | tuberculose | leitos CNES: 62.000; equipes ESF: 3.310 | prob=39%
+Pressão predita (top):
+  1. TANGARA DA SERRA | critica | 67% | leitos CNES: 8.320; backlog estimado: 1.100
+  2. VARZEA GRANDE | critica | 63% | backlog estimado: 22.500; leitos CNES: 15.100
+  3. SINOP | critica | 61% | backlog estimado: 6.940; leitos CNES: 11.200
 
-Predito Alta/Crítica (até 5):
-  1. CACERES | Crítico | outros | driver=cnes_estabelecimentos=6.3e+03 (imp=0.0196) | prob=61% [Predito]
-  2. CACERES | Crítico | hepatite | driver=cnes_leitos_total=8.38e+03 (imp=0.0594) | prob=50% [Predito]
-  3. CUIABA | Crítico | outros | driver=cnes_estabelecimentos=5.25e+04 (imp=0.0196) | prob=31% [Predito]
-
-================================================================
-BLOCO D — Qualidade
-----------------------------------------------------------------
+— D · Qualidade —
 Observado: 144 mun. com qualidade (rede GAL=133); faixas: baixa=104, moderada=21, boa=14, alta=5
 Observado: confirmação alertas rodada anterior = 50% (34/68); modo=prospectivo_carimbado
-Dashboard: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
+Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
-Fontes: fila_operacional.csv, indicadores_emergencia.csv, indicadores_emergencia_resumo.csv, indicadores_rede_resumo.csv, ml_risco_predito.csv, qualidade_dado_municipal.csv, emergencia_confirmacao_resumo.csv, integrated_weekly_surveillance.csv, executive_state_summary.csv
+Fonte primária: arquivo local (DW indisponível)
+Fontes: saida_pipeline (17 artefatos)
 Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
-<b>LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
-SE 2026-SE21 · 2026-08-29 20:57 Hora Padrão Brasil Central
-Leitura: <b>rede sob pressão</b>
+<b>SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
+SE 2026-SE20 · <b>rede sob pressão</b>
+2026-08-29 22:12 Hora Padrão Brasil Central
 
-<b>A — Lab-epi</b> [Observado]
-Top positivos: CACERES (+5, 33%); TANGARA DA SERRA (+3, 19%); CUIABA (+2, 11%)
-Observado: positivos estaduais SE21=1 vs SE20=7 (-86%)
-1ª detecção/alerta: 100 mun. · Diverg. GAL×SINAN top: LUCAS DO RIO VERDE, BARRA DO GARCAS, COLIDER
+<b>KPIs</b>
+Pos 7 (+17%) · TAT 10,5/118,3d · %≤48h 36%
+Pressão máx 80,8 · Silêncios 2 · Confirmação 50%
+<i>Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 1 pos.) — referência = 2026-SE20 (última completa).</i>
 
-<b>B — Rede</b> [Derivado]
-TAT med=10.5d · p90=118.3d · %≤48h=36%
-Pressão: VARZEA GRANDE(critica/80.8); CACERES(critica/76.2); CUIABA(critica/75.4)
-Silêncio GAL: VILA BELA DA SANTISSIMA TRINDADE→não identificado; PORTO ESPERIDIAO→SAO JOSE DOS QUATRO MARCOS(moderada), ARAPUTANGA(alta), JAURU(moderada)
+<b>A — Lab-epi</b> (top 5)
+• TANGARA DA SERRA: +3 (38%)
+• CUIABA: +1 (17%)
+• CACERES: +1 (20%)
+• GUAIRA: +1 (100%)
+• CASSILANDIA: +1 (100%)
+
+<b>B — Rede</b> (top 5 pressão)
+• VARZEA GRANDE: critica / 80,8
+• CACERES: critica / 76,2
+• CUIABA: critica / 75,4
+• TANGARA DA SERRA: alta / 72,4
+• SINOP: alta / 72,3
 
 <b>C — Ações</b> (top 5)
-<b>1. NOSSA SENHORA DO LIVRAMENTO</b> [Observado] silencio_laboratorial/CRÍTICO
-→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias · Vigilância municipal + referência LACEN · 7 dias
-<b>2. SANTO ANTONIO DO LEVERGER</b> [Observado] silencio_laboratorial/CRÍTICO
-→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias · Vigilância municipal + referência LACEN · 7 dias
-<b>3. CHAPADA DOS GUIMARAES</b> [Observado] silencio_laboratorial/CRÍTICO
-→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias · Vigilância municipal + referência LACEN · 7 dias
-<b>4. COMODORO</b> [Observado] silencio_laboratorial/CRÍTICO
-→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias · Vigilância municipal + referência LACEN · 7 dias
-<b>5. JANGADA</b> [Observado] silencio_laboratorial/CRÍTICO
-→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dias · Vigilância municipal + referência LACEN · 7 dias
-<b>Predito Alta/Crítica</b>
-• CACERES [Crítico] outros: cnes_estabelecimentos=6.3e+03 (imp=0.0196)
-• CACERES [Crítico] hepatite: cnes_leitos_total=8.38e+03 (imp=0.0594)
-• CUIABA [Crítico] outros: cnes_estabelecimentos=5.25e+04 (imp=0.0196)
+<b>1. NOSSA SENHORA DO LIVRAMENTO</b> [Observado] silencio_laboratorial
+→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
+<b>2. SANTO ANTONIO DO LEVERGER</b> [Observado] silencio_laboratorial
+→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
+<b>3. CHAPADA DOS GUIMARAES</b> [Observado] silencio_laboratorial
+→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
+<b>4. COMODORO</b> [Observado] silencio_laboratorial
+→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
+<b>5. JANGADA</b> [Observado] silencio_laboratorial
+→ Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
+<b>Predito</b>
+• VARZEA GRANDE [Crítico] estabelecimentos CNES: 6.790; equipes ESF: 3.050
+• SINOP [Crítico] estabelecimentos CNES: 17.600; leitos CNES: 11.200
+• VARZEA GRANDE [Crítico] leitos CNES: 15.100; equipes ESF: 3.050
 
-<b>D — Qualidade</b>
-Observado: 144 mun. com qualidade (rede GAL=133); faixas: baixa=104, moderada=21, boa=14, alta=5
-Observado: confirmação alertas rodada anterior = 50% (34/68); modo=prospectivo_carimbado
-<a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Dashboard LACEN</a>
+<a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Abrir painel LACEN</a>
+Fonte: arquivo local (DW indisponível)

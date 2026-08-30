@@ -218,7 +218,7 @@ _DRIVER_RE = re.compile(
 )
 
 
-def _humanize_driver(text: str, max_parts: int = 3, max_len: int = 140) -> str:
+def _humanize_driver(text: str, max_parts: int = 2, max_len: int = 110) -> str:
     """Converte `cnes_estabelecimentos=6.3e+03 (imp=…)` → `estabelecimentos CNES: 6.300`."""
     t = (text or "").strip()
     if not t or t == "—":
@@ -228,8 +228,8 @@ def _humanize_driver(text: str, max_parts: int = 3, max_len: int = 140) -> str:
         m = _DRIVER_RE.search(chunk)
         if not m:
             cleaned = chunk.strip()
-            if cleaned:
-                parts.append(cleaned[:60])
+            if cleaned and "=" not in cleaned:
+                parts.append(cleaned[:50])
             continue
         feat = _humanize_feature(m.group("feat"))
         try:
@@ -242,7 +242,7 @@ def _humanize_driver(text: str, max_parts: int = 3, max_len: int = 140) -> str:
             parts.append(f"{feat}: {_fmt_human_value(val)}")
         if len(parts) >= max_parts:
             break
-    out = "; ".join(parts) if parts else t.split(";")[0].strip()
+    out = "; ".join(parts) if parts else "fatores de risco (modelo)"
     if len(out) > max_len:
         return out[: max_len - 1] + "…"
     return out
@@ -328,6 +328,27 @@ def _enrich_from_vw_gal(mode: Any, queryable: Any) -> dict[str, Any]:
     from lacen_dw import read_sql
 
     out: dict[str, Any] = {"view": "dbo.VW_GAL"}
+    try:
+        mx = read_sql(
+            mode,
+            queryable,
+            """
+            SELECT MAX(Data_Liberacao_dt) AS max_dt
+            FROM dbo.VW_GAL
+            WHERE Data_Liberacao_dt IS NOT NULL
+            """,
+        )
+        if not mx.empty and mx.iloc[0]["max_dt"] is not None:
+            max_dt = mx.iloc[0]["max_dt"]
+            if hasattr(max_dt, "to_pydatetime"):
+                max_dt = max_dt.to_pydatetime()
+            if getattr(max_dt, "tzinfo", None) is not None:
+                max_dt = max_dt.replace(tzinfo=None)
+            out["dw_max_liberacao"] = max_dt
+            out["dw_lag_dias"] = (datetime.now() - max_dt).days
+    except Exception as exc:
+        out["erro_max_dt"] = type(exc).__name__
+
     try:
         weeks = read_sql(
             mode,
@@ -534,7 +555,128 @@ class RelatorioCIEVS:
             )
 
 
-def _semana_ref(src: RelatorioSources) -> str:
+def _fmt_se(year: int, week: int) -> str:
+    return f"{int(year)}-SE{int(week):02d}"
+
+
+def _parse_se(se: str) -> tuple[int, int] | None:
+    if not se or "-SE" not in se:
+        return None
+    try:
+        year_s, week_s = se.split("-SE", 1)
+        return int(year_s), int(week_s)
+    except ValueError:
+        return None
+
+
+def _week_totals(
+    parsed: list[tuple[int, int, str, float, float, str]], year: int, week: int
+) -> tuple[float, float, int]:
+    pos = tests = 0.0
+    muns: set[str] = set()
+    for y, w, mun, p, t, _fam in parsed:
+        if y != year or w != week:
+            continue
+        pos += p
+        tests += t
+        muns.add(mun)
+    return pos, tests, len(muns)
+
+
+def _week_incomplete(
+    cur_tests: float,
+    cur_pos: float,
+    prev_tests: float | None,
+    prev_pos: float | None,
+) -> bool:
+    """SE corrente parece parcial/atrasada vs a SE imediatamente anterior."""
+    if prev_tests is None or prev_tests <= 0:
+        return False
+    prev_p = prev_pos or 0.0
+    if cur_tests < 50 and prev_tests >= 50:
+        return True
+    if cur_tests < 0.25 * prev_tests:
+        return True
+    if cur_pos < 5 and prev_p >= 5 and cur_tests < 0.5 * prev_tests:
+        return True
+    return False
+
+
+def _parse_integrated_weekly(
+    src: RelatorioSources,
+) -> list[tuple[int, int, str, float, float, str]]:
+    """Linhas (ano, SE, mun, positivos, testes, familia) com exames > 0."""
+    parsed: list[tuple[int, int, str, float, float, str]] = []
+    for r in src.get("integrated_weekly"):
+        tests = _num(r.get("tests"), 0) or 0
+        if tests <= 0:
+            continue
+        y = _num(r.get("epi_year"))
+        w = _num(r.get("epi_week"))
+        if y is None or w is None:
+            continue
+        mun = _cell(r, "municipio", default="")
+        if not mun or mun.startswith("*"):
+            continue
+        pos = _num(r.get("positives"), 0) or 0
+        fam = _cell(r, "familia", "target", default="—")
+        parsed.append((int(y), int(w), mun, pos, tests, fam))
+    return parsed
+
+
+def _pick_se_lab(
+    parsed: list[tuple[int, int, str, float, float, str]],
+) -> dict[str, Any]:
+    """
+    Escolhe UMA SE de referência lab-epi (série integrated_weekly).
+
+    Prefere a última SE completa; se a mais recente estiver parcial,
+    usa a anterior e marca meta para aviso.
+    """
+    weeks = sorted({(y, w) for y, w, *_ in parsed})
+    if not weeks:
+        return {
+            "se": None,
+            "prev": None,
+            "latest": None,
+            "usou_completa": False,
+            "se_parcial": None,
+        }
+    latest = weeks[-1]
+    prev = weeks[-2] if len(weeks) >= 2 else None
+    cur_pos, cur_tests, _ = _week_totals(parsed, latest[0], latest[1])
+    prev_pos = prev_tests = None
+    if prev:
+        prev_pos, prev_tests, _ = _week_totals(parsed, prev[0], prev[1])
+    incomplete = _week_incomplete(cur_tests, cur_pos, prev_tests, prev_pos)
+    if incomplete and prev is not None:
+        return {
+            "se": prev,
+            "prev": weeks[-3] if len(weeks) >= 3 else None,
+            "latest": latest,
+            "usou_completa": True,
+            "se_parcial": latest,
+            "parcial_pos": cur_pos,
+            "parcial_tests": cur_tests,
+        }
+    return {
+        "se": latest,
+        "prev": prev,
+        "latest": latest,
+        "usou_completa": False,
+        "se_parcial": None,
+    }
+
+
+def _semana_ref(src: RelatorioSources, se_lab: str | None = None) -> str:
+    """SE única do relatório: lab-epi (integrated_weekly) tem prioridade."""
+    if se_lab and se_lab != "—":
+        return se_lab
+    parsed = _parse_integrated_weekly(src)
+    if parsed:
+        pick = _pick_se_lab(parsed)
+        if pick.get("se"):
+            return _fmt_se(*pick["se"])
     for key in (
         "executive_state",
         "indicadores_emergencia",
@@ -579,16 +721,30 @@ def _leitura_situacional(resumo: dict, rede: dict, n_pressao: int, n_silencio: i
 
 def _top_positivos(
     src: RelatorioSources, top_n: int = 5
-) -> tuple[list[dict[str, str]], str, dict[str, str]]:
-    """Top municípios + variação SE + KPIs de volume."""
+) -> tuple[list[dict[str, str]], str, dict[str, str], dict[str, Any]]:
+    """
+    Top municípios + variação SE + KPIs de volume — todos na MESMA SE lab.
+
+    Retorna (top, texto_variacao, kpis, meta) onde meta inclui se_iso e flags
+    de SE parcial/completa para o aviso de atraso.
+    """
     kpis = {
         "positivos_se": "—",
         "variacao_pct": "—",
         "exames_se": "—",
         "municipios": "—",
     }
-    rows = src.get("integrated_weekly")
-    if not rows:
+    meta: dict[str, Any] = {
+        "se_iso": "—",
+        "cur_pos": None,
+        "cur_tests": None,
+        "prev_pos": None,
+        "prev_tests": None,
+        "usou_completa": False,
+        "se_parcial": None,
+    }
+    parsed = _parse_integrated_weekly(src)
+    if not parsed:
         tgt = src.get("integrated_target_summary")
         agg: dict[str, dict[str, float]] = {}
         for r in tgt:
@@ -613,57 +769,57 @@ def _top_positivos(
                     "tipo_sinal": "Observado",
                 }
             )
-        # enrich from DW volume if available
-        if src.dw_enrich.get("exames_se_recente") is not None:
-            kpis["exames_se"] = _fmt_num(src.dw_enrich["exames_se_recente"], 0)
-            kpis["municipios"] = _fmt_num(src.dw_enrich.get("municipios_com_exame"), 0)
-        return out, "variação SE: indisponível (sem série semanal)", kpis
+        return out, "variação SE: indisponível (sem série semanal)", kpis, meta
 
-    parsed: list[tuple[int, int, str, float, float, str]] = []
-    for r in rows:
-        tests = _num(r.get("tests"), 0) or 0
-        if tests <= 0:
-            continue
-        y = _num(r.get("epi_year"))
-        w = _num(r.get("epi_week"))
-        if y is None or w is None:
-            continue
-        mun = _cell(r, "municipio", default="")
-        if not mun or mun.startswith("*"):
-            continue
-        pos = _num(r.get("positives"), 0) or 0
-        fam = _cell(r, "familia", "target", default="—")
-        parsed.append((int(y), int(w), mun, pos, tests, fam))
+    pick = _pick_se_lab(parsed)
+    if not pick.get("se"):
+        return [], "variação SE: sem exames na série", kpis, meta
 
-    if not parsed:
-        return [], "variação SE: sem exames na série", kpis
+    cur_y, cur_w = pick["se"]
+    prev = pick.get("prev")
+    meta["se_iso"] = _fmt_se(cur_y, cur_w)
+    meta["usou_completa"] = bool(pick.get("usou_completa"))
+    meta["se_parcial"] = (
+        _fmt_se(*pick["se_parcial"]) if pick.get("se_parcial") else None
+    )
+    meta["parcial_pos"] = pick.get("parcial_pos")
+    meta["parcial_tests"] = pick.get("parcial_tests")
+    meta["latest_iso"] = (
+        _fmt_se(*pick["latest"]) if pick.get("latest") else meta["se_iso"]
+    )
 
-    weeks = sorted({(y, w) for y, w, *_ in parsed})
-    cur_y, cur_w = weeks[-1]
-    prev = weeks[-2] if len(weeks) >= 2 else None
-
-    def _agg(year: int, week: int) -> dict[str, dict[str, float]]:
-        out: dict[str, dict[str, float]] = {}
+    def _agg_mun(year: int, week: int) -> dict[str, dict[str, Any]]:
+        """Agrega município na SE; família = aquela com mais positivos."""
+        out: dict[str, dict[str, Any]] = {}
+        fam_pos: dict[str, dict[str, float]] = {}
         for y, w, mun, pos, tests, fam in parsed:
             if y != year or w != week:
                 continue
-            a = out.setdefault(mun, {"positivos": 0.0, "testes": 0.0})
+            a = out.setdefault(mun, {"positivos": 0.0, "testes": 0.0, "familia": fam})
             a["positivos"] += pos
             a["testes"] += tests
-            a["_fam"] = fam  # type: ignore[assignment]
+            fp = fam_pos.setdefault(mun, {})
+            fp[fam] = fp.get(fam, 0.0) + pos
+        for mun, a in out.items():
+            fp = fam_pos.get(mun) or {}
+            if fp:
+                a["familia"] = max(fp.items(), key=lambda x: x[1])[0]
         return out
 
-    window = weeks[-4:] if len(weeks) >= 4 else weeks
-    win_agg: dict[str, dict[str, Any]] = {}
-    for y, w in window:
-        for yy, ww, mun, pos, tests, fam in parsed:
-            if (yy, ww) != (y, w):
-                continue
-            a = win_agg.setdefault(mun, {"positivos": 0.0, "testes": 0.0, "familia": fam})
-            a["positivos"] += pos
-            a["testes"] += tests
+    cur_agg = _agg_mun(cur_y, cur_w)
+    cur_pos = sum(float(v["positivos"]) for v in cur_agg.values())
+    cur_tests = sum(float(v["testes"]) for v in cur_agg.values())
+    meta["cur_pos"] = cur_pos
+    meta["cur_tests"] = cur_tests
 
-    ranked = sorted(win_agg.items(), key=lambda x: x[1]["positivos"], reverse=True)[:top_n]
+    # Top = subset da mesma SE (só com positivos > 0; senão top por exames)
+    with_pos = {m: a for m, a in cur_agg.items() if a["positivos"] > 0}
+    pool = with_pos if with_pos else cur_agg
+    ranked = sorted(
+        pool.items(),
+        key=lambda x: (x[1]["positivos"], x[1]["testes"]),
+        reverse=True,
+    )[:top_n]
     out_list: list[dict[str, str]] = []
     for mun, a in ranked:
         posi = (a["positivos"] / a["testes"]) if a["testes"] else None
@@ -677,23 +833,16 @@ def _top_positivos(
             }
         )
 
-    cur_agg = _agg(cur_y, cur_w)
-    cur_pos = sum(v["positivos"] for v in cur_agg.values())
-    cur_tests = sum(v["testes"] for v in cur_agg.values())
     kpis["positivos_se"] = _fmt_num(cur_pos, 0)
     kpis["exames_se"] = _fmt_num(cur_tests, 0)
     kpis["municipios"] = _fmt_num(len(cur_agg), 0)
 
-    # Prefer DW volume when local SE looks stale/sparse
-    if src.dw_enrich.get("exames_se_recente") is not None and cur_tests < 50:
-        kpis["exames_se"] = _fmt_num(src.dw_enrich["exames_se_recente"], 0)
-        kpis["municipios"] = _fmt_num(
-            src.dw_enrich.get("municipios_com_exame") or len(cur_agg), 0
-        )
-
     if prev:
-        prev_agg = _agg(prev[0], prev[1])
-        prev_pos = sum(v["positivos"] for v in prev_agg.values())
+        prev_agg = _agg_mun(prev[0], prev[1])
+        prev_pos = sum(float(v["positivos"]) for v in prev_agg.values())
+        prev_tests = sum(float(v["testes"]) for v in prev_agg.values())
+        meta["prev_pos"] = prev_pos
+        meta["prev_tests"] = prev_tests
         if prev_pos > 0:
             delta = (cur_pos - prev_pos) / prev_pos
             kpis["variacao_pct"] = f"{delta:+.0%}".replace(".", ",")
@@ -707,60 +856,97 @@ def _top_positivos(
                 f"SE anterior sem base"
             )
     else:
-        variacao = f"Observado: positivos SE{cur_w:02d}={_fmt_num(cur_pos, 0)} (sem SE anterior)"
-
-    fam_rows = [
-        r
-        for r in src.get("indicadores_rede_por_familia", 20)
-        if _cell(r, "granularidade") == "familia"
-        or _cell(r, "municipio") in ("ESTADO_MT", "ESTADO", "—", "")
-    ]
-    if fam_rows and out_list and out_list[0].get("familia") in ("—",):
-        top_fam = sorted(
-            fam_rows, key=lambda r: _num(r.get("exames"), 0) or 0, reverse=True
+        variacao = (
+            f"Observado: positivos SE{cur_w:02d}={_fmt_num(cur_pos, 0)} "
+            f"(sem SE anterior)"
         )
-        if top_fam:
-            out_list[0]["familia"] = _cell(top_fam[0], "familia")
 
-    return out_list, variacao, kpis
+    return out_list, variacao, kpis, meta
 
 
 def _count_primeira_deteccao(src: RelatorioSources, se_ref: str) -> int:
-    hist = src.get("alerta_emergencia_historico")
-    if not hist:
-        fila = src.get("fila_operacional")
-        return sum(
-            1
-            for r in fila
-            if "alerta" in _cell(r, "sinal").lower()
-            or "detec" in _cell(r, "sinal").lower()
+    """
+    Municípios com 1ª positividade na SE de referência (série integrated_weekly):
+    positives>0 na SE ref e zero positivos em todas as SE anteriores da série,
+    entre municípios com exames>0 na SE ref.
+    """
+    yw = _parse_se(se_ref)
+    parsed = _parse_integrated_weekly(src)
+    if yw and parsed:
+        year, week = yw
+        first_pos: dict[str, tuple[int, int]] = {}
+        exams_ref: set[str] = set()
+        for y, w, mun, pos, _tests, _fam in parsed:
+            key = mun.upper()
+            if (y, w) == (year, week):
+                exams_ref.add(key)
+            if pos <= 0:
+                continue
+            cur = (y, w)
+            if key not in first_pos or cur < first_pos[key]:
+                first_pos[key] = cur
+        return sum(1 for mun in exams_ref if first_pos.get(mun) == (year, week))
+
+    # Fallback: só sinais explicitamente de 1ª detecção na fila
+    fila = src.get("fila_operacional")
+    if not fila:
+        return 0
+    return sum(
+        1
+        for r in fila
+        if "primeira" in _cell(r, "sinal").lower()
+        or "1ª" in _cell(r, "sinal").lower()
+        or "1a " in _cell(r, "sinal").lower()
+    )
+
+
+def _aviso_atraso_bases(
+    src: RelatorioSources, meta: dict[str, Any], se_ref: str
+) -> str:
+    """
+    Aviso só quando há motivo explícito:
+    (a) SE ref ≠ última SE da série porque a mais recente ainda é parcial
+    (b) exames na SE com positivos ~0 enquanto SE anterior tinha muitos
+    (c) DW max(Data_Liberacao) atrasado > N dias
+    """
+    reasons: list[str] = []
+    if meta.get("usou_completa") and meta.get("se_parcial"):
+        reasons.append(
+            f"SE {meta['se_parcial']} ainda parcial na série lab "
+            f"({_fmt_num(meta.get('parcial_tests'), 0)} exames / "
+            f"{_fmt_num(meta.get('parcial_pos'), 0)} pos.) — "
+            f"referência = {se_ref} (última completa)"
         )
 
-    year = week = None
-    if "-SE" in se_ref:
-        try:
-            year_s, week_s = se_ref.split("-SE", 1)
-            year, week = int(year_s), int(week_s)
-        except ValueError:
-            pass
+    cur_pos = meta.get("cur_pos")
+    cur_tests = meta.get("cur_tests")
+    prev_pos = meta.get("prev_pos")
+    if (
+        cur_pos is not None
+        and cur_tests is not None
+        and prev_pos is not None
+        and cur_tests >= 20
+        and cur_pos < 5
+        and prev_pos >= 10
+    ):
+        reasons.append(
+            f"positivos SE ref={_fmt_num(cur_pos, 0)} com "
+            f"{_fmt_num(cur_tests, 0)} exames, vs SE anterior "
+            f"{_fmt_num(prev_pos, 0)} pos. — possível atraso de liberação"
+        )
 
-    first_seen: dict[str, tuple[int, int]] = {}
-    for r in hist:
-        mun = _cell(r, "municipio", default="")
-        if not mun:
-            continue
-        y = _num(r.get("ano_se") or r.get("epi_year"))
-        w = _num(r.get("semana_epidemiologica") or r.get("epi_week"))
-        if y is None or w is None:
-            continue
-        key = mun.upper()
-        yw = (int(y), int(w))
-        if key not in first_seen or yw < first_seen[key]:
-            first_seen[key] = yw
+    lag = src.dw_enrich.get("dw_lag_dias")
+    if isinstance(lag, (int, float)) and lag > 14:
+        reasons.append(
+            f"DW VW_GAL: última Data_Liberacao há {int(lag)} dias "
+            f"(limiar 14d)"
+        )
 
-    if year is None or week is None:
-        return len(first_seen)
-    return sum(1 for yw in first_seen.values() if yw == (year, week))
+    if reasons:
+        return "Atenção: " + "; ".join(reasons) + "."
+    if src.banner and "Espelhos lacen_*" not in src.banner:
+        return src.banner
+    return ""
 
 
 def _top_divergencias(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]]:
@@ -1146,8 +1332,9 @@ def montar_relatorio(
     outdir = Path(outdir)
     src = sources or load_relatorio_sources(outdir, prefer_dw=prefer_dw)
 
-    se = _semana_ref(src)
-    top_pos, variacao, vol_kpis = _top_positivos(src, top_n=5)
+    # Lab-epi define a SE única; KPIs A–D e rankings usam a mesma referência.
+    top_pos, variacao, vol_kpis, lab_meta = _top_positivos(src, top_n=5)
+    se = _semana_ref(src, se_lab=str(lab_meta.get("se_iso") or "—"))
     n_1a = _count_primeira_deteccao(src, se)
     diverg = _top_divergencias(src, top_n=5)
     (
@@ -1173,16 +1360,7 @@ def montar_relatorio(
         src.get("ml_risco_predito"), "banda_risco", ("faixa_predita",)
     )
 
-    # Aviso de atraso: positivos estaduais muito baixos na SE de referência
-    aviso = ""
-    pos_n = _num(vol_kpis.get("positivos_se", "").replace(".", ""), None)
-    if pos_n is not None and pos_n < 5:
-        aviso = (
-            "Atenção: positivos estaduais da SE de referência muito baixos — "
-            "possível atraso de liberação/atualização das bases."
-        )
-    elif src.banner:
-        aviso = src.banner
+    aviso = _aviso_atraso_bases(src, lab_meta, se)
 
     fontes: list[str] = []
     if src.tabelas_dw:
@@ -1197,6 +1375,13 @@ def montar_relatorio(
         {"crs": x.get("crs", "—"), "n": _fmt_num(x.get("n"), 0)}
         for x in (src.dw_enrich.get("crs_top") or [])
     ]
+
+    nota = (
+        "Relatório agregado — rótulos Observado / Derivado / Predito. "
+        "Sem PII ou microdados nominais. "
+        f"KPIs lab-epi e top municípios alinhados à SE de referência {se} "
+        "(série integrated_weekly; soma estadual = soma municipal da mesma SE)."
+    )
 
     return RelatorioCIEVS(
         semana_epidemiologica=se,
@@ -1233,6 +1418,7 @@ def montar_relatorio(
         fonte_primaria=src.fonte_primaria,
         fontes_presentes=fontes,
         banner_fonte=src.banner,
+        nota=nota,
     )
 
 
@@ -1334,7 +1520,8 @@ def to_email_subject(rel: RelatorioCIEVS) -> str:
 def to_email_plain(rel: RelatorioCIEVS) -> str:
     lines: list[str] = [
         _cabecalho(rel),
-        f"SE de referência: {rel.semana_epidemiologica}",
+        f"SE de referência: {rel.semana_epidemiologica} "
+        f"(única para KPIs e rankings A–D)",
         f"Gerado em: {rel.gerado_em}",
         f"Leitura situacional: {rel.leitura_situacional}",
         rel.nota,
