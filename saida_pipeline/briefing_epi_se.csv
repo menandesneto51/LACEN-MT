@@ -7,6 +7,8 @@
 2026-SE30,mais_solicitados,6,meningite,—,31,1,3.2%,,Observado,
 2026-SE30,mais_solicitados,7,oropouche,—,24,0,0.0%,,Observado,
 2026-SE30,mais_solicitados,8,hepatite_c_hcv,—,23,0,0.0%,,Observado,
+2026-SE30,mais_solicitados,9,toxoplasmose_citomegalov_rus_igg,—,23,21,91.3%,,Observado,
+2026-SE30,mais_solicitados,10,toxoplasmose_citomegalov_rus_igm,—,23,0,0.0%,,Observado,
 2026-SE30,maior_positividade,1,hepatite_b_hbv,—,155,101,65.2%,,Observado,
 2026-SE30,maior_positividade,2,tuberculose,—,222,25,11.3%,,Observado,
 2026-SE30,maior_positividade,3,meningite,—,31,1,3.2%,,Observado,
@@ -15,6 +17,8 @@
 2026-SE30,maior_positividade,6,sars_cov_2,—,39,0,0.0%,,Observado,
 2026-SE30,maior_positividade,7,toxoplasmose_citomegalov_rus_igg,—,23,21,91.3%,,Observado,baixa_amostra;caveat_igg
 2026-SE30,maior_positividade,8,toxoplasmose_toxoplasmose_igg,—,14,8,57.1%,,Observado,baixa_amostra;caveat_igg
+2026-SE30,maior_positividade,9,toxoplasmose_toxoplasmose_igm,—,14,3,21.4%,,Observado,baixa_amostra
+2026-SE30,maior_positividade,10,oropouche,—,24,0,0.0%,,Observado,baixa_amostra
 2026-SE30,localidades,1,dengue,VARZEA GRANDE,409,3,0.7%,positivos,Observado,
 2026-SE30,localidades,2,dengue,LUCAS DO RIO VERDE,712,0,0.0%,exames,Observado,
 2026-SE30,localidades,3,dengue,SORRISO,194,0,0.0%,exames,Observado,

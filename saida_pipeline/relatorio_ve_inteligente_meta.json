@@ -1,0 +1,57 @@
+{
+  "se": "2026-SE30",
+  "gerado_em": "2026-08-30 18:22 Hora Padrão Brasil Central",
+  "n_casos_especiais": 1,
+  "casos": [
+    {
+      "municipio": "JUINA",
+      "target": "hepatite_b_hbv",
+      "exames": "46",
+      "positivos": "24",
+      "positividade": "52.2%"
+    }
+  ],
+  "usou_llm": false,
+  "citacoes": [
+    "conhecimento_ve\\notificaveis_resumo.md",
+    "conhecimento_ve\\excertos\\dengue_ms.html.txt",
+    "conhecimento_ve\\notificaveis_resumo.md",
+    "conhecimento_ve\\notificaveis_resumo.md",
+    "conhecimento_ve\\notificaveis_resumo.md",
+    "conhecimento_ve\\notificaveis_resumo.md"
+  ],
+  "fontes_cache": [
+    {
+      "id": "hepatites_ms",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hepatites-virais",
+      "familia": "hepatite",
+      "arquivo": "hepatites_virais_ms.html.txt",
+      "status": "baixado",
+      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\hepatites_virais_ms.html.txt"
+    },
+    {
+      "id": "tb_ms",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tuberculose",
+      "familia": "tuberculose",
+      "arquivo": "tuberculose_ms.html.txt",
+      "status": "baixado",
+      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\tuberculose_ms.html.txt"
+    },
+    {
+      "id": "dengue_ms",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue",
+      "familia": "dengue",
+      "arquivo": "dengue_ms.html.txt",
+      "status": "baixado",
+      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\dengue_ms.html.txt"
+    },
+    {
+      "id": "meningite_ms",
+      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/meningite",
+      "familia": "meningite",
+      "arquivo": "meningite_ms.html.txt",
+      "status": "baixado",
+      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\meningite_ms.html.txt"
+    }
+  ]
+}

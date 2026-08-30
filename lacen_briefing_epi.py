@@ -829,7 +829,7 @@ def computar_briefing_epi(
     outdir: Path | str = OUTDIR_DEFAULT,
     *,
     se: str | None = None,
-    top: int = 8,
+    top: int = 10,
 ) -> BriefingEpi:
     outdir = Path(outdir)
     weekly = _read_csv(outdir / WEEKLY_NAME)
@@ -945,7 +945,7 @@ def gerar_briefing_epi(
     outdir: Path | str = OUTDIR_DEFAULT,
     *,
     se: str | None = None,
-    top: int = 8,
+    top: int = 10,
     persistir: bool = True,
 ) -> BriefingEpi:
     briefing = computar_briefing_epi(outdir, se=se, top=top)

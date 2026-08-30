@@ -1786,6 +1786,73 @@ if modulo == "Visão executiva":
                         key="briefing_raw",
                     )
 
+            # Parecer VE (IA + Guia MS)
+            with st.expander(
+                f"Parecer VE (IA + Guia MS) — SE {se_brief}",
+                expanded=False,
+            ):
+                st.caption(
+                    "Sinal laboratorial Observado × critérios do Guia de Vigilância MS. "
+                    "Não declara surto automaticamente. Gere com "
+                    "`python scripts/gerar_relatorio_ve.py`."
+                )
+                ve_md = Path(folder) / "relatorio_ve_inteligente.md"
+                ve_csv = Path(folder) / "relatorio_ve_acoes.csv"
+                ve_meta = Path(folder) / "relatorio_ve_inteligente_meta.json"
+                if not ve_md.exists():
+                    try:
+                        from lacen_agente_ve import gerar_parecer_ve
+
+                        with st.spinner("Gerando parecer VE…"):
+                            _p = gerar_parecer_ve(
+                                folder,
+                                top=10,
+                                tentar_download_ms=False,
+                                usar_llm=False,
+                                persistir=True,
+                            )
+                        st.success(f"Parecer gerado para SE {_p.se_iso}")
+                    except Exception as _ve_exc:  # noqa: BLE001
+                        st.warning(f"Parecer VE indisponível: {_ve_exc}")
+                if ve_meta.exists():
+                    try:
+                        import json as _json
+
+                        _meta = _json.loads(
+                            ve_meta.read_text(encoding="utf-8")
+                        )
+                        st.markdown(
+                            f"**SE {_meta.get('se', '—')}** · "
+                            f"casos especiais: {_meta.get('n_casos_especiais', 0)}"
+                        )
+                        for _c in (_meta.get("casos") or [])[:3]:
+                            st.info(
+                                f"{_c.get('municipio')} × {_c.get('target')}: "
+                                f"{_c.get('exames')} exames / +{_c.get('positivos')} "
+                                f"({_c.get('positividade')}) — investigar; "
+                                "não declarar surto automático (Guia MS)."
+                            )
+                    except Exception:  # noqa: BLE001
+                        pass
+                if ve_md.exists():
+                    try:
+                        _txt = ve_md.read_text(encoding="utf-8")
+                        st.markdown(_txt[:12000])
+                        if len(_txt) > 12000:
+                            st.caption("… (trecho; ver arquivo completo em saida_pipeline)")
+                    except OSError as _e:
+                        st.warning(str(_e))
+                if ve_csv.exists():
+                    try:
+                        show_table(
+                            pd.read_csv(ve_csv, low_memory=False).head(25),
+                            "Ações VE (CSV)",
+                            max_rows=25,
+                            key="ve_acoes_csv",
+                        )
+                    except Exception:  # noqa: BLE001
+                        pass
+
         # --- Cartão executivo de emergência (5 KPIs + ações) ---
         st.markdown("##### Emergência em saúde pública — cartão executivo")
         st.caption(
@@ -2749,8 +2816,31 @@ elif modulo == "Predição e alertas":
     if not _bf.empty and "se" in _bf.columns:
         st.caption(
             f"Cruzar Predito abaixo com **Observado** do briefing CIEVS "
-            f"(SE {_bf['se'].iloc[0]}) na Visão executiva — 5 perguntas."
+            f"(SE {_bf['se'].iloc[0]}) na Visão executiva — 5 perguntas. "
+            "Parecer VE (IA + Guia MS) também está no expander da Visão executiva."
         )
+    _ve_meta = Path(folder) / "relatorio_ve_inteligente_meta.json"
+    if _ve_meta.exists():
+        with st.expander("Parecer VE (IA + Guia MS) — atalho", expanded=False):
+            st.caption(
+                "Mesmo artefato da Visão executiva. Sinal lab ≠ surto automático (Guia MS)."
+            )
+            try:
+                _vm = json.loads(_ve_meta.read_text(encoding="utf-8"))
+                st.write(
+                    f"SE {_vm.get('se')} · casos especiais: {_vm.get('n_casos_especiais', 0)}"
+                )
+                for _c in (_vm.get("casos") or [])[:2]:
+                    st.info(
+                        f"{_c.get('municipio')} × {_c.get('target')}: "
+                        f"{_c.get('exames')} / +{_c.get('positivos')} "
+                        f"({_c.get('positividade')}) — investigar."
+                    )
+            except Exception as _e:  # noqa: BLE001
+                st.warning(str(_e))
+            _ve_md = Path(folder) / "relatorio_ve_inteligente.md"
+            if _ve_md.exists():
+                st.markdown(_ve_md.read_text(encoding="utf-8")[:8000])
 
     if sub_pred == "Alertas e recomendações":
         st.subheader("Alertas e recomendações operacionais")

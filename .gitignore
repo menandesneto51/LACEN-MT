@@ -139,6 +139,13 @@ saida_pipeline/*
 !saida_pipeline/briefing_epi_se.csv
 !saida_pipeline/briefing_epi_se.parquet
 !saida_pipeline/briefing_epi_se_resumo.txt
+!saida_pipeline/relatorio_ve_inteligente.md
+!saida_pipeline/relatorio_ve_inteligente.html
+!saida_pipeline/relatorio_ve_acoes.csv
+!saida_pipeline/relatorio_ve_inteligente_meta.json
+!conhecimento_ve/
+!conhecimento_ve/**/*.md
+!conhecimento_ve/**/*.txt
 !ml/models_store/meta.json
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv

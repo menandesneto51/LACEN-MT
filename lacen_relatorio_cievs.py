@@ -2,9 +2,10 @@
 """
 LACEN-MT / CIEVS / Vigidesastres — relatório institucional 2×/semana.
 
-Monta payload fixo (blocos A–D) preferindo leitura no Datawarehouse (DW)
-e com fallback para agregados em `saida_pipeline` (sem PII/microdados).
-Formata para Telegram (curto, HTML) e e-mail (completo, HTML institucional).
+Monta payload fixo (blocos A–E + F opcional VE) preferindo leitura no
+Datawarehouse (DW) e com fallback para agregados em `saida_pipeline`
+(sem PII/microdados). Formata para Telegram (curto, HTML) e e-mail
+(completo, HTML institucional).
 
 Uso:
   from lacen_relatorio_cievs import montar_relatorio, to_telegram_markdown, to_email_html
@@ -534,6 +535,12 @@ class RelatorioCIEVS:
     briefing_risco: list[dict[str, str]] = field(default_factory=list)
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
+    # Bloco F — Parecer VE (IA + Guia MS) opcional
+    ve_resumo: str = ""
+    ve_casos: list[dict[str, str]] = field(default_factory=list)
+    ve_recomendacoes: list[dict[str, str]] = field(default_factory=list)
+    ve_arquivos: list[str] = field(default_factory=list)
+    ve_usou_llm: bool = False
     # Bloco B
     tat_mediano: str = "—"
     tat_p90: str = "—"
@@ -1341,6 +1348,7 @@ def montar_relatorio(
     top_predito: int = 5,
     prefer_dw: bool = True,
     sources: RelatorioSources | None = None,
+    incluir_parecer_ve: bool = True,
 ) -> RelatorioCIEVS:
     outdir = Path(outdir)
     src = sources or load_relatorio_sources(outdir, prefer_dw=prefer_dw)
@@ -1375,9 +1383,53 @@ def montar_relatorio(
 
     aviso = _aviso_atraso_bases(src, lab_meta, se)
 
-    # Bloco E — mesma SE operacional do lab-epi
-    briefing_raw = gerar_briefing_epi(outdir, se=se if se != "—" else None)
+    # Bloco E — mesma SE operacional do lab-epi (Top 10)
+    briefing_raw = gerar_briefing_epi(
+        outdir, se=se if se != "—" else None, top=10
+    )
     briefing = briefing_para_relatorio(briefing_raw)
+
+    # Bloco F — Parecer VE (opcional; falha não quebra o relatório)
+    ve_resumo = ""
+    ve_casos: list[dict[str, str]] = []
+    ve_recs: list[dict[str, str]] = []
+    ve_arqs: list[str] = []
+    ve_llm = False
+    if incluir_parecer_ve:
+        try:
+            from lacen_agente_ve import gerar_parecer_ve, parecer_para_relatorio
+
+            parecer = gerar_parecer_ve(
+                outdir,
+                se=se if se != "—" else None,
+                top=10,
+                tentar_download_ms=False,
+                usar_llm=True,
+                persistir=True,
+                briefing=briefing_raw,
+            )
+            ve_payload = parecer_para_relatorio(parecer)
+            ve_resumo = str(ve_payload.get("resumo") or "")
+            ve_casos = [
+                {
+                    "titulo": str(c.get("titulo") or ""),
+                    "municipio": str(c.get("municipio") or ""),
+                    "target": str(c.get("target") or ""),
+                    "exames": str(c.get("exames") or ""),
+                    "positivos": str(c.get("positivos") or ""),
+                    "positividade": str(c.get("positividade") or ""),
+                    "veredito": str(c.get("veredito") or ""),
+                }
+                for c in (ve_payload.get("casos") or [])
+            ]
+            ve_recs = [
+                {"area": str(r.get("area") or ""), "acao": str(r.get("acao") or "")}
+                for r in (ve_payload.get("recomendacoes_topo") or [])
+            ]
+            ve_arqs = [str(a) for a in (ve_payload.get("arquivos") or [])]
+            ve_llm = bool(ve_payload.get("usou_llm"))
+        except Exception as exc:  # noqa: BLE001
+            ve_resumo = f"Parecer VE indisponível nesta geração ({exc})."
 
     fontes: list[str] = []
     if src.tabelas_dw:
@@ -1390,6 +1442,8 @@ def montar_relatorio(
     for bf in briefing.get("fontes") or []:
         if bf and bf not in fontes:
             fontes.append(bf)
+    if ve_arqs:
+        fontes.append("conhecimento_ve + lacen_agente_ve")
 
     crs_top = [
         {"crs": x.get("crs", "—"), "n": _fmt_num(x.get("n"), 0)}
@@ -1399,9 +1453,10 @@ def montar_relatorio(
     nota = (
         "Relatório agregado — rótulos Observado / Derivado / Predito. "
         "Sem PII ou microdados nominais. "
-        f"KPIs lab-epi, briefing (5 perguntas) e top municípios alinhados à SE "
+        f"KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE "
         f"de referência {se} "
-        "(série integrated_weekly; soma estadual = soma municipal da mesma SE)."
+        "(série integrated_weekly; soma estadual = soma municipal da mesma SE). "
+        "Bloco F (parecer VE) não declara surto automaticamente — Guia MS."
     )
     if briefing.get("nota_igg"):
         nota += " " + str(briefing["nota_igg"])
@@ -1430,6 +1485,11 @@ def montar_relatorio(
         briefing_risco=briefing.get("risco") or [],
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
+        ve_resumo=ve_resumo,
+        ve_casos=ve_casos,
+        ve_recomendacoes=ve_recs,
+        ve_arquivos=ve_arqs,
+        ve_usou_llm=ve_llm,
         tat_mediano=tat_med,
         tat_p90=tat_p90,
         pct_48h=pct48,
@@ -1568,6 +1628,18 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
                 )
             )
 
+    if rel.ve_resumo:
+        lines.extend(["", "<b>F — Parecer VE (Guia MS)</b>"])
+        lines.append(html.escape(rel.ve_resumo[:420]))
+        for c in rel.ve_casos[:1]:
+            lines.append(
+                html.escape(
+                    f"Foco: {c.get('municipio')} × {c.get('target')} — "
+                    f"{c.get('exames')} ex. / +{c.get('positivos')} "
+                    f"({c.get('positividade')}) → investigar; não declarar surto automático."
+                )
+            )
+
     lines.extend(
         [
             "",
@@ -1630,13 +1702,13 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
         ]
     )
     lines.append("1) Mais solicitados:")
-    for i, x in enumerate(rel.briefing_mais_solicitados[:8], 1):
+    for i, x in enumerate(rel.briefing_mais_solicitados[:10], 1):
         lines.append(
             f"  {i}. {x['target']} — {x['exames']} exames · "
             f"+{x['positivos']} · pos={x['positividade']} [{x.get('tipo_sinal', 'Observado')}]"
         )
     lines.append("2) Maior positividade:")
-    for i, x in enumerate(rel.briefing_maior_positividade[:8], 1):
+    for i, x in enumerate(rel.briefing_maior_positividade[:10], 1):
         flags = []
         if x.get("baixa_amostra") == "sim":
             flags.append("baixa_amostra")
@@ -1672,6 +1744,26 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
         lines.append(f"Nota: {rel.briefing_nota_igg}")
     if rel.briefing_fontes:
         lines.append(f"Fontes briefing: {', '.join(rel.briefing_fontes)}")
+
+    if rel.ve_resumo:
+        lines.extend(
+            [
+                "",
+                "— F · Parecer VE (IA + Guia MS) —",
+                rel.ve_resumo,
+            ]
+        )
+        for c in rel.ve_casos[:3]:
+            lines.append(
+                f"  · {c.get('municipio')} × {c.get('target')}: "
+                f"{c.get('exames')} ex. / +{c.get('positivos')} "
+                f"({c.get('positividade')})"
+            )
+            lines.append(f"    Veredito: {c.get('veredito', '')[:240]}")
+        for r in rel.ve_recomendacoes[:5]:
+            lines.append(f"  [{r.get('area')}] {r.get('acao')}")
+        if rel.ve_arquivos:
+            lines.append(f"  Arquivos: {', '.join(rel.ve_arquivos)}")
 
     lines.extend(
         [
@@ -1861,10 +1953,10 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
         f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
         f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
         "</tr>"
-        for x in rel.briefing_mais_solicitados[:8]
+        for x in rel.briefing_mais_solicitados[:10]
     ]
     posi_rows = []
-    for x in rel.briefing_maior_positividade[:8]:
+    for x in rel.briefing_maior_positividade[:10]:
         flags = []
         if x.get("baixa_amostra") == "sim":
             flags.append("baixa_amostra")
@@ -1979,6 +2071,29 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
 {_html_table(["Sinal", "Interpretação"], risco_rows, "(sem sinal)")}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
+F — Parecer VE (IA + Guia MS)</h3>
+<p style="font-size:13px;color:#3d4f6f">
+Sinal laboratorial ≠ declaração automática de surto. Critérios do Guia de
+Vigilância MS exigem definição de caso, comparação com o esperado e investigação.
+{" · LLM rewrite ativo." if rel.ve_usou_llm else ""}
+</p>
+<p>{html.escape(rel.ve_resumo or "(parecer VE não gerado nesta remessa)")}</p>
+{"".join(
+    f"<div style='background:#f0f4fa;border-left:4px solid #1B3281;padding:8px 12px;margin:8px 0'>"
+    f"<b>{html.escape(c.get('titulo') or (c.get('municipio','')+' × '+c.get('target','')))}</b><br>"
+    f"{html.escape(c.get('municipio',''))} — {html.escape(c.get('target',''))}: "
+    f"{html.escape(c.get('exames',''))} exames / +{html.escape(c.get('positivos',''))} "
+    f"({html.escape(c.get('positividade',''))})<br>"
+    f"<small>{html.escape((c.get('veredito') or '')[:400])}</small></div>"
+    for c in rel.ve_casos[:3]
+)}
+{"<p><b>Recomendações (topo)</b></p><ul>" + "".join(
+    f"<li><b>{html.escape(r.get('area',''))}:</b> {html.escape(r.get('acao',''))}</li>"
+    for r in rel.ve_recomendacoes[:6]
+) + "</ul>" if rel.ve_recomendacoes else ""}
+{"<p style='font-size:12px;color:#5a6a85'>Arquivos: " + html.escape(", ".join(rel.ve_arquivos)) + "</p>" if rel.ve_arquivos else ""}
+
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 B — Rede laboratorial</h3>
 <p>TAT mediano: <b>{html.escape(rel.tat_mediano)} d</b> ·
 p90: <b>{html.escape(rel.tat_p90)} d</b> ·
@@ -2010,7 +2125,7 @@ Fonte primária: <b>{html.escape(rel.fonte_primaria)}</b><br>
 Fontes: {html.escape(", ".join(rel.fontes_presentes) or "—")}<br>
 Briefing: integrated_weekly + municipio_vizinhos
 {" + ml_risco_predito" if any("ml_risco" in f for f in rel.briefing_fontes) else ""}<br>
-Modelo: lacen_relatorio_cievs.py · lacen_briefing_epi.py
+Modelo: lacen_relatorio_cievs.py · lacen_briefing_epi.py · lacen_agente_ve.py
 </p>
 </td></tr>
 </table>

@@ -1,0 +1,15 @@
+﻿rank,se,area,municipio,agravo,prioridade,acao,prazo,tipo_sinal,base
+1,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,alta,Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).,7 dias,Observado,caso_especial+guia_ms
+2,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,alta,Cruzar com notificações SINAN do município e série histórica (SE anteriores).,7 dias,Observado,caso_especial+guia_ms
+3,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,alta,"Avaliar se o padrão é recorrente (várias SE) — cluster persistente ≠ surto automático, mas prioriza investigação.",7 dias,Observado,caso_especial+guia_ms
+4,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,alta,"Mapear serviços (APS, laboratórios locais, hemodiálise, maternidade) e contatos.",7 dias,Observado,caso_especial+guia_ms
+5,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,media,"Tratar o Top 10 de demanda/positividade/localidades como **fila de investigação**, não como lista de surtos declarados.",15 dias,Derivado,recomendacao_area
+6,2026-SE30,Vigilância Epidemiológica,JUINA,hepatite_b_hbv,media,Priorizar definição de caso e cruzamento SINAN nos focos: JUINA.,15 dias,Derivado,recomendacao_area
+7,2026-SE30,LACEN / rede laboratorial,JUINA,hepatite_b_hbv,media,Manter TAT e qualidade analítica nos agravos do Top 10; sinalizar à VE resultados de marcadores agudos quando disponíveis.,15 dias,Derivado,recomendacao_area
+8,2026-SE30,LACEN / rede laboratorial,JUINA,hepatite_b_hbv,media,Para HBV: discriminar e reportar o tipo de ensaio/marcador sempre que o sistema permitir (evitar ambiguidade agudo×crônico).,15 dias,Derivado,recomendacao_area
+9,2026-SE30,Atenção Primária,JUINA,hepatite_b_hbv,media,Apoiar busca de contatos e adesão conforme protocolo do agravo prioritário.,15 dias,Derivado,recomendacao_area
+10,2026-SE30,Atenção Primária,JUINA,hepatite_b_hbv,media,Reforçar vacinação (hepatite B / outros conforme calendário) nas áreas de maior sinal lab.,15 dias,Derivado,recomendacao_area
+11,2026-SE30,CIEVS / sala de situação,JUINA,hepatite_b_hbv,media,Manter monitoramento da SE 2026-SE30 com Top 10 Observado e pares vizinhos.,15 dias,Derivado,recomendacao_area
+12,2026-SE30,CIEVS / sala de situação,JUINA,hepatite_b_hbv,media,"Usar linguagem institucional: «sinal laboratorial / investigar», nunca «há surto» sem critérios.",15 dias,Derivado,recomendacao_area
+13,2026-SE30,Comunicação,JUINA,hepatite_b_hbv,media,"Alinhar notas com assessoria SES: prevenção e esclarecimento, sem alarmismo.",15 dias,Derivado,recomendacao_area
+14,2026-SE30,Comunicação,JUINA,hepatite_b_hbv,media,"Se houver investigação em curso, informar que a classificação de surto depende da VE e do Guia MS.",15 dias,Derivado,recomendacao_area
