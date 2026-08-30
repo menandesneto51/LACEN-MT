@@ -100,13 +100,14 @@ def read_sql(mode: str, queryable: Any, sql: str, params=None) -> pd.DataFrame:
 
 
 def inventariar_fontes_lacen(mode: str, queryable: Any) -> pd.DataFrame:
-    """Inventário INFORMATION_SCHEMA: GAL, SINAN, SIM, CNES, IndicaSUS, SISREG, pop/município."""
+    """Inventário INFORMATION_SCHEMA: GAL, SINAN, SIM, CNES, SIH/internação, SIA, IndicaSUS, SISREG, pop."""
     sql = """
     SELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE
     FROM INFORMATION_SCHEMA.TABLES
     WHERE (
            TABLE_NAME LIKE '%SINAN%'
         OR TABLE_NAME LIKE '%SIM%'
+        OR TABLE_NAME LIKE '%SINASC%'
         OR TABLE_NAME LIKE '%CNES%'
         OR TABLE_NAME LIKE '%GAL%'
         OR TABLE_NAME LIKE '%LACEN%'
@@ -119,6 +120,11 @@ def inventariar_fontes_lacen(mode: str, queryable: Any) -> pd.DataFrame:
         OR TABLE_NAME LIKE '%OCUPA%'
         OR TABLE_NAME LIKE '%SIVEP%'
         OR TABLE_NAME LIKE '%CLIMA%'
+        OR TABLE_NAME LIKE '%SIH%'
+        OR TABLE_NAME LIKE '%SIA%'
+        OR TABLE_NAME LIKE '%AIH%'
+        OR TABLE_NAME LIKE '%INTERN%'
+        OR TABLE_NAME LIKE '%PACTU%'
     )
     ORDER BY TABLE_SCHEMA, TABLE_NAME
     """

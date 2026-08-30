@@ -94,6 +94,7 @@ OPTIONAL_EXTRACT_CANDIDATES: tuple[str, ...] = (
     "VW_LACEN",
     "VW_CNES",
     "CNES_ESTABELECIMENTOS",
+    "CNES_LEITOS",
     "VW_INDICASUS",
     "INDICADORES",
     "INDICADORESPACTUACAO",
@@ -102,11 +103,15 @@ OPTIONAL_EXTRACT_CANDIDATES: tuple[str, ...] = (
     "VW_SIH",
     "VW_SIA",
     "VW_AIH",
+    "VW_INTERNACAO",  # proxy SIH no DW SES-MT (sem view *SIH*)
     "SIH",
     "SIA",
+    "SIA_APAC",
+    "VW_SINASC",
     "SIVEP_MALARIA",
     "VW_POPULACAO",
     "POPULACAO",
+    "POPULACAO_TOTAL",
     "VW_MUNICIPIO",
 )
 

@@ -54,6 +54,10 @@ Thumbs.db
 
 # saida_pipeline: versionar apenas o necessário para o painel Cloud
 saida_pipeline/*
+!saida_pipeline/staging_dw/
+!saida_pipeline/staging_dw/dw_views_inventory.csv
+!saida_pipeline/staging_dw/dw_fontes_uteis_lacen.md
+!saida_pipeline/staging_dw/dw_objects_uteis_pattern.csv
 !saida_pipeline/integrated_weekly_surveillance.csv
 !saida_pipeline/integrated_alerts.csv
 !saida_pipeline/integrated_annual_summary.csv
