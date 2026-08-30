@@ -29,6 +29,7 @@ for p in (ROOT, SCRIPTS):
 
 from lacen_relatorio_cievs import (  # noqa: E402
     format_email,
+    load_relatorio_sources,
     montar_relatorio,
     to_telegram_markdown,
 )
@@ -41,6 +42,7 @@ from enviar_alerta_teste import (  # noqa: E402
 
 OUTDIR_DEFAULT = ROOT / "saida_pipeline"
 DRY_RUN_OUT = OUTDIR_DEFAULT / "relatorio_cievs_ultimo.txt"
+DRY_RUN_HTML = OUTDIR_DEFAULT / "relatorio_cievs_ultimo.html"
 
 
 def _mask_secrets(text: str) -> str:
@@ -84,13 +86,31 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--top-fila", type=int, default=10)
     parser.add_argument("--top-predito", type=int, default=5)
+    parser.add_argument(
+        "--no-dw",
+        action="store_true",
+        help="Não tentar DW; usa apenas saida_pipeline",
+    )
     args = parser.parse_args(argv)
 
     _load_dotenv(ROOT / ".env")
 
     outdir = args.outdir if args.outdir.is_absolute() else (ROOT / args.outdir)
+    prefer_dw = not args.no_dw
+    sources = load_relatorio_sources(outdir, prefer_dw=prefer_dw)
+    print(
+        _mask_secrets(
+            f"Fonte: {sources.fonte_primaria} | DW_ok={sources.dw_ok} | "
+            f"tabelas={sources.tabelas_dw or '—'} | "
+            f"local={len(sources.arquivos_local)} artefatos"
+        )
+    )
     rel = montar_relatorio(
-        outdir, top_fila=max(1, args.top_fila), top_predito=max(1, args.top_predito)
+        outdir,
+        top_fila=max(1, args.top_fila),
+        top_predito=max(1, args.top_predito),
+        prefer_dw=prefer_dw,
+        sources=sources,
     )
     subject, body, html_body = format_email(rel)
     tg_text = to_telegram_markdown(rel)
@@ -107,10 +127,18 @@ def main(argv: list[str] | None = None) -> int:
     try:
         DRY_RUN_OUT.parent.mkdir(parents=True, exist_ok=True)
         DRY_RUN_OUT.write_text(
-            subject + "\n" + ("=" * 60) + "\n" + body + "\n\n--- Telegram ---\n" + tg_text,
+            subject
+            + "\n"
+            + ("-" * 60)
+            + "\n"
+            + body
+            + "\n\n--- Telegram ---\n"
+            + tg_text,
             encoding="utf-8",
         )
+        DRY_RUN_HTML.write_text(html_body, encoding="utf-8")
         print(f"Prévia gravada em: {DRY_RUN_OUT.relative_to(ROOT)}")
+        print(f"HTML gravado em: {DRY_RUN_HTML.relative_to(ROOT)}")
     except OSError as e:
         print(f"Aviso: não gravou prévia ({e})")
 
