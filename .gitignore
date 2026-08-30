@@ -139,10 +139,14 @@ saida_pipeline/*
 !saida_pipeline/briefing_epi_se.csv
 !saida_pipeline/briefing_epi_se.parquet
 !saida_pipeline/briefing_epi_se_resumo.txt
+!saida_pipeline/briefing_gal_sinan_divergencia.csv
+!saida_pipeline/briefing_geo_hotspots.csv
+!saida_pipeline/briefing_cruzamento_bases.csv
 !saida_pipeline/relatorio_ve_inteligente.md
 !saida_pipeline/relatorio_ve_inteligente.html
 !saida_pipeline/relatorio_ve_acoes.csv
 !saida_pipeline/relatorio_ve_inteligente_meta.json
+!saida_pipeline/relatorio_cievs_ultimo.html
 !conhecimento_ve/
 !conhecimento_ve/**/*.md
 !conhecimento_ve/**/*.txt

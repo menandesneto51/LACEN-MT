@@ -1,18 +1,18 @@
 Briefing epidemiológico CIEVS — SE 2026-SE30
 Tipo: Observado (lab) · Predito (ML se disponível)
 
-1) Mais solicitados:
-  1. dengue: 2130 exames · +3 (0.1%) [Observado]
-  2. tuberculose: 222 exames · +25 (11.3%) [Observado]
-  3. hepatite_b_hbv: 155 exames · +101 (65.2%) [Observado]
-  4. chikungunya: 116 exames · +0 (0.0%) [Observado]
-  5. sars_cov_2: 39 exames · +0 (0.0%) [Observado]
-2) Maior positividade:
-  1. hepatite_b_hbv: 65.2% (155 exames) [Observado]
-  2. tuberculose: 11.3% (222 exames) [Observado]
-  3. meningite: 3.2% (31 exames) [Observado]
-  4. dengue: 0.1% (2130 exames) [Observado]
-  5. chikungunya: 0.0% (116 exames) [Observado]
+1) Mais solicitados (N + Δ vs SE-1):
+  1. dengue: 2130 exames · Δ=1316 (+162%) ↑ · +3 (0.1%) [Observado]
+  2. tuberculose: 222 exames · Δ=-367 (-62%) ↓ · +25 (11.3%) [Observado]
+  3. hepatite_b_hbv: 155 exames · Δ=-46 (-23%) ↓ · +101 (65.2%) [Observado]
+  4. chikungunya: 116 exames · Δ=3 (+3%) → · +0 (0.0%) [Observado]
+  5. sars_cov_2: 39 exames · Δ=-21 (-35%) ↓ · +0 (0.0%) [Observado]
+2) Maior positividade (Δ vs SE-1):
+  1. hepatite_b_hbv: 65.2% (155 exames) Δ%=+64% ↑ [Observado]
+  2. tuberculose: 11.3% (222 exames) Δ%=+90% ↑ [Observado]
+  3. meningite: 3.2% (31 exames) Δ%=-13% ↓ [Observado]
+  4. dengue: 0.1% (2130 exames) Δ%=-96% ↓ [Observado]
+  5. chikungunya: 0.0% (116 exames) Δ%=-100% ↓ [Observado]
 3) Localidades (top targets):
   · dengue: VARZEA GRANDE(+3), LUCAS DO RIO VERDE(+0), SORRISO(+0)
   · tuberculose: CUIABA(+4), BARRA DO BUGRES(+4), VARZEA GRANDE(+3)
@@ -30,4 +30,6 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · [Observado] hepatite_b_hbv: 5 par(es) vizinhos com positivos — focos territoriais; investigar perfil do exame (marcador agudo vs. crônico) antes de classificar dispersão.
   · [Observado] toxoplasmose_citomegalov_rus_igg: positividade elevada (91% em 23 exames) reflete soroprevalência/IgG — não tratar como epidemia aguda.
   · [Predito] Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
+6) GAL×SINAN (qualquer agravo): 40 gal_sem_sinan · 0 sinan_sem_gal
+7) Geo: nível=bairro_cep — Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_s
 Nota: positividade IgG/sorologia elevada ≠ surto agudo.

@@ -43,6 +43,7 @@ from lacen_briefing_epi import (
     _num,
     _parse_se,
     _read_csv,
+    enriquecer_top_com_delta,
     gerar_briefing_epi,
 )
 
@@ -533,6 +534,11 @@ class ParecerVE:
     top_localidades: list[dict[str, Any]] = field(default_factory=list)
     top_vizinhos: list[dict[str, Any]] = field(default_factory=list)
     top_riscos: list[dict[str, Any]] = field(default_factory=list)
+    gal_sinan: list[dict[str, Any]] = field(default_factory=list)
+    geo_nivel: str = "municipio"
+    geo_nota: str = ""
+    geo_hotspots: list[dict[str, Any]] = field(default_factory=list)
+    cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
     casos_especiais: list[CasoEspecial] = field(default_factory=list)
     recomendacoes: dict[str, list[str]] = field(default_factory=dict)
     recomendacoes_por_agravo: list[dict[str, Any]] = field(default_factory=list)
@@ -1022,17 +1028,25 @@ def _render_markdown(p: ParecerVE) -> str:
         "",
         f"## 2. Top 10 — {rotulo_top} [Observado]",
         "",
-        "| # | Agravo | Notif./Exames | Positivos | Positividade | Fonte |",
-        "|---|--------|---------------|-----------|--------------|-------|",
+        "| # | Agravo | n_se | n_se_ant | Δ | Δ% | Tend. | Positivos | Positividade | Fonte |",
+        "|---|--------|------|----------|---|----|-------|-----------|--------------|-------|",
     ]
     for i, x in enumerate(p.top_notificacoes[:10], 1):
         met = (
-            _intish(x.get("notificacoes"))
-            if fonte == "SINAN"
-            else _intish(x.get("exames"))
+            x.get("n_se")
+            if x.get("n_se") is not None
+            else (
+                x.get("notificacoes")
+                if fonte == "SINAN"
+                else x.get("exames")
+            )
         )
+        pct = x.get("delta_pct")
+        pct_s = f"{float(pct):+.1f}%" if pct is not None else "—"
         lines.append(
-            f"| {i} | {x.get('target','—')} | {met} | "
+            f"| {i} | {x.get('target','—')} | {_intish(met)} | "
+            f"{_intish(x.get('n_se_ant'))} | {_intish(x.get('delta'))} | "
+            f"{pct_s} | {x.get('tendencia', '→')} | "
             f"{_intish(x.get('positivos'))} | {_pct_str(x.get('positividade'))} | "
             f"{x.get('fonte_metrica', fonte)} |"
         )
@@ -1040,8 +1054,8 @@ def _render_markdown(p: ParecerVE) -> str:
         "",
         "## 3. Top 10 — maior positividade [Observado]",
         "",
-        "| # | Agravo | Positividade | Exames | Flag |",
-        "|---|--------|--------------|--------|------|",
+        "| # | Agravo | Positividade | n_se | n_se_ant | Δ% | Tend. | Mediana 4SE | Exames | Flag |",
+        "|---|--------|--------------|------|----------|----|-------|-------------|--------|------|",
     ]
     for i, x in enumerate(p.top_positividade[:10], 1):
         flags = []
@@ -1049,8 +1063,15 @@ def _render_markdown(p: ParecerVE) -> str:
             flags.append("baixa_amostra")
         if x.get("caveat_igg"):
             flags.append("caveat_IgG")
+        pct = x.get("delta_pct")
+        pct_s = f"{float(pct):+.1f}%" if pct is not None else "—"
+        med = x.get("mediana_4se")
+        med_s = _pct_str(med) if isinstance(med, float) else (_intish(med) if med is not None else "—")
         lines.append(
             f"| {i} | {x.get('target','—')} | {x.get('positividade','—')} | "
+            f"{_pct_str(x.get('n_se')) if isinstance(x.get('n_se'), float) and float(x.get('n_se') or 0) <= 1 else x.get('positividade','—')} | "
+            f"{_pct_str(x.get('n_se_ant')) if isinstance(x.get('n_se_ant'), float) and float(x.get('n_se_ant') or 0) <= 1 else '—'} | "
+            f"{pct_s} | {x.get('tendencia', '→')} | {med_s} | "
             f"{x.get('exames','—')} | {', '.join(flags) or '—'} |"
         )
     lines += [
@@ -1112,6 +1133,62 @@ def _render_markdown(p: ParecerVE) -> str:
         )
     if not p.top_riscos:
         lines.append("_Sem sinais na regra de dispersão._")
+
+    lines += [
+        "",
+        "## 7b. GAL×SINAN (qualquer agravo — mun×família)",
+        "",
+        "| Município | Família | Exames | Notif. | Flag |",
+        "|-----------|---------|--------|--------|------|",
+    ]
+    if p.gal_sinan:
+        for g in p.gal_sinan[:15]:
+            lines.append(
+                f"| {g.get('municipio','—')} | {g.get('familia', g.get('target','—'))} | "
+                f"{_intish(g.get('exames'))} | {_intish(g.get('notificacoes'))} | "
+                f"{g.get('flag','—')} |"
+            )
+    else:
+        lines.append("| — | — | — | — | (sem divergência acima do limiar) |")
+
+    lines += [
+        "",
+        f"## 7c. Geo hotspots (nível: {p.geo_nivel})",
+        "",
+        f"_{p.geo_nota}_",
+        "",
+        "| Município | Local | Agravo | N | IBGE |",
+        "|-----------|-------|--------|---|------|",
+    ]
+    if p.geo_hotspots:
+        for h in p.geo_hotspots[:12]:
+            lines.append(
+                f"| {h.get('municipio','—')} | {h.get('local','—')} | "
+                f"{h.get('agravo','—')} | {_intish(h.get('n'))} | "
+                f"{h.get('codigo_ibge','')} |"
+            )
+    else:
+        lines.append("| — | — | — | — | — |")
+
+    lines += [
+        "",
+        "## 7d. Cruzamento de bases (DW staging)",
+        "",
+        "| Fonte | Status | Quando agrega |",
+        "|-------|--------|---------------|",
+    ]
+    if p.cruzamento_bases:
+        for c in p.cruzamento_bases:
+            lines.append(
+                f"| {c.get('fonte','—')} | {c.get('status','—')} | "
+                f"{c.get('quando_agrega','—')} |"
+            )
+    else:
+        lines.append("| — | (inventário vazio) | ver conhecimento_ve/cruzamento_bases.md |")
+    lines.append("")
+    lines.append(
+        "Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`."
+    )
 
     lines += ["", "## 8. Casos especiais (sinal lab × critérios Guia MS)", ""]
     if not p.casos_especiais:
@@ -1214,10 +1291,21 @@ def _render_html(p: ParecerVE) -> str:
         [
             str(i),
             str(x.get("target", "—")),
-            _intish(x.get("notificacoes") if fonte == "SINAN" else x.get("exames")),
+            _intish(
+                x.get("n_se")
+                if x.get("n_se") is not None
+                else (x.get("notificacoes") if fonte == "SINAN" else x.get("exames"))
+            ),
+            _intish(x.get("n_se_ant")),
+            _intish(x.get("delta")),
+            (
+                f"{float(x['delta_pct']):+.1f}%"
+                if x.get("delta_pct") is not None
+                else "—"
+            ),
+            str(x.get("tendencia") or "→"),
             _intish(x.get("positivos")),
             _pct_str(x.get("positividade")),
-            str(x.get("fonte_metrica", fonte)),
         ]
         for i, x in enumerate(p.top_notificacoes[:10], 1)
     ]
@@ -1226,6 +1314,12 @@ def _render_html(p: ParecerVE) -> str:
             str(i),
             str(x.get("target", "—")),
             str(x.get("positividade", "—")),
+            (
+                f"{float(x['delta_pct']):+.1f}%"
+                if x.get("delta_pct") is not None
+                else "—"
+            ),
+            str(x.get("tendencia") or "→"),
             str(x.get("exames", "—")),
         ]
         for i, x in enumerate(p.top_positividade[:10], 1)
@@ -1329,9 +1423,9 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">1. Resumo executivo</h3>
 <p>{esc(p.resumo_executivo)}</p>
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">2. Top 10 — {esc(rotulo)}</h3>
-{table(["#", "Agravo", "Valor", "Positivos", "Positividade", "Fonte"], notif_rows)}
+{table(["#", "Agravo", "n_se", "n_se_ant", "Δ", "Δ%", "Tend.", "Positivos", "Positividade"], notif_rows)}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">3. Top 10 positividade</h3>
-{table(["#", "Agravo", "Positividade", "Exames"], pos_rows)}
+{table(["#", "Agravo", "Positividade", "Δ% vs SE-1", "Tend.", "Exames"], pos_rows)}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">4. Comparação SE-1 / SE-2 / mediana 4 SE</h3>
 {table(["Agravo", "Métrica", "SE", "Δ SE-1", "Δ SE-2", "Mediana 4SE", "Flag"], comp_rows)}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">5. Top localidades</h3>
@@ -1340,6 +1434,25 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
 {table(["Agravo", "Par", "Positivos", "Dist. km"], viz_rows)}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7. Riscos / dispersão</h3>
 {risco_html}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7b. GAL×SINAN (qualquer agravo)</h3>
+{table(["Município", "Família", "Exames", "Notif.", "Flag"], [
+    [str(g.get("municipio","—")), str(g.get("familia", g.get("target","—"))),
+     _intish(g.get("exames")), _intish(g.get("notificacoes")), str(g.get("flag","—"))]
+    for g in p.gal_sinan[:12]
+])}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7c. Geo ({esc(p.geo_nivel)})</h3>
+<p style="font-size:12px;color:#5a6a85">{esc(p.geo_nota)}</p>
+{table(["Município", "Local", "Agravo", "N", "IBGE"], [
+    [str(h.get("municipio","—")), str(h.get("local","—")), str(h.get("agravo","—")),
+     _intish(h.get("n")), str(h.get("codigo_ibge") or "")]
+    for h in p.geo_hotspots[:12]
+])}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7d. Cruzamento de bases</h3>
+{table(["Fonte", "Status", "Quando agrega"], [
+    [str(c.get("fonte","—")), str(c.get("status","—")), str(c.get("quando_agrega","—"))]
+    for c in p.cruzamento_bases
+])}
+<p style="font-size:12px">Ver <code>conhecimento_ve/cruzamento_bases.md</code>.</p>
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">8. Casos especiais</h3>
 {casos_html or "<p>(nenhum)</p>"}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">9. Recomendações por destinatário</h3>
@@ -1467,6 +1580,19 @@ def talvez_reescrever_resumo_llm(parecer: ParecerVE) -> ParecerVE:
     return parecer
 
 
+def _delta_fields(x: dict[str, Any]) -> dict[str, Any]:
+    pct = x.get("delta_pct")
+    return {
+        "n_se": x.get("n_se", x.get("exames")),
+        "n_se_ant": x.get("n_se_ant"),
+        "delta": x.get("delta"),
+        "delta_pct": pct,
+        "delta_pct_str": f"{float(pct):+.1f}%" if pct is not None else "—",
+        "tendencia": x.get("tendencia") or "→",
+        "mediana_4se": x.get("mediana_4se"),
+    }
+
+
 def _fmt_briefing_rows(briefing: BriefingEpi) -> tuple[
     list[dict[str, Any]],
     list[dict[str, Any]],
@@ -1481,6 +1607,7 @@ def _fmt_briefing_rows(briefing: BriefingEpi) -> tuple[
             "positivos": _intish(x["positivos"]),
             "positividade": _pct_str(x.get("positividade")),
             "tipo_sinal": "Observado",
+            **_delta_fields(x),
         }
         for x in briefing.mais_solicitados[:10]
     ]
@@ -1493,6 +1620,7 @@ def _fmt_briefing_rows(briefing: BriefingEpi) -> tuple[
             "baixa_amostra": bool(x.get("baixa_amostra")),
             "caveat_igg": bool(x.get("caveat_igg")),
             "tipo_sinal": "Observado",
+            **_delta_fields(x),
         }
         for x in briefing.maior_positividade[:10]
     ]
@@ -1572,6 +1700,8 @@ def gerar_parecer_ve(
     fonte_notif = "proxy_exames_GAL"
     if yw and weekly:
         top_notif, fonte_notif = top_notificacoes(weekly, yw, top=top)
+        metric = "notificacoes" if fonte_notif == "SINAN" else "exames"
+        top_notif = enriquecer_top_com_delta(top_notif, weekly, yw, metric=metric)
 
     sol, posi, locs, viz, risco = _fmt_briefing_rows(briefing)
 
@@ -1603,6 +1733,7 @@ def gerar_parecer_ve(
     trechos = recuperar_trechos(familias, know)
     recs, por_agravo, acoes = _recomendacoes_por_destinatario(briefing, casos, trechos)
 
+    geo = briefing.geo or {}
     parecer = ParecerVE(
         se_iso=briefing.se_iso,
         resumo_executivo=_resumo_executivo(
@@ -1616,6 +1747,7 @@ def gerar_parecer_ve(
                 "positividade": x.get("positividade"),
                 "notificacoes": 0,
                 "fonte_metrica": "proxy_exames_GAL",
+                **{k: x.get(k) for k in ("n_se", "n_se_ant", "delta", "delta_pct", "tendencia", "mediana_4se")},
             }
             for x in sol
         ],
@@ -1626,6 +1758,11 @@ def gerar_parecer_ve(
         top_localidades=locs,
         top_vizinhos=viz,
         top_riscos=risco,
+        gal_sinan=list(briefing.gal_sinan or [])[:25],
+        geo_nivel=str(geo.get("nivel") or "municipio"),
+        geo_nota=str(geo.get("nota") or ""),
+        geo_hotspots=list(geo.get("hotspots") or [])[:15],
+        cruzamento_bases=list(briefing.cruzamento_bases or []),
         casos_especiais=casos,
         recomendacoes=recs,
         recomendacoes_por_agravo=por_agravo,

@@ -533,6 +533,11 @@ class RelatorioCIEVS:
     briefing_localidades: list[dict[str, str]] = field(default_factory=list)
     briefing_vizinhos: list[dict[str, str]] = field(default_factory=list)
     briefing_risco: list[dict[str, str]] = field(default_factory=list)
+    briefing_gal_sinan: list[dict[str, str]] = field(default_factory=list)
+    briefing_geo_nivel: str = "municipio"
+    briefing_geo_nota: str = ""
+    briefing_geo_hotspots: list[dict[str, str]] = field(default_factory=list)
+    briefing_cruzamento: list[dict[str, str]] = field(default_factory=list)
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
     # Bloco F — Parecer VE (IA + Guia MS) opcional
@@ -1500,6 +1505,11 @@ def montar_relatorio(
         briefing_localidades=briefing.get("localidades") or [],
         briefing_vizinhos=briefing.get("vizinhos") or [],
         briefing_risco=briefing.get("risco") or [],
+        briefing_gal_sinan=briefing.get("gal_sinan") or [],
+        briefing_geo_nivel=str(briefing.get("geo_nivel") or "municipio"),
+        briefing_geo_nota=str(briefing.get("geo_nota") or ""),
+        briefing_geo_hotspots=briefing.get("geo_hotspots") or [],
+        briefing_cruzamento=briefing.get("cruzamento_bases") or [],
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
         ve_resumo=ve_resumo,
@@ -1579,23 +1589,26 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
     lines.extend(["", "<b>E — Briefing (5 perguntas)</b>"])
     sol = rel.briefing_mais_solicitados[:3]
     if sol:
-        lines.append("<i>Mais solicitados</i>")
+        lines.append("<i>Mais solicitados (Δ SE-1)</i>")
         for x in sol:
             lines.append(
                 html.escape(
-                    f"• {x['target']}: {x['exames']} ex. · +{x['positivos']} "
+                    f"• {x['target']}: n={x.get('n_se', x['exames'])} "
+                    f"Δ={x.get('delta', '—')} ({x.get('delta_pct', '—')}) "
+                    f"{x.get('tendencia', '→')} · +{x['positivos']} "
                     f"({x['positividade']}) [{x.get('tipo_sinal', 'Observado')}]"
                 )
             )
     posi = rel.briefing_maior_positividade[:3]
     if posi:
-        lines.append("<i>Maior positividade</i>")
+        lines.append("<i>Maior positividade (Δ SE-1)</i>")
         for x in posi:
             flag = " · baixa_amostra" if x.get("baixa_amostra") == "sim" else ""
             igg = " · IgG" if x.get("caveat_igg") == "sim" else ""
             lines.append(
                 html.escape(
                     f"• {x['target']}: {x['positividade']} "
+                    f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} "
                     f"({x['exames']} ex.){flag}{igg}"
                 )
             )
@@ -1608,6 +1621,17 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
                     f"• {v['target']}: {v['par']} ({v['positivos']})"
                 )
             )
+    for g in rel.briefing_gal_sinan[:2]:
+        lines.append(
+            html.escape(
+                f"• GAL×SINAN {g.get('municipio')}×{g.get('familia')}: "
+                f"{g.get('flag')}"
+            )
+        )
+    if rel.briefing_geo_nota:
+        lines.append(
+            html.escape(f"Geo ({rel.briefing_geo_nivel}): {rel.briefing_geo_nota[:100]}")
+        )
     for r in rel.briefing_risco[:3]:
         msg = (r.get("mensagem") or "")[:140]
         lines.append(
@@ -1718,13 +1742,15 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             "— E · Briefing epidemiológico (5 perguntas) [Observado / Predito] —",
         ]
     )
-    lines.append("1) Mais solicitados:")
+    lines.append("1) Mais solicitados (N + Δ vs SE-1):")
     for i, x in enumerate(rel.briefing_mais_solicitados[:10], 1):
         lines.append(
-            f"  {i}. {x['target']} — {x['exames']} exames · "
+            f"  {i}. {x['target']} — n_se={x.get('n_se', x['exames'])} · "
+            f"n_ant={x.get('n_se_ant', '—')} · Δ={x.get('delta', '—')} "
+            f"({x.get('delta_pct', '—')}) {x.get('tendencia', '→')} · "
             f"+{x['positivos']} · pos={x['positividade']} [{x.get('tipo_sinal', 'Observado')}]"
         )
-    lines.append("2) Maior positividade:")
+    lines.append("2) Maior positividade (Δ vs SE-1):")
     for i, x in enumerate(rel.briefing_maior_positividade[:10], 1):
         flags = []
         if x.get("baixa_amostra") == "sim":
@@ -1734,6 +1760,8 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
         fl = f" · {', '.join(flags)}" if flags else ""
         lines.append(
             f"  {i}. {x['target']} — pos={x['positividade']} · "
+            f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} · "
+            f"med4SE={x.get('mediana_4se', '—')} · "
             f"{x['exames']} exames{fl} [{x.get('tipo_sinal', 'Observado')}]"
         )
     lines.append("3) Localidades:")
@@ -1757,6 +1785,31 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
     lines.append("5) Risco de dispersão:")
     for r in rel.briefing_risco:
         lines.append(f"  · [{r.get('tipo_sinal', 'Observado')}] {r.get('mensagem', '')}")
+    if rel.briefing_gal_sinan:
+        lines.append("6) GAL×SINAN (qualquer agravo):")
+        for g in rel.briefing_gal_sinan[:8]:
+            lines.append(
+                f"  · {g.get('municipio')} × {g.get('familia')}: "
+                f"ex={g.get('exames')} notif={g.get('notificacoes')} "
+                f"[{g.get('flag')}]"
+            )
+    if rel.briefing_geo_nota or rel.briefing_geo_hotspots:
+        lines.append(
+            f"7) Geo ({rel.briefing_geo_nivel}): {rel.briefing_geo_nota}"
+        )
+        for h in rel.briefing_geo_hotspots[:5]:
+            lines.append(
+                f"  · {h.get('municipio')} / {h.get('local')} · "
+                f"{h.get('agravo')} n={h.get('n')} ibge={h.get('codigo_ibge')}"
+            )
+    if rel.briefing_cruzamento:
+        presentes = [
+            c.get("fonte") for c in rel.briefing_cruzamento if c.get("presente") == "sim"
+        ]
+        lines.append(
+            "Cruzamento DW: "
+            + (", ".join(presentes) if presentes else "(nenhuma extra no staging)")
+        )
     if rel.briefing_nota_igg:
         lines.append(f"Nota: {rel.briefing_nota_igg}")
     if rel.briefing_fontes:
@@ -1965,8 +2018,11 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
     sol_rows = [
         "<tr style='border-bottom:1px solid #e6ebf2'>"
         f"<td style='padding:6px 8px'>{html.escape(x['target'])}</td>"
-        f"<td style='padding:6px 8px'>{html.escape(x['exames'])}</td>"
-        f"<td style='padding:6px 8px'>{html.escape(x['positivos'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x.get('n_se', x['exames']))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x.get('n_se_ant', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x.get('delta', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x.get('delta_pct', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x.get('tendencia', '→'))}</td>"
         f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
         f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
         "</tr>"
@@ -1983,9 +2039,11 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
             "<tr style='border-bottom:1px solid #e6ebf2'>"
             f"<td style='padding:6px 8px'>{html.escape(x['target'])}</td>"
             f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(x.get('delta_pct', '—'))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(x.get('tendencia', '→'))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(x.get('mediana_4se', '—'))}</td>"
             f"<td style='padding:6px 8px'>{html.escape(x['exames'])}</td>"
             f"<td style='padding:6px 8px'>{html.escape(', '.join(flags) or '—')}</td>"
-            f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
             "</tr>"
         )
     loc_rows = [
@@ -2075,17 +2133,61 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
 <b>Predito</b> (ML). Fontes: {html.escape(briefing_fontes_txt)}.
 </p>
 {nota_igg_html}
-<p><b>1) Mais solicitados</b></p>
-{_html_table(["Agravo", "Exames", "Positivos", "Positividade", "Sinal"], sol_rows)}
+<p><b>1) Mais solicitados</b> <small>(n_se · Δ vs SE-1)</small></p>
+{_html_table(["Agravo", "n_se", "n_se_ant", "Δ", "Δ%", "Tend.", "Positividade", "Sinal"], sol_rows)}
 <p><b>2) Maior positividade</b>
-<small style="color:#5a6a85"> · min. 30 exames; baixa_amostra = min. 10</small></p>
-{_html_table(["Agravo", "Positividade", "Exames", "Flag", "Sinal"], posi_rows)}
+<small style="color:#5a6a85"> · min. 30 exames; Δ% vs SE-1; mediana 4 SE</small></p>
+{_html_table(["Agravo", "Positividade", "Δ%", "Tend.", "Med.4SE", "Exames", "Flag"], posi_rows)}
 <p><b>3) Localidades</b> (top municípios por positivos / exames)</p>
 {_html_table(["Agravo", "Município", "Positivos", "Exames", "Positividade"], loc_rows)}
 <p><b>4) Vizinhos na mesma situação</b></p>
 {_html_table(["Agravo", "Par", "Positivos", "Dist. km", "Sinal"], viz_rows, "(nenhum par vizinho com positivos)")}
 <p><b>5) Risco de dispersão</b></p>
 {_html_table(["Sinal", "Interpretação"], risco_rows, "(sem sinal)")}
+<p><b>6) GAL×SINAN</b> (qualquer agravo — mun×família)</p>
+{_html_table(
+    ["Município", "Família", "Exames", "Notif.", "Flag"],
+    [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(g.get('municipio','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(g.get('familia','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(g.get('exames','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(g.get('notificacoes','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(g.get('flag','—'))}</td>"
+        "</tr>"
+        for g in rel.briefing_gal_sinan[:12]
+    ],
+    "(sem divergência acima do limiar)",
+)}
+<p><b>7) Geo</b> ({html.escape(rel.briefing_geo_nivel)}) —
+<small>{html.escape(rel.briefing_geo_nota)}</small></p>
+{_html_table(
+    ["Município", "Local", "Agravo", "N", "IBGE"],
+    [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(h.get('municipio','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(h.get('local','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(h.get('agravo','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(h.get('n','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(h.get('codigo_ibge','') )}</td>"
+        "</tr>"
+        for h in rel.briefing_geo_hotspots[:10]
+    ],
+    "(sem hotspots)",
+)}
+<p><b>Cruzamento DW</b> — ver <code>conhecimento_ve/cruzamento_bases.md</code></p>
+{_html_table(
+    ["Fonte", "Status", "Quando agrega"],
+    [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('fonte','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('status','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('quando_agrega','—'))}</td>"
+        "</tr>"
+        for c in rel.briefing_cruzamento
+    ],
+    "(inventário vazio)",
+)}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 F — Parecer VE (IA + Guia MS)</h3>

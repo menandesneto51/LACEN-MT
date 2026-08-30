@@ -1,0 +1,11 @@
+﻿fonte,presente,arquivos,quando_agrega,status
+SINAN,True,"vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhoexposicaomaterialbiologico.parquet, vw_sinan_acidentetrabalhograve.csv, vw_sinan_acidentetrabalhograve.parquet",Notificação compulsória — vínculo mun×agravo com GAL,extraído
+GAL,True,"vw_gal_micro_recent.csv, vw_gal_micro_recent.parquet, vw_gal_micro_recent_for_rede.csv, vw_gal_weekly_agg.csv",Exames LACEN — demanda e positividade,extraído
+SIH,False,,Internações correlatas (AIH) quando chave junta,ausente no DW/staging
+SIA,False,,Produção ambulatorial correlata,ausente no DW/staging
+SIVEP/SRAG,True,"sivep_malaria.csv, sivep_malaria.parquet, vw_sinan_sindromerespiratoriaagudagrave.csv, vw_sinan_sindromerespiratoriaagudagrave.parquet",SRAG / respiratório,extraído
+SIM,True,"sim.csv, sim.parquet",Óbitos — letalidade contextual,extraído
+CNES,True,"cnes_equipamentos.csv, cnes_equipamentos.parquet, cnes_estabelecimentos.csv, cnes_estabelecimentos.parquet",Capacidade da rede (leitos/equipes),extraído
+IndicaSUS,True,"indicadores.csv, indicadores.parquet, indicadorespactuacao.csv, indicadorespactuacao.parquet",Pactuação / indicadores IndicaSUS,extraído
+SISREG,False,,Regulação de vagas / filas,ausente no DW/staging
+POPULACAO,True,"populacao.csv, populacao.parquet",Denominadores municipais,extraído

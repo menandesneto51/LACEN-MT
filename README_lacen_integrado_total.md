@@ -32,7 +32,9 @@ rodar_etl_dw.bat
 .\.venv\Scripts\python.exe -m etl.run_etl_dw --allow-local-fallback
 ```
 
-Fluxo: extrai `dbo.VW_GAL` (e inventaria VW_SINAN/LACEN/SIM se existirem) → staging em `saida_pipeline/staging_dw/` → atualiza weekly → rede/emergência/ML → `ml.mirror_dw` → CIEVS dry-run → `saida_pipeline/validacao_etl_dw_ultimo.txt` (`hoje`, `se_esperada`, `se_usada`, `atraso_se`).
+Fluxo: extrai `dbo.VW_GAL` (e inventaria VW_SINAN/LACEN/SIM/IndicaSUS/SISREG/SIH/SIA se existirem) → staging em `saida_pipeline/staging_dw/` → atualiza weekly → rede/emergência/ML → `ml.mirror_dw` → CIEVS dry-run → `saida_pipeline/validacao_etl_dw_ultimo.txt` (`hoje`, `se_esperada`, `se_usada`, `atraso_se`).
+
+Cruzamento de bases (prioridade SINAN → GAL → SIH → SIVEP → SIM → CNES → IndicaSUS → SISREG → SIA): ver `conhecimento_ve/cruzamento_bases.md`. Briefing Top 10 inclui `n_se`, `n_se_ant`, `delta`, `delta_pct`, `tendencia`; GAL×SINAN cobre **qualquer** agravo (mun×família).
 
 Sem VPN SES (`DW_HOST:1433`) o ETL **falha com instrução**; `--allow-local-fallback` usa o CSV GAL local e **avisa** se a SE estiver atrasada. Espelho DW: se `CREATE TABLE` for negado, o DBA deve rodar `saida_pipeline/sql/create_lacen_ml_tables.sql` e reexecutar `python -m ml.mirror_dw`.
 

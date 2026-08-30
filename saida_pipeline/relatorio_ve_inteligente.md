@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 18:38 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-30 18:59 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
@@ -11,33 +11,33 @@ SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): d
 
 ## 2. Top 10 — proxy: exames GAL (SINAN indisponível/zerado na SE) [Observado]
 
-| # | Agravo | Notif./Exames | Positivos | Positividade | Fonte |
-|---|--------|---------------|-----------|--------------|-------|
-| 1 | dengue | 2130 | 3 | 0.1% | proxy_exames_GAL |
-| 2 | tuberculose | 222 | 25 | 11.3% | proxy_exames_GAL |
-| 3 | hepatite_b_hbv | 155 | 101 | 65.2% | proxy_exames_GAL |
-| 4 | chikungunya | 116 | 0 | 0.0% | proxy_exames_GAL |
-| 5 | sars_cov_2 | 39 | 0 | 0.0% | proxy_exames_GAL |
-| 6 | meningite | 31 | 1 | 3.2% | proxy_exames_GAL |
-| 7 | oropouche | 24 | 0 | 0.0% | proxy_exames_GAL |
-| 8 | toxoplasmose_citomegalov_rus_igg | 23 | 21 | 91.3% | proxy_exames_GAL |
-| 9 | hepatite_c_hcv | 23 | 0 | 0.0% | proxy_exames_GAL |
-| 10 | toxoplasmose_citomegalov_rus_igm | 23 | 0 | 0.0% | proxy_exames_GAL |
+| # | Agravo | n_se | n_se_ant | Δ | Δ% | Tend. | Positivos | Positividade | Fonte |
+|---|--------|------|----------|---|----|-------|-----------|--------------|-------|
+| 1 | dengue | 2130 | 814 | 1316 | +161.7% | ↑ | 3 | 0.1% | proxy_exames_GAL |
+| 2 | tuberculose | 222 | 589 | -367 | -62.3% | ↓ | 25 | 11.3% | proxy_exames_GAL |
+| 3 | hepatite_b_hbv | 155 | 201 | -46 | -22.9% | ↓ | 101 | 65.2% | proxy_exames_GAL |
+| 4 | chikungunya | 116 | 113 | 3 | +2.7% | → | 0 | 0.0% | proxy_exames_GAL |
+| 5 | sars_cov_2 | 39 | 60 | -21 | -35.0% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 6 | meningite | 31 | 27 | 4 | +14.8% | ↑ | 1 | 3.2% | proxy_exames_GAL |
+| 7 | oropouche | 24 | 3 | 21 | +700.0% | ↑ | 0 | 0.0% | proxy_exames_GAL |
+| 8 | toxoplasmose_citomegalov_rus_igg | 23 | 0 | 23 | — | → | 21 | 91.3% | proxy_exames_GAL |
+| 9 | hepatite_c_hcv | 23 | 33 | -10 | -30.3% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 10 | toxoplasmose_citomegalov_rus_igm | 23 | 0 | 23 | — | → | 0 | 0.0% | proxy_exames_GAL |
 
 ## 3. Top 10 — maior positividade [Observado]
 
-| # | Agravo | Positividade | Exames | Flag |
-|---|--------|--------------|--------|------|
-| 1 | hepatite_b_hbv | 65.2% | 155 | — |
-| 2 | tuberculose | 11.3% | 222 | — |
-| 3 | meningite | 3.2% | 31 | — |
-| 4 | dengue | 0.1% | 2130 | — |
-| 5 | chikungunya | 0.0% | 116 | — |
-| 6 | sars_cov_2 | 0.0% | 39 | — |
-| 7 | toxoplasmose_citomegalov_rus_igg | 91.3% | 23 | baixa_amostra, caveat_IgG |
-| 8 | toxoplasmose_toxoplasmose_igg | 57.1% | 14 | baixa_amostra, caveat_IgG |
-| 9 | toxoplasmose_toxoplasmose_igm | 21.4% | 14 | baixa_amostra |
-| 10 | oropouche | 0.0% | 24 | baixa_amostra |
+| # | Agravo | Positividade | n_se | n_se_ant | Δ% | Tend. | Mediana 4SE | Exames | Flag |
+|---|--------|--------------|------|----------|----|-------|-------------|--------|------|
+| 1 | hepatite_b_hbv | 65.2% | 65.2% | 39.8% | +63.7% | ↑ | 29.4% | 155 | — |
+| 2 | tuberculose | 11.3% | 11.3% | 5.9% | +89.5% | ↑ | 6.5% | 222 | — |
+| 3 | meningite | 3.2% | 3.2% | 3.7% | -12.9% | ↓ | 1.9% | 31 | — |
+| 4 | dengue | 0.1% | 0.1% | 3.6% | -96.0% | ↓ | 2.0% | 2130 | — |
+| 5 | chikungunya | 0.0% | 0.0% | 0.9% | -100.0% | ↓ | 0.4% | 116 | — |
+| 6 | sars_cov_2 | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 39 | — |
+| 7 | toxoplasmose_citomegalov_rus_igg | 91.3% | 91.3% | 0.0% | — | → | 0.0% | 23 | baixa_amostra, caveat_IgG |
+| 8 | toxoplasmose_toxoplasmose_igg | 57.1% | 57.1% | 0.0% | — | → | 35.6% | 14 | baixa_amostra, caveat_IgG |
+| 9 | toxoplasmose_toxoplasmose_igm | 21.4% | 21.4% | 0.0% | — | → | 20.2% | 14 | baixa_amostra |
+| 10 | oropouche | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 24 | baixa_amostra |
 
 ## 4. Comparação com SE anteriores
 
@@ -88,6 +88,62 @@ SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): d
 3. **[Observado]** hepatite_b_hbv: 5 par(es) vizinhos com positivos — focos territoriais; investigar perfil do exame (marcador agudo vs. crônico) antes de classificar dispersão.
 4. **[Observado]** toxoplasmose_citomegalov_rus_igg: positividade elevada (91% em 23 exames) reflete soroprevalência/IgG — não tratar como epidemia aguda.
 5. **[Predito]** Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
+
+## 7b. GAL×SINAN (qualquer agravo — mun×família)
+
+| Município | Família | Exames | Notif. | Flag |
+|-----------|---------|--------|--------|------|
+| LUCAS DO RIO VERDE | dengue | 712 | 0 | gal_sem_sinan |
+| VARZEA GRANDE | dengue | 409 | 0 | gal_sem_sinan |
+| SORRISO | dengue | 194 | 0 | gal_sem_sinan |
+| CUIABA | dengue | 99 | 0 | gal_sem_sinan |
+| CAMPINAPOLIS | dengue | 98 | 0 | gal_sem_sinan |
+| CAMPO VERDE | dengue | 81 | 0 | gal_sem_sinan |
+| CAMPO NOVO DO PARECIS | chikungunya | 71 | 0 | gal_sem_sinan |
+| CUIABA | tuberculose | 69 | 0 | gal_sem_sinan |
+| PARANAITA | dengue | 67 | 0 | gal_sem_sinan |
+| TANGARA DA SERRA | dengue | 66 | 0 | gal_sem_sinan |
+| JUINA | hepatite | 46 | 0 | gal_sem_sinan |
+| BOA ESPERANCA DO NORTE | dengue | 45 | 0 | gal_sem_sinan |
+| VARZEA GRANDE | tuberculose | 39 | 0 | gal_sem_sinan |
+| CUIABA | hepatite | 35 | 0 | gal_sem_sinan |
+| SINOP | dengue | 29 | 0 | gal_sem_sinan |
+
+## 7c. Geo hotspots (nível: bairro_cep)
+
+_Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, vw_sinan_dengue.csv)._
+
+| Município | Local | Agravo | N | IBGE |
+|-----------|-------|--------|---|------|
+| CUIABA | *Não disponível | — | 2926 |  |
+| VARZEA GRANDE | *Não disponível | — | 1553 |  |
+| TANGARA DA SERRA | *Em Branco | — | 735 |  |
+| PEIXOTO DE AZEVEDO | *Não disponível | — | 716 |  |
+| SINOP | *Não disponível | — | 582 |  |
+| TANGARA DA SERRA | *Não disponível | — | 536 |  |
+| RONDONOPOLIS | *Não disponível | — | 508 |  |
+| CACERES | *Não disponível | — | 483 |  |
+| PONTES E LACERDA | *Não disponível | — | 400 |  |
+| BARRA DO GARCAS | *Não disponível | — | 387 |  |
+| SORRISO | *Não disponível | — | 353 |  |
+| TANGARA DA SERRA | CENTRO | — | 326 |  |
+
+## 7d. Cruzamento de bases (DW staging)
+
+| Fonte | Status | Quando agrega |
+|-------|--------|---------------|
+| SINAN | extraído | Notificação compulsória — vínculo mun×agravo com GAL |
+| GAL | extraído | Exames LACEN — demanda e positividade |
+| SIH | ausente no DW/staging | Internações correlatas (AIH) quando chave junta |
+| SIA | ausente no DW/staging | Produção ambulatorial correlata |
+| SIVEP/SRAG | extraído | SRAG / respiratório |
+| SIM | extraído | Óbitos — letalidade contextual |
+| CNES | extraído | Capacidade da rede (leitos/equipes) |
+| IndicaSUS | extraído | Pactuação / indicadores IndicaSUS |
+| SISREG | ausente no DW/staging | Regulação de vagas / filas |
+| POPULACAO | extraído | Denominadores municipais |
+
+Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
 
 ## 8. Casos especiais (sinal lab × critérios Guia MS)
 

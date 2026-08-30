@@ -82,13 +82,46 @@ def check_dw_tcp(timeout: float = 3.0) -> tuple[bool, str, int]:
 # Objetos opcionais a extrair (TOP N) quando presentes no inventário
 OPTIONAL_EXTRACT_CANDIDATES: tuple[str, ...] = (
     "VW_SINAN",
+    "VW_SINAN_DENGUE",
+    "VW_SINAN_TUBERCULOSE",
+    "VW_SINAN_HEPATITE",
+    "VW_SINAN_MENINGITE",
+    "VW_SINAN_SINDROMERESPIRATORIAAGUDAGRAVE",
+    "VW_SINAN_CHIKUNGUNYA",
+    "VW_SINAN_NOTIFICACAOINDIVIDUAL",
     "VW_SIM",
+    "SIM",
     "VW_LACEN",
     "VW_CNES",
+    "CNES_ESTABELECIMENTOS",
     "VW_INDICASUS",
+    "INDICADORES",
+    "INDICADORESPACTUACAO",
+    "INDICADORESVIGILANCIASAUDE",
     "VW_SISREG",
+    "VW_SIH",
+    "VW_SIA",
+    "VW_AIH",
+    "SIH",
+    "SIA",
+    "SIVEP_MALARIA",
     "VW_POPULACAO",
+    "POPULACAO",
     "VW_MUNICIPIO",
+)
+
+# SINAN prioritários (qualquer agravo) — extrair vários, não só o 1º alfabético
+SINAN_PRIORITY_VIEWS: tuple[str, ...] = (
+    "VW_SINAN_DENGUE",
+    "VW_SINAN_TUBERCULOSE",
+    "VW_SINAN_HEPATITE",
+    "VW_SINAN_MENINGITE",
+    "VW_SINAN_SINDROMERESPIRATORIAAGUDAGRAVE",
+    "VW_SINAN_CHIKUNGUNYA",
+    "VW_SINAN_NOTIFICACAOINDIVIDUAL",
+    "VW_SINAN_LEISHMANIOSEVISCERAL",
+    "VW_SINAN_HANSENIASE",
+    "VW_SINAN_HANTAVIROSE",
 )
 
 
@@ -343,35 +376,51 @@ def run_extract(
         meta["micro_rows"] = int(len(micro))
 
         extracted_sources: list[str] = [gal_view]
-        # Candidatos explícitos + fuzzy (SINAN/SIM/IndicaSUS/SISREG/CNES/pop)
+        # Candidatos explícitos + fuzzy (SINAN/SIM/IndicaSUS/SISREG/SIH/SIA/CNES/pop)
         fuzzy_groups: tuple[tuple[str, tuple[str, ...]], ...] = (
             ("SINAN", ("VW_SINAN", "SINAN")),
-            ("SIM", ("VW_SIM",)),
-            ("INDICASUS", ("INDICA",)),
+            ("SIM", ("VW_SIM", "SIM")),
+            ("INDICASUS", ("INDICA", "PACTUAC")),
             ("SISREG", ("SISREG",)),
+            ("SIH", ("SIH", "AIH", "INTERNAC")),
+            ("SIA", ("SIA", "AMBULATOR")),
+            ("SIVEP", ("SIVEP", "SRAG")),
             ("CNES", ("VW_CNES", "CNES")),
             ("POPULACAO", ("POPULAC",)),
         )
         already = {gal_view}
         extra_names: list[str] = []
-        for cand in OPTIONAL_EXTRACT_CANDIDATES:
-            if cand in names and cand != gal_view:
+        # 1) SINAN prioritários (vários agravos)
+        for cand in SINAN_PRIORITY_VIEWS:
+            if cand in names and cand not in already:
                 extra_names.append(cand)
                 already.add(cand)
-        for _label, needles in fuzzy_groups:
+        # 2) Candidatos explícitos
+        for cand in OPTIONAL_EXTRACT_CANDIDATES:
+            if cand in names and cand not in already:
+                extra_names.append(cand)
+                already.add(cand)
+        # 3) Fuzzy — até 2 por grupo (exceto SINAN: já coberto)
+        for label, needles in fuzzy_groups:
             matches = sorted(
                 n for n in names
                 if n not in already and any(nd in n for nd in needles)
             )
-            vw_first = [n for n in matches if n.startswith("VW_")] or matches[:1]
-            if vw_first:
-                pick = vw_first[0]
+            if label == "SINAN":
+                # Complementa com mais views SINAN além das prioritárias
+                for pick in matches[:8]:
+                    if pick not in already:
+                        extra_names.append(pick)
+                        already.add(pick)
+                continue
+            vw_first = [n for n in matches if n.startswith("VW_")] or matches[:2]
+            for pick in vw_first[:2]:
                 if pick not in extra_names:
                     extra_names.append(pick)
                     already.add(pick)
 
         meta["sources_attempted"] = extra_names
-        for cand in extra_names[:12]:
+        for cand in extra_names[:20]:
             schema = "dbo"
             if not inv.empty and "TABLE_NAME" in inv.columns:
                 hit = inv[inv["TABLE_NAME"].astype(str).str.upper() == cand]
