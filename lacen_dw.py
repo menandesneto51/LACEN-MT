@@ -17,6 +17,15 @@ import pandas as pd
 BASE = Path(__file__).resolve().parent
 DESKTOP = BASE.parent
 SISREG_ENV = DESKTOP / "SISREG" / ".env"
+# Fallbacks só se LACEN/.env faltar chaves (override=False)
+_SIBLING_ENV_CANDIDATES = (
+    SISREG_ENV,
+    DESKTOP / "AESOP COMPLETO" / "aesop_titan_complete_system" / ".env",
+    DESKTOP / "TITAN_V40_DEV" / ".env",
+    DESKTOP / "Sentinela" / ".env",
+    DESKTOP.parent / "CIEVS MT" / "SIS-Monitoramento-Clima-Saude-GITHUB-LIMPO" / ".env",
+    DESKTOP.parent / "CIEVS MT" / "Monitoramento ondas de calor" / ".env",
+)
 
 
 def _load_dotenv_files() -> None:
@@ -24,7 +33,10 @@ def _load_dotenv_files() -> None:
         from dotenv import load_dotenv
     except ImportError:
         return
-    for p in (BASE / ".env", SISREG_ENV):
+    # LACEN primeiro; irmãos só preenchem chaves ausentes
+    if (BASE / ".env").exists():
+        load_dotenv(BASE / ".env", override=False)
+    for p in _SIBLING_ENV_CANDIDATES:
         if p.exists():
             load_dotenv(p, override=False)
 
@@ -88,6 +100,7 @@ def read_sql(mode: str, queryable: Any, sql: str, params=None) -> pd.DataFrame:
 
 
 def inventariar_fontes_lacen(mode: str, queryable: Any) -> pd.DataFrame:
+    """Inventário INFORMATION_SCHEMA: GAL, SINAN, SIM, CNES, IndicaSUS, SISREG, pop/município."""
     sql = """
     SELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE
     FROM INFORMATION_SCHEMA.TABLES
@@ -100,6 +113,12 @@ def inventariar_fontes_lacen(mode: str, queryable: Any) -> pd.DataFrame:
         OR TABLE_NAME LIKE '%LABORAT%'
         OR TABLE_NAME LIKE '%POPULAC%'
         OR TABLE_NAME LIKE '%MUNICIP%'
+        OR TABLE_NAME LIKE '%INDICA%'
+        OR TABLE_NAME LIKE '%SISREG%'
+        OR TABLE_NAME LIKE '%REGULA%'
+        OR TABLE_NAME LIKE '%OCUPA%'
+        OR TABLE_NAME LIKE '%SIVEP%'
+        OR TABLE_NAME LIKE '%CLIMA%'
     )
     ORDER BY TABLE_SCHEMA, TABLE_NAME
     """

@@ -1,5 +1,5 @@
 {
-  "ts": "2026-08-30T09:07:12",
+  "ts": "2026-08-30T10:11:59",
   "hoje": "2026-08-30",
   "se_esperada": "2026-SE34",
   "passos": [
@@ -11,11 +11,11 @@
     "indicadores_emergencia:0",
     "confirmacao_emergencia:0",
     "ml:0",
-    "mirror_dw",
-    "cievs_dry_run:0"
+    "mirror_dw"
   ],
   "fonte_dados": "local:LACEN 2010 a 2026.csv",
   "objetos_dw": [],
+  "sources_extracted": [],
   "se_usada": "2026-SE21",
   "atraso_se": 13,
   "atraso_dias": 98,

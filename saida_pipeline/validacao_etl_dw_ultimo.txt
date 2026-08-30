@@ -1,5 +1,5 @@
 LACEN MT — validação ETL DW + SE real
-gerado_em: 2026-08-30T09:07:12
+gerado_em: 2026-08-30T10:11:59
 hoje: 2026-08-30
 se_esperada: 2026-SE34
 se_usada: 2026-SE21
@@ -8,6 +8,7 @@ atraso_dias: 98
 se_fonte: ultima_se_presente_nos_dados
 fonte_dados: local:LACEN 2010 a 2026.csv
 objetos_dw: []
+sources_extracted: []
 exames_se_usada: 4
 positivos_se_usada: 0
 municipios_se_usada: 2
@@ -15,8 +16,9 @@ mirror_dw_ok: False
 mirror_error: DW inacessível (VPN/rede). Escores permanecem em saida_pipeline.
 mirror_rows: {}
 aviso: ATRASO: SE usada 2026-SE21 está 13 semanas atrás da esperada 2026-SE34 (2026-08-30). Não tratar como semana corrente sem justificativa (DW/VPN/carga).
-passos: ["dw_tcp_fail_local_fallback", "local_gal_weekly", "publish_weekly_inputs", "integracao_final:0", "indicadores_rede:0", "indicadores_emergencia:0", "confirmacao_emergencia:0", "ml:0", "mirror_dw", "cievs_dry_run:0"]
+passos: ["dw_tcp_fail_local_fallback", "local_gal_weekly", "publish_weekly_inputs", "integracao_final:0", "indicadores_rede:0", "indicadores_emergencia:0", "confirmacao_emergencia:0", "ml:0", "mirror_dw"]
 
 DBA (se CREATE TABLE negado): executar saida_pipeline/sql/create_lacen_ml_tables.sql
 e reexecutar: python -m ml.mirror_dw
-VPN: host DW_HOST (padrão 10.15.1.50:1433) via rede SES; credenciais DW_* no .env / SISREG/.env
+VPN: host DW_HOST (padrão 10.15.1.50:1433) via rede SES; credenciais DW_* no .env
+Agenda: ver etl/AGENDADOR.md (Task Scheduler diário/semanal).

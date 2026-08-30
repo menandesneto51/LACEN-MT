@@ -82,6 +82,7 @@ def write_validacao(
         f"se_fonte: {report.get('se_fonte')}",
         f"fonte_dados: {report.get('fonte_dados')}",
         f"objetos_dw: {report.get('objetos_dw')}",
+        f"sources_extracted: {report.get('sources_extracted')}",
         f"exames_se_usada: {report.get('exames_se_usada')}",
         f"positivos_se_usada: {report.get('positivos_se_usada')}",
         f"municipios_se_usada: {report.get('municipios_se_usada')}",
@@ -93,7 +94,8 @@ def write_validacao(
         "",
         "DBA (se CREATE TABLE negado): executar saida_pipeline/sql/create_lacen_ml_tables.sql",
         "e reexecutar: python -m ml.mirror_dw",
-        "VPN: host DW_HOST (padrão 10.15.1.50:1433) via rede SES; credenciais DW_* no .env / SISREG/.env",
+        "VPN: host DW_HOST (padrão 10.15.1.50:1433) via rede SES; credenciais DW_* no .env",
+        "Agenda: ver etl/AGENDADOR.md (Task Scheduler diário/semanal).",
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     _log(f"[OK] {path}")
@@ -112,6 +114,7 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         "passos": [],
         "fonte_dados": None,
         "objetos_dw": [],
+        "sources_extracted": [],
     }
 
     tcp_ok, host, port = check_dw_tcp(timeout=float(args.tcp_timeout))
@@ -129,6 +132,7 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
                 f"{r.get('TABLE_SCHEMA')}.{r.get('TABLE_NAME')}"
                 for r in (extract_meta.get("objects") or [])[:80]
             ]
+            report["sources_extracted"] = extract_meta.get("sources_extracted") or []
             report["passos"].append("extract_dw_ok")
             stage = staging_dir(outdir)
             agg_path = stage / "vw_gal_weekly_agg.parquet"

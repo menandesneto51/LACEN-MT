@@ -53,13 +53,17 @@ def check_dw_tcp(timeout: float = 3.0) -> tuple[bool, str, int]:
     import socket
 
     try:
-        from dotenv import load_dotenv
-        load_dotenv(ROOT / ".env", override=False)
-        sis = ROOT.parent / "SISREG" / ".env"
-        if sis.exists():
-            load_dotenv(sis, override=False)
+        from lacen_dw import _load_dotenv_files
+        _load_dotenv_files()
     except Exception:
-        pass
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(ROOT / ".env", override=False)
+            sis = ROOT.parent / "SISREG" / ".env"
+            if sis.exists():
+                load_dotenv(sis, override=False)
+        except Exception:
+            pass
 
     host = (
         os.getenv("DW_HOST")
@@ -71,8 +75,21 @@ def check_dw_tcp(timeout: float = 3.0) -> tuple[bool, str, int]:
     try:
         with socket.create_connection((host, port), timeout=timeout):
             return True, host, port
-    except OSError as exc:
+    except OSError:
         return False, host, port
+
+
+# Objetos opcionais a extrair (TOP N) quando presentes no inventário
+OPTIONAL_EXTRACT_CANDIDATES: tuple[str, ...] = (
+    "VW_SINAN",
+    "VW_SIM",
+    "VW_LACEN",
+    "VW_CNES",
+    "VW_INDICASUS",
+    "VW_SISREG",
+    "VW_POPULACAO",
+    "VW_MUNICIPIO",
+)
 
 
 def connect_or_raise():
@@ -319,13 +336,51 @@ def run_extract(
         meta["files"]["vw_gal_micro_recent"] = str(mpath.name)
         meta["micro_rows"] = int(len(micro))
 
-        for cand in ("VW_SINAN", "VW_SIM", "VW_LACEN"):
-            if cand in names:
-                df = extract_optional_view(mode, queryable, cand)
-                if df is not None and not df.empty:
-                    p = stage / f"{cand.lower()}.parquet"
-                    df.to_parquet(p, index=False)
-                    meta["files"][cand.lower()] = str(p.name)
+        extracted_sources: list[str] = [gal_view]
+        # Candidatos explícitos + fuzzy (SINAN/SIM/IndicaSUS/SISREG/CNES/pop)
+        fuzzy_groups: tuple[tuple[str, tuple[str, ...]], ...] = (
+            ("SINAN", ("VW_SINAN", "SINAN")),
+            ("SIM", ("VW_SIM",)),
+            ("INDICASUS", ("INDICA",)),
+            ("SISREG", ("SISREG",)),
+            ("CNES", ("VW_CNES", "CNES")),
+            ("POPULACAO", ("POPULAC",)),
+        )
+        already = {gal_view}
+        extra_names: list[str] = []
+        for cand in OPTIONAL_EXTRACT_CANDIDATES:
+            if cand in names and cand != gal_view:
+                extra_names.append(cand)
+                already.add(cand)
+        for _label, needles in fuzzy_groups:
+            matches = sorted(
+                n for n in names
+                if n not in already and any(nd in n for nd in needles)
+            )
+            vw_first = [n for n in matches if n.startswith("VW_")] or matches[:1]
+            if vw_first:
+                pick = vw_first[0]
+                if pick not in extra_names:
+                    extra_names.append(pick)
+                    already.add(pick)
+
+        meta["sources_attempted"] = extra_names
+        for cand in extra_names[:12]:
+            schema = "dbo"
+            if not inv.empty and "TABLE_NAME" in inv.columns:
+                hit = inv[inv["TABLE_NAME"].astype(str).str.upper() == cand]
+                if not hit.empty and "TABLE_SCHEMA" in hit.columns:
+                    schema = str(hit.iloc[0]["TABLE_SCHEMA"])
+            df = extract_optional_view(mode, queryable, cand, schema=schema)
+            if df is not None and not df.empty:
+                safe = re.sub(r"[^a-z0-9_]+", "_", cand.lower())
+                p = stage / f"{safe}.parquet"
+                df.to_parquet(p, index=False)
+                df.to_csv(stage / f"{safe}.csv", index=False, encoding="utf-8-sig")
+                meta["files"][safe] = str(p.name)
+                extracted_sources.append(f"{schema}.{cand}")
+                _log(f"[DW] Extraído {schema}.{cand} → {p.name} ({len(df)} linhas)")
+        meta["sources_extracted"] = extracted_sources
     finally:
         if mode == "pyodbc" and queryable is not None:
             try:
