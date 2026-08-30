@@ -1823,15 +1823,42 @@ if modulo == "Visão executiva":
                         )
                         st.markdown(
                             f"**SE {_meta.get('se', '—')}** · "
-                            f"casos especiais: {_meta.get('n_casos_especiais', 0)}"
+                            f"casos especiais: {_meta.get('n_casos_especiais', 0)} · "
+                            f"fonte Top: `{_meta.get('fonte_notificacoes', '—')}`"
                         )
                         for _c in (_meta.get("casos") or [])[:3]:
+                            _comp = _c.get("comparacao") or {}
+                            _delta = ""
+                            if _comp.get("delta_pct_se1") is not None:
+                                _delta = (
+                                    f" · vs SE-1 {_comp.get('tendencia_se1', '→')} "
+                                    f"{float(_comp['delta_pct_se1']):+.0f}%"
+                                )
                             st.info(
                                 f"{_c.get('municipio')} × {_c.get('target')}: "
                                 f"{_c.get('exames')} exames / +{_c.get('positivos')} "
-                                f"({_c.get('positividade')}) — investigar; "
+                                f"({_c.get('positividade')}){_delta} — investigar; "
                                 "não declarar surto automático (Guia MS)."
                             )
+                        _comp_rows = _meta.get("comparacao_semanas") or []
+                        if _comp_rows:
+                            st.markdown("**Comparação SE-1 / SE-2 / mediana 4 SE**")
+                            show_table(
+                                pd.DataFrame(_comp_rows),
+                                "Comparação semanas",
+                                max_rows=12,
+                                key="ve_comp_semanas",
+                            )
+                        _dest_blocks = _meta.get("recomendacoes_por_agravo") or []
+                        if _dest_blocks:
+                            st.markdown("**Recomendações por destinatário**")
+                            for _b in _dest_blocks[:3]:
+                                st.caption(
+                                    f"{_b.get('municipio')} × {_b.get('agravo')} "
+                                    f"({_b.get('severidade')}) — {_b.get('evidencia', '')}"
+                                )
+                                for _d, _t in (_b.get("destinatarios") or {}).items():
+                                    st.markdown(f"- **{_d}:** {_t}")
                     except Exception:  # noqa: BLE001
                         pass
                 if ve_md.exists():
@@ -1845,9 +1872,9 @@ if modulo == "Visão executiva":
                 if ve_csv.exists():
                     try:
                         show_table(
-                            pd.read_csv(ve_csv, low_memory=False).head(25),
-                            "Ações VE (CSV)",
-                            max_rows=25,
+                            pd.read_csv(ve_csv, low_memory=False).head(40),
+                            "Ações VE por destinatário (CSV)",
+                            max_rows=40,
                             key="ve_acoes_csv",
                         )
                     except Exception:  # noqa: BLE001

@@ -1,6 +1,7 @@
 {
   "se": "2026-SE30",
-  "gerado_em": "2026-08-30 18:22 Hora Padrão Brasil Central",
+  "gerado_em": "2026-08-30 18:38 Hora Padrão Brasil Central",
+  "fonte_notificacoes": "proxy_exames_GAL",
   "n_casos_especiais": 1,
   "casos": [
     {
@@ -8,7 +9,113 @@
       "target": "hepatite_b_hbv",
       "exames": "46",
       "positivos": "24",
-      "positividade": "52.2%"
+      "positividade": "52.2%",
+      "severidade": "alta",
+      "comparacao": {
+        "delta_abs_se1": -46.0,
+        "delta_pct_se1": -22.885572139303484,
+        "tendencia_se1": "↓",
+        "mediana_4se": 110.0,
+        "acima_mediana_4se": true,
+        "metrica": "exames"
+      }
+    }
+  ],
+  "comparacao_semanas": [
+    {
+      "target": "dengue",
+      "metrica": "exames",
+      "valor_se": 2130.0,
+      "delta_pct_se1": 161.67076167076166,
+      "tendencia_se1": "↑",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "tuberculose",
+      "metrica": "exames",
+      "valor_se": 222.0,
+      "delta_pct_se1": -62.30899830220713,
+      "tendencia_se1": "↓",
+      "acima_mediana_4se": false
+    },
+    {
+      "target": "hepatite_b_hbv",
+      "metrica": "exames",
+      "valor_se": 155.0,
+      "delta_pct_se1": -22.885572139303484,
+      "tendencia_se1": "↓",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "chikungunya",
+      "metrica": "exames",
+      "valor_se": 116.0,
+      "delta_pct_se1": 2.6548672566371683,
+      "tendencia_se1": "→",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "sars_cov_2",
+      "metrica": "exames",
+      "valor_se": 39.0,
+      "delta_pct_se1": -35.0,
+      "tendencia_se1": "↓",
+      "acima_mediana_4se": false
+    },
+    {
+      "target": "meningite",
+      "metrica": "exames",
+      "valor_se": 31.0,
+      "delta_pct_se1": 14.814814814814815,
+      "tendencia_se1": "↑",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "oropouche",
+      "metrica": "exames",
+      "valor_se": 24.0,
+      "delta_pct_se1": 700.0,
+      "tendencia_se1": "↑",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "toxoplasmose_citomegalov_rus_igg",
+      "metrica": "exames",
+      "valor_se": 23.0,
+      "delta_pct_se1": null,
+      "tendencia_se1": "→",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "toxoplasmose_toxoplasmose_igg",
+      "metrica": "exames",
+      "valor_se": 14.0,
+      "delta_pct_se1": null,
+      "tendencia_se1": "→",
+      "acima_mediana_4se": true
+    },
+    {
+      "target": "hepatite_c_hcv",
+      "metrica": "exames",
+      "valor_se": 23.0,
+      "delta_pct_se1": -30.303030303030305,
+      "tendencia_se1": "↓",
+      "acima_mediana_4se": true
+    }
+  ],
+  "recomendacoes_por_agravo": [
+    {
+      "agravo": "hepatite_b_hbv",
+      "municipio": "JUINA",
+      "severidade": "alta",
+      "evidencia": "SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE · vizinhos: JUINA↔CASTANHEIRA",
+      "destinatarios": {
+        "SES-MT": "Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar CRS/VE municipal na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`) — sem declarar surto automaticamente.",
+        "CIEVS": "Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); manter linguagem «investigar / sinal lab», não «há surto».",
+        "Área técnica — Hepatites virais": "Programa hepatite: estratificar marcadores/definição de caso em JUINA; orientar rede sobre fluxo de notificação e conduta técnica do agravo hepatite_b_hbv.",
+        "Município — JUINA": "VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar GAL×SINAN; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).",
+        "Municípios próximos": "Alerta de co-positividade / risco de dispersão (hepatite_b_hbv): JUINA↔CASTANHEIRA. Reforçar vigilância ativa e comunicação entre VE municipais; não interpretar par vizinho como surto intermunicipal automático."
+      }
     }
   ],
   "usou_llm": false,
@@ -20,38 +127,5 @@
     "conhecimento_ve\\notificaveis_resumo.md",
     "conhecimento_ve\\notificaveis_resumo.md"
   ],
-  "fontes_cache": [
-    {
-      "id": "hepatites_ms",
-      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hepatites-virais",
-      "familia": "hepatite",
-      "arquivo": "hepatites_virais_ms.html.txt",
-      "status": "baixado",
-      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\hepatites_virais_ms.html.txt"
-    },
-    {
-      "id": "tb_ms",
-      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tuberculose",
-      "familia": "tuberculose",
-      "arquivo": "tuberculose_ms.html.txt",
-      "status": "baixado",
-      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\tuberculose_ms.html.txt"
-    },
-    {
-      "id": "dengue_ms",
-      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue",
-      "familia": "dengue",
-      "arquivo": "dengue_ms.html.txt",
-      "status": "baixado",
-      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\dengue_ms.html.txt"
-    },
-    {
-      "id": "meningite_ms",
-      "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/meningite",
-      "familia": "meningite",
-      "arquivo": "meningite_ms.html.txt",
-      "status": "baixado",
-      "path": "C:\\Users\\Menandesneto\\OneDrive\\Área de Trabalho\\LACEN\\conhecimento_ve\\excertos\\meningite_ms.html.txt"
-    }
-  ]
+  "fontes_cache": []
 }

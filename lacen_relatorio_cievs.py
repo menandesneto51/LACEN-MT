@@ -1426,6 +1426,23 @@ def montar_relatorio(
                 {"area": str(r.get("area") or ""), "acao": str(r.get("acao") or "")}
                 for r in (ve_payload.get("recomendacoes_topo") or [])
             ]
+            # Preferir linhas por destinatário/agravo quando disponíveis
+            if ve_payload.get("recomendacoes_por_agravo") and not ve_recs:
+                for block in ve_payload["recomendacoes_por_agravo"][:2]:
+                    for dest, texto in list(
+                        (block.get("destinatarios") or {}).items()
+                    )[:3]:
+                        ve_recs.append({"area": str(dest), "acao": str(texto)})
+            elif ve_payload.get("recomendacoes_por_agravo"):
+                # Injeta SES-MT / CIEVS do 1º agravo no topo do Bloco F
+                b0 = ve_payload["recomendacoes_por_agravo"][0]
+                dests = b0.get("destinatarios") or {}
+                extra = [
+                    {"area": str(d), "acao": str(dests[d])}
+                    for d in ("SES-MT", "CIEVS")
+                    if d in dests
+                ]
+                ve_recs = extra + ve_recs
             ve_arqs = [str(a) for a in (ve_payload.get("arquivos") or [])]
             ve_llm = bool(ve_payload.get("usou_llm"))
         except Exception as exc:  # noqa: BLE001

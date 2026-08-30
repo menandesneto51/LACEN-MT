@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Gera o parecer VE inteligente (Guia MS + briefing Top 10) e opcionalmente envia
-resumo Telegram + HTML por e-mail.
+Gera o parecer VE inteligente (Top notif/proxy + positividade + ΔSE +
+destinatários Guia MS) e opcionalmente envia alertas Telegram + HTML por e-mail.
 
 Uso:
   python scripts/gerar_relatorio_ve.py
@@ -99,13 +99,21 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     print(f"SE {parecer.se_iso} · gerado {parecer.gerado_em}")
+    print(f"Fonte Top notificações: {parecer.fonte_notificacoes}")
     print(juina_hbv_one_liner(parecer))
     print("-" * 60)
     print(parecer.resumo_executivo)
     print("-" * 60)
+    if parecer.recomendacoes_por_agravo:
+        b0 = parecer.recomendacoes_por_agravo[0]
+        print(f"Amostra destinatários — {b0.get('municipio')} × {b0.get('agravo')}:")
+        for dest, texto in list((b0.get("destinatarios") or {}).items())[:5]:
+            print(f"  · {dest}: {texto[:120]}…")
+        print("-" * 60)
     print(f"MD:   {outdir / 'relatorio_ve_inteligente.md'}")
     print(f"HTML: {outdir / 'relatorio_ve_inteligente.html'}")
     print(f"CSV:  {outdir / 'relatorio_ve_acoes.csv'}")
+    print(f"Alertas TG (top): {len(parecer.telegram_alertas)}")
 
     if args.dry_run and not (args.enviar or args.telegram or args.email):
         print("Dry-run: nenhum envio.")

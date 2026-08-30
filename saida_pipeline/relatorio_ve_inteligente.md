@@ -1,28 +1,28 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 18:22 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-30 18:38 Hora Padrão Brasil Central  
 
-> Parecer baseado em agregados Observados (GAL/LACEN) e trechos curados do Guia/portais MS. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
+> Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
 ## 1. Resumo executivo
 
-SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.3%); hepatite_b_hbv (155 ex., 65.2%). Destaque: JUINA × hepatite_b_hbv — 46 exames / +24 (52.2%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Parecer VE usa agregados LACEN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
+SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.3%); hepatite_b_hbv (155 ex., 65.2%). Destaque: JUINA × hepatite_b_hbv — 46 exames / +24 (52.2%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Comparação (dengue): vs SE-1 ↑ 1316 (+162%); acima da mediana das 4 SE. Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
 
-## 2. Top 10 — mais solicitados [Observado]
+## 2. Top 10 — proxy: exames GAL (SINAN indisponível/zerado na SE) [Observado]
 
-| # | Agravo | Exames | Positivos | Positividade |
-|---|--------|--------|-----------|--------------|
-| 1 | dengue | 2130 | 3 | 0.1% |
-| 2 | tuberculose | 222 | 25 | 11.3% |
-| 3 | hepatite_b_hbv | 155 | 101 | 65.2% |
-| 4 | chikungunya | 116 | 0 | 0.0% |
-| 5 | sars_cov_2 | 39 | 0 | 0.0% |
-| 6 | meningite | 31 | 1 | 3.2% |
-| 7 | oropouche | 24 | 0 | 0.0% |
-| 8 | hepatite_c_hcv | 23 | 0 | 0.0% |
-| 9 | toxoplasmose_citomegalov_rus_igg | 23 | 21 | 91.3% |
-| 10 | toxoplasmose_citomegalov_rus_igm | 23 | 0 | 0.0% |
+| # | Agravo | Notif./Exames | Positivos | Positividade | Fonte |
+|---|--------|---------------|-----------|--------------|-------|
+| 1 | dengue | 2130 | 3 | 0.1% | proxy_exames_GAL |
+| 2 | tuberculose | 222 | 25 | 11.3% | proxy_exames_GAL |
+| 3 | hepatite_b_hbv | 155 | 101 | 65.2% | proxy_exames_GAL |
+| 4 | chikungunya | 116 | 0 | 0.0% | proxy_exames_GAL |
+| 5 | sars_cov_2 | 39 | 0 | 0.0% | proxy_exames_GAL |
+| 6 | meningite | 31 | 1 | 3.2% | proxy_exames_GAL |
+| 7 | oropouche | 24 | 0 | 0.0% | proxy_exames_GAL |
+| 8 | toxoplasmose_citomegalov_rus_igg | 23 | 21 | 91.3% | proxy_exames_GAL |
+| 9 | hepatite_c_hcv | 23 | 0 | 0.0% | proxy_exames_GAL |
+| 10 | toxoplasmose_citomegalov_rus_igm | 23 | 0 | 0.0% | proxy_exames_GAL |
 
 ## 3. Top 10 — maior positividade [Observado]
 
@@ -39,7 +39,22 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 | 9 | toxoplasmose_toxoplasmose_igm | 21.4% | 14 | baixa_amostra |
 | 10 | oropouche | 0.0% | 24 | baixa_amostra |
 
-## 4. Top localidades (agravos prioritários) [Observado]
+## 4. Comparação com SE anteriores
+
+| Agravo | Métrica | SE | SE-1 (Δ) | SE-2 (Δ) | Mediana 4 SE | Flag |
+|--------|---------|----|----------|----------|--------------|------|
+| dengue | exames | 2130 | ↑ 1316 (+162%) | ↑ 1598 (+300%) | 404 | acima mediana 4 SE |
+| tuberculose | exames | 222 | ↓ -367 (-62%) | ↓ -148 (-40%) | 480 | posi>mediana |
+| hepatite_b_hbv | exames | 155 | ↓ -46 (-23%) | ↓ -28 (-15%) | 110 | acima mediana 4 SE, posi>mediana |
+| chikungunya | exames | 116 | → 3 (+3%) | ↑ 90 (+346%) | 24 | acima mediana 4 SE |
+| sars_cov_2 | exames | 39 | ↓ -21 (-35%) | ↓ -31 (-44%) | 67 | — |
+| meningite | exames | 31 | ↑ 4 (+15%) | ↑ 13 (+72%) | 14 | acima mediana 4 SE, posi>mediana |
+| oropouche | exames | 24 | ↑ 21 (+700%) | ↑ 23 (+2300%) | 0 | acima mediana 4 SE |
+| toxoplasmose_citomegalov_rus_igg | exames | 23 | → 23 (—) | → 23 (—) | 0 | acima mediana 4 SE |
+| toxoplasmose_toxoplasmose_igg | exames | 14 | → 14 (—) | ↓ -12 (-46%) | 2 | acima mediana 4 SE, posi>mediana |
+| hepatite_c_hcv | exames | 23 | ↓ -10 (-30%) | ↑ 14 (+156%) | 21 | acima mediana 4 SE |
+
+## 5. Top localidades (agravos prioritários) [Observado]
 
 | Agravo | Município | Positivos | Exames | Positividade |
 |--------|-----------|-----------|--------|--------------|
@@ -54,7 +69,7 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 | tuberculose | RONDONOPOLIS | 3 | 10 | 30.0% |
 | tuberculose | NOVA MUTUM | 2 | 5 | 40.0% |
 
-## 5. Eixos vizinhos (Top) [Observado]
+## 6. Eixos vizinhos (Top) [Observado]
 
 | Agravo | Par | Positivos | Dist. km |
 |--------|-----|-----------|----------|
@@ -66,7 +81,7 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 | hepatite_b_hbv | CUIABA ↔ ACORIZAL | +21 / +1 | 52.8 |
 | hepatite_b_hbv | CUIABA ↔ JANGADA | +21 / +1 | 57.8 |
 
-## 6. Riscos / dispersão (Top 10)
+## 7. Riscos / dispersão (Top 10)
 
 1. **[Observado]** dengue: alta demanda (2130 exames) com baixa confirmação laboratorial (0.1% pos.) — atenção territorial; não interpreta como surto confirmado.
 2. **[Observado]** tuberculose: 3 par(es) de municípios vizinhos com positivos (CUIABA↔VARZEA GRANDE, CUIABA↔CHAPADA DOS GUIMARAES) — risco local/contatos; investigar rede de transmissão e incompletos.
@@ -74,11 +89,12 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 4. **[Observado]** toxoplasmose_citomegalov_rus_igg: positividade elevada (91% em 23 exames) reflete soroprevalência/IgG — não tratar como epidemia aguda.
 5. **[Predito]** Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
 
-## 7. Casos especiais (sinal lab × critérios Guia MS)
+## 8. Casos especiais (sinal lab × critérios Guia MS)
 
 ### Caso especial — JUINA × hepatite_b_hbv
 
-**Sinal laboratorial:** [Observado] JUINA — hepatite_b_hbv: 46 exames · +24 positivos (52.2%) na SE de referência. Sinal laboratorial territorial persistente ou elevado — requer confronto com critérios do Guia de Vigilância MS.
+**Severidade:** alta  
+**Sinal laboratorial:** [Observado] JUINA — hepatite_b_hbv: 46 exames · +24 positivos (52.2%) na SE de referência. Vs SE-1: ↓ -46 (-23%) · Vs SE-2: ↓ -28 (-15%) · mediana 4 SE (exames): 110 [acima da mediana]. Sinal laboratorial territorial — requer confronto com critérios do Guia de Vigilância MS (investigação; sem declaração automática de surto).
 
 **Critérios de surto/epidemia (Guia MS) a verificar:**
 - Aumento de casos de hepatite B **aguda** (definição de caso MS: clínica + marcadores compatíveis, ex. anti-HBc IgM / perfil agudo) acima do esperado para o município e período.
@@ -101,38 +117,19 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 **Veredito preliminar (não substitui VE):** há **sinal laboratorial** relevante de hepatite_b_hbv em JUINA. Os critérios de **surto/epidemia** do Guia de Vigilância MS **não estão automaticamente cumpridos** só com este agregado — recomenda-se **investigação epidemiológica** antes de qualquer declaração formal.
 
 
-## 8. Recomendações por área
+## 9. Recomendações por destinatário / agravo
 
-### Vigilância Epidemiológica
-- Tratar o Top 10 de demanda/positividade/localidades como **fila de investigação**, não como lista de surtos declarados.
-- Priorizar definição de caso e cruzamento SINAN nos focos: JUINA.
-- Documentar se critérios de surto/epidemia do Guia MS estão met/unmet após investigação.
-- Hepatite B: estratificar casos agudos vs. crônicos antes de qualquer comunicação de surto.
-- TB: priorizar investigação de contatos e pares de municípios vizinhos com positivos.
+### JUINA × hepatite_b_hbv (alta)
+_Evidência:_ SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE · vizinhos: JUINA↔CASTANHEIRA
 
-### LACEN / rede laboratorial
-- Manter TAT e qualidade analítica nos agravos do Top 10; sinalizar à VE resultados de marcadores agudos quando disponíveis.
-- Para HBV: discriminar e reportar o tipo de ensaio/marcador sempre que o sistema permitir (evitar ambiguidade agudo×crônico).
-- Não extrapolar positividade de triagem como coeficiente de ataque.
-
-### Atenção Primária
-- Apoiar busca de contatos e adesão conforme protocolo do agravo prioritário.
-- Reforçar vacinação (hepatite B / outros conforme calendário) nas áreas de maior sinal lab.
-- Orientar fluxos de coleta e preenchimento adequado das requisições GAL.
-
-### CIEVS / sala de situação
-- Manter monitoramento da SE 2026-SE30 com Top 10 Observado e pares vizinhos.
-- Usar linguagem institucional: «sinal laboratorial / investigar», nunca «há surto» sem critérios.
-- Atualizar parecer VE a cada ciclo do relatório CIEVS (Bloco F).
-- Dengue: alta demanda com baixa positividade = atenção territorial; não rotular como surto confirmado só pelo volume de exames.
-- Confronto com trechos locais do pacote conhecimento_ve (Guia/portais MS) anexados nas citações.
-
-### Comunicação
-- Alinhar notas com assessoria SES: prevenção e esclarecimento, sem alarmismo.
-- Se houver investigação em curso, informar que a classificação de surto depende da VE e do Guia MS.
+- **SES-MT:** Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar CRS/VE municipal na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`) — sem declarar surto automaticamente.
+- **CIEVS:** Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); manter linguagem «investigar / sinal lab», não «há surto».
+- **Área técnica — Hepatites virais:** Programa hepatite: estratificar marcadores/definição de caso em JUINA; orientar rede sobre fluxo de notificação e conduta técnica do agravo hepatite_b_hbv.
+- **Município — JUINA:** VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar GAL×SINAN; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).
+- **Municípios próximos:** Alerta de co-positividade / risco de dispersão (hepatite_b_hbv): JUINA↔CASTANHEIRA. Reforçar vigilância ativa e comunicação entre VE municipais; não interpretar par vizinho como surto intermunicipal automático.
 
 
-## 9. Citações e fontes
+## 10. Citações e fontes
 
 - `conhecimento_ve\notificaveis_resumo.md` (score=6)
   > ### Ações por área | Área | Ações | |------|--------| | Vigilância Epidemiológica | Aplicar definição de caso; buscar casos agudos (anti-HBc IgM / clínica); notificação SINAN; investigar contatos e fontes comuns; comparar série histórica municipal. | | LACEN / rede lab | Discrimi
@@ -149,10 +146,6 @@ SE 2026-SE30 — Top demanda: dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.
 
 - URLs oficiais: `conhecimento_ve/fontes.md`
 - Resumo curado: `conhecimento_ve/notificaveis_resumo.md`
-- Cache MS `hepatites_ms`: baixado — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hepatites-virais
-- Cache MS `tb_ms`: baixado — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tuberculose
-- Cache MS `dengue_ms`: baixado — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue
-- Cache MS `meningite_ms`: baixado — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/meningite
 
 ---
 *Modelo: lacen_agente_ve.py · lacen_briefing_epi.py*

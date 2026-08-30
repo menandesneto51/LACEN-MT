@@ -3,9 +3,11 @@
 """
 Agente de parecer de Vigilância Epidemiológica (VE) — LACEN-MT / CIEVS.
 
-Ingere agregados do briefing epidemiológico (Top 10), recupera trechos do
-pacote local alinhado ao Guia de Vigilância MS (RAG-lite por palavras-chave)
-e emite parecer institucional em Markdown/HTML/CSV.
+Ingere agregados do briefing epidemiológico (Top 10 notificações/SINAN ou
+proxy exames + Top 10 positividade), compara com SE anteriores, recupera
+trechos do pacote local alinhado ao Guia de Vigilância MS (RAG-lite) e emite
+alerta/recomendações por destinatário (SES-MT, CIEVS, área técnica,
+município, vizinhos).
 
 Regras de ouro:
   - NÃO declarar "há surto" sem confrontar Observado × critérios do Guia.
@@ -25,6 +27,7 @@ import html
 import json
 import os
 import re
+import statistics
 import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
@@ -34,7 +37,12 @@ from typing import Any, Sequence
 
 from lacen_briefing_epi import (
     BriefingEpi,
+    WEEKLY_NAME,
+    _fmt_se,
     _is_hepatite,
+    _num,
+    _parse_se,
+    _read_csv,
     gerar_briefing_epi,
 )
 
@@ -85,6 +93,25 @@ _FAMILIA_KW: dict[str, tuple[str, ...]] = {
     "surto": ("surto", "epidemia", "cluster", "investigação", "investigacao", "definição de caso"),
 }
 
+_AREA_TECNICA: dict[str, str] = {
+    "hepatite": "Área técnica — Hepatites virais",
+    "tuberculose": "Área técnica — Tuberculose",
+    "dengue": "Área técnica — Arboviroses",
+    "meningite": "Área técnica — Meningites",
+    "igg": "Área técnica — Sorologias / IgG",
+    "surto": "Área técnica — Vigilância de agravos",
+}
+
+CSV_FIELDS = [
+    "agravo",
+    "destinatario",
+    "recomendacao",
+    "prazo",
+    "severidade",
+    "se_ref",
+    "evidencia",
+]
+
 
 def _now_local() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M %Z")
@@ -124,6 +151,10 @@ def _familia_de_target(target: str) -> str:
     if "igg" in t:
         return "igg"
     return "surto"
+
+
+def _area_tecnica_de(target: str) -> str:
+    return _AREA_TECNICA.get(_familia_de_target(target), _AREA_TECNICA["surto"])
 
 
 def _strip_html(raw: str) -> str:
@@ -216,7 +247,6 @@ def recuperar_trechos(
 
     scored: list[tuple[int, dict[str, str]]] = []
     for doc in docs:
-        # Divide por headings markdown ou blocos
         chunks = re.split(r"\n(?=##+\s)", doc["texto"])
         if len(chunks) == 1:
             chunks = re.split(r"\n\n+", doc["texto"])
@@ -240,7 +270,6 @@ def recuperar_trechos(
                 )
             )
     scored.sort(key=lambda x: (-x[0], x[1]["fonte"]))
-    # Dedup por início do trecho
     out: list[dict[str, str]] = []
     seen: set[str] = set()
     for _, item in scored:
@@ -252,6 +281,225 @@ def recuperar_trechos(
         if len(out) >= max_trechos:
             break
     return out
+
+
+# ---------------------------------------------------------------------------
+# Série temporal / Top notificações
+# ---------------------------------------------------------------------------
+
+
+def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
+    """Avança/recua SE (delta negativo = semanas anteriores)."""
+    y, w = int(year), int(week) + int(delta)
+    while w < 1:
+        y -= 1
+        w += 52
+    while w > 52:
+        y += 1
+        w -= 52
+    return y, w
+
+
+def _semanas_anteriores(se: tuple[int, int], n: int = 4) -> list[tuple[int, int]]:
+    """Últimas n SE anteriores à de referência (SE-1 … SE-n)."""
+    return [_shift_se(se[0], se[1], -i) for i in range(1, n + 1)]
+
+
+def _agg_target_semana(
+    weekly: list[dict[str, str]],
+    se: tuple[int, int],
+) -> dict[str, dict[str, float]]:
+    """Agrega por target: exames, positivos, notificacoes (inclui linhas só-SINAN)."""
+    y0, w0 = se
+    agg: dict[str, dict[str, float]] = {}
+    for r in weekly:
+        y = _num(r.get("epi_year"))
+        w = _num(r.get("epi_week"))
+        if y is None or w is None or int(y) != y0 or int(w) != w0:
+            continue
+        mun = str(r.get("municipio") or "").strip()
+        if not mun or mun.startswith("*"):
+            continue
+        tests = _num(r.get("tests"), 0) or 0
+        notif = _num(r.get("notificacoes"), 0) or 0
+        if tests <= 0 and notif <= 0:
+            continue
+        tgt = str(r.get("target") or r.get("agravo_sinan") or "").strip() or "—"
+        a = agg.setdefault(tgt, {"exames": 0.0, "positivos": 0.0, "notificacoes": 0.0})
+        a["exames"] += tests
+        a["positivos"] += _num(r.get("positives"), 0) or 0
+        a["notificacoes"] += notif
+    return agg
+
+
+def top_notificacoes(
+    weekly: list[dict[str, str]],
+    se: tuple[int, int] | str,
+    top: int = 10,
+    *,
+    min_notif_se: float = 1.0,
+) -> tuple[list[dict[str, Any]], str]:
+    """
+    Top 10 por notificações SINAN quando a SE tem volume; senão proxy por exames GAL
+    (rotulado explicitamente).
+    """
+    yw = _parse_se(se) if isinstance(se, str) else se
+    if not yw:
+        return [], "indisponivel"
+    agg = _agg_target_semana(weekly, yw)
+    total_notif = sum(v["notificacoes"] for v in agg.values())
+    if total_notif >= min_notif_se:
+        ranked = sorted(
+            (
+                {
+                    "target": tgt,
+                    "notificacoes": a["notificacoes"],
+                    "exames": a["exames"],
+                    "positivos": a["positivos"],
+                    "positividade": (
+                        (a["positivos"] / a["exames"]) if a["exames"] > 0 else None
+                    ),
+                    "fonte_metrica": "SINAN",
+                    "rotulo": "notificações SINAN",
+                    "tipo_sinal": "Observado",
+                }
+                for tgt, a in agg.items()
+                if a["notificacoes"] > 0
+            ),
+            key=lambda x: (x["notificacoes"], x["exames"]),
+            reverse=True,
+        )
+        return ranked[: max(1, top)], "SINAN"
+    ranked = sorted(
+        (
+            {
+                "target": tgt,
+                "notificacoes": a["notificacoes"],
+                "exames": a["exames"],
+                "positivos": a["positivos"],
+                "positividade": (
+                    (a["positivos"] / a["exames"]) if a["exames"] > 0 else None
+                ),
+                "fonte_metrica": "proxy_exames_GAL",
+                "rotulo": "proxy: exames GAL (SINAN zerado/atrasado na SE)",
+                "tipo_sinal": "Observado",
+            }
+            for tgt, a in agg.items()
+            if a["exames"] > 0
+        ),
+        key=lambda x: (x["exames"], x["positivos"]),
+        reverse=True,
+    )
+    return ranked[: max(1, top)], "proxy_exames_GAL"
+
+
+def _tendencia_seta(delta: float | None, *, tol_pct: float = 5.0) -> str:
+    if delta is None:
+        return "→"
+    if delta > tol_pct:
+        return "↑"
+    if delta < -tol_pct:
+        return "↓"
+    return "→"
+
+
+def comparar_com_semanas_anteriores(
+    weekly: list[dict[str, str]],
+    se: tuple[int, int] | str,
+    targets: Sequence[str],
+    *,
+    n_anteriores: int = 4,
+    metrica: str = "auto",
+) -> list[dict[str, Any]]:
+    """
+    Para cada target: valor SE atual vs SE-1, SE-2 e mediana das últimas 4 SE.
+    Métrica: notificacoes se disponíveis na SE; senão exames; também positividade.
+    """
+    yw = _parse_se(se) if isinstance(se, str) else se
+    if not yw:
+        return []
+    prevs = _semanas_anteriores(yw, n_anteriores)
+    cur_agg = _agg_target_semana(weekly, yw)
+    prev_aggs = {pse: _agg_target_semana(weekly, pse) for pse in prevs}
+    total_notif = sum(v["notificacoes"] for v in cur_agg.values())
+    use_notif = metrica == "notificacoes" or (
+        metrica == "auto" and total_notif >= 1.0
+    )
+    metric_key = "notificacoes" if use_notif else "exames"
+    out: list[dict[str, Any]] = []
+    for tgt in targets:
+        if not tgt:
+            continue
+        cur = cur_agg.get(tgt, {"exames": 0.0, "positivos": 0.0, "notificacoes": 0.0})
+        val_cur = float(cur.get(metric_key) or 0)
+        pos_cur = float(cur.get("positivos") or 0)
+        exames_cur = float(cur.get("exames") or 0)
+        posi_cur = (pos_cur / exames_cur) if exames_cur > 0 else None
+
+        hist_vals: list[float] = []
+        hist_posi: list[float] = []
+        se_vals: dict[str, float] = {}
+        for pse in prevs:
+            a = prev_aggs[pse].get(
+                tgt, {"exames": 0.0, "positivos": 0.0, "notificacoes": 0.0}
+            )
+            v = float(a.get(metric_key) or 0)
+            hist_vals.append(v)
+            se_vals[_fmt_se(*pse)] = v
+            pe, pp = float(a.get("exames") or 0), float(a.get("positivos") or 0)
+            if pe > 0:
+                hist_posi.append(pp / pe)
+
+        se1 = hist_vals[0] if hist_vals else None
+        se2 = hist_vals[1] if len(hist_vals) > 1 else None
+        delta_abs_1 = (val_cur - se1) if se1 is not None else None
+        delta_pct_1 = (
+            (100.0 * (val_cur - se1) / se1) if se1 and se1 > 0 else None
+        )
+        delta_abs_2 = (val_cur - se2) if se2 is not None else None
+        delta_pct_2 = (
+            (100.0 * (val_cur - se2) / se2) if se2 and se2 > 0 else None
+        )
+        mediana = statistics.median(hist_vals) if hist_vals else None
+        acima_mediana = bool(
+            mediana is not None and val_cur > mediana and mediana >= 0
+        )
+        posi_med = statistics.median(hist_posi) if hist_posi else None
+        acima_mediana_posi = bool(
+            posi_cur is not None
+            and posi_med is not None
+            and posi_cur > posi_med
+        )
+        out.append(
+            {
+                "target": tgt,
+                "metrica": metric_key,
+                "fonte_metrica": "SINAN" if use_notif else "proxy_exames_GAL",
+                "valor_se": val_cur,
+                "exames_se": exames_cur,
+                "positivos_se": pos_cur,
+                "positividade_se": posi_cur,
+                "se_menos_1": se1,
+                "delta_abs_se1": delta_abs_1,
+                "delta_pct_se1": delta_pct_1,
+                "tendencia_se1": _tendencia_seta(delta_pct_1),
+                "se_menos_2": se2,
+                "delta_abs_se2": delta_abs_2,
+                "delta_pct_se2": delta_pct_2,
+                "tendencia_se2": _tendencia_seta(delta_pct_2),
+                "mediana_4se": mediana,
+                "acima_mediana_4se": acima_mediana,
+                "acima_mediana_positividade_4se": acima_mediana_posi,
+                "serie_anteriores": se_vals,
+                "se_ref": _fmt_se(*yw),
+            }
+        )
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Dataclasses
+# ---------------------------------------------------------------------------
 
 
 @dataclass
@@ -267,6 +515,9 @@ class CasoEspecial:
     o_que_nao_afirmar: list[str] = field(default_factory=list)
     o_que_investigar: list[str] = field(default_factory=list)
     veredito: str = ""
+    comparacao: dict[str, Any] = field(default_factory=dict)
+    vizinhos_risco: list[dict[str, Any]] = field(default_factory=list)
+    severidade: str = "media"
 
 
 @dataclass
@@ -274,24 +525,30 @@ class ParecerVE:
     se_iso: str = "—"
     gerado_em: str = ""
     resumo_executivo: str = ""
+    top_notificacoes: list[dict[str, Any]] = field(default_factory=list)
+    fonte_notificacoes: str = "proxy_exames_GAL"
     top_solicitados: list[dict[str, Any]] = field(default_factory=list)
     top_positividade: list[dict[str, Any]] = field(default_factory=list)
+    comparacao_semanas: list[dict[str, Any]] = field(default_factory=list)
     top_localidades: list[dict[str, Any]] = field(default_factory=list)
     top_vizinhos: list[dict[str, Any]] = field(default_factory=list)
     top_riscos: list[dict[str, Any]] = field(default_factory=list)
     casos_especiais: list[CasoEspecial] = field(default_factory=list)
     recomendacoes: dict[str, list[str]] = field(default_factory=dict)
+    recomendacoes_por_agravo: list[dict[str, Any]] = field(default_factory=list)
     acoes_csv: list[dict[str, str]] = field(default_factory=list)
     citacoes: list[dict[str, str]] = field(default_factory=list)
     fontes_cache: list[dict[str, str]] = field(default_factory=list)
     markdown: str = ""
     html_doc: str = ""
     telegram_resumo: str = ""
+    telegram_alertas: list[str] = field(default_factory=list)
     usou_llm: bool = False
     llm_erro: str = ""
     nota_metodologica: str = (
-        "Parecer baseado em agregados Observados (GAL/LACEN) e trechos curados "
-        "do Guia/portais MS. Sinal laboratorial ≠ declaração automática de surto. "
+        "Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos "
+        "curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana "
+        "das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. "
         "Números não inventados — apenas valores do briefing/pipeline."
     )
 
@@ -300,13 +557,24 @@ class ParecerVE:
             self.gerado_em = _now_local()
 
 
-def _detectar_casos_especiais(briefing: BriefingEpi) -> list[CasoEspecial]:
+def _fmt_delta(delta_abs: Any, delta_pct: Any, seta: str) -> str:
+    if delta_abs is None:
+        return "—"
+    pct = f"{delta_pct:+.0f}%" if delta_pct is not None else "—"
+    return f"{seta} {_intish(delta_abs)} ({pct})"
+
+
+def _detectar_casos_especiais(
+    briefing: BriefingEpi,
+    comparacao: Sequence[dict[str, Any]] | None = None,
+    vizinhos: Sequence[dict[str, Any]] | None = None,
+) -> list[CasoEspecial]:
     """
     Destaca municípios com alta carga de positivos em agravos prioritários
     (ex.: Juína × HBV) e aplica template Guia MS (investigar, não declarar).
     """
+    comp_by = {str(c.get("target")): c for c in (comparacao or [])}
     casos: list[CasoEspecial] = []
-    # Agrupa localidades por target
     by_tgt: dict[str, list[dict[str, Any]]] = {}
     for loc in briefing.localidades:
         by_tgt.setdefault(str(loc.get("target") or ""), []).append(loc)
@@ -321,17 +589,32 @@ def _detectar_casos_especiais(briefing: BriefingEpi) -> list[CasoEspecial]:
         mun = str(top.get("municipio") or "")
         if pos < 5 or exames < 10:
             continue
-        # Prioriza hepatite / TB / meningite com positividade elevada ou volume alto
         fam = _familia_de_target(tgt)
         if fam not in {"hepatite", "tuberculose", "meningite"} and pos < 10:
             continue
         if fam == "hepatite" or (posi is not None and float(posi) >= 0.25 and pos >= 8):
+            viz_t = [
+                v
+                for v in (vizinhos or briefing.vizinhos)
+                if str(v.get("target")) == tgt
+                and (
+                    mun.upper() in str(v.get("municipio") or "").upper()
+                    or mun.upper() in str(v.get("vizinho") or "").upper()
+                    or mun.upper() in str(v.get("par") or "").upper()
+                )
+            ]
             casos.append(
                 _template_caso_hbv_ou_generico(
-                    mun, tgt, exames, pos, posi, fam
+                    mun,
+                    tgt,
+                    exames,
+                    pos,
+                    posi,
+                    fam,
+                    comparacao=comp_by.get(tgt),
+                    vizinhos_risco=viz_t,
                 )
             )
-    # Garante Juína HBV se presente nos dados mesmo abaixo do limiar relativo
     for loc in briefing.localidades:
         if (
             "JUINA" in str(loc.get("municipio") or "").upper()
@@ -341,15 +624,23 @@ def _detectar_casos_especiais(briefing: BriefingEpi) -> list[CasoEspecial]:
                 c.municipio.upper() == "JUINA" and "hepatite" in c.target.casefold()
                 for c in casos
             ):
+                tgt = str(loc["target"])
+                viz_t = [
+                    v
+                    for v in (vizinhos or briefing.vizinhos)
+                    if str(v.get("target")) == tgt
+                ]
                 casos.insert(
                     0,
                     _template_caso_hbv_ou_generico(
                         str(loc["municipio"]),
-                        str(loc["target"]),
+                        tgt,
                         float(loc.get("exames") or 0),
                         float(loc.get("positivos") or 0),
                         loc.get("positividade"),
                         "hepatite",
+                        comparacao=comp_by.get(tgt),
+                        vizinhos_risco=viz_t,
                     ),
                 )
             break
@@ -363,14 +654,37 @@ def _template_caso_hbv_ou_generico(
     pos: float,
     posi: Any,
     fam: str,
+    *,
+    comparacao: dict[str, Any] | None = None,
+    vizinhos_risco: Sequence[dict[str, Any]] | None = None,
 ) -> CasoEspecial:
     posi_s = _pct_str(posi)
+    comp = comparacao or {}
+    comp_txt = ""
+    if comp:
+        comp_txt = (
+            f" Vs SE-1: {_fmt_delta(comp.get('delta_abs_se1'), comp.get('delta_pct_se1'), comp.get('tendencia_se1', '→'))}"
+            f" · Vs SE-2: {_fmt_delta(comp.get('delta_abs_se2'), comp.get('delta_pct_se2'), comp.get('tendencia_se2', '→'))}"
+            f" · mediana 4 SE ({comp.get('metrica', '—')}): {_intish(comp.get('mediana_4se'))}"
+            + (
+                " [acima da mediana]"
+                if comp.get("acima_mediana_4se")
+                else ""
+            )
+            + "."
+        )
     sinal = (
         f"[Observado] {mun} — {tgt}: {_intish(exames)} exames · "
-        f"+{_intish(pos)} positivos ({posi_s}) na SE de referência. "
-        "Sinal laboratorial territorial persistente ou elevado — "
-        "requer confronto com critérios do Guia de Vigilância MS."
+        f"+{_intish(pos)} positivos ({posi_s}) na SE de referência.{comp_txt} "
+        "Sinal laboratorial territorial — requer confronto com critérios do "
+        "Guia de Vigilância MS (investigação; sem declaração automática de surto)."
     )
+    sev = "alta" if (
+        (posi is not None and float(posi) >= 0.4 and pos >= 10)
+        or comp.get("acima_mediana_4se")
+        or (vizinhos_risco and len(list(vizinhos_risco)) >= 1 and pos >= 8)
+    ) else "media"
+
     if fam == "hepatite":
         criterios = [
             "Aumento de casos de hepatite B **aguda** (definição de caso MS: "
@@ -435,114 +749,230 @@ def _template_caso_hbv_ou_generico(
         o_que_nao_afirmar=nao,
         o_que_investigar=investigar,
         veredito=veredito,
+        comparacao=dict(comp) if comp else {},
+        vizinhos_risco=list(vizinhos_risco or []),
+        severidade=sev,
     )
 
 
-def _recomendacoes_areas(
+def _evidencia_caso(c: CasoEspecial, se_iso: str) -> str:
+    parts = [
+        f"SE {se_iso}: {c.exames} ex. / +{c.positivos} ({c.positividade}) [Observado]"
+    ]
+    comp = c.comparacao or {}
+    if comp:
+        parts.append(
+            f"ΔSE-1 {_fmt_delta(comp.get('delta_abs_se1'), comp.get('delta_pct_se1'), comp.get('tendencia_se1', '→'))}"
+        )
+        if comp.get("acima_mediana_4se"):
+            parts.append("acima mediana 4 SE")
+    if c.vizinhos_risco:
+        pares = []
+        for v in c.vizinhos_risco[:2]:
+            pares.append(
+                f"{v.get('municipio', '?')}↔{v.get('vizinho', v.get('par', '?'))}"
+            )
+        parts.append("vizinhos: " + "; ".join(pares))
+    return " · ".join(parts)
+
+
+def _recomendacoes_por_destinatario(
     briefing: BriefingEpi,
     casos: Sequence[CasoEspecial],
     trechos: Sequence[dict[str, str]],
-) -> dict[str, list[str]]:
-    hep = any(_is_hepatite(str(x.get("target") or "")) for x in briefing.mais_solicitados[:5])
-    tb = any("tuberculose" in str(x.get("target") or "").casefold() for x in briefing.mais_solicitados[:5])
-    den = any("dengue" in str(x.get("target") or "").casefold() for x in briefing.mais_solicitados[:3])
-    mun_foco = casos[0].municipio if casos else "municípios prioritários do Top 10"
-
-    rec: dict[str, list[str]] = {
-        "Vigilância Epidemiológica": [
-            "Tratar o Top 10 de demanda/positividade/localidades como **fila de investigação**, não como lista de surtos declarados.",
-            f"Priorizar definição de caso e cruzamento SINAN nos focos: {mun_foco}.",
-            "Documentar se critérios de surto/epidemia do Guia MS estão met/unmet após investigação.",
-        ],
-        "LACEN / rede laboratorial": [
-            "Manter TAT e qualidade analítica nos agravos do Top 10; sinalizar à VE resultados de marcadores agudos quando disponíveis.",
-            "Para HBV: discriminar e reportar o tipo de ensaio/marcador sempre que o sistema permitir (evitar ambiguidade agudo×crônico).",
-            "Não extrapolar positividade de triagem como coeficiente de ataque.",
-        ],
-        "Atenção Primária": [
-            "Apoiar busca de contatos e adesão conforme protocolo do agravo prioritário.",
-            "Reforçar vacinação (hepatite B / outros conforme calendário) nas áreas de maior sinal lab.",
-            "Orientar fluxos de coleta e preenchimento adequado das requisições GAL.",
-        ],
-        "CIEVS / sala de situação": [
-            f"Manter monitoramento da SE {briefing.se_iso} com Top 10 Observado e pares vizinhos.",
-            "Usar linguagem institucional: «sinal laboratorial / investigar», nunca «há surto» sem critérios.",
-            "Atualizar parecer VE a cada ciclo do relatório CIEVS (Bloco F).",
-        ],
-        "Comunicação": [
-            "Alinhar notas com assessoria SES: prevenção e esclarecimento, sem alarmismo.",
-            "Se houver investigação em curso, informar que a classificação de surto depende da VE e do Guia MS.",
-        ],
+) -> tuple[dict[str, list[str]], list[dict[str, Any]], list[dict[str, str]]]:
+    """
+    Recomendações endereçadas a SES-MT, CIEVS, área técnica, município(s)
+    e municípios próximos (se co-positividade / risco de dispersão).
+    """
+    se = briefing.se_iso
+    rec_areas: dict[str, list[str]] = {
+        "SES-MT": [],
+        "CIEVS": [],
+        "Área técnica": [],
+        "Município(s)": [],
+        "Municípios próximos": [],
     }
-    if hep:
-        rec["Vigilância Epidemiológica"].append(
-            "Hepatite B: estratificar casos agudos vs. crônicos antes de qualquer comunicação de surto."
+    por_agravo: list[dict[str, Any]] = []
+    rows: list[dict[str, str]] = []
+
+    if not casos:
+        # Fallback genérico a partir do Top
+        focos = ", ".join(
+            f"{x.get('municipio')}×{x.get('target')}"
+            for x in briefing.localidades[:3]
+        ) or "municípios do Top 10"
+        gen = [
+            (
+                "SES-MT",
+                "media",
+                "15 dias",
+                "multiprio",
+                f"Acompanhar fila de investigação da SE {se} ({focos}); "
+                "sem declaração automática de surto.",
+                f"Top localidades SE {se}",
+            ),
+            (
+                "CIEVS",
+                "media",
+                "7 dias",
+                "multiprio",
+                "Manter sala de situação com Top 10 + comparação SE-1/SE-2; "
+                "linguagem de investigação (Guia MS).",
+                f"Briefing SE {se}",
+            ),
+        ]
+        for dest, sev, prazo, agr, texto, evid in gen:
+            rec_areas.setdefault(dest, []).append(texto)
+            rows.append(
+                {
+                    "agravo": agr,
+                    "destinatario": dest,
+                    "recomendacao": texto,
+                    "prazo": prazo,
+                    "severidade": sev,
+                    "se_ref": se,
+                    "evidencia": evid,
+                }
+            )
+        return rec_areas, por_agravo, rows
+
+    for c in casos:
+        fam = _familia_de_target(c.target)
+        area_tec = _area_tecnica_de(c.target)
+        evid = _evidencia_caso(c, se)
+        sev = c.severidade
+        guia_hint = ""
+        for t in trechos:
+            if any(kw in (t.get("trecho") or "").casefold() for kw in _FAMILIA_KW.get(fam, ())):
+                guia_hint = f" (ref. local `{t.get('arquivo', '')}`)"
+                break
+
+        linhas_dest: list[tuple[str, str, str]] = [
+            (
+                "SES-MT",
+                "15 dias",
+                (
+                    f"Monitorar sinal de {c.target} em {c.municipio} na SE {se}; "
+                    "apoiar CRS/VE municipal na investigação conforme Guia MS"
+                    f"{guia_hint} — sem declarar surto automaticamente."
+                ),
+            ),
+            (
+                "CIEVS",
+                "7 dias",
+                (
+                    f"Incluir {c.municipio}×{c.target} na sala de situação; "
+                    "confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); "
+                    "manter linguagem «investigar / sinal lab», não «há surto»."
+                ),
+            ),
+            (
+                area_tec,
+                "7 dias",
+                (
+                    f"Programa {fam}: estratificar marcadores/definição de caso em "
+                    f"{c.municipio}; orientar rede sobre fluxo de notificação e "
+                    f"conduta técnica do agravo {c.target}."
+                ),
+            ),
+            (
+                f"Município — {c.municipio}",
+                "7 dias",
+                (
+                    f"VE municipal de {c.municipio}: abrir/atualizar investigação de "
+                    f"{c.target}; cruzar GAL×SINAN; aplicar definição de caso MS; "
+                    + (
+                        c.o_que_investigar[0]
+                        if c.o_que_investigar
+                        else "mapear contatos e fontes."
+                    )
+                ),
+            ),
+        ]
+        if c.vizinhos_risco:
+            pares = ", ".join(
+                f"{v.get('municipio')}↔{v.get('vizinho')}"
+                for v in c.vizinhos_risco[:3]
+            )
+            linhas_dest.append(
+                (
+                    "Municípios próximos",
+                    "7 dias",
+                    (
+                        f"Alerta de co-positividade / risco de dispersão ({c.target}): "
+                        f"{pares}. Reforçar vigilância ativa e comunicação entre VE "
+                        "municipais; não interpretar par vizinho como surto intermunicipal "
+                        "automático."
+                    ),
+                ),
+            )
+            rec_areas["Municípios próximos"].append(linhas_dest[-1][2])
+
+        dest_map: dict[str, str] = {}
+        for dest, prazo, texto in linhas_dest:
+            dest_map[dest] = texto
+            key_area = (
+                "Área técnica"
+                if dest.startswith("Área técnica")
+                else (
+                    "Município(s)"
+                    if dest.startswith("Município —")
+                    else dest
+                )
+            )
+            rec_areas.setdefault(key_area, []).append(texto)
+            rows.append(
+                {
+                    "agravo": c.target,
+                    "destinatario": dest,
+                    "recomendacao": texto,
+                    "prazo": prazo,
+                    "severidade": sev,
+                    "se_ref": se,
+                    "evidencia": evid,
+                }
+            )
+
+        por_agravo.append(
+            {
+                "agravo": c.target,
+                "municipio": c.municipio,
+                "severidade": sev,
+                "evidencia": evid,
+                "destinatarios": dest_map,
+            }
         )
-    if tb:
-        rec["Vigilância Epidemiológica"].append(
-            "TB: priorizar investigação de contatos e pares de municípios vizinhos com positivos."
-        )
-    if den:
-        rec["CIEVS / sala de situação"].append(
-            "Dengue: alta demanda com baixa positividade = atenção territorial; não rotular como surto confirmado só pelo volume de exames."
-        )
-    if trechos:
-        rec["CIEVS / sala de situação"].append(
-            "Confronto com trechos locais do pacote conhecimento_ve (Guia/portais MS) anexados nas citações."
-        )
-    return rec
+
+    # Dedup curto por área
+    for k, items in list(rec_areas.items()):
+        seen: set[str] = set()
+        uniq: list[str] = []
+        for it in items:
+            if it in seen:
+                continue
+            seen.add(it)
+            uniq.append(it)
+        rec_areas[k] = uniq[:6]
+    return rec_areas, por_agravo, rows[:60]
 
 
-def _montar_acoes_csv(
+def _resumo_executivo(
     briefing: BriefingEpi,
     casos: Sequence[CasoEspecial],
-    recs: dict[str, list[str]],
-) -> list[dict[str, str]]:
-    rows: list[dict[str, str]] = []
-    rank = 0
-    for c in casos:
-        for acao in c.o_que_investigar[:4]:
-            rank += 1
-            rows.append(
-                {
-                    "rank": str(rank),
-                    "se": briefing.se_iso,
-                    "area": "Vigilância Epidemiológica",
-                    "municipio": c.municipio,
-                    "agravo": c.target,
-                    "prioridade": "alta",
-                    "acao": acao,
-                    "prazo": "7 dias",
-                    "tipo_sinal": "Observado",
-                    "base": "caso_especial+guia_ms",
-                }
-            )
-    for area, items in recs.items():
-        for acao in items[:2]:
-            rank += 1
-            rows.append(
-                {
-                    "rank": str(rank),
-                    "se": briefing.se_iso,
-                    "area": area,
-                    "municipio": casos[0].municipio if casos else "—",
-                    "agravo": casos[0].target if casos else "multiprio",
-                    "prioridade": "media",
-                    "acao": acao,
-                    "prazo": "15 dias",
-                    "tipo_sinal": "Derivado",
-                    "base": "recomendacao_area",
-                }
-            )
-    return rows[:40]
-
-
-def _resumo_executivo(briefing: BriefingEpi, casos: Sequence[CasoEspecial]) -> str:
+    fonte_notif: str,
+    comparacao: Sequence[dict[str, Any]],
+) -> str:
     sol = briefing.mais_solicitados[:3]
     sol_txt = "; ".join(
         f"{x['target']} ({_intish(x['exames'])} ex., {_pct_str(x.get('positividade'))})"
         for x in sol
     ) or "—"
+    fonte_txt = (
+        "notificações SINAN"
+        if fonte_notif == "SINAN"
+        else "proxy exames GAL (SINAN zerado/atrasado)"
+    )
     caso_txt = ""
     if casos:
         c0 = casos[0]
@@ -551,35 +981,60 @@ def _resumo_executivo(briefing: BriefingEpi, casos: Sequence[CasoEspecial]) -> s
             f"{c0.exames} exames / +{c0.positivos} ({c0.positividade}) [Observado]; "
             "parecer: investigar segundo Guia MS — **não** declarar surto automaticamente."
         )
+    comp_txt = ""
+    if comparacao:
+        c = comparacao[0]
+        comp_txt = (
+            f" Comparação ({c.get('target')}): vs SE-1 "
+            f"{_fmt_delta(c.get('delta_abs_se1'), c.get('delta_pct_se1'), c.get('tendencia_se1', '→'))}"
+            + (
+                "; acima da mediana das 4 SE."
+                if c.get("acima_mediana_4se")
+                else "."
+            )
+        )
     return (
-        f"SE {briefing.se_iso} — Top demanda: {sol_txt}.{caso_txt} "
-        "Parecer VE usa agregados LACEN + critérios do Guia de Vigilância "
+        f"SE {briefing.se_iso} — Top demanda/proxy ({fonte_txt}): {sol_txt}."
+        f"{caso_txt}{comp_txt} "
+        "Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância "
         "(definição de caso / esperado / investigação)."
     )
 
 
 def _render_markdown(p: ParecerVE) -> str:
+    fonte = p.fonte_notificacoes
+    rotulo_top = (
+        "notificações SINAN"
+        if fonte == "SINAN"
+        else "proxy: exames GAL (SINAN indisponível/zerado na SE)"
+    )
     lines: list[str] = [
-        f"# Parecer VE inteligente — LACEN-MT / CIEVS",
-        f"",
+        "# Parecer VE inteligente — LACEN-MT / CIEVS",
+        "",
         f"**SE:** {p.se_iso}  ",
         f"**Gerado em:** {p.gerado_em}  ",
-        f"",
+        "",
         f"> {p.nota_metodologica}",
-        f"",
-        f"## 1. Resumo executivo",
-        f"",
+        "",
+        "## 1. Resumo executivo",
+        "",
         p.resumo_executivo,
-        f"",
-        f"## 2. Top 10 — mais solicitados [Observado]",
-        f"",
-        "| # | Agravo | Exames | Positivos | Positividade |",
-        "|---|--------|--------|-----------|--------------|",
+        "",
+        f"## 2. Top 10 — {rotulo_top} [Observado]",
+        "",
+        "| # | Agravo | Notif./Exames | Positivos | Positividade | Fonte |",
+        "|---|--------|---------------|-----------|--------------|-------|",
     ]
-    for i, x in enumerate(p.top_solicitados[:10], 1):
+    for i, x in enumerate(p.top_notificacoes[:10], 1):
+        met = (
+            _intish(x.get("notificacoes"))
+            if fonte == "SINAN"
+            else _intish(x.get("exames"))
+        )
         lines.append(
-            f"| {i} | {x.get('target','—')} | {x.get('exames','—')} | "
-            f"{x.get('positivos','—')} | {x.get('positividade','—')} |"
+            f"| {i} | {x.get('target','—')} | {met} | "
+            f"{_intish(x.get('positivos'))} | {_pct_str(x.get('positividade'))} | "
+            f"{x.get('fonte_metrica', fonte)} |"
         )
     lines += [
         "",
@@ -600,7 +1055,31 @@ def _render_markdown(p: ParecerVE) -> str:
         )
     lines += [
         "",
-        "## 4. Top localidades (agravos prioritários) [Observado]",
+        "## 4. Comparação com SE anteriores",
+        "",
+        "| Agravo | Métrica | SE | SE-1 (Δ) | SE-2 (Δ) | Mediana 4 SE | Flag |",
+        "|--------|---------|----|----------|----------|--------------|------|",
+    ]
+    if p.comparacao_semanas:
+        for c in p.comparacao_semanas[:12]:
+            flag = []
+            if c.get("acima_mediana_4se"):
+                flag.append("acima mediana 4 SE")
+            if c.get("acima_mediana_positividade_4se"):
+                flag.append("posi>mediana")
+            lines.append(
+                f"| {c.get('target','—')} | {c.get('metrica','—')} | "
+                f"{_intish(c.get('valor_se'))} | "
+                f"{_fmt_delta(c.get('delta_abs_se1'), c.get('delta_pct_se1'), c.get('tendencia_se1','→'))} | "
+                f"{_fmt_delta(c.get('delta_abs_se2'), c.get('delta_pct_se2'), c.get('tendencia_se2','→'))} | "
+                f"{_intish(c.get('mediana_4se'))} | {', '.join(flag) or '—'} |"
+            )
+    else:
+        lines.append("| — | — | — | — | — | — | (sem série) |")
+
+    lines += [
+        "",
+        "## 5. Top localidades (agravos prioritários) [Observado]",
         "",
         "| Agravo | Município | Positivos | Exames | Positividade |",
         "|--------|-----------|-----------|--------|--------------|",
@@ -613,7 +1092,7 @@ def _render_markdown(p: ParecerVE) -> str:
         )
     lines += [
         "",
-        "## 5. Eixos vizinhos (Top) [Observado]",
+        "## 6. Eixos vizinhos (Top) [Observado]",
         "",
         "| Agravo | Par | Positivos | Dist. km |",
         "|--------|-----|-----------|----------|",
@@ -626,7 +1105,7 @@ def _render_markdown(p: ParecerVE) -> str:
             )
     else:
         lines.append("| — | (nenhum par) | — | — |")
-    lines += ["", "## 6. Riscos / dispersão (Top 10)", ""]
+    lines += ["", "## 7. Riscos / dispersão (Top 10)", ""]
     for i, r in enumerate(p.top_riscos[:10], 1):
         lines.append(
             f"{i}. **[{r.get('tipo_sinal', 'Observado')}]** {r.get('mensagem', '')}"
@@ -634,13 +1113,14 @@ def _render_markdown(p: ParecerVE) -> str:
     if not p.top_riscos:
         lines.append("_Sem sinais na regra de dispersão._")
 
-    lines += ["", "## 7. Casos especiais (sinal lab × critérios Guia MS)", ""]
+    lines += ["", "## 8. Casos especiais (sinal lab × critérios Guia MS)", ""]
     if not p.casos_especiais:
         lines.append("_Nenhum caso especial acima dos limiares nesta SE._")
     for c in p.casos_especiais:
         lines += [
             f"### {c.titulo}",
             "",
+            f"**Severidade:** {c.severidade}  ",
             f"**Sinal laboratorial:** {c.sinal_lab}",
             "",
             "**Critérios de surto/epidemia (Guia MS) a verificar:**",
@@ -659,14 +1139,26 @@ def _render_markdown(p: ParecerVE) -> str:
         lines.append(c.veredito)
         lines.append("")
 
-    lines += ["", "## 8. Recomendações por área", ""]
-    for area, items in p.recomendacoes.items():
-        lines.append(f"### {area}")
-        for item in items:
-            lines.append(f"- {item}")
-        lines.append("")
+    lines += ["", "## 9. Recomendações por destinatário / agravo", ""]
+    if p.recomendacoes_por_agravo:
+        for block in p.recomendacoes_por_agravo:
+            lines.append(
+                f"### {block.get('municipio','—')} × {block.get('agravo','—')} "
+                f"({block.get('severidade','')})"
+            )
+            lines.append(f"_Evidência:_ {block.get('evidencia','—')}")
+            lines.append("")
+            for dest, texto in (block.get("destinatarios") or {}).items():
+                lines.append(f"- **{dest}:** {texto}")
+            lines.append("")
+    else:
+        for area, items in p.recomendacoes.items():
+            lines.append(f"### {area}")
+            for item in items:
+                lines.append(f"- {item}")
+            lines.append("")
 
-    lines += ["", "## 9. Citações e fontes", ""]
+    lines += ["", "## 10. Citações e fontes", ""]
     for cit in p.citacoes:
         lines.append(
             f"- `{cit.get('fonte', '—')}` (score={cit.get('score', '—')})"
@@ -712,15 +1204,22 @@ def _render_html(p: ParecerVE) -> str:
             f"<tbody>{body}</tbody></table>"
         )
 
-    sol_rows = [
+    fonte = p.fonte_notificacoes
+    rotulo = (
+        "notificações SINAN"
+        if fonte == "SINAN"
+        else "proxy exames GAL (SINAN zerado/atrasado)"
+    )
+    notif_rows = [
         [
             str(i),
             str(x.get("target", "—")),
-            str(x.get("exames", "—")),
-            str(x.get("positivos", "—")),
-            str(x.get("positividade", "—")),
+            _intish(x.get("notificacoes") if fonte == "SINAN" else x.get("exames")),
+            _intish(x.get("positivos")),
+            _pct_str(x.get("positividade")),
+            str(x.get("fonte_metrica", fonte)),
         ]
-        for i, x in enumerate(p.top_solicitados[:10], 1)
+        for i, x in enumerate(p.top_notificacoes[:10], 1)
     ]
     pos_rows = [
         [
@@ -730,6 +1229,26 @@ def _render_html(p: ParecerVE) -> str:
             str(x.get("exames", "—")),
         ]
         for i, x in enumerate(p.top_positividade[:10], 1)
+    ]
+    comp_rows = [
+        [
+            str(c.get("target", "—")),
+            str(c.get("metrica", "—")),
+            _intish(c.get("valor_se")),
+            _fmt_delta(
+                c.get("delta_abs_se1"), c.get("delta_pct_se1"), c.get("tendencia_se1", "→")
+            ),
+            _fmt_delta(
+                c.get("delta_abs_se2"), c.get("delta_pct_se2"), c.get("tendencia_se2", "→")
+            ),
+            _intish(c.get("mediana_4se")),
+            (
+                "acima mediana 4 SE"
+                if c.get("acima_mediana_4se")
+                else "—"
+            ),
+        ]
+        for c in p.comparacao_semanas[:12]
     ]
     loc_rows = [
         [
@@ -753,7 +1272,7 @@ def _render_html(p: ParecerVE) -> str:
 
     casos_html = ""
     for c in p.casos_especiais:
-        casos_html += f"<h4 style='color:#1B3281'>{esc(c.titulo)}</h4>"
+        casos_html += f"<h4 style='color:#1B3281'>{esc(c.titulo)} · {esc(c.severidade)}</h4>"
         casos_html += f"<p><b>Sinal lab:</b> {esc(c.sinal_lab)}</p>"
         casos_html += "<p><b>Critérios Guia MS a verificar</b></p><ul>"
         casos_html += "".join(f"<li>{esc(i)}</li>" for i in c.criterios_guia)
@@ -761,13 +1280,26 @@ def _render_html(p: ParecerVE) -> str:
         casos_html += "".join(f"<li>{esc(i)}</li>" for i in c.o_que_nao_afirmar)
         casos_html += "</ul><p><b>Investigar</b></p><ul>"
         casos_html += "".join(f"<li>{esc(i)}</li>" for i in c.o_que_investigar)
-        casos_html += f"</ul><p style='background:#f0f4fa;border-left:4px solid #1B3281;padding:8px 12px'>{esc(c.veredito)}</p>"
+        casos_html += (
+            f"</ul><p style='background:#f0f4fa;border-left:4px solid #1B3281;"
+            f"padding:8px 12px'>{esc(c.veredito)}</p>"
+        )
 
-    rec_html = ""
-    for area, items in p.recomendacoes.items():
-        rec_html += f"<h4>{esc(area)}</h4><ul>"
-        rec_html += "".join(f"<li>{esc(i)}</li>" for i in items)
-        rec_html += "</ul>"
+    dest_html = ""
+    for block in p.recomendacoes_por_agravo:
+        dest_html += (
+            f"<h4>{esc(block.get('municipio'))} × {esc(block.get('agravo'))} "
+            f"({esc(block.get('severidade'))})</h4>"
+        )
+        dest_html += f"<p style='font-size:12px;color:#5a6a85'>{esc(block.get('evidencia'))}</p><ul>"
+        for dest, texto in (block.get("destinatarios") or {}).items():
+            dest_html += f"<li><b>{esc(dest)}:</b> {esc(texto)}</li>"
+        dest_html += "</ul>"
+    if not dest_html:
+        for area, items in p.recomendacoes.items():
+            dest_html += f"<h4>{esc(area)}</h4><ul>"
+            dest_html += "".join(f"<li>{esc(i)}</li>" for i in items)
+            dest_html += "</ul>"
 
     risco_html = "<ol>" + "".join(
         f"<li><small>[{esc(r.get('tipo_sinal','Observado'))}]</small> {esc(r.get('mensagem',''))}</li>"
@@ -796,21 +1328,23 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
 {esc(p.nota_metodologica)}</p>
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">1. Resumo executivo</h3>
 <p>{esc(p.resumo_executivo)}</p>
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">2. Top 10 solicitados</h3>
-{table(["#", "Agravo", "Exames", "Positivos", "Positividade"], sol_rows)}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">2. Top 10 — {esc(rotulo)}</h3>
+{table(["#", "Agravo", "Valor", "Positivos", "Positividade", "Fonte"], notif_rows)}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">3. Top 10 positividade</h3>
 {table(["#", "Agravo", "Positividade", "Exames"], pos_rows)}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">4. Top localidades</h3>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">4. Comparação SE-1 / SE-2 / mediana 4 SE</h3>
+{table(["Agravo", "Métrica", "SE", "Δ SE-1", "Δ SE-2", "Mediana 4SE", "Flag"], comp_rows)}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">5. Top localidades</h3>
 {table(["Agravo", "Município", "Positivos", "Exames", "Positividade"], loc_rows)}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">5. Vizinhos</h3>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">6. Vizinhos</h3>
 {table(["Agravo", "Par", "Positivos", "Dist. km"], viz_rows)}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">6. Riscos / dispersão</h3>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7. Riscos / dispersão</h3>
 {risco_html}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7. Casos especiais</h3>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">8. Casos especiais</h3>
 {casos_html or "<p>(nenhum)</p>"}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">8. Recomendações por área</h3>
-{rec_html}
-<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">9. Citações</h3>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">9. Recomendações por destinatário</h3>
+{dest_html}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">10. Citações</h3>
 {cit_html}
 <p style="font-size:12px;color:#5a6a85;margin-top:18px">
 conhecimento_ve/ · lacen_agente_ve.py · lacen_briefing_epi.py
@@ -819,35 +1353,58 @@ conhecimento_ve/ · lacen_agente_ve.py · lacen_briefing_epi.py
 </body></html>"""
 
 
+def _telegram_alerta_agravo(c: CasoEspecial, se_iso: str) -> str:
+    comp = c.comparacao or {}
+    delta = _fmt_delta(
+        comp.get("delta_abs_se1"), comp.get("delta_pct_se1"), comp.get("tendencia_se1", "→")
+    )
+    flag = " · acima mediana 4SE" if comp.get("acima_mediana_4se") else ""
+    return "\n".join(
+        [
+            f"<b>Alerta VE · {html.escape(c.severidade.upper())}</b>",
+            html.escape(f"{c.municipio} × {c.target} · SE {se_iso}"),
+            html.escape(
+                f"{c.exames} ex. / +{c.positivos} ({c.positividade}) [Observado]"
+            ),
+            html.escape(f"Vs SE-1: {delta}{flag}"),
+            html.escape(
+                "Investigar (Guia MS) — NÃO declarar surto automaticamente."
+            ),
+        ]
+    )
+
+
 def _telegram_resumo(p: ParecerVE) -> str:
     lines = [
         "<b>Parecer VE (Guia MS)</b>",
         f"SE {html.escape(p.se_iso)}",
         "",
     ]
-    if p.casos_especiais:
-        c = p.casos_especiais[0]
-        lines.append(
-            html.escape(
-                f"Foco: {c.municipio} × {c.target} — "
-                f"{c.exames} ex. / +{c.positivos} ({c.positividade})"
-            )
-        )
-        lines.append(
-            html.escape(
-                "Veredito: sinal lab → investigar; NÃO declarar surto automático."
-            )
-        )
+    alertas = p.telegram_alertas[:3]
+    if alertas:
+        for i, a in enumerate(alertas, 1):
+            if i > 1:
+                lines.append("")
+            lines.append(a)
+    elif p.casos_especiais:
+        lines.append(_telegram_alerta_agravo(p.casos_especiais[0], p.se_iso))
     else:
         lines.append(html.escape((p.resumo_executivo or "")[:280]))
-    top = p.top_solicitados[:3]
+    top = p.top_notificacoes[:3] or p.top_solicitados[:3]
     if top:
-        lines.append("<i>Top demanda</i>")
+        lines.append("")
+        fonte = "SINAN" if p.fonte_notificacoes == "SINAN" else "proxy exames"
+        lines.append(f"<i>Top ({html.escape(fonte)})</i>")
         for x in top:
+            val = (
+                x.get("notificacoes")
+                if p.fonte_notificacoes == "SINAN"
+                else x.get("exames")
+            )
             lines.append(
                 html.escape(
-                    f"• {x.get('target')}: {x.get('exames')} ex. "
-                    f"({x.get('positividade')})"
+                    f"• {x.get('target')}: {_intish(val)} "
+                    f"({_pct_str(x.get('positividade'))})"
                 )
             )
     lines.append("")
@@ -871,7 +1428,8 @@ def talvez_reescrever_resumo_llm(parecer: ParecerVE) -> ParecerVE:
                             "Você é analista CIEVS/LACEN-MT. Reescreva o resumo "
                             "em tom institucional (PT-BR). NÃO invente números. "
                             "NÃO declare surto; use linguagem de investigação "
-                            "conforme Guia de Vigilância MS."
+                            "conforme Guia de Vigilância MS. Mencione comparação "
+                            "com semanas anteriores se houver."
                         ),
                     },
                     {
@@ -964,6 +1522,10 @@ def _fmt_briefing_rows(briefing: BriefingEpi) -> tuple[
                 else "—"
             ),
             "tipo_sinal": "Observado",
+            "municipio_ancora": v.get("municipio"),
+            "vizinho": v.get("vizinho"),
+            "positivos_ancora": v.get("positivos_ancora"),
+            "positivos_vizinho": v.get("positivos_vizinho"),
         }
         for v in briefing.vizinhos[:10]
     ]
@@ -989,7 +1551,7 @@ def gerar_parecer_ve(
     persistir: bool = True,
     briefing: BriefingEpi | None = None,
 ) -> ParecerVE:
-    """Gera parecer VE completo a partir do briefing (Top N) + conhecimento MS."""
+    """Gera parecer VE completo: Top notif/proxy + positividade + ΔSE + destinatários."""
     outdir = Path(outdir)
     know = Path(know_dir)
     know.mkdir(parents=True, exist_ok=True)
@@ -1001,32 +1563,79 @@ def gerar_parecer_ve(
     if briefing is None:
         briefing = gerar_briefing_epi(outdir, se=se, top=top, persistir=True)
 
+    weekly = _read_csv(outdir / WEEKLY_NAME)
+    yw = briefing.se_tuple or _parse_se(briefing.se_iso)
+    if yw is None and se:
+        yw = _parse_se(se)
+
+    top_notif: list[dict[str, Any]] = []
+    fonte_notif = "proxy_exames_GAL"
+    if yw and weekly:
+        top_notif, fonte_notif = top_notificacoes(weekly, yw, top=top)
+
     sol, posi, locs, viz, risco = _fmt_briefing_rows(briefing)
-    casos = _detectar_casos_especiais(briefing)
+
+    # Targets para comparação: união de top notif + positividade + localidades foco
+    targets_comp: list[str] = []
+    for seq in (top_notif, briefing.maior_positividade, briefing.mais_solicitados):
+        for x in seq[:8]:
+            t = str(x.get("target") or "")
+            if t and t not in targets_comp:
+                targets_comp.append(t)
+    for loc in briefing.localidades[:6]:
+        t = str(loc.get("target") or "")
+        if t and t not in targets_comp:
+            targets_comp.append(t)
+
+    comparacao: list[dict[str, Any]] = []
+    if yw and weekly and targets_comp:
+        comparacao = comparar_com_semanas_anteriores(
+            weekly, yw, targets_comp[:12], n_anteriores=4
+        )
+
+    casos = _detectar_casos_especiais(briefing, comparacao, briefing.vizinhos)
     familias = list(
         dict.fromkeys(
-            [_familia_de_target(str(x.get("target") or "")) for x in sol[:5]]
+            [_familia_de_target(str(x.get("target") or "")) for x in (top_notif or sol)[:5]]
             + [_familia_de_target(c.target) for c in casos]
         )
     )
     trechos = recuperar_trechos(familias, know)
-    recs = _recomendacoes_areas(briefing, casos, trechos)
-    acoes = _montar_acoes_csv(briefing, casos, recs)
+    recs, por_agravo, acoes = _recomendacoes_por_destinatario(briefing, casos, trechos)
 
     parecer = ParecerVE(
         se_iso=briefing.se_iso,
-        resumo_executivo=_resumo_executivo(briefing, casos),
+        resumo_executivo=_resumo_executivo(
+            briefing, casos, fonte_notif, comparacao
+        ),
+        top_notificacoes=top_notif or [
+            {
+                "target": x["target"],
+                "exames": x.get("exames"),
+                "positivos": x.get("positivos"),
+                "positividade": x.get("positividade"),
+                "notificacoes": 0,
+                "fonte_metrica": "proxy_exames_GAL",
+            }
+            for x in sol
+        ],
+        fonte_notificacoes=fonte_notif,
         top_solicitados=sol,
         top_positividade=posi,
+        comparacao_semanas=comparacao,
         top_localidades=locs,
         top_vizinhos=viz,
         top_riscos=risco,
         casos_especiais=casos,
         recomendacoes=recs,
+        recomendacoes_por_agravo=por_agravo,
         acoes_csv=acoes,
         citacoes=trechos,
         fontes_cache=fontes_cache,
     )
+    parecer.telegram_alertas = [
+        _telegram_alerta_agravo(c, parecer.se_iso) for c in casos[:3]
+    ]
     if usar_llm:
         parecer = talvez_reescrever_resumo_llm(parecer)
 
@@ -1052,26 +1661,15 @@ def persistir_parecer(
     }
     paths["md"].write_text(parecer.markdown, encoding="utf-8")
     paths["html"].write_text(parecer.html_doc, encoding="utf-8")
-    fields = [
-        "rank",
-        "se",
-        "area",
-        "municipio",
-        "agravo",
-        "prioridade",
-        "acao",
-        "prazo",
-        "tipo_sinal",
-        "base",
-    ]
     with paths["csv"].open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
+        w = csv.DictWriter(f, fieldnames=CSV_FIELDS)
         w.writeheader()
         for row in parecer.acoes_csv:
-            w.writerow({k: row.get(k, "") for k in fields})
+            w.writerow({k: row.get(k, "") for k in CSV_FIELDS})
     meta = {
         "se": parecer.se_iso,
         "gerado_em": parecer.gerado_em,
+        "fonte_notificacoes": parecer.fonte_notificacoes,
         "n_casos_especiais": len(parecer.casos_especiais),
         "casos": [
             {
@@ -1080,9 +1678,34 @@ def persistir_parecer(
                 "exames": c.exames,
                 "positivos": c.positivos,
                 "positividade": c.positividade,
+                "severidade": c.severidade,
+                "comparacao": {
+                    k: c.comparacao.get(k)
+                    for k in (
+                        "delta_abs_se1",
+                        "delta_pct_se1",
+                        "tendencia_se1",
+                        "mediana_4se",
+                        "acima_mediana_4se",
+                        "metrica",
+                    )
+                    if c.comparacao
+                },
             }
             for c in parecer.casos_especiais
         ],
+        "comparacao_semanas": [
+            {
+                "target": c.get("target"),
+                "metrica": c.get("metrica"),
+                "valor_se": c.get("valor_se"),
+                "delta_pct_se1": c.get("delta_pct_se1"),
+                "tendencia_se1": c.get("tendencia_se1"),
+                "acima_mediana_4se": c.get("acima_mediana_4se"),
+            }
+            for c in parecer.comparacao_semanas[:12]
+        ],
+        "recomendacoes_por_agravo": parecer.recomendacoes_por_agravo,
         "usou_llm": parecer.usou_llm,
         "citacoes": [c.get("fonte") for c in parecer.citacoes],
         "fontes_cache": parecer.fontes_cache,
@@ -1099,6 +1722,8 @@ def parecer_para_relatorio(parecer: ParecerVE) -> dict[str, Any]:
         "se_iso": parecer.se_iso,
         "resumo": parecer.resumo_executivo,
         "telegram": parecer.telegram_resumo,
+        "fonte_notificacoes": parecer.fonte_notificacoes,
+        "comparacao": parecer.comparacao_semanas[:8],
         "casos": [
             {
                 "titulo": c.titulo,
@@ -1108,6 +1733,7 @@ def parecer_para_relatorio(parecer: ParecerVE) -> dict[str, Any]:
                 "positivos": c.positivos,
                 "positividade": c.positividade,
                 "veredito": c.veredito,
+                "severidade": c.severidade,
                 "nao_afirmar": c.o_que_nao_afirmar[:2],
                 "investigar": c.o_que_investigar[:3],
             }
@@ -1118,6 +1744,7 @@ def parecer_para_relatorio(parecer: ParecerVE) -> dict[str, Any]:
             for area, items in parecer.recomendacoes.items()
             if items
         ],
+        "recomendacoes_por_agravo": parecer.recomendacoes_por_agravo,
         "arquivos": [REL_MD, REL_HTML, REL_CSV],
         "usou_llm": parecer.usou_llm,
     }
@@ -1126,7 +1753,6 @@ def parecer_para_relatorio(parecer: ParecerVE) -> dict[str, Any]:
 def juina_hbv_one_liner(parecer: ParecerVE | None = None) -> str:
     """One-liner para o agente pai relay sobre Juína HBV."""
     if parecer is None:
-        # tenta meta já persistida
         meta_path = OUTDIR_DEFAULT / REL_JSON
         if meta_path.exists():
             try:
@@ -1135,13 +1761,20 @@ def juina_hbv_one_liner(parecer: ParecerVE | None = None) -> str:
                     if "JUINA" in str(c.get("municipio", "")).upper() and "hepatite" in str(
                         c.get("target", "")
                     ).casefold():
+                        comp = c.get("comparacao") or {}
+                        delta = ""
+                        if comp.get("delta_pct_se1") is not None:
+                            delta = (
+                                f" · vs SE-1 {comp.get('tendencia_se1', '→')} "
+                                f"{comp.get('delta_pct_se1'):+.0f}%"
+                            )
                         return (
                             f"Juína HBV SE {meta.get('se')}: {c.get('exames')} exames / "
-                            f"+{c.get('positivos')} ({c.get('positividade')}) [Observado] — "
-                            "sinal lab recorrente; NÃO declarar surto automático; "
+                            f"+{c.get('positivos')} ({c.get('positividade')}) [Observado]"
+                            f"{delta} — sinal lab; NÃO declarar surto automático; "
                             "investigar marcador agudo×crônico e critérios Guia MS."
                         )
-            except (OSError, json.JSONDecodeError):
+            except (OSError, json.JSONDecodeError, TypeError):
                 pass
         return (
             "Juína HBV: sinal laboratorial elevado no Observado — "
@@ -1149,12 +1782,19 @@ def juina_hbv_one_liner(parecer: ParecerVE | None = None) -> str:
         )
     for c in parecer.casos_especiais:
         if "JUINA" in c.municipio.upper() and "hepatite" in c.target.casefold():
+            comp = c.comparacao or {}
+            delta = ""
+            if comp.get("delta_pct_se1") is not None:
+                delta = (
+                    f" · vs SE-1 {comp.get('tendencia_se1', '→')} "
+                    f"{float(comp['delta_pct_se1']):+.0f}%"
+                )
             return (
                 f"Juína HBV SE {parecer.se_iso}: {c.exames} exames / "
-                f"+{c.positivos} ({c.positividade}) [Observado] — "
-                "sinal lab (possível padrão recorrente); critérios de surto do "
-                "Guia MS exigem definição de caso agudo + esperado + investigação; "
-                "NÃO declarar surto só com positividade GAL."
+                f"+{c.positivos} ({c.positividade}) [Observado]{delta} — "
+                "sinal lab; critérios de surto do Guia MS exigem definição de "
+                "caso agudo + esperado + investigação; NÃO declarar surto só "
+                "com positividade GAL."
             )
     return (
         f"SE {parecer.se_iso}: sem linha Juína×HBV destacada nos casos especiais; "
