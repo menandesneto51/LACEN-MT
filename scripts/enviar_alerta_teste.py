@@ -2,8 +2,8 @@
 """
 LACEN MT — envio de teste de alerta (Telegram + e-mail).
 
-Lê os top alertas reais em saida_pipeline e envia UMA mensagem
-marcada como TESTE. Não faz loop nem spam.
+Usa o modelo institucional `lacen_alerta_modelo.py` (fila + emergência + risco)
+e credenciais alinhadas a Sentinela / Araras / TITAN / Vigidesastres.
 
 Uso:
   python scripts/enviar_alerta_teste.py
@@ -12,16 +12,20 @@ Uso:
   python scripts/enviar_alerta_teste.py --telegram-only
 
 Credenciais (via .env na raiz do repo ou variáveis de ambiente):
-  TELEGRAM_BOT_TOKEN ou TELEGRAM_TOKEN
-  TELEGRAM_CHAT_ID
-  EMAIL_TO (default: menandesneto@gmail.com)
-  SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASSWORD
-  ou EMAIL_USER / EMAIL_SENHA (alias Gmail SMTP)
+  Telegram:
+    TELEGRAM_BOT_TOKEN | TELEGRAM_TOKEN
+    TELEGRAM_CHAT_ID | TG_CHAT_ID
+  E-mail SMTP (aliases Sentinela/Araras):
+    EMAIL_TO | EMAIL_DESTINATARIO | ALERT_EMAIL_TO
+    EMAIL_FROM | EMAIL_REMETENTE | SMTP_FROM
+    SMTP_USER | EMAIL_USER | EMAIL_REMETENTE
+    SMTP_PASSWORD | EMAIL_SENHA | SMTP_PASS
+    SMTP_HOST | SMTP_SERVER   (default smtp.gmail.com)
+    SMTP_PORT                 (default 587; 465 se SMTP_SSL=1)
 """
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import os
 import smtplib
@@ -30,11 +34,19 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
 from email.message import EmailMessage
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lacen_alerta_modelo import (  # noqa: E402
+    format_email,
+    format_telegram,
+    montar_alerta_from_outdir,
+)
+
 OUTDIR_DEFAULT = ROOT / "saida_pipeline"
 
 
@@ -53,135 +65,71 @@ def _load_dotenv(path: Path) -> None:
             os.environ[key] = val
 
 
-def _read_csv(path: Path, limit: int = 50) -> list[dict[str, str]]:
-    if not path.is_file():
-        return []
-    with path.open(encoding="utf-8-sig", newline="") as f:
-        rows = list(csv.DictReader(f))
-    return rows[:limit]
-
-
-def _cell(row: dict, *keys: str, default: str = "—") -> str:
+def _env(*keys: str, default: str = "") -> str:
     for k in keys:
-        if k in row and str(row.get(k) or "").strip():
-            return str(row[k]).strip()
+        v = (os.environ.get(k) or "").strip()
+        if v:
+            return v
     return default
 
 
-def build_test_message(outdir: Path, top_n: int = 3) -> tuple[str, str]:
-    """Monta assunto + corpo a partir de fila e emergência reais."""
-    fila = _read_csv(outdir / "fila_operacional.csv", top_n)
-    emerg = _read_csv(outdir / "indicadores_emergencia_acoes.csv", top_n)
-    if not emerg:
-        emerg = _read_csv(outdir / "indicadores_emergencia.csv", top_n)
-
-    agora = datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M %Z")
-    lines: list[str] = [
-        "=== TESTE LACEN MT — NÃO É ALERTA OPERACIONAL ===",
-        f"Gerado em: {agora}",
-        f"Fonte: {outdir.name}/ (top {top_n} atuais)",
-        "",
-        "— Fila operacional —",
-    ]
-    if not fila:
-        lines.append("(fila_operacional.csv ausente ou vazia)")
-    else:
-        for i, r in enumerate(fila, 1):
-            lines.append(
-                f"{i}. { _cell(r, 'municipio') } | sinal={_cell(r, 'sinal')} | "
-                f"prio={_cell(r, 'prioridade')} | score={_cell(r, 'score')}"
-            )
-            lines.append(
-                f"   ação={_cell(r, 'acao_sugerida')} | prazo={_cell(r, 'prazo_acao')} | "
-                f"resp={_cell(r, 'responsavel')}"
-            )
-            motivo = _cell(r, "motivo", default="")
-            if motivo and motivo != "—":
-                lines.append(f"   motivo={motivo[:160]}")
-
-    lines.append("")
-    lines.append("— Indicadores de emergência / pressão —")
-    if not emerg:
-        lines.append("(indicadores_emergencia*.csv ausentes)")
-    else:
-        for i, r in enumerate(emerg, 1):
-            pressao = _cell(
-                r,
-                "faixa_pressao",
-                "faixa_pressao_predita",
-                "banda_risco",
-                "prioridade_emergencia",
-            )
-            idx = _cell(r, "indice_pressao_rede", "indice_pressao", default="")
-            fam = _cell(r, "familia", "agravo_alvo", "target", default="")
-            extra = f" | pressão={pressao}"
-            if idx and idx != "—":
-                extra += f" (índice={idx})"
-            if fam and fam != "—":
-                extra += f" | família/alvo={fam}"
-            lines.append(f"{i}. {_cell(r, 'municipio')}{extra}")
-            lines.append(
-                f"   ação={_cell(r, 'acao_sugerida')} | prazo={_cell(r, 'prazo_acao')} | "
-                f"resp={_cell(r, 'responsavel')}"
-            )
-
-    lines.extend(
-        [
-            "",
-            "Canal de teste: scripts/enviar_alerta_teste.py",
-            "=== FIM DO TESTE ===",
-        ]
-    )
-    body = "\n".join(lines)
-    subject = f"[TESTE LACEN MT] Top {top_n} alertas — {agora}"
-    return subject, body
-
-
-def send_telegram(text: str) -> tuple[bool, str]:
-    token = (
-        os.environ.get("TELEGRAM_BOT_TOKEN")
-        or os.environ.get("TELEGRAM_TOKEN")
-        or ""
-    ).strip()
-    chat_id = (os.environ.get("TELEGRAM_CHAT_ID") or "").strip()
+def send_telegram(text: str, *, parse_mode: str = "HTML") -> tuple[bool, str]:
+    token = _env("TELEGRAM_BOT_TOKEN", "TELEGRAM_TOKEN")
+    chat_id = _env("TELEGRAM_CHAT_ID", "TG_CHAT_ID")
     if not token or not chat_id:
         return False, (
-            "Telegram: faltam TELEGRAM_BOT_TOKEN (ou TELEGRAM_TOKEN) e/ou TELEGRAM_CHAT_ID. "
-            "Defina no .env — ver .env.example."
+            "Telegram: faltam TELEGRAM_BOT_TOKEN (ou TELEGRAM_TOKEN) e/ou "
+            "TELEGRAM_CHAT_ID (ou TG_CHAT_ID). Defina no .env — ver .env.example."
         )
     url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = urllib.parse.urlencode(
-        {"chat_id": chat_id, "text": text[:4000], "disable_web_page_preview": "true"}
-    ).encode("utf-8")
+    payload_dict = {
+        "chat_id": chat_id,
+        "text": text[:4000],
+        "disable_web_page_preview": "true",
+    }
+    if parse_mode:
+        payload_dict["parse_mode"] = parse_mode
+    payload = urllib.parse.urlencode(payload_dict).encode("utf-8")
     req = urllib.request.Request(
-        url, data=payload, method="POST", headers={"Content-Type": "application/x-www-form-urlencoded"}
+        url,
+        data=payload,
+        method="POST",
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode("utf-8"))
         if data.get("ok"):
             return True, "Telegram: mensagem enviada."
+        # Retry sem parse_mode se HTML falhar
+        if parse_mode and "parse" in str(data.get("description", "")).lower():
+            return send_telegram(text, parse_mode="")
         return False, f"Telegram: API respondeu ok=false — {data.get('description', data)}"
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", errors="replace")[:300]
+        if parse_mode and e.code == 400:
+            return send_telegram(text, parse_mode="")
         return False, f"Telegram: HTTP {e.code} — {detail}"
-    except Exception as e:  # noqa: BLE001 — relatório claro ao operador
+    except Exception as e:  # noqa: BLE001
         return False, f"Telegram: falha — {type(e).__name__}: {e}"
 
 
-def send_email_smtp(subject: str, body: str, to_addr: str) -> tuple[bool, str]:
-    user = (os.environ.get("SMTP_USER") or os.environ.get("EMAIL_USER") or "").strip()
-    password = (
-        os.environ.get("SMTP_PASSWORD") or os.environ.get("EMAIL_SENHA") or ""
-    ).strip()
-    host = (os.environ.get("SMTP_HOST") or "smtp.gmail.com").strip()
-    port = int(os.environ.get("SMTP_PORT") or "587")
-    from_addr = (os.environ.get("EMAIL_FROM") or user or "").strip()
+def send_email_smtp(
+    subject: str, body: str, to_addr: str, html_body: str | None = None
+) -> tuple[bool, str]:
+    user = _env("SMTP_USER", "EMAIL_USER", "EMAIL_REMETENTE")
+    password = _env("SMTP_PASSWORD", "EMAIL_SENHA", "SMTP_PASS")
+    host = _env("SMTP_HOST", "SMTP_SERVER", default="smtp.gmail.com")
+    port_raw = _env("SMTP_PORT")
+    ssl_flag = _env("SMTP_SSL", default="").lower() in ("1", "true", "yes", "on")
+    port = int(port_raw or ("465" if ssl_flag else "587"))
+    from_addr = _env("EMAIL_FROM", "EMAIL_REMETENTE", "SMTP_FROM", default=user)
 
     if not user or not password or not from_addr:
         return False, (
-            "E-mail SMTP: faltam SMTP_USER/EMAIL_USER e SMTP_PASSWORD/EMAIL_SENHA "
-            "(e EMAIL_FROM opcional). Use senha de app Gmail se 2FA estiver ativo."
+            "E-mail SMTP: faltam SMTP_USER/EMAIL_USER/EMAIL_REMETENTE e "
+            "SMTP_PASSWORD/EMAIL_SENHA/SMTP_PASS (e EMAIL_FROM/SMTP_FROM opcional). "
+            "Use senha de app Gmail se 2FA estiver ativo."
         )
 
     msg = EmailMessage()
@@ -189,17 +137,39 @@ def send_email_smtp(subject: str, body: str, to_addr: str) -> tuple[bool, str]:
     msg["From"] = from_addr
     msg["To"] = to_addr
     msg.set_content(body)
+    if html_body:
+        msg.add_alternative(html_body, subtype="html")
 
     try:
         context = ssl.create_default_context()
-        with smtplib.SMTP(host, port, timeout=30) as server:
-            server.ehlo()
-            server.starttls(context=context)
-            server.ehlo()
-            server.login(user, password)
-            server.send_message(msg)
+        if port == 465 or ssl_flag:
+            with smtplib.SMTP_SSL(host, port, timeout=30, context=context) as server:
+                server.login(user, password)
+                server.send_message(msg)
+        else:
+            with smtplib.SMTP(host, port, timeout=30) as server:
+                server.ehlo()
+                server.starttls(context=context)
+                server.ehlo()
+                server.login(user, password)
+                server.send_message(msg)
         return True, f"E-mail SMTP: enviado para {to_addr}."
     except Exception as e:  # noqa: BLE001
+        # Fallback Titan/host secundário (padrão Araras/Sentinela)
+        fb_host = _env("SMTP_FALLBACK_HOST")
+        fb_port = int(_env("SMTP_FALLBACK_PORT", default="465") or "465")
+        if fb_host and fb_host != host:
+            try:
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL(fb_host, fb_port, timeout=30, context=context) as server:
+                    server.login(user, password)
+                    server.send_message(msg)
+                return True, f"E-mail SMTP (fallback {fb_host}): enviado para {to_addr}."
+            except Exception as e2:  # noqa: BLE001
+                return False, (
+                    f"E-mail SMTP: falha — {type(e).__name__}: {e} | "
+                    f"fallback — {type(e2).__name__}: {e2}"
+                )
         return False, f"E-mail SMTP: falha — {type(e).__name__}: {e}"
 
 
@@ -212,24 +182,34 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--telegram-only", action="store_true")
     parser.add_argument(
         "--email-to",
-        default=os.environ.get("EMAIL_TO", "menandesneto@gmail.com"),
-        help="Destinatário do e-mail de teste",
+        default=None,
+        help="Destinatário (default: EMAIL_TO / EMAIL_DESTINATARIO / menandesneto@gmail.com)",
     )
     args = parser.parse_args(argv)
 
     _load_dotenv(ROOT / ".env")
 
     outdir = args.outdir if args.outdir.is_absolute() else (ROOT / args.outdir)
-    subject, body = build_test_message(outdir, top_n=max(1, args.top))
+    alerta = montar_alerta_from_outdir(outdir, tipo="TESTE", top_n=max(1, args.top))
+    subject, body, html_body = format_email(alerta)
+    tg_text = format_telegram(alerta)
 
     print(subject)
     print("-" * 60)
     print(body)
     print("-" * 60)
+    print("--- Telegram (HTML) ---")
+    print(tg_text)
+    print("-" * 60)
 
     if args.dry_run:
         print("Dry-run: nenhum envio.")
         return 0
+
+    to_addr = (
+        args.email_to
+        or _env("EMAIL_TO", "EMAIL_DESTINATARIO", "ALERT_EMAIL_TO", default="menandesneto@gmail.com")
+    )
 
     do_tg = not args.email_only
     do_mail = not args.telegram_only
@@ -237,14 +217,14 @@ def main(argv: list[str] | None = None) -> int:
     exit_code = 0
 
     if do_tg:
-        ok, msg = send_telegram(body)
+        ok, msg = send_telegram(tg_text)
         print(msg)
         ok_any = ok_any or ok
         if not ok:
             exit_code = 1
 
     if do_mail:
-        ok, msg = send_email_smtp(subject, body, args.email_to)
+        ok, msg = send_email_smtp(subject, body, to_addr, html_body=html_body)
         print(msg)
         ok_any = ok_any or ok
         if not ok:

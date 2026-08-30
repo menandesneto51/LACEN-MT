@@ -37,6 +37,17 @@ python scripts/enviar_alerta_teste.py
 python scripts/enviar_alerta_teste.py --dry-run
 ```
 
+### Relatório CIEVS 2×/semana
+Payload institucional (blocos A–D) via `lacen_relatorio_cievs.py` — Telegram curto + e-mail completo:
+
+```bat
+enviar_relatorio_cievs.bat
+.\.venv\Scripts\python.exe scripts\enviar_relatorio_cievs.py --dry-run
+.\.venv\Scripts\python.exe scripts\enviar_relatorio_cievs.py --telegram --email --to menandesneto@gmail.com
+```
+
+Agenda: **terça e sexta** (Agendador de Tarefas Windows apontando para `enviar_relatorio_cievs.bat` com args de envio, ou cron equivalente). Prévia em `saida_pipeline/relatorio_cievs_ultimo.txt`.
+
 Requer no `.env`: `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` e/ou SMTP (`EMAIL_USER`/`EMAIL_SENHA` ou `SMTP_*`). Ver `.env.example`.
 
 ### Auth do dashboard (SES/CIEVS)

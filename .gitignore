@@ -131,8 +131,8 @@ saida_pipeline/*
 !saida_pipeline/sim_qualidade.csv
 !saida_pipeline/sim_weekly_municipio.csv
 !saida_pipeline/sim_weekly_municipio.parquet
+!saida_pipeline/relatorio_cievs_ultimo.txt
 !ml/models_store/meta.json
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv
 !ml/models_store/*.joblib
-!saida_pipeline/sim_qualidade.csv

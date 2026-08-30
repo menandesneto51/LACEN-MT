@@ -64,7 +64,10 @@ Desligar: remova o bloco `[auth]` / senhas dos Secrets e faça **Reboot** (ou ap
 O Cloud **exibe** alertas (fila, emergência, risco, silêncio, pressão) lidos de `saida_pipeline/`.
 Disparo Telegram/e-mail **não** roda no Streamlit Cloud; use localmente:
 
-`python scripts/enviar_alerta_teste.py` (credenciais em `.env` — ver `.env.example`).
+- Alerta teste: `python scripts/enviar_alerta_teste.py`
+- Relatório CIEVS 2×/semana (terça/sexta): `python scripts/enviar_relatorio_cievs.py --dry-run` ou `enviar_relatorio_cievs.bat`
+
+Credenciais em `.env` — ver `.env.example` (`TELEGRAM_*`, `SMTP`/`EMAIL_*`).
 
 ## Atualizar dados locais antes do push
 
