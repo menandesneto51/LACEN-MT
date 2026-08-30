@@ -20,6 +20,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
+from lacen_briefing_epi import (
+    briefing_para_relatorio,
+    gerar_briefing_epi,
+)
+
 ROOT = Path(__file__).resolve().parent
 OUTDIR_DEFAULT = ROOT / "saida_pipeline"
 
@@ -521,6 +526,14 @@ class RelatorioCIEVS:
     variacao_se: str = "—"
     n_primeira_deteccao_alerta: int = 0
     top_divergencias: list[dict[str, str]] = field(default_factory=list)
+    # Bloco E — Briefing epidemiológico (5 perguntas)
+    briefing_mais_solicitados: list[dict[str, str]] = field(default_factory=list)
+    briefing_maior_positividade: list[dict[str, str]] = field(default_factory=list)
+    briefing_localidades: list[dict[str, str]] = field(default_factory=list)
+    briefing_vizinhos: list[dict[str, str]] = field(default_factory=list)
+    briefing_risco: list[dict[str, str]] = field(default_factory=list)
+    briefing_nota_igg: str = ""
+    briefing_fontes: list[str] = field(default_factory=list)
     # Bloco B
     tat_mediano: str = "—"
     tat_p90: str = "—"
@@ -1362,6 +1375,10 @@ def montar_relatorio(
 
     aviso = _aviso_atraso_bases(src, lab_meta, se)
 
+    # Bloco E — mesma SE operacional do lab-epi
+    briefing_raw = gerar_briefing_epi(outdir, se=se if se != "—" else None)
+    briefing = briefing_para_relatorio(briefing_raw)
+
     fontes: list[str] = []
     if src.tabelas_dw:
         fontes.extend(src.tabelas_dw)
@@ -1370,6 +1387,9 @@ def montar_relatorio(
         fontes.append(f"saida_pipeline ({len(src.arquivos_local)} artefatos)")
     elif src.arquivos_local and src.tabelas_dw:
         fontes.append(f"+ saida_pipeline complementar ({len(src.arquivos_local)} artefatos)")
+    for bf in briefing.get("fontes") or []:
+        if bf and bf not in fontes:
+            fontes.append(bf)
 
     crs_top = [
         {"crs": x.get("crs", "—"), "n": _fmt_num(x.get("n"), 0)}
@@ -1379,9 +1399,12 @@ def montar_relatorio(
     nota = (
         "Relatório agregado — rótulos Observado / Derivado / Predito. "
         "Sem PII ou microdados nominais. "
-        f"KPIs lab-epi e top municípios alinhados à SE de referência {se} "
+        f"KPIs lab-epi, briefing (5 perguntas) e top municípios alinhados à SE "
+        f"de referência {se} "
         "(série integrated_weekly; soma estadual = soma municipal da mesma SE)."
     )
+    if briefing.get("nota_igg"):
+        nota += " " + str(briefing["nota_igg"])
 
     return RelatorioCIEVS(
         semana_epidemiologica=se,
@@ -1400,6 +1423,13 @@ def montar_relatorio(
         variacao_se=variacao,
         n_primeira_deteccao_alerta=n_1a,
         top_divergencias=diverg,
+        briefing_mais_solicitados=briefing.get("mais_solicitados") or [],
+        briefing_maior_positividade=briefing.get("maior_positividade") or [],
+        briefing_localidades=briefing.get("localidades") or [],
+        briefing_vizinhos=briefing.get("vizinhos") or [],
+        briefing_risco=briefing.get("risco") or [],
+        briefing_nota_igg=str(briefing.get("nota_igg") or ""),
+        briefing_fontes=list(briefing.get("fontes") or []),
         tat_mediano=tat_med,
         tat_p90=tat_p90,
         pct_48h=pct48,
@@ -1467,6 +1497,47 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
         )
     if not rel.top_positivos:
         lines.append(html.escape("(sem positivos na janela)"))
+
+    # Bloco E — compacto (top 3 / 2 eixos / 3 riscos)
+    lines.extend(["", "<b>E — Briefing (5 perguntas)</b>"])
+    sol = rel.briefing_mais_solicitados[:3]
+    if sol:
+        lines.append("<i>Mais solicitados</i>")
+        for x in sol:
+            lines.append(
+                html.escape(
+                    f"• {x['target']}: {x['exames']} ex. · +{x['positivos']} "
+                    f"({x['positividade']}) [{x.get('tipo_sinal', 'Observado')}]"
+                )
+            )
+    posi = rel.briefing_maior_positividade[:3]
+    if posi:
+        lines.append("<i>Maior positividade</i>")
+        for x in posi:
+            flag = " · baixa_amostra" if x.get("baixa_amostra") == "sim" else ""
+            igg = " · IgG" if x.get("caveat_igg") == "sim" else ""
+            lines.append(
+                html.escape(
+                    f"• {x['target']}: {x['positividade']} "
+                    f"({x['exames']} ex.){flag}{igg}"
+                )
+            )
+    viz = rel.briefing_vizinhos[:2]
+    if viz:
+        lines.append("<i>Vizinhos</i>")
+        for v in viz:
+            lines.append(
+                html.escape(
+                    f"• {v['target']}: {v['par']} ({v['positivos']})"
+                )
+            )
+    for r in rel.briefing_risco[:3]:
+        msg = (r.get("mensagem") or "")[:140]
+        lines.append(
+            html.escape(f"• [{r.get('tipo_sinal', 'Observado')}] {msg}")
+        )
+    if rel.briefing_nota_igg:
+        lines.append(f"<i>{html.escape(rel.briefing_nota_igg[:120])}</i>")
 
     lines.extend(["", "<b>B — Rede</b> (top 5 pressão)"])
     for p in rel.top_pressao[:5]:
@@ -1551,6 +1622,56 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             f"  {i}. {d['municipio']} — {d['tipo']} · "
             f"notif={d['notif_sinan']} · exames={d['exames']}"
         )
+
+    lines.extend(
+        [
+            "",
+            "— E · Briefing epidemiológico (5 perguntas) [Observado / Predito] —",
+        ]
+    )
+    lines.append("1) Mais solicitados:")
+    for i, x in enumerate(rel.briefing_mais_solicitados[:8], 1):
+        lines.append(
+            f"  {i}. {x['target']} — {x['exames']} exames · "
+            f"+{x['positivos']} · pos={x['positividade']} [{x.get('tipo_sinal', 'Observado')}]"
+        )
+    lines.append("2) Maior positividade:")
+    for i, x in enumerate(rel.briefing_maior_positividade[:8], 1):
+        flags = []
+        if x.get("baixa_amostra") == "sim":
+            flags.append("baixa_amostra")
+        if x.get("caveat_igg") == "sim":
+            flags.append("caveat_IgG")
+        fl = f" · {', '.join(flags)}" if flags else ""
+        lines.append(
+            f"  {i}. {x['target']} — pos={x['positividade']} · "
+            f"{x['exames']} exames{fl} [{x.get('tipo_sinal', 'Observado')}]"
+        )
+    lines.append("3) Localidades:")
+    by_t: dict[str, list[dict[str, str]]] = {}
+    for loc in rel.briefing_localidades:
+        by_t.setdefault(loc.get("target") or "—", []).append(loc)
+    for tgt, locs in list(by_t.items())[:6]:
+        muns = ", ".join(
+            f"{L['municipio']}(+{L['positivos']})" for L in locs[:5]
+        )
+        lines.append(f"  · {tgt}: {muns}")
+    lines.append("4) Vizinhos na mesma situação:")
+    if rel.briefing_vizinhos:
+        for i, v in enumerate(rel.briefing_vizinhos[:8], 1):
+            lines.append(
+                f"  {i}. {v['target']} — {v['par']} · {v['positivos']} · "
+                f"{v.get('dist_km', '—')} km [{v.get('tipo_sinal', 'Observado')}]"
+            )
+    else:
+        lines.append("  (nenhum par)")
+    lines.append("5) Risco de dispersão:")
+    for r in rel.briefing_risco:
+        lines.append(f"  · [{r.get('tipo_sinal', 'Observado')}] {r.get('mensagem', '')}")
+    if rel.briefing_nota_igg:
+        lines.append(f"Nota: {rel.briefing_nota_igg}")
+    if rel.briefing_fontes:
+        lines.append(f"Fontes briefing: {', '.join(rel.briefing_fontes)}")
 
     lines.extend(
         [
@@ -1732,6 +1853,66 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
         "</tr>"
         for p in rel.pressao_predita_top
     ]
+    sol_rows = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(x['target'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['exames'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['positivos'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
+        f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
+        "</tr>"
+        for x in rel.briefing_mais_solicitados[:8]
+    ]
+    posi_rows = []
+    for x in rel.briefing_maior_positividade[:8]:
+        flags = []
+        if x.get("baixa_amostra") == "sim":
+            flags.append("baixa_amostra")
+        if x.get("caveat_igg") == "sim":
+            flags.append("caveat IgG")
+        posi_rows.append(
+            "<tr style='border-bottom:1px solid #e6ebf2'>"
+            f"<td style='padding:6px 8px'>{html.escape(x['target'])}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(x['exames'])}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(', '.join(flags) or '—')}</td>"
+            f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
+            "</tr>"
+        )
+    loc_rows = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(x['target'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['municipio'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['positivos'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['exames'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
+        "</tr>"
+        for x in rel.briefing_localidades[:20]
+    ]
+    viz_rows = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(v['target'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(v['par'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(v['positivos'])}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(v.get('dist_km', '—'))}</td>"
+        f"<td style='padding:6px 8px'><small>{html.escape(v.get('tipo_sinal', 'Observado'))}</small></td>"
+        "</tr>"
+        for v in rel.briefing_vizinhos[:10]
+    ]
+    risco_rows = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'><small>{html.escape(r.get('tipo_sinal', 'Observado'))}</small></td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('mensagem', ''))}</td>"
+        "</tr>"
+        for r in rel.briefing_risco
+    ]
+    nota_igg_html = (
+        f"<p style='background:#f0f4fa;border-left:4px solid #1B3281;padding:8px 12px;"
+        f"font-size:13px'>{html.escape(rel.briefing_nota_igg)}</p>"
+        if rel.briefing_nota_igg
+        else ""
+    )
+    briefing_fontes_txt = ", ".join(rel.briefing_fontes) or "—"
 
     aviso_html = (
         f"<p style='background:#fff4e5;border-left:4px solid #e6a23c;padding:10px 12px'>"
@@ -1779,6 +1960,25 @@ A — Situação lab-epi</h3>
 {_html_table(["Município", "Tipo", "Notif. SINAN", "Exames"], div_rows, "(nenhuma divergência)")}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
+E — Briefing epidemiológico (5 perguntas)</h3>
+<p style="font-size:13px;color:#3d4f6f">
+Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) e
+<b>Predito</b> (ML). Fontes: {html.escape(briefing_fontes_txt)}.
+</p>
+{nota_igg_html}
+<p><b>1) Mais solicitados</b></p>
+{_html_table(["Agravo", "Exames", "Positivos", "Positividade", "Sinal"], sol_rows)}
+<p><b>2) Maior positividade</b>
+<small style="color:#5a6a85"> · min. 30 exames; baixa_amostra = min. 10</small></p>
+{_html_table(["Agravo", "Positividade", "Exames", "Flag", "Sinal"], posi_rows)}
+<p><b>3) Localidades</b> (top municípios por positivos / exames)</p>
+{_html_table(["Agravo", "Município", "Positivos", "Exames", "Positividade"], loc_rows)}
+<p><b>4) Vizinhos na mesma situação</b></p>
+{_html_table(["Agravo", "Par", "Positivos", "Dist. km", "Sinal"], viz_rows, "(nenhum par vizinho com positivos)")}
+<p><b>5) Risco de dispersão</b></p>
+{_html_table(["Sinal", "Interpretação"], risco_rows, "(sem sinal)")}
+
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 B — Rede laboratorial</h3>
 <p>TAT mediano: <b>{html.escape(rel.tat_mediano)} d</b> ·
 p90: <b>{html.escape(rel.tat_p90)} d</b> ·
@@ -1808,7 +2008,9 @@ D — Qualidade e fontes</h3>
 <p style="font-size:12px;color:#5a6a85;margin-top:18px">
 Fonte primária: <b>{html.escape(rel.fonte_primaria)}</b><br>
 Fontes: {html.escape(", ".join(rel.fontes_presentes) or "—")}<br>
-Modelo: lacen_relatorio_cievs.py
+Briefing: integrated_weekly + municipio_vizinhos
+{" + ml_risco_predito" if any("ml_risco" in f for f in rel.briefing_fontes) else ""}<br>
+Modelo: lacen_relatorio_cievs.py · lacen_briefing_epi.py
 </p>
 </td></tr>
 </table>

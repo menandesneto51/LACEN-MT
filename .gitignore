@@ -136,6 +136,9 @@ saida_pipeline/*
 !saida_pipeline/validacao_etl_dw_ultimo.json
 !saida_pipeline/weekly_tests_by_target_municipio.csv
 !saida_pipeline/positivity_by_target_epiweek_municipio.csv
+!saida_pipeline/briefing_epi_se.csv
+!saida_pipeline/briefing_epi_se.parquet
+!saida_pipeline/briefing_epi_se_resumo.txt
 !ml/models_store/meta.json
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv

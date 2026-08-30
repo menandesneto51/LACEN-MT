@@ -83,6 +83,7 @@ STARTUP_OPTIONAL_FILES = {
     "indicadores_emergencia_resumo": "indicadores_emergencia_resumo.csv",
     "indicadores_emergencia_acoes": "indicadores_emergencia_acoes.csv",
     "emergencia_confirmacao": "emergencia_confirmacao_resumo.csv",
+    "briefing_epi": "briefing_epi_se.csv",
 }
 
 # Carregados sob demanda pelo módulo aberto (não no startup)
@@ -1711,6 +1712,80 @@ if modulo == "Visão executiva":
         c5.metric("Silenciosos (Derivado)", format_int(silencio_n))
         c6.metric("Prioritários atenção+ (Derivado)", format_int(alto_risco_n))
 
+        # --- Briefing SE — 5 perguntas CIEVS ---
+        st.markdown("##### Briefing SE — 5 perguntas CIEVS")
+        df_briefing = get_optional(folder, "briefing_epi")
+        if df_briefing.empty:
+            try:
+                from lacen_briefing_epi import gerar_briefing_epi
+
+                _b = gerar_briefing_epi(folder, persistir=False)
+                if _b.rows_flat:
+                    df_briefing = pd.DataFrame(_b.rows_flat)
+            except Exception:
+                df_briefing = pd.DataFrame()
+        if df_briefing.empty:
+            st.caption(
+                "Briefing indisponível — gere com `python lacen_briefing_epi.py` "
+                "ou rode o relatório CIEVS."
+            )
+        else:
+            se_brief = (
+                str(df_briefing["se"].iloc[0])
+                if "se" in df_briefing.columns and len(df_briefing)
+                else "—"
+            )
+            with st.expander(
+                f"Briefing SE — 5 perguntas CIEVS ({se_brief})",
+                expanded=False,
+            ):
+                st.caption(
+                    "Observado (lab integrated_weekly) · Predito (ML se presente). "
+                    "Positividade IgG/sorologia elevada ≠ surto agudo."
+                )
+                pergunta_col = "pergunta" if "pergunta" in df_briefing.columns else None
+                if pergunta_col:
+                    labels = {
+                        "mais_solicitados": "1) Mais solicitados",
+                        "maior_positividade": "2) Maior positividade",
+                        "localidades": "3) Localidades",
+                        "vizinhos_mesma_situacao": "4) Vizinhos na mesma situação",
+                        "risco_dispersao": "5) Risco de dispersão",
+                    }
+                    for key, title in labels.items():
+                        sub = df_briefing[df_briefing[pergunta_col].astype(str) == key]
+                        if sub.empty:
+                            continue
+                        st.markdown(f"**{title}**")
+                        cols_show = [
+                            c
+                            for c in [
+                                "rank",
+                                "target",
+                                "municipio",
+                                "exames",
+                                "positivos",
+                                "positividade",
+                                "detalhe",
+                                "tipo_sinal",
+                                "flag",
+                            ]
+                            if c in sub.columns
+                        ]
+                        show_table(
+                            sub[cols_show].head(12),
+                            title,
+                            max_rows=12,
+                            key=f"briefing_{key}",
+                        )
+                else:
+                    show_table(
+                        df_briefing.head(40),
+                        "Briefing epi",
+                        max_rows=40,
+                        key="briefing_raw",
+                    )
+
         # --- Cartão executivo de emergência (5 KPIs + ações) ---
         st.markdown("##### Emergência em saúde pública — cartão executivo")
         st.caption(
@@ -2670,6 +2745,12 @@ elif modulo == "Predição e alertas":
     df_ml_anomalias = get_optional(folder, "ml_anomalias")
     df_ml_backtest = get_optional(folder, "ml_backtest")
     forecast = get_optional(folder, "forecast")
+    _bf = get_optional(folder, "briefing_epi")
+    if not _bf.empty and "se" in _bf.columns:
+        st.caption(
+            f"Cruzar Predito abaixo com **Observado** do briefing CIEVS "
+            f"(SE {_bf['se'].iloc[0]}) na Visão executiva — 5 perguntas."
+        )
 
     if sub_pred == "Alertas e recomendações":
         st.subheader("Alertas e recomendações operacionais")
