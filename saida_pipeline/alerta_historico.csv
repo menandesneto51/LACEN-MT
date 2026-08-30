@@ -399,73 +399,416 @@
 2026-08-04,silencio,JAU,chikungunya,2025,8,0.6542,2,silencio,1
 2026-08-04,silencio,JENIPAPO DOS VIEIRAS,chikungunya,2025,30,0.6542,2,silencio,1
 2026-08-04,silencio,CHAPADINHA,chikungunya,2025,19,0.6542,2,silencio,1
+2026-08-30,risco,CUIABA,baciloscopia,2026,15,0.9105,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,meningite_bacteriana_biologia_molecular,2026,20,0.8659,2,,
+2026-08-30,risco,NOVA SANTA HELENA,chikungunya,2025,24,0.8636,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,hepatite_b_hbv,2025,32,0.8548,2,sem_confirmacao,0
+2026-08-30,risco,VERA,chikungunya,2025,29,0.8374,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,hepatite_b_hbv,2026,17,0.8302,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,baciloscopia,2025,35,0.8053,2,sem_confirmacao,0
+2026-08-30,risco,GENERAL CARNEIRO,chikungunya,2025,11,0.794,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,citomegalovirus_igg,2025,33,0.781,2,sem_confirmacao,0
+2026-08-30,risco,LAMBARI D''OESTE,chikungunya,2025,27,0.7734,2,sem_confirmacao,0
+2026-08-30,risco,POXOREO,chikungunya,2025,22,0.7611,2,sem_confirmacao,0
+2026-08-30,risco,IPIRANGA DO NORTE,chikungunya,2025,34,0.76,2,sem_confirmacao,0
+2026-08-30,risco,CAMPOS DE JULIO,chikungunya,2025,29,0.7576,2,sem_confirmacao,0
+2026-08-30,risco,MIRASSOL D''OESTE,chikungunya,2025,34,0.7503,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,chikungunya,2025,35,0.7261,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,hepatite_b_hbv,2025,34,0.7217,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,hepatite_b_hbv,2025,34,0.7089,2,sem_confirmacao,0
+2026-08-30,risco,ALTO GARCAS,chikungunya,2025,31,0.7063,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,sifilis,2025,10,0.702,2,sem_confirmacao,0
+2026-08-30,risco,JUARA,chikungunya,2025,27,0.6986,2,sem_confirmacao,0
+2026-08-30,risco,CARLINDA,chikungunya,2025,15,0.696,2,sem_confirmacao,0
+2026-08-30,risco,AGUA BOA,hepatite_a,2025,20,0.6948,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,hepatite_b_hbv,2025,34,0.688,2,sem_confirmacao,0
+2026-08-30,risco,COMODORO,chikungunya,2025,30,0.6878,2,sem_confirmacao,0
+2026-08-30,risco,MARCELANDIA,chikungunya,2025,21,0.6861,2,sem_confirmacao,0
+2026-08-30,risco,QUERENCIA,hepatite_b_hbv,2025,33,0.6809,2,sem_confirmacao,0
+2026-08-30,risco,PRIMAVERA DO LESTE,chikungunya,2025,35,0.6648,2,sem_confirmacao,0
+2026-08-30,risco,BRASNORTE,chikungunya,2025,32,0.6579,2,sem_confirmacao,0
+2026-08-30,risco,BRASNORTE,hepatite_b_hbv,2025,28,0.6571,2,sem_confirmacao,0
+2026-08-30,risco,ITAUBA,chikungunya,2025,29,0.6569,2,sem_confirmacao,0
+2026-08-30,risco,NORTELANDIA,chikungunya,2025,16,0.6517,2,sem_confirmacao,0
+2026-08-30,risco,MATUPA,hepatite_b_hbv,2025,24,0.6462,2,sem_confirmacao,0
+2026-08-30,risco,GUARANTA DO NORTE,hepatite_b_hbv,2025,33,0.6448,2,sem_confirmacao,0
+2026-08-30,risco,BRASNORTE,dengue,2025,32,0.6443,2,sem_confirmacao,0
+2026-08-30,risco,PEDRA PRETA,chikungunya,2025,28,0.644,2,sem_confirmacao,0
+2026-08-30,risco,CANARANA,dengue,2025,34,0.6396,2,sem_confirmacao,0
+2026-08-30,risco,COTRIGUACU,hepatite_b_hbv,2025,32,0.6372,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,hepatite_b_hbv,2025,34,0.6351,2,sem_confirmacao,0
+2026-08-30,risco,POCONE,chikungunya,2025,28,0.6328,2,sem_confirmacao,0
+2026-08-30,risco,CURVELANDIA,chikungunya,2025,17,0.6271,2,sem_confirmacao,0
+2026-08-30,risco,GENERAL CARNEIRO,zika,2025,8,0.6256,2,sem_confirmacao,0
+2026-08-30,risco,PLANALTO DA SERRA,chikungunya,2025,28,0.6235,2,sem_confirmacao,0
+2026-08-30,risco,INDIAVAI,chikungunya,2025,8,0.6223,2,sem_confirmacao,0
+2026-08-30,risco,RONDONOPOLIS,hepatite_b_hbv,2025,33,0.6216,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,zika,2025,34,0.62,2,sem_confirmacao,0
+2026-08-30,risco,SALVADOR,chikungunya,2025,9,0.6163,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,pesquisa_de_multipatogenos_ist,2026,21,0.6137,2,,
+2026-08-30,risco,CONQUISTA D''OESTE,chikungunya,2025,23,0.6098,2,sem_confirmacao,0
+2026-08-30,risco,SAO JOSE DOS QUATRO MARCOS,chikungunya,2025,22,0.6096,2,sem_confirmacao,0
+2026-08-30,risco,MATUPA,hepatite_a,2025,28,0.6028,2,sem_confirmacao,0
+2026-08-30,risco,PONTES E LACERDA,chikungunya,2025,35,0.6004,2,sem_confirmacao,0
+2026-08-30,risco,JURUENA,hepatite_b_hbv,2025,34,0.5986,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,hepatite_b_hbv,2026,20,0.597,2,,
+2026-08-30,risco,CUIABA,influenza,2025,20,0.5805,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,pesquisa_de_genes_de_resistencia,2024,33,0.5713,2,sem_confirmacao,0
+2026-08-30,risco,CANARANA,hepatite_b_hbv,2025,33,0.5607,2,sem_confirmacao,0
+2026-08-30,risco,GUARANTA DO NORTE,hepatite_a,2025,28,0.5599,2,sem_confirmacao,0
+2026-08-30,risco,CASTANHEIRA,hepatite_b_hbv,2025,33,0.5599,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,hiv,2025,22,0.5365,2,sem_confirmacao,0
+2026-08-30,risco,COLIDER,hepatite_a,2024,32,0.5321,2,sem_confirmacao,0
+2026-08-30,risco,TERRA NOVA DO NORTE,hepatite_a,2025,30,0.5302,2,sem_confirmacao,0
+2026-08-30,risco,NOVA XAVANTINA,hepatite_b_hbv,2025,32,0.5228,2,sem_confirmacao,0
+2026-08-30,risco,TERRA NOVA DO NORTE,hepatite_b_hbv,2025,32,0.5222,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,hepatite_a,2025,32,0.5141,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,hepatite_a,2025,32,0.5116,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,hepatite_a,2025,17,0.5084,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,hepatite_b_hbv,2026,21,0.5043,2,,
+2026-08-30,risco,CAMPO VERDE,sarampo_igg,2025,46,0.4997,2,sem_confirmacao,0
+2026-08-30,risco,GUARANTA DO NORTE,hiv,2025,23,0.4931,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,hepatite_a,2024,32,0.4827,2,sem_confirmacao,0
+2026-08-30,risco,JACIARA,hepatite_b_hbv,2025,20,0.4811,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,hepatite_a,2025,16,0.4685,2,sem_confirmacao,0
+2026-08-30,risco,PEDRA PRETA,hepatite_b_hbv,2025,33,0.4677,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,hiv,2025,8,0.4662,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,pesquisa_de_multipatogenos_ist,2026,13,0.4655,2,sem_confirmacao,0
+2026-08-30,risco,BARRA DO BUGRES,hepatite_b_hbv,2026,7,0.4653,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,hepatite_b_hbv,2025,30,0.464,2,sem_confirmacao,0
+2026-08-30,risco,COLIDER,hepatite_b_hbv,2025,34,0.4532,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,toxoplasmose_igm,2025,13,0.4375,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,influenza,2025,20,0.4041,2,sem_confirmacao,0
+2026-08-30,risco,CAMPINAPOLIS,sars_cov_2,2025,35,0.3918,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,variola,2026,5,0.3903,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,pesquisa_de_carbapenemases,2024,40,0.3856,2,sem_confirmacao,0
+2026-08-30,risco,PONTES E LACERDA,hiv,2025,20,0.3853,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,varicela_zoster_biologia_molecular,2024,38,0.3735,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,bacterias_teste_de_sensibilidade,2025,33,0.3607,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,pesquisa_de_genes_de_resistencia,2025,24,0.3526,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,pesquisa_de_carbapenemases,2025,43,0.346,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,toxoplasmose_igg,2025,35,0.345,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,meningite_bacteriana_biologia_molecular,2024,52,0.3434,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,varicela_biologia_molecular,2025,20,0.3414,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,virus_respiratorios,2025,35,0.3278,2,sem_confirmacao,0
+2026-08-30,risco,PARANAITA,influenza_a,2025,28,0.3273,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,meningite_bacteriana_biologia_molecular,2026,21,0.3106,2,,
+2026-08-30,risco,JUINA,rotavirus,2024,35,0.3076,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,virus_respiratorios,2025,33,0.3017,2,sem_confirmacao,0
+2026-08-30,risco,MIRASSOL D''OESTE,bacterias_teste_de_sensibilidade,2025,33,0.2952,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO NOVO DO PARECIS,varicela_zoster_biologia_molecular,2025,35,0.2928,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,hiv,2025,46,0.2912,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,varicela_zoster_biologia_molecular,2024,26,0.283,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,pesquisa_de_genes_de_resistencia,2025,22,0.2796,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,parvovirus_b19_igg,2025,30,0.2796,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,pesquisa_de_multipatogenos_ist,2026,11,0.2774,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,sarampo_igg,2025,46,0.273,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,varicela_zoster_biologia_molecular,2025,35,0.2701,2,sem_confirmacao,0
+2026-08-30,risco,PONTES E LACERDA,pesquisa_de_multipatogenos_ist,2026,9,0.266,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,chagas,2024,41,0.2656,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,sarampo_igg,2025,46,0.2604,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,pesquisa_de_genes_de_resistencia,2025,21,0.2596,2,sem_confirmacao,0
+2026-08-30,risco,BARRA DO BUGRES,pesquisa_de_multipatogenos_ist,2026,20,0.2592,2,,
+2026-08-30,risco,CUIABA,coqueluche_deteccao_de_bordetella_pertussis,2025,33,0.2585,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO VERDE,varicela_zoster_biologia_molecular,2024,41,0.258,2,sem_confirmacao,0
+2026-08-30,risco,PRIMAVERA DO LESTE,meningite_bacteriana_tsa,2024,27,0.2567,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,hiv,2024,51,0.2552,2,sem_confirmacao,0
+2026-08-30,risco,NOVA GUARITA,influenza,2025,19,0.2534,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,influenza_a,2025,35,0.2225,2,sem_confirmacao,0
+2026-08-30,risco,BARRA DO GARCAS,sars_cov_2,2025,19,0.2068,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,influenza_a,2026,14,0.2044,2,sem_confirmacao,0
+2026-08-30,risco,ROSARIO OESTE,influenza_b,2025,28,0.2013,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,sars_cov_2,2025,21,0.1972,2,sem_confirmacao,0
+2026-08-30,risco,AGUA BOA,sars_cov_2,2025,17,0.1971,2,sem_confirmacao,0
+2026-08-30,risco,JUARA,influenza_a,2025,26,0.1931,2,sem_confirmacao,0
+2026-08-30,risco,NOVA OLIMPIA,influenza_a,2025,22,0.1847,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,influenza_b,2025,35,0.184,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO VERDE,influenza_b,2025,30,0.1818,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,influenza,2025,16,0.1795,2,sem_confirmacao,0
+2026-08-30,risco,PRIMAVERA DO LESTE,sars_cov_2,2025,51,0.1794,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,influenza,2025,14,0.1732,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,influenza_a,2025,51,0.1687,2,sem_confirmacao,0
+2026-08-30,risco,NOBRES,sars_cov_2,2025,23,0.1666,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,influenza_a,2026,19,0.1651,2,sem_confirmacao,0
+2026-08-30,risco,COLNIZA,influenza_a,2025,33,0.1625,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,sars_cov_2,2025,21,0.1612,2,sem_confirmacao,0
+2026-08-30,risco,SAO JOSE DO RIO CLARO,influenza_a,2025,20,0.161,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,influenza_a,2025,34,0.1559,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO NOVO DO PARECIS,sars_cov_2,2026,16,0.1542,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,influenza_a,2026,20,0.1361,2,,
+2026-08-30,risco,CUIABA,influenza_b,2026,20,0.1361,2,,
+2026-08-30,risco,RONDONOPOLIS,virus_respiratorios,2025,34,0.1305,2,sem_confirmacao,0
+2026-08-30,risco,JACIARA,sars_cov_2,2025,22,0.1275,2,sem_confirmacao,0
+2026-08-30,risco,RONDONOPOLIS,influenza_b,2026,9,0.123,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,influenza_b,2026,14,0.1205,2,sem_confirmacao,0
+2026-08-30,risco,PONTES E LACERDA,influenza,2024,23,0.1195,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,influenza_b,2026,19,0.1189,2,sem_confirmacao,0
+2026-08-30,risco,NOBRES,influenza_a,2025,23,0.1189,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,influenza_a,2026,19,0.1189,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,sars_cov_2,2026,19,0.1177,2,sem_confirmacao,0
+2026-08-30,risco,COLIDER,influenza,2025,16,0.1177,2,sem_confirmacao,0
+2026-08-30,risco,COLNIZA,sars_cov_2,2025,23,0.1168,2,sem_confirmacao,0
+2026-08-30,risco,RONDONOPOLIS,sars_cov_2,2026,9,0.1164,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,virus_respiratorios,2026,9,0.1161,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO NOVO DO PARECIS,influenza_a,2026,16,0.1132,2,sem_confirmacao,0
+2026-08-30,risco,CAMPINAPOLIS,virus_respiratorios,2025,34,0.1125,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,influenza_a,2025,23,0.1122,2,sem_confirmacao,0
+2026-08-30,risco,MARCELANDIA,virus_respiratorios,2025,20,0.1105,2,sem_confirmacao,0
+2026-08-30,risco,RONDONOPOLIS,influenza_a,2026,9,0.1083,2,sem_confirmacao,0
+2026-08-30,risco,DIAMANTINO,influenza_a,2025,45,0.106,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,virus_respiratorios,2026,14,0.1051,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO VERDE,influenza,2024,25,0.1047,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,virus_respiratorios,2025,24,0.1034,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,influenza_b,2025,51,0.1029,2,sem_confirmacao,0
+2026-08-30,risco,CAMPINAPOLIS,influenza_b,2025,35,0.1,2,sem_confirmacao,0
+2026-08-30,risco,CANARANA,sars_cov_2,2025,28,0.0995,2,sem_confirmacao,0
+2026-08-30,risco,NOVA XAVANTINA,influenza_a,2025,34,0.0993,2,sem_confirmacao,0
+2026-08-30,risco,GUARANTA DO NORTE,sars_cov_2,2025,33,0.0986,2,sem_confirmacao,0
+2026-08-30,risco,PORTO ESPERIDIAO,influenza_a,2025,29,0.0981,2,sem_confirmacao,0
+2026-08-30,risco,POXOREO,sars_cov_2,2025,32,0.0978,2,sem_confirmacao,0
+2026-08-30,risco,BARRA DO GARCAS,influenza_b,2025,19,0.0977,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,influenza_b,2025,34,0.0977,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,sars_cov_2,2025,34,0.0977,2,sem_confirmacao,0
+2026-08-30,risco,SAPEZAL,influenza,2024,22,0.0962,2,sem_confirmacao,0
+2026-08-30,risco,PRIMAVERA DO LESTE,influenza_b,2025,51,0.0958,2,sem_confirmacao,0
+2026-08-30,risco,BRASNORTE,sars_cov_2,2025,30,0.0945,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,virus_respiratorios,2026,10,0.094,2,sem_confirmacao,0
+2026-08-30,risco,BARRA DO GARCAS,virus_respiratorios,2025,10,0.0923,2,sem_confirmacao,0
+2026-08-30,risco,PRIMAVERA DO LESTE,virus_respiratorios,2024,42,0.0865,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,influenza_b,2026,19,0.0861,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO VERDE,sars_cov_2,2025,5,0.0853,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO NOVO DO PARECIS,influenza_b,2026,16,0.0852,2,sem_confirmacao,0
+2026-08-30,risco,SAO FELIX DO ARAGUAIA,sars_cov_2,2025,7,0.0852,2,sem_confirmacao,0
+2026-08-30,risco,PARANAITA,influenza_b,2025,28,0.0845,2,sem_confirmacao,0
+2026-08-30,risco,CHAPADA DOS GUIMARAES,sars_cov_2,2025,34,0.0845,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,sars_cov_2,2026,20,0.0842,2,,
+2026-08-30,risco,BARRA DO GARCAS,influenza_a,2025,19,0.0842,2,sem_confirmacao,0
+2026-08-30,risco,JUARA,sars_cov_2,2025,22,0.083,2,sem_confirmacao,0
+2026-08-30,risco,POCONE,virus_respiratorios,2025,6,0.0829,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,influenza_b,2025,23,0.0827,2,sem_confirmacao,0
+2026-08-30,risco,CONFRESA,influenza_a,2025,40,0.0809,2,sem_confirmacao,0
+2026-08-30,risco,SANTA TEREZINHA,sars_cov_2,2025,15,0.0779,2,sem_confirmacao,0
+2026-08-30,risco,COCALINHO,influenza,2024,35,0.0779,2,sem_confirmacao,0
+2026-08-30,risco,CAMPINAPOLIS,influenza_a,2025,35,0.0741,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,influenza_a,2025,33,0.074,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,influenza_b,2025,33,0.0731,2,sem_confirmacao,0
+2026-08-30,risco,NOSSA SENHORA DO LIVRAMENTO,influenza_a,2025,35,0.0721,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,virus_respiratorios,2025,28,0.0696,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,sars_cov_2,2025,26,0.0696,2,sem_confirmacao,0
+2026-08-30,risco,ALTA FLORESTA,influenza_b,2025,28,0.0696,2,sem_confirmacao,0
+2026-08-30,risco,PARANAITA,virus_respiratorios,2025,28,0.0695,2,sem_confirmacao,0
+2026-08-30,silencio,SENA MADUREIRA,baciloscopia,2024,39,0.7034,2,silencio,1
+2026-08-30,silencio,SENA MADUREIRA,rifampicina,2024,39,0.7032,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,hepatite_c_hcv,2025,16,0.7023,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,rubeola_igm,2025,41,0.7023,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,sarampo_igg,2025,41,0.7023,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,sarampo_igm,2025,41,0.7023,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,tuberculose_cultura,2025,27,0.7023,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,zika,2024,21,0.7023,2,silencio,1
+2026-08-30,silencio,TESOURO,hepatite_b_hbv,2025,29,0.6931,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,dengue,2024,21,0.6917,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,hepatite_b_hbv,2025,11,0.6917,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO POVO,rubeola_igg,2025,41,0.6917,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,hepatite_a,2024,27,0.6855,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,sars_cov_2,2024,39,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,toxoplasmose_igm,2025,33,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,tuberculose_cultura,2025,9,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,zika,2025,26,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,chikungunya,2025,26,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,hepatite_c_hcv,2024,27,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,influenza_a,2024,39,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,influenza_b,2024,39,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,rubeola_igm,2025,33,0.6724,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,toxoplasmose_igg,2025,33,0.6611,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,dengue,2025,26,0.6611,2,silencio,1
+2026-08-30,silencio,NOVO SANTO ANTONIO,rubeola_igg,2025,33,0.6611,2,silencio,1
+2026-08-30,silencio,CAMPINA DA LAGOA,dengue,2025,13,0.6542,2,silencio,1
+2026-08-30,silencio,CABEDELO,hepatite_b_hbv,2024,34,0.6542,2,silencio,1
+2026-08-30,silencio,TAQUARITINGA,tuberculose_lf_lam,2025,44,0.6542,2,silencio,1
+2026-08-30,silencio,ARACAJU,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,SANTANA,chikungunya,2024,35,0.6542,2,silencio,1
+2026-08-30,silencio,BARRA,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,TELEMACO BORBA,chikungunya,2025,34,0.6542,2,silencio,1
+2026-08-30,silencio,ARACATUBA,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,VOTUPORANGA,dengue,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,CACHOEIRA DO ARARI,dengue,2024,23,0.6542,2,silencio,1
+2026-08-30,silencio,TEOTONIO VILELA,chikungunya,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,SAO JOAO BATISTA,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,PLANALTINA,chikungunya,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,XAXIM,hepatite_b_hbv,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,RIO MARIA,chikungunya,2024,21,0.6542,2,silencio,1
+2026-08-30,silencio,BARREIRAS,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,SITIO NOVO DO TOCANTINS,chikungunya,2025,25,0.6542,2,silencio,1
+2026-08-30,silencio,CABECEIRAS DO PIAUI,dengue,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,DIONISIO CERQUEIRA,dengue,2024,24,0.6542,2,silencio,1
+2026-08-30,silencio,BOMBINHAS,hepatite_b_hbv,2024,41,0.6542,2,silencio,1
+2026-08-30,silencio,SAO MIGUEL DOS CAMPOS,dengue,2025,17,0.6542,2,silencio,1
+2026-08-30,silencio,SONORA,chikungunya,2024,30,0.6542,2,silencio,1
+2026-08-30,silencio,PALMITAL,dengue,2024,21,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO AMAZONAS,dengue,2024,21,0.6542,2,silencio,1
+2026-08-30,silencio,PINDARE-MIRIM,dengue,2024,24,0.6542,2,silencio,1
+2026-08-30,silencio,SOUSA,chikungunya,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,VALE DO ANARI,chikungunya,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,SAO PAULO,sars_cov_2,2024,34,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO CALVO,chikungunya,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,PEROLA,chikungunya,2024,21,0.6542,2,silencio,1
+2026-08-30,silencio,ARAGUAINA,chikungunya,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,AUGUSTO CORREA,chikungunya,2025,13,0.6542,2,silencio,1
+2026-08-30,silencio,SANTA MERCEDES,chikungunya,2025,17,0.6542,2,silencio,1
+2026-08-30,silencio,POUSO ALEGRE,dengue,2025,17,0.6542,2,silencio,1
+2026-08-30,silencio,QUATRO PONTES,dengue,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,SANTA QUITERIA DO MARANHAO,chikungunya,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,QUEBRANGULO,chikungunya,2025,4,0.6542,2,silencio,1
+2026-08-30,silencio,RUROPOLIS,dengue,2025,17,0.6542,2,silencio,1
+2026-08-30,silencio,SAO DOMINGOS DO MARANHAO,chikungunya,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,SIDROLANDIA,chikungunya,2025,15,0.6542,2,silencio,1
+2026-08-30,silencio,BARRA DO CORDA,dengue,2025,12,0.6542,2,silencio,1
+2026-08-30,silencio,BURITI,dengue,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,QUIXERAMOBIM,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,SAO FRANCISCO DO MARANHAO,chikungunya,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,ALTOS,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO DE PEDRAS,chikungunya,2025,17,0.6542,2,silencio,1
+2026-08-30,silencio,ALCINOPOLIS,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,BELO ORIENTE,chikungunya,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,PAO DE ACUCAR,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,SANTA FE DO SUL,chikungunya,2025,9,0.6542,2,silencio,1
+2026-08-30,silencio,ALEGRETE DO PIAUI,chikungunya,2025,22,0.6542,2,silencio,1
+2026-08-30,silencio,PARAISO,chikungunya,2025,16,0.6542,2,silencio,1
+2026-08-30,silencio,RECIFE,sifilis,2024,48,0.6542,2,silencio,1
+2026-08-30,silencio,ALTAMIRA,hepatite_b_hbv,2025,25,0.6542,2,silencio,1
+2026-08-30,silencio,BATALHA,chikungunya,2025,29,0.6542,2,silencio,1
+2026-08-30,silencio,SERINGUEIRAS,chikungunya,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,SAO MIGUEL DO OESTE,dengue,2024,29,0.6542,2,silencio,1
+2026-08-30,silencio,SANTA HELENA DE GOIAS,dengue,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,SERRA,hepatite_c_hcv,2025,2,0.6542,2,silencio,1
+2026-08-30,silencio,UBERLANDIA,dengue,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,SERRA NEGRA DO NORTE,baciloscopia,2025,29,0.6542,2,silencio,1
+2026-08-30,silencio,SERTANIA,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,BERNARDO DO MEARIM,chikungunya,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO FRANCO,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,BRASILIA,chagas_igg,2024,25,0.6542,2,silencio,1
+2026-08-30,silencio,BREU BRANCO,chikungunya,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,PEDRO DO ROSARIO,chikungunya,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,BURITICUPU,chikungunya,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,PRESIDENTE FIGUEIREDO,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,TUNTUM,dengue,2025,24,0.6542,2,silencio,1
+2026-08-30,silencio,ASSIS,tuberculose_cultura,2025,2,0.6542,2,silencio,1
+2026-08-30,silencio,SAO JOAO DO SOTER,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,BOM JESUS DO TOCANTINS,chikungunya,2024,28,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO LUCENA,dengue,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,SAO JOAQUIM DA BARRA,chikungunya,2025,9,0.6542,2,silencio,1
+2026-08-30,silencio,PETROLINA,influenza_a,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,BARCELOS,dengue,2025,2,0.6542,2,silencio,1
+2026-08-30,silencio,SAO PEDRO,dengue,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,BAURU,chikungunya,2025,9,0.6542,2,silencio,1
+2026-08-30,silencio,SAO PEDRO DO IGUACU,dengue,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,SAO ROBERTO,chikungunya,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,TRES LAGOAS,baciloscopia,2024,40,0.6542,2,silencio,1
+2026-08-30,silencio,PINHEIRO,dengue,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,RONDA ALTA,dengue,2025,26,0.6542,2,silencio,1
+2026-08-30,silencio,PORTO VELHO,baciloscopia,2025,12,0.6542,2,silencio,1
+2026-08-30,silencio,SARANDI,chikungunya,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,TUCURUI,hepatite_b_hbv,2024,25,0.6542,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO EGITO,chikungunya,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,TUFILANDIA,chikungunya,2025,24,0.6542,2,silencio,1
+2026-08-30,silencio,TERESINA,chikungunya,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,BARRA VELHA,chikungunya,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,SAUDADES,chikungunya,2025,25,0.6542,2,silencio,1
+2026-08-30,silencio,TERRA BOA,dengue,2025,27,0.6542,2,silencio,1
+2026-08-30,silencio,TERRA RICA,chikungunya,2024,52,0.6542,2,silencio,1
+2026-08-30,silencio,TIMBO GRANDE,tuberculose_lf_lam,2024,48,0.6542,2,silencio,1
+2026-08-30,silencio,TIMON,chikungunya,2024,24,0.6542,2,silencio,1
+2026-08-30,silencio,APARECIDA DE GOIANIA,hepatite_b_hbv,2025,4,0.6542,2,silencio,1
+2026-08-30,silencio,ARARAQUARA,chikungunya,2025,13,0.6542,2,silencio,1
+2026-08-30,silencio,PONTA PORA,hepatite_b_hbv,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,OURILANDIA DO NORTE,tuberculose_cultura,2024,34,0.6542,2,silencio,1
+2026-08-30,silencio,OURO PRETO DO OESTE,chikungunya,2025,23,0.6542,2,silencio,1
+2026-08-30,silencio,PACARAIMA,baciloscopia,2025,35,0.6542,2,silencio,1
+2026-08-30,silencio,PACARAIMA,varicela_zoster_biologia_molecular,2025,13,0.6542,2,silencio,1
+2026-08-30,silencio,TRACUATEUA,chikungunya,2025,16,0.6542,2,silencio,1
+2026-08-30,silencio,SANTO AUGUSTO,chikungunya,2025,24,0.6542,2,silencio,1
+2026-08-30,silencio,TOLEDO,tuberculose_cultura,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,BARRACAO,chikungunya,2025,15,0.6542,2,silencio,1
+2026-08-30,silencio,OLIMPIA,dengue,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,OLINDA,baciloscopia,2024,31,0.6542,2,silencio,1
+2026-08-30,silencio,ORLEANS,chikungunya,2025,26,0.6542,2,silencio,1
+2026-08-30,silencio,NOVO PROGRESSO,tuberculose,2025,9,0.6542,2,silencio,1
+2026-08-30,silencio,TOME-ACU,chikungunya,2024,21,0.6542,2,silencio,1
+2026-08-30,silencio,TABOCAS DO BREJO VELHO,chikungunya,2024,23,0.6542,2,silencio,1
+2026-08-30,silencio,XINGUARA,hepatite_b_hbv,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,BAIAO,chikungunya,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,SAO GABRIEL DO OESTE,chikungunya,2025,24,0.6542,2,silencio,1
+2026-08-30,silencio,VITORIA DO MEARIM,dengue,2024,24,0.6542,2,silencio,1
+2026-08-30,silencio,ASSIS,chikungunya,2025,7,0.6542,2,silencio,1
+2026-08-30,silencio,CAMPO ALEGRE,chikungunya,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,CAMPO MOURAO,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,CAMPO MOURAO,influenza_a,2025,27,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA CRIXAS,hepatite_b_hbv,2025,22,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA ESPERANCA,chikungunya,2024,33,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA IPIXUNA,chikungunya,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA PRATA,dengue,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,NAVIRAI,dengue,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA AURORA,dengue,2024,23,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA BRASILANDIA D''OESTE,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,NOVA CANTU,chikungunya,2025,29,0.6542,2,silencio,1
+2026-08-30,silencio,MONTES CLAROS,citomegalovirus_igg,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,MORPARA,chikungunya,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,MOSSORO,chikungunya,2025,29,0.6542,2,silencio,1
+2026-08-30,silencio,MONTE ALEGRE,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,MONTES CLAROS,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,MATAO,chikungunya,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,MATIAS OLIMPIO,chikungunya,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,MATOES DO NORTE,chikungunya,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,MATRIZ DE CAMARAGIBE,chikungunya,2025,22,0.6542,2,silencio,1
+2026-08-30,silencio,MARACAS,chikungunya,2025,22,0.6542,2,silencio,1
+2026-08-30,silencio,MARAGOGI,chikungunya,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,MARECHAL CANDIDO RONDON,chikungunya,2024,26,0.6542,2,silencio,1
+2026-08-30,silencio,CANAA DOS CARAJAS,chikungunya,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,CANAA DOS CARAJAS,tuberculose_lf_lam,2024,35,0.6542,2,silencio,1
+2026-08-30,silencio,MARACAJU,chikungunya,2025,11,0.6542,2,silencio,1
+2026-08-30,silencio,MARACANA,chikungunya,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,MANAUS,hepatite_b_hbv,2025,30,0.6542,2,silencio,1
+2026-08-30,silencio,MACAUBAS,sars_cov_2,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,MAIRI,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,LUIZIANIA,sarampo_igg,2025,14,0.6542,2,silencio,1
+2026-08-30,silencio,CARAPICUIBA,dengue,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,LINS,chikungunya,2025,12,0.6542,2,silencio,1
+2026-08-30,silencio,LOANDA,hepatite_b_hbv,2024,35,0.6542,2,silencio,1
+2026-08-30,silencio,CANUTAMA,dengue,2025,5,0.6542,2,silencio,1
+2026-08-30,silencio,CAPANEMA,hepatite_b_hbv,2026,13,0.6542,2,silencio,1
+2026-08-30,silencio,CAROLINA,chikungunya,2025,28,0.6542,2,silencio,1
+2026-08-30,silencio,LAMBARI D''OESTE,hepatite_b_hbv,2024,30,0.6542,2,silencio,1
+2026-08-30,silencio,LARANJAL DO JARI,dengue,2025,26,0.6542,2,silencio,1
+2026-08-30,silencio,CAPIXABA,chikungunya,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,CAPIXABA,dengue,2025,20,0.6542,2,silencio,1
+2026-08-30,silencio,LAGO DO JUNCO,chikungunya,2025,19,0.6542,2,silencio,1
+2026-08-30,silencio,LAGOA DO MATO,chikungunya,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,LAGOA GRANDE DO MARANHAO,chikungunya,2024,22,0.6542,2,silencio,1
+2026-08-30,silencio,JUNDIA,toxoplasmose_igg,2025,6,0.6542,2,silencio,1
+2026-08-30,silencio,JUNDIAI,chikungunya,2025,18,0.6542,2,silencio,1
+2026-08-30,silencio,CEREJEIRAS,chikungunya,2025,30,0.6542,2,silencio,1
+2026-08-30,silencio,JUAZEIRO,dengue,2025,26,0.6542,2,silencio,1
+2026-08-30,silencio,JUNCO DO MARANHAO,chikungunya,2025,21,0.6542,2,silencio,1
+2026-08-30,silencio,CASTANHEIRAS,chikungunya,2025,22,0.6542,2,silencio,1
+2026-08-30,silencio,CENTRO NOVO DO MARANHAO,dengue,2024,22,0.6542,2,silencio,1
+2026-08-30,silencio,JARU,hepatite_b_hbv,2024,43,0.6542,2,silencio,1
+2026-08-30,silencio,JAU,chikungunya,2025,8,0.6542,2,silencio,1
+2026-08-30,silencio,JENIPAPO DOS VIEIRAS,chikungunya,2025,30,0.6542,2,silencio,1
+2026-08-30,silencio,CHAPADINHA,chikungunya,2025,19,0.6542,2,silencio,1
 retrospectivo,risco,ACORIZAL,chikungunya,2025,1,0.547958702725105,2,sem_confirmacao,0
 retrospectivo,risco,ACORIZAL,chikungunya,2025,5,0.6391936172482983,2,alerta_lab,1
 retrospectivo,risco,ACORIZAL,chikungunya,2025,6,0.6577423672482983,2,alerta_lab,1
 retrospectivo,risco,ACORIZAL,chikungunya,2025,7,0.5443200809403154,2,sem_confirmacao,0
 retrospectivo,risco,ACORIZAL,chikungunya,2025,19,0.5443200809403154,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,dengue,2021,40,0.5690101806542384,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,dengue,2021,47,0.5695877737415426,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2021,49,0.691065979415666,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2021,50,0.6288500809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2021,51,0.6288500809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2021,52,0.6531431699131475,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2022,1,0.6288500809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2022,2,0.6553227460154413,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2022,3,0.5803326529281371,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,dengue,2022,5,0.656329857768764,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,dengue,2022,17,0.5710350132971808,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,influenza,2021,51,0.5957739624945665,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,1,0.5676547733579937,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,2,0.6778810814650308,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,3,0.6269832385029448,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,4,0.6837501074390567,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,5,0.7174208960655744,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,6,0.6664196528936023,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,7,0.6451196528936023,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,8,0.658823638712831,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,9,0.6331288241122874,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,10,0.6977381672842596,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,11,0.748688316234433,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,12,0.7370404380831725,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,13,0.7330086233383016,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,14,0.6009025718362782,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,15,0.6357804221243715,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,16,0.6001534097216301,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,19,0.5731734097216301,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,20,0.5574350763882967,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,21,0.6279505619845114,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,23,0.5731734097216301,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,24,0.6121442385029449,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,25,0.5490841240073444,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,27,0.6145800741122874,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,28,0.6121442385029449,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,29,0.5623814097216301,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2021,31,0.5799184097216301,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,sars_cov_2,2022,1,0.5476925809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2022,3,0.5308300809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2022,5,0.5814175809403154,2,alerta_lab,1
-retrospectivo,risco,ACORIZAL,sars_cov_2,2022,6,0.5308300809403154,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,sars_cov_2,2022,25,0.5173400809403154,2,sem_confirmacao,0
-retrospectivo,risco,ACORIZAL,sars_cov_2,2023,14,0.5308300809403154,2,sem_confirmacao,0
 retrospectivo,risco,ACORIZAL,tuberculose_cultura,2025,12,0.6424141455458255,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,chikungunya,2023,15,0.5,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,chikungunya,2023,23,0.5349577607432454,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,chikungunya,2023,29,0.5349577607432454,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,chikungunya,2023,34,0.5349577607432454,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,chikungunya,2024,14,0.50532,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,chikungunya,2024,19,0.50532,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,chikungunya,2024,27,0.5345799999999999,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,chikungunya,2025,7,0.50532,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,chikungunya,2025,10,0.5430032437234112,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,11,0.5981019018764863,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,chikungunya,2025,12,0.5833386155851169,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,chikungunya,2025,13,0.5648202352098196,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,chikungunya,2025,14,0.5281041666666667,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,15,0.56745,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,chikungunya,2025,17,0.5262001411258918,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,18,0.618731590044342,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,chikungunya,2025,19,0.6444102352098197,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,20,0.6337453292937475,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,21,0.5905626411258917,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,22,0.5852161626270808,2,alerta_lab,1
@@ -476,76 +819,417 @@ retrospectivo,risco,AGUA BOA,chikungunya,2025,26,0.6641503763357114,2,alerta_lab
 retrospectivo,risco,AGUA BOA,chikungunya,2025,27,0.5833386155851169,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,28,0.50532,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,chikungunya,2025,29,0.5242526411258918,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,dengue,2021,19,0.5153312416507365,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,dengue,2022,17,0.5957209660837127,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,dengue,2023,9,0.5939082207412758,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,dengue,2025,9,0.5373223333333333,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,10,0.5060705,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,11,0.5676748333333334,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,12,0.525631,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,dengue,2025,14,0.5721715,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,dengue,2025,18,0.525631,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,19,0.6794417857142857,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,20,0.63849,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,dengue,2025,23,0.7310705,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,24,0.67896,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,dengue,2025,26,0.7228571891891892,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,dengue,2025,27,0.5676748333333334,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,dengue,2025,34,0.525631,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_a,2023,3,0.5399207943217009,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,7,0.5066666666666667,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,9,0.6584291666666667,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,11,0.5066666666666667,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,12,0.6584291666666667,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,16,0.5066666666666667,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_a,2025,17,0.5370191666666666,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,9,0.5031584595306026,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,11,0.5180322011567559,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,22,0.5180322011567559,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,26,0.541759840455035,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,35,0.5031584595306026,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,3,0.5896233578457316,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,13,0.5,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,34,0.5,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,43,0.5168192936947762,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,49,0.5277572878951635,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,50,0.5277572878951635,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,3,0.5,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,15,0.5,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,24,0.5179866666666667,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,27,0.52698,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,3,0.5263011791333779,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,6,0.5173078458000445,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,8,0.5173078458000445,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,9,0.725,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,11,0.6270704538588904,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,12,0.6755085040494996,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,13,0.5869695273282426,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,14,0.537756316119387,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,16,0.537756316119387,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,17,0.5961515298370542,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,18,0.537756316119387,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,19,0.5242170826051162,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_c_hcv,2021,39,0.6524094756644553,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,hepatite_c_hcv,2023,32,0.573350848342397,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,hepatite_c_hcv,2025,12,0.625,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,influenza,2023,28,0.5657750424109034,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,influenza,2023,34,0.5472628189960167,2,sem_confirmacao,0
 retrospectivo,risco,AGUA BOA,influenza_a,2024,15,0.5523939450538964,2,alerta_lab,1
 retrospectivo,risco,AGUA BOA,influenza_a,2024,16,0.6512688260806758,2,sem_confirmacao,0
-retrospectivo,risco,AGUA BOA,sars_cov_2,2020,53,0.5270475774472644,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,1,0.725,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,2,0.725,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,3,0.7297755873090899,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,4,0.725,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,5,0.7318995339838565,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,6,0.7257578073587726,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,7,0.7281536127215416,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,8,0.712457702943171,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,9,0.7080686723804245,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,10,0.7212357640686641,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,11,0.712457702943171,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,12,0.725,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,13,0.7290410194976604,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,14,0.7350992381697601,2,alerta_lab,1
-retrospectivo,risco,AGUA BOA,sars_cov_2,2021,15,0.7306431479743369,2,alerta_lab,1
+2026-08-30,risco,SINOP,chikungunya,2025,49,0.9237,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,dengue,2025,49,0.9237,2,sem_confirmacao,0
+2026-08-30,risco,SINOP,dengue,2025,49,0.9237,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,chikungunya,2025,49,0.9213,2,sem_confirmacao,0
+2026-08-30,risco,VARZEA GRANDE,zika,2025,49,0.9213,2,sem_confirmacao,0
+2026-08-30,risco,CAMPO NOVO DO PARECIS,chikungunya,2025,49,0.9154,2,sem_confirmacao,0
+2026-08-30,risco,RONDONOPOLIS,chikungunya,2025,49,0.742,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,dengue,2025,49,0.7414,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,zika,2026,14,0.7159,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,chikungunya,2026,14,0.6952,2,sem_confirmacao,0
+2026-08-30,risco,CAMPINAPOLIS,dengue,2025,41,0.6879,2,sem_confirmacao,0
+2026-08-30,risco,PEIXOTO DE AZEVEDO,intoxica_o_ex_gena_por_subst_ncias_qu_micas_incluindo_agrot_xicos_gases_t_xicos_,2024,35,0.3032,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,leishmaniose,2026,5,0.1607,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,hepatite_b_hbv,2025,35,0.1124,2,sem_confirmacao,0
+2026-08-30,risco,COLNIZA,hepatite_b_hbv,2025,49,0.1058,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,meningite,2025,49,0.0887,2,sem_confirmacao,0
+2026-08-30,risco,PARANAITA,influenza,2025,45,0.0885,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,hiv,2025,18,0.0799,2,sem_confirmacao,0
+2026-08-30,risco,GUARANTA DO NORTE,hepatite_b_hbv,2025,49,0.0787,2,sem_confirmacao,0
+2026-08-30,risco,JURUENA,hepatite_b_hbv,2025,45,0.0742,2,sem_confirmacao,0
+2026-08-30,risco,VILA RICA,hepatite_b_hbv,2025,27,0.0675,2,sem_confirmacao,0
+2026-08-30,risco,CACERES,raiva_raiva,2025,23,0.0624,2,sem_confirmacao,0
+2026-08-30,risco,TANGARA DA SERRA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,20,0.0602,2,,
+2026-08-30,risco,SAO JOSE DOS QUATRO MARCOS,raiva_raiva,2025,36,0.0596,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,influenza,2025,45,0.0579,2,sem_confirmacao,0
+2026-08-30,risco,JUINA,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2025,49,0.055,2,sem_confirmacao,0
+2026-08-30,risco,NOVA MUTUM,hepatite_b_hbv,2025,49,0.0548,2,sem_confirmacao,0
+2026-08-30,risco,QUERENCIA,hepatite_b_hbv,2025,40,0.0548,2,sem_confirmacao,0
+2026-08-30,risco,SORRISO,hepatite_b_hbv,2025,49,0.0537,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,sarampo_sarampo_igm,2025,14,0.0537,2,sem_confirmacao,0
+2026-08-30,risco,LUCAS DO RIO VERDE,sarampo_sarampo_igg,2025,14,0.0537,2,sem_confirmacao,0
+2026-08-30,risco,CUIABA,hepatite_c_hcv,2025,49,0.0519,2,sem_confirmacao,0
+2026-08-30,risco,NOVA CANAA DO NORTE,influenza,2025,45,0.0518,2,sem_confirmacao,0
+2026-08-30,silencio,LUCIARA,tuberculose,2025,29,0.6369,2,silencio,1
+2026-08-30,silencio,VILA RICA,brucelose_brucelose,2024,35,0.5864,2,silencio,1
+2026-08-30,silencio,SAO JOSE DOS QUATRO MARCOS,aspergilose_cultura_para_fungos,2025,28,0.5638,2,silencio,1
+2026-08-30,silencio,SAO JOSE DOS QUATRO MARCOS,aspergilose_fungos,2025,28,0.5638,2,silencio,1
+2026-08-30,silencio,BRASNORTE,brucelose_brucelose,2024,31,0.5638,2,silencio,1
+2026-08-30,silencio,PONTES E LACERDA,infec_o_coloniza_o_cultura_para_fungos,2025,33,0.5625,2,silencio,1
+2026-08-30,silencio,PEDRA PRETA,micobacterioses_fungos,2024,49,0.5589,2,silencio,1
+2026-08-30,silencio,PEDRA PRETA,micobacterioses_cultura_para_fungos,2024,35,0.5589,2,silencio,1
+2026-08-30,silencio,MONTES CLAROS,tuberculose,2025,35,0.558,2,silencio,1
+2026-08-30,silencio,INOCENCIA,tuberculose,2025,33,0.558,2,silencio,1
+2026-08-30,silencio,PERITORO,tuberculose,2025,30,0.558,2,silencio,1
+2026-08-30,silencio,NOVA MARILANDIA,leptospira,2025,32,0.5552,2,silencio,1
+2026-08-30,silencio,FOZ DO IGUACU,tuberculose,2025,36,0.5526,2,silencio,1
+2026-08-30,silencio,CHOPINZINHO,tuberculose,2025,26,0.5526,2,silencio,1
+2026-08-30,silencio,SERRA NEGRA DO NORTE,tuberculose,2025,29,0.5526,2,silencio,1
+2026-08-30,silencio,ROSARIO OESTE,toxoplasmose_cultura_para_fungos,2025,22,0.5521,2,silencio,1
+2026-08-30,silencio,JURUENA,infec_o_coloniza_o_cultura_para_fungos,2025,25,0.5521,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO XINGU,infec_o_coloniza_o_cultura_para_fungos,2025,25,0.5511,2,silencio,1
+2026-08-30,silencio,PORTO ESPERIDIAO,brucelose_brucelose,2024,36,0.5458,2,silencio,1
+2026-08-30,silencio,ALTO BOA VISTA,brucelose_brucelose,2025,7,0.5313,2,silencio,1
+2026-08-30,silencio,SAO JOSE DO XINGU,sars_cov_2,2026,9,0.5273,2,silencio,1
+2026-08-30,silencio,CUIABA,infec_o_coloniza_o_fungos,2025,9,0.5182,2,silencio,1
+2026-08-30,silencio,ARAPUTANGA,infec_o_coloniza_o_cultura_para_fungos,2025,33,0.5145,2,silencio,1
+2026-08-30,silencio,TAPURAH,brucelose_brucelose,2025,3,0.5145,2,silencio,1
+2026-08-30,silencio,CONFRESA,meningite,2026,11,0.5126,2,silencio,1
+2026-08-30,silencio,CHAPADA DOS GUIMARAES,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,3,0.5126,2,silencio,1
+2026-08-30,silencio,NOVA SANTA HELENA,leptospira,2025,5,0.4949,2,silencio,1
+2026-08-30,silencio,VARZEA GRANDE,infec_o_coloniza_o_cultura_para_fungos,2025,23,0.4896,2,silencio,1
+2026-08-30,silencio,RONDONOPOLIS,micose_fungos,2025,32,0.4868,2,silencio,1
+2026-08-30,silencio,LONDRINA,chikungunya,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,GARUVA,influenza,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,ERECHIM,chikungunya,2025,10,0.4823,2,silencio,1
+2026-08-30,silencio,FLORINIA,tuberculose,2025,13,0.4823,2,silencio,1
+2026-08-30,silencio,VOLTA REDONDA,dengue,2025,14,0.4823,2,silencio,1
+2026-08-30,silencio,VOTUPORANGA,chikungunya,2025,26,0.4823,2,silencio,1
+2026-08-30,silencio,XAMBIOA,chikungunya,2024,35,0.4823,2,silencio,1
+2026-08-30,silencio,CAMPESTRE,chikungunya,2025,14,0.4823,2,silencio,1
+2026-08-30,silencio,FORMOSO DO ARAGUAIA,tuberculose,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,RECIFE,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,XEXEU,chikungunya,2025,21,0.4823,2,silencio,1
+2026-08-30,silencio,BOMBINHAS,chikungunya,2024,33,0.4823,2,silencio,1
+2026-08-30,silencio,ESMERALDAS,tuberculose,2025,29,0.4823,2,silencio,1
+2026-08-30,silencio,GOIANIA,influenza,2024,49,0.4823,2,silencio,1
+2026-08-30,silencio,ARAUCARIA,chikungunya,2025,49,0.4823,2,silencio,1
+2026-08-30,silencio,GOIANIA,sars_cov_2,2024,49,0.4823,2,silencio,1
+2026-08-30,silencio,VITORIA DA CONQUISTA,chikungunya,2024,35,0.4823,2,silencio,1
+2026-08-30,silencio,CAMBORIU,chikungunya,2025,31,0.4823,2,silencio,1
+2026-08-30,silencio,AGUA CLARA,tuberculose,2024,47,0.4823,2,silencio,1
+2026-08-30,silencio,PRESIDENTE PRUDENTE,chikungunya,2025,14,0.4823,2,silencio,1
+2026-08-30,silencio,FORTUNA,sars_cov_2,2024,23,0.4823,2,silencio,1
+2026-08-30,silencio,ACAILANDIA,chikungunya,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,ACRELANDIA,chikungunya,2025,5,0.4823,2,silencio,1
+2026-08-30,silencio,GOIANIRA,tuberculose,2025,20,0.4823,2,silencio,1
+2026-08-30,silencio,GOVERNADOR EUGENIO BARROS,dengue,2025,25,0.4823,2,silencio,1
+2026-08-30,silencio,GOVERNADOR LUIZ ROCHA,dengue,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,FOZ DO IGUACU,chikungunya,2025,12,0.4823,2,silencio,1
+2026-08-30,silencio,CACOAL,sars_cov_2,2024,47,0.4823,2,silencio,1
+2026-08-30,silencio,ALFENAS,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,ALMEIRIM,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,BONITO,hepatite_c_hcv,2025,13,0.4823,2,silencio,1
+2026-08-30,silencio,ALMEIRIM,zika,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,BORDA DA MATA,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,VILA NOVA DOS MARTIRIOS,zika,2025,6,0.4823,2,silencio,1
+2026-08-30,silencio,SAO JOAO DA BOA VISTA,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA MARIANA,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,VIAMAO,dengue,2024,21,0.4823,2,silencio,1
+2026-08-30,silencio,VIAMAO,tuberculose,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,VIANA,tuberculose,2026,1,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA MARIANA,zika,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,ICARA,zika,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,BURITI,dengue,2025,16,0.4823,2,silencio,1
+2026-08-30,silencio,SAO JOSE DA TAPERA,chikungunya,2024,26,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA QUITERIA DO MARANHAO,chikungunya,2025,20,0.4823,2,silencio,1
+2026-08-30,silencio,IGARACU DO TIETE,tuberculose,2025,26,0.4823,2,silencio,1
+2026-08-30,silencio,BURITI BRAVO,dengue,2024,23,0.4823,2,silencio,1
+2026-08-30,silencio,SIDROLANDIA,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,SIDROLANDIA,tuberculose,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,SIDROLANDIA,zika,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SAO JOSE DE RIBAMAR,tuberculose,2024,23,0.4823,2,silencio,1
+2026-08-30,silencio,IGUATEMI,chikungunya,2025,49,0.4823,2,silencio,1
+2026-08-30,silencio,URBANO SANTOS,dengue,2025,24,0.4823,2,silencio,1
+2026-08-30,silencio,PRESIDENTE PRUDENTE,tuberculose,2025,12,0.4823,2,silencio,1
+2026-08-30,silencio,FIGUEIROPOLIS D''OESTE,hepatite_a,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,PORTO VELHO,hansen_ase_hansen_ase,2025,21,0.4823,2,silencio,1
+2026-08-30,silencio,ALTA FLORESTA D''OESTE,tuberculose,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,UTINGA,tuberculose,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,CACU,chikungunya,2024,33,0.4823,2,silencio,1
+2026-08-30,silencio,BATATAIS,dengue,2025,30,0.4823,2,silencio,1
+2026-08-30,silencio,VARGEM GRANDE,dengue,2025,21,0.4823,2,silencio,1
+2026-08-30,silencio,FLOR DO SERTAO,chikungunya,2025,21,0.4823,2,silencio,1
+2026-08-30,silencio,VARJAO DE MINAS,dengue,2024,33,0.4823,2,silencio,1
+2026-08-30,silencio,SANTANA DO ARAGUAIA,dengue,2025,23,0.4823,2,silencio,1
+2026-08-30,silencio,VERE,dengue,2025,3,0.4823,2,silencio,1
+2026-08-30,silencio,ALTO ALEGRE DO MARANHAO,dengue,2025,13,0.4823,2,silencio,1
+2026-08-30,silencio,BEBEDOURO,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,ALTO ALEGRE DO PINDARE,sars_cov_2,2024,30,0.4823,2,silencio,1
+2026-08-30,silencio,BEBERIBE,chikungunya,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,IGUATEMI,zika,2025,49,0.4823,2,silencio,1
+2026-08-30,silencio,UBERABA,chikungunya,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,UBERABA,sars_cov_2,2024,21,0.4823,2,silencio,1
+2026-08-30,silencio,ILHA COMPRIDA,chikungunya,2024,43,0.4823,2,silencio,1
+2026-08-30,silencio,ILHA SOLTEIRA,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,ILHABELA,tuberculose,2025,5,0.4823,2,silencio,1
+2026-08-30,silencio,ULIANOPOLIS,dengue,2025,32,0.4823,2,silencio,1
+2026-08-30,silencio,UMUARAMA,chikungunya,2025,23,0.4823,2,silencio,1
+2026-08-30,silencio,ILHEUS,dengue,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,BEBERIBE,zika,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,SETE QUEDAS,dengue,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,TUCUMA,chikungunya,2025,11,0.4823,2,silencio,1
+2026-08-30,silencio,BELA VISTA DE GOIAS,tuberculose,2025,31,0.4823,2,silencio,1
+2026-08-30,silencio,TUFILANDIA,chikungunya,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,IMPERATRIZ,chikungunya,2025,19,0.4823,2,silencio,1
+2026-08-30,silencio,IMPERATRIZ,sars_cov_2,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,TUNTUM,chikungunya,2025,14,0.4823,2,silencio,1
+2026-08-30,silencio,PRESIDENTE MEDICI,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,BARRA DOS COQUEIROS,dengue,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SANTAREM,chikungunya,2025,15,0.4823,2,silencio,1
+2026-08-30,silencio,INHAMBUPE,dengue,2024,21,0.4823,2,silencio,1
+2026-08-30,silencio,SANTAREM,leptospira,2024,41,0.4823,2,silencio,1
+2026-08-30,silencio,FERNANDOPOLIS,chikungunya,2025,14,0.4823,2,silencio,1
+2026-08-30,silencio,RIO VERDE DE MATO GROSSO,chikungunya,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,BIGUACU,chikungunya,2025,10,0.4823,2,silencio,1
+2026-08-30,silencio,EUCLIDES DA CUNHA,influenza,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,BIGUACU,dengue,2025,19,0.4823,2,silencio,1
+2026-08-30,silencio,TOLEDO,zika,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,CACHOEIRA DO SUL,chikungunya,2024,40,0.4823,2,silencio,1
+2026-08-30,silencio,FARROUPILHA,chikungunya,2025,49,0.4823,2,silencio,1
+2026-08-30,silencio,TRAIRAO,tuberculose,2025,13,0.4823,2,silencio,1
+2026-08-30,silencio,SAO FRANCISCO,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA HELENA,dengue,2024,34,0.4823,2,silencio,1
+2026-08-30,silencio,TRES LAGOAS,var_ola_var_ola,2024,47,0.4823,2,silencio,1
+2026-08-30,silencio,TRES LAGOAS,var_ola_varicela_zoster_biologia_molecular,2024,47,0.4823,2,silencio,1
+2026-08-30,silencio,TRINDADE,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,TRINDADE,dengue,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,SAO FRANCISCO DO SUL,tuberculose,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,SAO GABRIEL DO OESTE,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA HELENA,tuberculose,2024,23,0.4823,2,silencio,1
+2026-08-30,silencio,AURIFLAMA,dengue,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,AURORA DO PARA,tuberculose,2025,20,0.4823,2,silencio,1
+2026-08-30,silencio,TERESINA,chikungunya,2024,22,0.4823,2,silencio,1
+2026-08-30,silencio,CAIEIRAS,dengue,2024,50,0.4823,2,silencio,1
+2026-08-30,silencio,TERRA BOA,dengue,2025,35,0.4823,2,silencio,1
+2026-08-30,silencio,SERRA,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,BREJO,hantavirus,2024,38,0.4823,2,silencio,1
+2026-08-30,silencio,TIJUCAS,chikungunya,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,SAO GONCALO,tuberculose,2026,1,0.4823,2,silencio,1
+2026-08-30,silencio,TIMBO,chikungunya,2025,27,0.4823,2,silencio,1
+2026-08-30,silencio,SERRA,zika,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,ESPIGAO D''OESTE,chikungunya,2024,51,0.4823,2,silencio,1
+2026-08-30,silencio,BREU BRANCO,influenza,2025,15,0.4823,2,silencio,1
+2026-08-30,silencio,TOLEDO,chikungunya,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,TABOCAS DO BREJO VELHO,chikungunya,2024,24,0.4823,2,silencio,1
+2026-08-30,silencio,TABULEIRO DO NORTE,dengue,2025,32,0.4823,2,silencio,1
+2026-08-30,silencio,TACURU,dengue,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,TAILANDIA,dengue,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,ESPIGAO D''OESTE,influenza,2024,36,0.4823,2,silencio,1
+2026-08-30,silencio,BADY BASSITT,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,TANABI,chikungunya,2025,5,0.4823,2,silencio,1
+2026-08-30,silencio,BRUSQUE,chikungunya,2025,20,0.4823,2,silencio,1
+2026-08-30,silencio,CALDAS NOVAS,hepatite_b_hbv,2025,5,0.4823,2,silencio,1
+2026-08-30,silencio,BOA VISTA,sars_cov_2,2025,22,0.4823,2,silencio,1
+2026-08-30,silencio,RODEIO BONITO,chikungunya,2025,32,0.4823,2,silencio,1
+2026-08-30,silencio,BOA VISTA DO GURUPI,chikungunya,2025,32,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA LUZIA,chikungunya,2025,24,0.4823,2,silencio,1
+2026-08-30,silencio,AMAMBAI,chikungunya,2025,21,0.4823,2,silencio,1
+2026-08-30,silencio,ASSIS,sars_cov_2,2025,18,0.4823,2,silencio,1
+2026-08-30,silencio,ASSIS BRASIL,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,ROLIM DE MOURA,hansen_ase_hansen_ase,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,ANANINDEUA,chikungunya,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,ANANINDEUA,influenza,2025,22,0.4823,2,silencio,1
+2026-08-30,silencio,ANANINDEUA,sars_cov_2,2024,34,0.4823,2,silencio,1
+2026-08-30,silencio,ASSIS BRASIL,zika,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SULINA,dengue,2024,35,0.4823,2,silencio,1
+2026-08-30,silencio,SUMARE,zika,2025,4,0.4823,2,silencio,1
+2026-08-30,silencio,BOCA DO ACRE,chikungunya,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,INHAPI,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,ALTOS,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA MARIA,chikungunya,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,INHUMAS,sars_cov_2,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,SENADOR CANEDO,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,SANTA MARIA,zika,2025,40,0.4823,2,silencio,1
+2026-08-30,silencio,BELO ORIENTE,chikungunya,2025,8,0.4823,2,silencio,1
+2026-08-30,silencio,SENADOR FIRMINO,tuberculose,2025,20,0.4823,2,silencio,1
+2026-08-30,silencio,SENADOR LA ROCQUE,chikungunya,2024,27,0.4823,2,silencio,1
+2026-08-30,silencio,SENADOR LA ROCQUE,dengue,2024,35,0.4823,2,silencio,1
+2026-08-30,silencio,SENADOR RUI PALMEIRA,tuberculose,2024,48,0.4823,2,silencio,1
+2026-08-30,silencio,GRAMADO,chikungunya,2024,26,0.4823,2,silencio,1
+2026-08-30,silencio,RENASCENCA,chikungunya,2025,25,0.4823,2,silencio,1
+2026-08-30,silencio,DOM ELISEU,dengue,2024,35,0.4823,2,silencio,1
+2026-08-30,silencio,CABEDELO,chikungunya,2025,11,0.4823,2,silencio,1
+2026-08-30,silencio,RENASCENCA,zika,2025,31,0.4823,2,silencio,1
+2026-08-30,silencio,GUAJARA-MIRIM,chikungunya,2025,10,0.4823,2,silencio,1
+2026-08-30,silencio,CAMPOS NOVOS,hansen_ase_hansen_ase,2025,22,0.4823,2,silencio,1
+2026-08-30,silencio,BACABAL,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,BOM JESUS DAS SELVAS,chikungunya,2025,9,0.4823,2,silencio,1
+2026-08-30,silencio,RIACHO DA CRUZ,tuberculose,2025,45,0.4823,2,silencio,1
+2026-08-30,silencio,SAO VALENTIM,dengue,2024,21,0.4823,2,silencio,1
+2026-08-30,silencio,AQUIDAUANA,chikungunya,2025,12,0.4823,2,silencio,1
+2026-08-30,silencio,SAO VALERIO DO SUL,chikungunya,2024,31,0.4823,2,silencio,1
+2026-08-30,silencio,SAO VICENTE,chikungunya,2025,14,0.4823,2,silencio,1
+retrospectivo,risco,ACORIZAL,dengue,2021,40,0.5817095641718104,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,dengue,2021,47,0.5802488566730158,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2021,49,0.7029729275352132,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2021,50,0.6288500809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2021,51,0.6288500809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2021,52,0.6601968066748702,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2022,1,0.6288500809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2022,2,0.6631548745684113,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2022,3,0.5902030820672058,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2022,5,0.6763838659954232,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,dengue,2022,17,0.5839628933153977,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,dengue,2025,17,0.6288500809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,dengue,2025,18,0.6288500809403154,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,influenza,2021,51,0.6973469224662321,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,1,0.556413106691327,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,2,0.6553977481316975,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,3,0.6112449051696115,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,4,0.6601426074390567,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,5,0.6971858960655744,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,6,0.6461846528936022,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,7,0.6293813195602689,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,8,0.6442094720461644,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,9,0.6128938241122874,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,10,0.6907756672842597,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,11,0.748688316234433,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,12,0.7370404380831725,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,13,0.7094011233383016,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,14,0.5919092385029449,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,15,0.6222904221243715,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,16,0.5832909097216301,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,19,0.5608075763882967,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,20,0.5484417430549634,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,21,0.6167088953178447,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,23,0.5608075763882967,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,24,0.5997784051696116,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,25,0.5423391240073444,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,27,0.5977175741122874,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,28,0.5997784051696116,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,29,0.5522639097216301,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2021,31,0.5664284097216301,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,sars_cov_2,2022,1,0.5443200809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2022,3,0.5308300809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2022,5,0.5780450809403154,2,alerta_lab,1
+retrospectivo,risco,ACORIZAL,sars_cov_2,2022,6,0.5308300809403154,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,sars_cov_2,2022,25,0.5173400809403154,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,sars_cov_2,2023,14,0.5308300809403154,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,tuberculose,2024,20,0.6320438448184243,2,sem_confirmacao,0
+retrospectivo,risco,ACORIZAL,tuberculose,2025,19,0.7850558456556148,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2023,15,0.5500609548687626,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2023,23,0.6379934513251375,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2023,29,0.6379934513251375,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2023,34,0.6379934513251375,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2025,12,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,chikungunya,2025,13,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,chikungunya,2025,14,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,chikungunya,2025,17,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,chikungunya,2025,19,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2021,19,0.5495355333823622,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2022,17,0.6637380926685752,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2023,9,0.6598599794668071,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2025,14,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2025,21,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2025,25,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,dengue,2025,27,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,dengue,2025,32,0.6247825,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_a,2023,3,0.6442220510185596,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,9,0.5507961017548022,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,11,0.591326859084886,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,22,0.591326859084886,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,26,0.6529717431195035,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2022,35,0.5507961017548022,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,3,0.7230787474254416,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,13,0.5285435851099844,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,34,0.5285435851099844,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,43,0.5890500792043178,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,49,0.5805468257952507,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2023,50,0.5805468257952507,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,15,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2024,39,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,8,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,12,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,13,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,15,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,18,0.625,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,hepatite_b_hbv,2025,20,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_c_hcv,2021,39,0.6778765602058376,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,hepatite_c_hcv,2023,32,0.5852041398722242,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,influenza,2023,28,0.6300503679486837,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,influenza,2023,34,0.6678089141118753,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2020,53,0.5934306194057812,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,1,0.728396312886143,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,2,0.7287585774410774,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,3,0.7362091198610307,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,4,0.7301307050092765,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,5,0.7373774226804124,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,6,0.7339990909090909,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,7,0.7353169329214474,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,8,0.7275050720620843,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,9,0.725,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,10,0.7263604971590909,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,11,0.725,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,12,0.728504476219145,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,13,0.7358050618612157,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,14,0.7391374590626765,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,15,0.736686332205029,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,16,0.7412011758076634,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,17,0.7401936908002177,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,18,0.7401978806469605,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,19,0.7389401841196778,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,20,0.7375435671936759,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,21,0.7383148051948052,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,22,0.7386651948051948,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,23,0.7331654085155351,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,24,0.7405291016675632,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,25,0.7372636363636365,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,26,0.7330292109777016,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,27,0.7396036463903743,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,28,0.7425792884012539,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,29,0.738632078713969,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,30,0.7382707618080244,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,31,0.7370439891451832,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,32,0.737430867768595,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,34,0.6015772705666953,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2021,42,0.5169352893406118,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,2,0.50609205023817,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,4,0.746118827586207,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,5,0.7500946947082768,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,6,0.7502583741258742,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,7,0.7503361508704063,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,50,0.5722361507145102,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2022,51,0.606914915065384,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2023,22,0.5150229545454545,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,sars_cov_2,2023,30,0.5150229545454545,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,sars_cov_2,2023,32,0.5007664772727273,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2024,25,0.6293943853504733,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2024,32,0.6714404411774326,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2024,36,0.6047063621555079,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2024,42,0.6047063621555079,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2025,5,0.651755367348207,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,tuberculose,2025,6,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2025,10,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2025,17,0.6425477710476988,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,tuberculose,2025,18,0.6684915265060566,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,tuberculose,2025,20,0.6425477710476988,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,tuberculose,2025,21,0.7202468938542637,2,alerta_lab,1
+retrospectivo,risco,AGUA BOA,tuberculose,2025,22,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose,2025,49,0.625,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose_cultura,2021,24,0.630642201218506,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose_cultura,2023,3,0.6177875805829856,2,sem_confirmacao,0
+retrospectivo,risco,AGUA BOA,tuberculose_cultura,2023,25,0.5671158351417861,2,sem_confirmacao,0

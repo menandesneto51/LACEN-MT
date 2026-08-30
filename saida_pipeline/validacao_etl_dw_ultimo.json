@@ -1,0 +1,30 @@
+{
+  "ts": "2026-08-30T09:07:12",
+  "hoje": "2026-08-30",
+  "se_esperada": "2026-SE34",
+  "passos": [
+    "dw_tcp_fail_local_fallback",
+    "local_gal_weekly",
+    "publish_weekly_inputs",
+    "integracao_final:0",
+    "indicadores_rede:0",
+    "indicadores_emergencia:0",
+    "confirmacao_emergencia:0",
+    "ml:0",
+    "mirror_dw",
+    "cievs_dry_run:0"
+  ],
+  "fonte_dados": "local:LACEN 2010 a 2026.csv",
+  "objetos_dw": [],
+  "se_usada": "2026-SE21",
+  "atraso_se": 13,
+  "atraso_dias": 98,
+  "se_fonte": "ultima_se_presente_nos_dados",
+  "aviso": "ATRASO: SE usada 2026-SE21 está 13 semanas atrás da esperada 2026-SE34 (2026-08-30). Não tratar como semana corrente sem justificativa (DW/VPN/carga).",
+  "mirror_dw_ok": false,
+  "mirror_error": "DW inacessível (VPN/rede). Escores permanecem em saida_pipeline.",
+  "mirror_rows": {},
+  "exames_se_usada": 4,
+  "positivos_se_usada": 0,
+  "municipios_se_usada": 2
+}

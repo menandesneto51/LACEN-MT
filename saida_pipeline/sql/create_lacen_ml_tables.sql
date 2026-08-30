@@ -19,6 +19,15 @@ BEGIN
     [acao_sugerida] NVARCHAR(500),
     [metodo] NVARCHAR(500),
     [modelo_versao] NVARCHAR(500),
+    [risco_composto] FLOAT,
+    [positividade] FLOAT,
+    [tests] BIGINT,
+    [banda_absoluta] NVARCHAR(500),
+    [percentil_estadual] FLOAT,
+    [banda_percentil] NVARCHAR(500),
+    [banda_risco] NVARCHAR(500),
+    [criterio_banda] NVARCHAR(500),
+    [legenda_banda] NVARCHAR(500),
     [_loaded_at] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
     );
 END
@@ -72,6 +81,8 @@ BEGIN
     [pos_rate] FLOAT,
     [precision_at_20] FLOAT,
     [precision_at_50] FLOAT,
+    [rotulo] FLOAT,
+    [rotulo_nota] FLOAT,
     [_loaded_at] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
     );
 END
@@ -88,8 +99,33 @@ BEGIN
     [epi_week] BIGINT,
     [prob] FLOAT,
     [horizon_weeks] BIGINT,
-    [desfecho] FLOAT,
+    [desfecho] NVARCHAR(500),
     [confirmado] FLOAT,
+    [_loaded_at] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+    );
+END
+GO
+
+IF OBJECT_ID(N'[dbo].[lacen_alerta_emergencia_historico]', N'U') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[lacen_alerta_emergencia_historico] (
+    [ano_se] BIGINT,
+    [semana_epidemiologica] BIGINT,
+    [codigo_ibge] FLOAT,
+    [municipio] NVARCHAR(500),
+    [sla_crise] BIT,
+    [silencio_gal_alerta] BIT,
+    [divergencia_gal_notif] BIT,
+    [faixa_pressao] NVARCHAR(500),
+    [pressao_alta] BIT,
+    [indice_pressao_rede] FLOAT,
+    [prob_pressao_alta_proxima_janela] FLOAT,
+    [faixa_pressao_predita] FLOAT,
+    [pressao_predita_acima_limiar] FLOAT,
+    [prioridade_emergencia] FLOAT,
+    [ts_geracao] NVARCHAR(500),
+    [tipo_sinal] NVARCHAR(500),
+    [fonte_stamp] NVARCHAR(500),
     [_loaded_at] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
     );
 END
@@ -124,6 +160,8 @@ BEGIN
     [tat_p90_dias] FLOAT,
     [tat_lab_mediano_dias] FLOAT,
     [logistica_mediana_dias] FLOAT,
+    [pct_liberado_48h] FLOAT,
+    [pct_liberado_48h_coleta] FLOAT,
     [pct_liberado_7d] FLOAT,
     [pct_liberado_14d] FLOAT,
     [pct_rejeitado] FLOAT,

@@ -1,32 +1,32 @@
-[CIEVS Relatório 2×/semana] 2026-SE20 — rede sob pressão — LACEN-MT · 2026-08-29 22:12 Hora Padrão Brasil Central
+[CIEVS Relatório 2×/semana] 2026-SE20 — rede sob pressão — LACEN-MT · 2026-08-30 09:13 Hora Padrão Brasil Central
 ------------------------------------------------------------
 SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
 SE de referência: 2026-SE20 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-29 22:12 Hora Padrão Brasil Central
+Gerado em: 2026-08-30 09:13 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
 Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi e top municípios alinhados à SE de referência 2026-SE20 (série integrated_weekly; soma estadual = soma municipal da mesma SE).
 
-KPIs: Positivos SE 7 (+17%) · Exames 51 · Mun. 16 · TAT p50/p90 10,5/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 50%
-Aviso: Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 1 pos.) — referência = 2026-SE20 (última completa).
+KPIs: Positivos SE 0 (—) · Exames 67 · Mun. 28 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 4 · Confirmação 45%
+Aviso: Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 0 pos.) — referência = 2026-SE20 (última completa).
 
 — A · Situação lab-epi [Observado] —
-Observado: positivos estaduais SE20=7 vs SE19=6 (+17%)
+Observado: positivos SE20=0; SE anterior sem base
 1ª detecção/alerta (SE ref.): 0 mun.
 Top positivos:
-  1. TANGARA DA SERRA — +3 · pos=38% · fam=pesquisa_de_multipatogenos_ist
-  2. CUIABA — +1 · pos=17% · fam=rifampicina
-  3. CACERES — +1 · pos=20% · fam=hepatite_c_hcv
-  4. GUAIRA — +1 · pos=100% · fam=hepatite_b_hbv
-  5. CASSILANDIA — +1 · pos=100% · fam=tuberculose_lf_lam
+  1. CUIABA — +0 · pos=0% · fam=tuberculose
+  2. VARZEA GRANDE — +0 · pos=0% · fam=meningite
+  3. TANGARA DA SERRA — +0 · pos=0% · fam=doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist
+  4. CACERES — +0 · pos=0% · fam=doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist
+  5. SINOP — +0 · pos=0% · fam=hepatite_b_hbv
 Top divergências GAL×SINAN:
-  1. LUCAS DO RIO VERDE — sinan_sem_exame · notif=241 · exames=0
-  2. BARRA DO GARCAS — sinan_sem_exame · notif=177 · exames=0
-  3. COLIDER — sinan_sem_exame · notif=88 · exames=0
-  4. NOBRES — sinan_sem_exame · notif=66 · exames=0
-  5. ALTA FLORESTA — sinan_sem_exame · notif=53 · exames=0
+  1. BARRA DO GARCAS — sinan_sem_exame · notif=177 · exames=0
+  2. GUARANTA DO NORTE — sinan_sem_exame · notif=49 · exames=0
+  3. CONFRESA — sinan_sem_exame · notif=42 · exames=0
+  4. COLNIZA — sinan_sem_exame · notif=42 · exames=0
+  5. PARANATINGA — sinan_sem_exame · notif=31 · exames=0
 
 — B · Rede [Derivado / Observado] —
-TAT p50=10,5d · p90=118,3d · %≤48h=36%
+TAT p50=10,6d · p90=118,3d · %≤48h=36%
 Pressão alta/crítica:
   1. VARZEA GRANDE — critica · índice=80,8 · backlog=22.465 · rejeição=11%
   2. CACERES — critica · índice=76,2 · backlog=4.729 · rejeição=8%
@@ -35,12 +35,14 @@ Pressão alta/crítica:
   5. SINOP — alta · índice=72,3 · backlog=6.944 · rejeição=4%
 SLA por família:
   · arbovirose: exames=295.574 · %≤48h=23% · TAT p90=123,4d · crise=sim
-  · tuberculose: exames=60.114 · %≤48h=78% · TAT p90=94,7d · crise=não
-  · outros: exames=26.712 · %≤48h=46% · TAT p90=145,7d · crise=não
+  · tuberculose: exames=60.114 · %≤48h=78% · TAT p90=105,2d · crise=não
+  · outros: exames=26.712 · %≤48h=46% · TAT p90=146,4d · crise=não
   · respiratorio: exames=25.913 · %≤48h=57% · TAT p90=178,8d · crise=sim
 Silêncio GAL (vizinho quente):
-  1. VILA BELA DA SANTISSIMA TRINDADE — queda_absoluta · vizinho=não identificado
-  2. PORTO ESPERIDIAO — queda_absoluta · vizinho=SAO JOSE DOS QUATRO MARCOS(moderada), ARAPUTANGA(alta), JAURU(moderada)
+  1. VARZEA GRANDE — queda_absoluta · vizinho=CUIABA(critica), SANTO ANTONIO DO LEVERGER(moderada), NOSSA SENHORA DO LIVRAMENTO(alta)
+  2. PEIXOTO DE AZEVEDO — queda_absoluta · vizinho=NOVA GUARITA(moderada), NOVA SANTA HELENA(moderada), COLIDER(alta)
+  3. ALTA FLORESTA — queda_absoluta · vizinho=não identificado
+  4. VILA BELA DA SANTISSIMA TRINDADE — queda_absoluta · vizinho=não identificado
 
 — C · Ações —
 Fila operacional:
@@ -55,19 +57,19 @@ Fila operacional:
   9. SAO JOSE DOS QUATRO MARCOS | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
   10. CASSILANDIA | alerta_laboratorial | CRÍTICO | Ativar busca ativa de TB e validar fluxo de coleta/envio ao LACEN em até 48h. | 48h [Observado]
 Predito Alta/Crítica:
-  1. VARZEA GRANDE | Crítico | outros | estabelecimentos CNES: 6.790; equipes ESF: 3.050 | prob=87%
-  2. SINOP | Crítico | hepatite | estabelecimentos CNES: 17.600; leitos CNES: 11.200 | prob=60%
-  3. VARZEA GRANDE | Crítico | tuberculose | leitos CNES: 15.100; equipes ESF: 3.050 | prob=51%
-  4. PONTES E LACERDA | Alto | hepatite | estabelecimentos CNES: 2.850; leitos CNES: 2.140 | prob=42%
-  5. CUIABA | Crítico | tuberculose | leitos CNES: 62.000; equipes ESF: 3.310 | prob=39%
+  1. CUIABA | Crítico | tuberculose | estabelecimentos CNES: 52.500; leitos CNES: 62.000 | prob=29%
+  2. RONDONOPOLIS | Crítico | tuberculose | estabelecimentos CNES: 21.400; leitos CNES: 17.400 | prob=24%
+  3. CACERES | Crítico | tuberculose | estabelecimentos CNES: 6.300; leitos CNES: 8.380 | prob=22%
+  4. VARZEA GRANDE | Crítico | tuberculose | leitos CNES: 15.100; estabelecimentos CNES: 6.790 | prob=19%
+  5. SINOP | Crítico | tuberculose | estabelecimentos CNES: 17.600; leitos CNES: 11.200 | prob=17%
 Pressão predita (top):
-  1. TANGARA DA SERRA | critica | 67% | leitos CNES: 8.320; backlog estimado: 1.100
-  2. VARZEA GRANDE | critica | 63% | backlog estimado: 22.500; leitos CNES: 15.100
-  3. SINOP | critica | 61% | backlog estimado: 6.940; leitos CNES: 11.200
+  1. MATUPA | critica | 82% | backlog estimado: 781; tests ma4: 63,8
+  2. GUARANTA DO NORTE | critica | 81% | backlog estimado: 937; tests ma4: 72,2
+  3. ITAUBA | critica | 78% | backlog estimado: 734; tests ma4: 61,2
 
 — D · Qualidade —
-Observado: 144 mun. com qualidade (rede GAL=133); faixas: baixa=104, moderada=21, boa=14, alta=5
-Observado: confirmação alertas rodada anterior = 50% (34/68); modo=prospectivo_carimbado
+Observado: 163 mun. com qualidade (rede GAL=133); faixas: baixa=83, boa=39, moderada=34, alta=7
+Observado: confirmação alertas rodada anterior = 45% (33/73); modo=prospectivo_carimbado
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
 Fonte primária: arquivo local (DW indisponível)
@@ -77,19 +79,19 @@ Modelo: lacen_relatorio_cievs.py
 --- Telegram ---
 <b>SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
 SE 2026-SE20 · <b>rede sob pressão</b>
-2026-08-29 22:12 Hora Padrão Brasil Central
+2026-08-30 09:13 Hora Padrão Brasil Central
 
 <b>KPIs</b>
-Pos 7 (+17%) · TAT 10,5/118,3d · %≤48h 36%
-Pressão máx 80,8 · Silêncios 2 · Confirmação 50%
-<i>Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 1 pos.) — referência = 2026-SE20 (última completa).</i>
+Pos 0 (—) · TAT 10,6/118,3d · %≤48h 36%
+Pressão máx 80,8 · Silêncios 4 · Confirmação 45%
+<i>Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 0 pos.) — referência = 2026-SE20 (última completa).</i>
 
 <b>A — Lab-epi</b> (top 5)
-• TANGARA DA SERRA: +3 (38%)
-• CUIABA: +1 (17%)
-• CACERES: +1 (20%)
-• GUAIRA: +1 (100%)
-• CASSILANDIA: +1 (100%)
+• CUIABA: +0 (0%)
+• VARZEA GRANDE: +0 (0%)
+• TANGARA DA SERRA: +0 (0%)
+• CACERES: +0 (0%)
+• SINOP: +0 (0%)
 
 <b>B — Rede</b> (top 5 pressão)
 • VARZEA GRANDE: critica / 80,8
@@ -110,9 +112,9 @@ Pressão máx 80,8 · Silêncios 2 · Confirmação 50%
 <b>5. JANGADA</b> [Observado] silencio_laboratorial
 → Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
 <b>Predito</b>
-• VARZEA GRANDE [Crítico] estabelecimentos CNES: 6.790; equipes ESF: 3.050
-• SINOP [Crítico] estabelecimentos CNES: 17.600; leitos CNES: 11.200
-• VARZEA GRANDE [Crítico] leitos CNES: 15.100; equipes ESF: 3.050
+• CUIABA [Crítico] estabelecimentos CNES: 52.500; leitos CNES: 62.000
+• RONDONOPOLIS [Crítico] estabelecimentos CNES: 21.400; leitos CNES: 17.400
+• CACERES [Crítico] estabelecimentos CNES: 6.300; leitos CNES: 8.380
 
 <a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Abrir painel LACEN</a>
 Fonte: arquivo local (DW indisponível)

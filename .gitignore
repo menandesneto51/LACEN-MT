@@ -132,6 +132,10 @@ saida_pipeline/*
 !saida_pipeline/sim_weekly_municipio.csv
 !saida_pipeline/sim_weekly_municipio.parquet
 !saida_pipeline/relatorio_cievs_ultimo.txt
+!saida_pipeline/validacao_etl_dw_ultimo.txt
+!saida_pipeline/validacao_etl_dw_ultimo.json
+!saida_pipeline/weekly_tests_by_target_municipio.csv
+!saida_pipeline/positivity_by_target_epiweek_municipio.csv
 !ml/models_store/meta.json
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv

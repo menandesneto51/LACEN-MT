@@ -23,6 +23,19 @@ python -m streamlit run lacen_dashboard_integrado_total.py
 
 Abas novas: Visão executiva, Municípios em risco, Municípios silenciosos, Utilização do LACEN, Alertas territoriais.
 
+## ETL DW + SE real
+A base semanal (`integrated_weekly_surveillance`) e os alertas devem refletir a **semana epidemiológica do calendário** (última SE ISO completa vs `hoje`), não um recorte antigo preso em SE20/SE21.
+
+```bat
+rodar_etl_dw.bat
+.\.venv\Scripts\python.exe -m etl.run_etl_dw
+.\.venv\Scripts\python.exe -m etl.run_etl_dw --allow-local-fallback
+```
+
+Fluxo: extrai `dbo.VW_GAL` (e inventaria VW_SINAN/LACEN/SIM se existirem) → staging em `saida_pipeline/staging_dw/` → atualiza weekly → rede/emergência/ML → `ml.mirror_dw` → CIEVS dry-run → `saida_pipeline/validacao_etl_dw_ultimo.txt` (`hoje`, `se_esperada`, `se_usada`, `atraso_se`).
+
+Sem VPN SES (`DW_HOST:1433`) o ETL **falha com instrução**; `--allow-local-fallback` usa o CSV GAL local e **avisa** se a SE estiver atrasada. Espelho DW: se `CREATE TABLE` for negado, o DBA deve rodar `saida_pipeline/sql/create_lacen_ml_tables.sql` e reexecutar `python -m ml.mirror_dw`.
+
 ## Segredos / integrações
 Use `.env.example` como modelo. Não grave senhas no código.
 Padrão alinhado a TITAN_V40_DEV / Sentinela / SISREG (`DW_*`, Telegram, e-mail).
