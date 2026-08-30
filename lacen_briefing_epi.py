@@ -33,6 +33,7 @@ BRIEFING_RESUMO = "briefing_epi_se_resumo.txt"
 GAL_SINAN_CSV = "briefing_gal_sinan_divergencia.csv"
 GEO_HOTSPOTS_CSV = "briefing_geo_hotspots.csv"
 CRUZAMENTO_CSV = "briefing_cruzamento_bases.csv"
+CRUZAMENTO_SIH_SIA_CSV = "briefing_cruzamento_sih_sia.csv"
 
 # Alinhado a lacen_relatorio_cievs._week_incomplete / _pick_se_lab
 _MIN_TESTS_COMPLETE = 50
@@ -1144,13 +1145,25 @@ def inventariar_cruzamento_bases(
     catalog = [
         ("SINAN", ("sinan",), "Notificação compulsória — vínculo mun×agravo com GAL"),
         ("GAL", ("vw_gal", "gal"), "Exames LACEN — demanda e positividade"),
-        ("SIH", ("sih", "aih", "internac"), "Internações correlatas (AIH) quando chave junta"),
-        ("SIA", ("sia", "ambulator"), "Produção ambulatorial correlata"),
+        (
+            "SIH",
+            ("sih", "aih", "internac", "vw_internacao"),
+            "Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun)",
+        ),
+        ("SIA", ("sia", "ambulator"), "Produção ambulatorial correlata (SIA/SIA_APAC)"),
         ("SIVEP/SRAG", ("sivep", "srag", "sindromerespiratoria"), "SRAG / respiratório"),
         ("SIM", ("sim", "obito", "óbito"), "Óbitos — letalidade contextual"),
         ("CNES", ("cnes",), "Capacidade da rede (leitos/equipes)"),
-        ("IndicaSUS", ("indica", "pactuac"), "Pactuação / indicadores IndicaSUS"),
-        ("SISREG", ("sisreg",), "Regulação de vagas / filas"),
+        (
+            "IndicaSUS",
+            ("indica", "pactuac"),
+            "Pactuação / INDICADORES* no DW (host IndicaSUS separado)",
+        ),
+        (
+            "SISREG",
+            ("sisreg",),
+            "Regulação — host SISREG_* separado (sem view no DW; ping opcional)",
+        ),
         ("POPULACAO", ("populac",), "Denominadores municipais"),
     ]
     files = []
@@ -1188,7 +1201,81 @@ def inventariar_cruzamento_bases(
                 "status": "extraído" if presente else "ausente no DW/staging",
             }
         )
+    # SISREG: se meta tem ping, anotar sem marcar como extraído do DW
+    for row in out:
+        if row["fonte"] != "SISREG":
+            continue
+        try:
+            import json
+
+            meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+            ping = meta.get("sisreg_ping") or {}
+            if ping.get("ok") is True and not row["presente"]:
+                row["status"] = "host separado (TCP OK; sem view DW)"
+                row["arquivos"] = row["arquivos"] or "sisreg_ping"
+            elif ping.get("ok") is False and not row["presente"]:
+                row["status"] = "host separado (TCP falhou; não bloqueia)"
+            elif ping.get("ok") is None and not row["presente"]:
+                row["status"] = "ausente no DW — usar SISREG_* (não bloqueia)"
+        except (OSError, ValueError, TypeError):
+            pass
     return out
+
+
+def carregar_cruzamento_sih_sia(
+    outdir: Path | str = OUTDIR_DEFAULT,
+) -> dict[str, Any]:
+    """
+    Lê agregados SIH/SIA do staging DW (VW_INTERNACAO / SIA).
+    Retorna dict com top_mun, caveat — vazio se ausente (não bloqueia).
+    """
+    import json
+
+    stage = Path(outdir) / "staging_dw"
+    empty: dict[str, Any] = {
+        "caveat": (
+            "Cruzamento SIH/SIA indisponível nesta remessa "
+            "(rode etl/dw_extract com VPN)."
+        ),
+        "top_mun": [],
+        "sih_rows": 0,
+        "sia_rows": 0,
+        "familias": [],
+    }
+    resumo_path = stage / "cruzamento_sih_sia_resumo.json"
+    if resumo_path.exists():
+        try:
+            data = json.loads(resumo_path.read_text(encoding="utf-8"))
+            if isinstance(data, dict):
+                data.setdefault("top_mun", [])
+                data.setdefault("caveat", empty["caveat"])
+                return data
+        except (OSError, ValueError, TypeError):
+            pass
+
+    # Fallback: CSV top mun
+    top_csv = stage / "cruzamento_sih_sia_top_mun.csv"
+    if top_csv.exists():
+        rows = _read_csv(top_csv)
+        return {
+            "caveat": (
+                "Cruzamento SIH/SIA é correlato por CID×município "
+                "(proxy VW_INTERNACAO / SIA); não confirma surto."
+            ),
+            "top_mun": [
+                {
+                    "fonte": r.get("fonte") or "SIH/VW_INTERNACAO",
+                    "municipio": r.get("municipio") or "—",
+                    "cid_familia": r.get("cid_familia") or "—",
+                    "n": int(float(r["n"])) if str(r.get("n") or "").replace(".", "", 1).isdigit() else 0,
+                }
+                for r in rows[:15]
+            ],
+            "sih_rows": 0,
+            "sia_rows": 0,
+            "familias": sorted({r.get("cid_familia") or "" for r in rows if r.get("cid_familia")}),
+        }
+    return empty
 
 
 @dataclass
@@ -1205,6 +1292,7 @@ class BriefingEpi:
     gal_sinan: list[dict[str, Any]] = field(default_factory=list)
     geo: dict[str, Any] = field(default_factory=dict)
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
+    cruzamento_sih_sia: dict[str, Any] = field(default_factory=dict)
     fontes: list[str] = field(default_factory=list)
     usou_ml: bool = False
     rows_flat: list[dict[str, str]] = field(default_factory=list)
@@ -1270,6 +1358,18 @@ class BriefingEpi:
             lines.append(
                 f"7) Geo: nível={geo.get('nivel', '—')} — {geo.get('nota', '')[:120]}"
             )
+        sih = self.cruzamento_sih_sia or {}
+        top_sih = sih.get("top_mun") or []
+        if top_sih:
+            lines.append("7b) Cruzamento SIH/SIA (proxy VW_INTERNACAO):")
+            for row in top_sih[:6]:
+                lines.append(
+                    f"  · {row.get('municipio')} × {row.get('cid_familia')}: "
+                    f"n={row.get('n')} [{row.get('fonte', 'SIH')}]"
+                )
+            caveat = str(sih.get("caveat") or "")
+            if caveat:
+                lines.append(f"  Caveat: {caveat[:160]}")
         if any(x.get("caveat_igg") for x in self.maior_positividade):
             lines.append(
                 "Nota: positividade IgG/sorologia elevada ≠ surto agudo."
@@ -1548,6 +1648,10 @@ def computar_briefing_epi(
     if presentes:
         fontes.append("DW cruzamento: " + ", ".join(presentes[:6]))
 
+    sih_sia = carregar_cruzamento_sih_sia(outdir)
+    if sih_sia.get("top_mun"):
+        fontes.append("Cruzamento SIH/SIA (VW_INTERNACAO)")
+
     briefing = BriefingEpi(
         se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
         se_tuple=yw,
@@ -1563,6 +1667,7 @@ def computar_briefing_epi(
         gal_sinan=gal_sinan,
         geo=geo,
         cruzamento_bases=cruz,
+        cruzamento_sih_sia=sih_sia,
         fontes=fontes,
         usou_ml=usou_ml,
     )
@@ -1637,6 +1742,24 @@ def persistir_briefing(
         w.writeheader()
         for row in briefing.cruzamento_bases:
             w.writerow({k: row.get(k, "") for k in cruz_fields})
+
+    # Cruzamento SIH/SIA top mun
+    sih_path = outdir / CRUZAMENTO_SIH_SIA_CSV
+    sih_fields = ["fonte", "municipio", "cid_familia", "n", "caveat"]
+    caveat = str((briefing.cruzamento_sih_sia or {}).get("caveat") or "")
+    with sih_path.open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=sih_fields, extrasaction="ignore")
+        w.writeheader()
+        for row in (briefing.cruzamento_sih_sia or {}).get("top_mun") or []:
+            w.writerow(
+                {
+                    "fonte": row.get("fonte", ""),
+                    "municipio": row.get("municipio", ""),
+                    "cid_familia": row.get("cid_familia", ""),
+                    "n": row.get("n", ""),
+                    "caveat": caveat[:240],
+                }
+            )
 
     return csv_path, txt_path
 
@@ -1774,6 +1897,19 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
             }
             for c in briefing.cruzamento_bases
         ],
+        "cruzamento_sih_sia": {
+            "caveat": str((briefing.cruzamento_sih_sia or {}).get("caveat") or ""),
+            "top_mun": [
+                {
+                    "fonte": str(r.get("fonte") or ""),
+                    "municipio": str(r.get("municipio") or "—"),
+                    "cid_familia": str(r.get("cid_familia") or "—"),
+                    "n": _fmt_num(r.get("n")),
+                }
+                for r in ((briefing.cruzamento_sih_sia or {}).get("top_mun") or [])[:12]
+            ],
+            "familias": list((briefing.cruzamento_sih_sia or {}).get("familias") or []),
+        },
         "fontes": list(briefing.fontes),
         "usou_ml": briefing.usou_ml,
         "nota_igg": (

@@ -58,6 +58,10 @@ saida_pipeline/*
 !saida_pipeline/staging_dw/dw_views_inventory.csv
 !saida_pipeline/staging_dw/dw_fontes_uteis_lacen.md
 !saida_pipeline/staging_dw/dw_objects_uteis_pattern.csv
+!saida_pipeline/staging_dw/cruzamento_sih_sia_resumo.json
+!saida_pipeline/staging_dw/cruzamento_sih_sia_top_mun.csv
+!saida_pipeline/staging_dw/sih_mun_cid_familia_agg.csv
+!saida_pipeline/staging_dw/sia_mun_cid_familia_agg.csv
 !saida_pipeline/integrated_weekly_surveillance.csv
 !saida_pipeline/integrated_alerts.csv
 !saida_pipeline/integrated_annual_summary.csv
@@ -146,6 +150,7 @@ saida_pipeline/*
 !saida_pipeline/briefing_gal_sinan_divergencia.csv
 !saida_pipeline/briefing_geo_hotspots.csv
 !saida_pipeline/briefing_cruzamento_bases.csv
+!saida_pipeline/briefing_cruzamento_sih_sia.csv
 !saida_pipeline/relatorio_ve_inteligente.md
 !saida_pipeline/relatorio_ve_inteligente.html
 !saida_pipeline/relatorio_ve_acoes.csv

@@ -32,4 +32,12 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · [Predito] Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
 6) GAL×SINAN (qualquer agravo): 40 gal_sem_sinan · 0 sinan_sem_gal
 7) Geo: nível=bairro_cep — Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_s
+7b) Cruzamento SIH/SIA (proxy VW_INTERNACAO):
+  · CANARANA × dengue_arbovirose: n=42 [SIH/VW_INTERNACAO]
+  · DIAMANTINO × dengue_arbovirose: n=39 [SIH/VW_INTERNACAO]
+  · TANGARA DA SERRA × dengue_arbovirose: n=35 [SIH/VW_INTERNACAO]
+  · CUIABA × dengue_arbovirose: n=31 [SIH/VW_INTERNACAO]
+  · NOVA XAVANTINA × dengue_arbovirose: n=23 [SIH/VW_INTERNACAO]
+  · TABAPORA × dengue_arbovirose: n=22 [SIH/VW_INTERNACAO]
+  Caveat: Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
 Nota: positividade IgG/sorologia elevada ≠ surto agudo.

@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 18:59 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-30 19:26 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
@@ -134,16 +134,35 @@ _Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetr
 |-------|--------|---------------|
 | SINAN | extraído | Notificação compulsória — vínculo mun×agravo com GAL |
 | GAL | extraído | Exames LACEN — demanda e positividade |
-| SIH | ausente no DW/staging | Internações correlatas (AIH) quando chave junta |
-| SIA | ausente no DW/staging | Produção ambulatorial correlata |
+| SIH | extraído | Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun) |
+| SIA | extraído | Produção ambulatorial correlata (SIA/SIA_APAC) |
 | SIVEP/SRAG | extraído | SRAG / respiratório |
 | SIM | extraído | Óbitos — letalidade contextual |
 | CNES | extraído | Capacidade da rede (leitos/equipes) |
-| IndicaSUS | extraído | Pactuação / indicadores IndicaSUS |
-| SISREG | ausente no DW/staging | Regulação de vagas / filas |
+| IndicaSUS | extraído | Pactuação / INDICADORES* no DW (host IndicaSUS separado) |
+| SISREG | host separado (TCP OK; sem view DW) | Regulação — host SISREG_* separado (sem view no DW; ping opcional) |
 | POPULACAO | extraído | Denominadores municipais |
 
 Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
+
+## 7e. Cruzamento SIH/SIA (proxy VW_INTERNACAO)
+
+| Município | Família CID | N | Fonte |
+|-----------|-------------|---|-------|
+| CANARANA | dengue_arbovirose | 42 | SIH/VW_INTERNACAO |
+| DIAMANTINO | dengue_arbovirose | 39 | SIH/VW_INTERNACAO |
+| TANGARA DA SERRA | dengue_arbovirose | 35 | SIH/VW_INTERNACAO |
+| CUIABA | dengue_arbovirose | 31 | SIH/VW_INTERNACAO |
+| NOVA XAVANTINA | dengue_arbovirose | 23 | SIH/VW_INTERNACAO |
+| TABAPORA | dengue_arbovirose | 22 | SIH/VW_INTERNACAO |
+| VARZEA GRANDE | dengue_arbovirose | 19 | SIH/VW_INTERNACAO |
+| BARRA DO GARCAS | dengue_arbovirose | 19 | SIH/VW_INTERNACAO |
+| CONFRESA | dengue_arbovirose | 18 | SIH/VW_INTERNACAO |
+| JUARA | dengue_arbovirose | 17 | SIH/VW_INTERNACAO |
+| PONTES E LACERDA | dengue_arbovirose | 17 | SIH/VW_INTERNACAO |
+| JUINA | dengue_arbovirose | 16 | SIH/VW_INTERNACAO |
+
+_Caveat:_ Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
 
 ## 8. Casos especiais (sinal lab × critérios Guia MS)
 

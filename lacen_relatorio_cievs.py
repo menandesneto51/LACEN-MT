@@ -538,6 +538,8 @@ class RelatorioCIEVS:
     briefing_geo_nota: str = ""
     briefing_geo_hotspots: list[dict[str, str]] = field(default_factory=list)
     briefing_cruzamento: list[dict[str, str]] = field(default_factory=list)
+    briefing_cruzamento_sih_sia: list[dict[str, str]] = field(default_factory=list)
+    briefing_cruzamento_sih_sia_caveat: str = ""
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
     # Bloco F — Parecer VE (IA + Guia MS) opcional
@@ -1510,6 +1512,12 @@ def montar_relatorio(
         briefing_geo_nota=str(briefing.get("geo_nota") or ""),
         briefing_geo_hotspots=briefing.get("geo_hotspots") or [],
         briefing_cruzamento=briefing.get("cruzamento_bases") or [],
+        briefing_cruzamento_sih_sia=list(
+            ((briefing.get("cruzamento_sih_sia") or {}).get("top_mun") or [])
+        ),
+        briefing_cruzamento_sih_sia_caveat=str(
+            (briefing.get("cruzamento_sih_sia") or {}).get("caveat") or ""
+        ),
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
         ve_resumo=ve_resumo,
@@ -1810,6 +1818,15 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             "Cruzamento DW: "
             + (", ".join(presentes) if presentes else "(nenhuma extra no staging)")
         )
+    if rel.briefing_cruzamento_sih_sia:
+        lines.append("Cruzamento SIH/SIA (VW_INTERNACAO proxy):")
+        for row in rel.briefing_cruzamento_sih_sia[:6]:
+            lines.append(
+                f"  · {row.get('municipio')} × {row.get('cid_familia')}: "
+                f"n={row.get('n')} [{row.get('fonte', 'SIH')}]"
+            )
+        if rel.briefing_cruzamento_sih_sia_caveat:
+            lines.append(f"  Caveat: {rel.briefing_cruzamento_sih_sia_caveat[:180]}")
     if rel.briefing_nota_igg:
         lines.append(f"Nota: {rel.briefing_nota_igg}")
     if rel.briefing_fontes:
@@ -2188,6 +2205,21 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
     ],
     "(inventário vazio)",
 )}
+<p><b>Cruzamento SIH/SIA</b> (proxy <code>VW_INTERNACAO</code>)</p>
+{_html_table(
+    ["Município", "Família CID", "N", "Fonte"],
+    [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('municipio','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('cid_familia','—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(str(r.get('n','—')))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('fonte','SIH'))}</td>"
+        "</tr>"
+        for r in rel.briefing_cruzamento_sih_sia[:10]
+    ],
+    "(sem agregados SIH/SIA nesta remessa)",
+)}
+{f"<p style='font-size:12px;color:#5a6a82'><i>{html.escape(rel.briefing_cruzamento_sih_sia_caveat[:280])}</i></p>" if rel.briefing_cruzamento_sih_sia_caveat else ""}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 F — Parecer VE (IA + Guia MS)</h3>

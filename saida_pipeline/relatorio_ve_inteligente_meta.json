@@ -1,6 +1,6 @@
 {
   "se": "2026-SE30",
-  "gerado_em": "2026-08-30 18:59 Hora Padrão Brasil Central",
+  "gerado_em": "2026-08-30 19:26 Hora Padrão Brasil Central",
   "fonte_notificacoes": "proxy_exames_GAL",
   "n_casos_especiais": 1,
   "casos": [
@@ -127,5 +127,87 @@
     "conhecimento_ve\\notificaveis_resumo.md",
     "conhecimento_ve\\notificaveis_resumo.md"
   ],
-  "fontes_cache": []
+  "fontes_cache": [],
+  "cruzamento_sih_sia": {
+    "caveat": "Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.",
+    "top_mun": [
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "CANARANA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 42
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "DIAMANTINO",
+        "cid_familia": "dengue_arbovirose",
+        "n": 39
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "TANGARA DA SERRA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 35
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "CUIABA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 31
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "NOVA XAVANTINA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 23
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "TABAPORA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 22
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "VARZEA GRANDE",
+        "cid_familia": "dengue_arbovirose",
+        "n": 19
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "BARRA DO GARCAS",
+        "cid_familia": "dengue_arbovirose",
+        "n": 19
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "CONFRESA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 18
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "JUARA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 17
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "PONTES E LACERDA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 17
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "JUINA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 16
+      }
+    ],
+    "sih_rows": 395,
+    "sia_rows": 692,
+    "familias": [
+      "dengue_arbovirose"
+    ]
+  }
 }

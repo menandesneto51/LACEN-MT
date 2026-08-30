@@ -539,6 +539,7 @@ class ParecerVE:
     geo_nota: str = ""
     geo_hotspots: list[dict[str, Any]] = field(default_factory=list)
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
+    cruzamento_sih_sia: dict[str, Any] = field(default_factory=dict)
     casos_especiais: list[CasoEspecial] = field(default_factory=list)
     recomendacoes: dict[str, list[str]] = field(default_factory=dict)
     recomendacoes_por_agravo: list[dict[str, Any]] = field(default_factory=list)
@@ -1190,6 +1191,32 @@ def _render_markdown(p: ParecerVE) -> str:
         "Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`."
     )
 
+    lines += [
+        "",
+        "## 7e. Cruzamento SIH/SIA (proxy VW_INTERNACAO)",
+        "",
+    ]
+    sih = p.cruzamento_sih_sia or {}
+    top_sih = sih.get("top_mun") or []
+    if top_sih:
+        lines += [
+            "| Município | Família CID | N | Fonte |",
+            "|-----------|-------------|---|-------|",
+        ]
+        for r in top_sih[:12]:
+            lines.append(
+                f"| {r.get('municipio','—')} | {r.get('cid_familia','—')} | "
+                f"{_intish(r.get('n'))} | {r.get('fonte','SIH')} |"
+            )
+        caveat = str(sih.get("caveat") or "")
+        if caveat:
+            lines += ["", f"_Caveat:_ {caveat}"]
+    else:
+        lines.append(
+            "_Sem agregados SIH/SIA nesta remessa "
+            "(extrair `VW_INTERNACAO`/`SIA` via `etl/dw_extract`)._"
+        )
+
     lines += ["", "## 8. Casos especiais (sinal lab × critérios Guia MS)", ""]
     if not p.casos_especiais:
         lines.append("_Nenhum caso especial acima dos limiares nesta SE._")
@@ -1453,6 +1480,13 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
     for c in p.cruzamento_bases
 ])}
 <p style="font-size:12px">Ver <code>conhecimento_ve/cruzamento_bases.md</code>.</p>
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7e. Cruzamento SIH/SIA (VW_INTERNACAO)</h3>
+{table(["Município", "Família CID", "N", "Fonte"], [
+    [str(r.get("municipio","—")), str(r.get("cid_familia","—")),
+     _intish(r.get("n")), str(r.get("fonte") or "SIH")]
+    for r in ((p.cruzamento_sih_sia or {}).get("top_mun") or [])[:12]
+])}
+{f"<p style='font-size:12px;color:#5a6a85'><i>{esc(str((p.cruzamento_sih_sia or {}).get('caveat') or '')[:280])}</i></p>" if (p.cruzamento_sih_sia or {}).get("caveat") else "<p style='font-size:12px'>(sem agregados SIH/SIA)</p>"}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">8. Casos especiais</h3>
 {casos_html or "<p>(nenhum)</p>"}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">9. Recomendações por destinatário</h3>
@@ -1763,6 +1797,7 @@ def gerar_parecer_ve(
         geo_nota=str(geo.get("nota") or ""),
         geo_hotspots=list(geo.get("hotspots") or [])[:15],
         cruzamento_bases=list(briefing.cruzamento_bases or []),
+        cruzamento_sih_sia=dict(briefing.cruzamento_sih_sia or {}),
         casos_especiais=casos,
         recomendacoes=recs,
         recomendacoes_por_agravo=por_agravo,
@@ -1846,6 +1881,7 @@ def persistir_parecer(
         "usou_llm": parecer.usou_llm,
         "citacoes": [c.get("fonte") for c in parecer.citacoes],
         "fontes_cache": parecer.fontes_cache,
+        "cruzamento_sih_sia": parecer.cruzamento_sih_sia or {},
     }
     paths["json"].write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"

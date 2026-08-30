@@ -1,13 +1,13 @@
-[CIEVS Relatório 2×/semana] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 18:59 Hora Padrão Brasil Central
+[CIEVS Relatório 2×/semana] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 19:26 Hora Padrão Brasil Central
 ------------------------------------------------------------
 SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
 SE de referência: 2026-SE30 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-30 18:59 Hora Padrão Brasil Central
+Gerado em: 2026-08-30 19:26 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
 Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE30 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda.
 
 KPIs: Positivos SE 169 (-1%) · Exames 2.902 · Mun. 117 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
-Aviso: Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d).
+Aviso: Fonte: arquivo local (DW indisponível)
 
 — A · Situação lab-epi [Observado] —
 Observado: positivos estaduais SE30=169 vs SE29=170 (-1%)
@@ -82,9 +82,17 @@ Top divergências GAL×SINAN:
   · TANGARA DA SERRA / *Em Branco · — n=735 ibge=
   · PEIXOTO DE AZEVEDO / *Não disponível · — n=716 ibge=
   · SINOP / *Não disponível · — n=582 ibge=
-Cruzamento DW: SINAN, GAL, SIVEP/SRAG, SIM, CNES, IndicaSUS, POPULACAO
+Cruzamento DW: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, CNES, IndicaSUS, POPULACAO
+Cruzamento SIH/SIA (VW_INTERNACAO proxy):
+  · CANARANA × dengue_arbovirose: n=42 [SIH/VW_INTERNACAO]
+  · DIAMANTINO × dengue_arbovirose: n=39 [SIH/VW_INTERNACAO]
+  · TANGARA DA SERRA × dengue_arbovirose: n=35 [SIH/VW_INTERNACAO]
+  · CUIABA × dengue_arbovirose: n=31 [SIH/VW_INTERNACAO]
+  · NOVA XAVANTINA × dengue_arbovirose: n=23 [SIH/VW_INTERNACAO]
+  · TABAPORA × dengue_arbovirose: n=22 [SIH/VW_INTERNACAO]
+  Caveat: Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
 Nota: Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda.
-Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIVEP/SRAG, SIM, CNES, IndicaSUS
+Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO)
 
 — F · Parecer VE (IA + Guia MS) —
 SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.3%); hepatite_b_hbv (155 ex., 65.2%). Destaque: JUINA × hepatite_b_hbv — 46 exames / +24 (52.2%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Comparação (dengue): vs SE-1 ↑ 1316 (+162%); acima da mediana das 4 SE. Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
@@ -142,19 +150,19 @@ Observado: 363 mun. com qualidade (rede GAL=133); faixas: boa=265, alta=98
 Observado: confirmação alertas rodada anterior = 78% (78/100); modo=prospectivo_carimbado
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
-Fonte primária: DW · Datawarehouse (VW_GAL) + arquivo local
-Fontes: dbo.VW_GAL, + saida_pipeline complementar (17 artefatos), integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIVEP/SRAG, SIM, CNES, IndicaSUS, conhecimento_ve + lacen_agente_ve
+Fonte primária: arquivo local (DW indisponível)
+Fontes: saida_pipeline (17 artefatos), integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO), conhecimento_ve + lacen_agente_ve
 Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
 <b>SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
 SE 2026-SE30 · <b>rede sob pressão</b>
-2026-08-30 18:59 Hora Padrão Brasil Central
+2026-08-30 19:26 Hora Padrão Brasil Central
 
 <b>KPIs</b>
 Pos 169 (-1%) · TAT 10,6/118,3d · %≤48h 36%
 Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
-<i>Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d).</i>
+<i>Fonte: arquivo local (DW indisponível)</i>
 
 <b>A — Lab-epi</b> (top 5)
 • CUIABA: +29 (11%)
@@ -211,4 +219,4 @@ SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): d
 Foco: JUINA × hepatite_b_hbv — 46 ex. / +24 (52.2%) → investigar; não declarar surto automático.
 
 <a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Abrir painel LACEN</a>
-Fonte: DW · Datawarehouse (VW_GAL) + arquivo local
+Fonte: arquivo local (DW indisponível)

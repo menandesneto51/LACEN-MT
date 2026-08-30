@@ -153,20 +153,182 @@ def _safe_ident(name: str) -> str:
     return name
 
 
-def discover_gal_columns(mode: str, queryable: Any, schema: str = "dbo", view: str = "VW_GAL") -> list[str]:
+def discover_table_columns(
+    mode: str,
+    queryable: Any,
+    schema: str = "dbo",
+    table: str = "VW_GAL",
+) -> list[str]:
     from lacen_dw import read_sql
-    schema, view = _safe_ident(schema), _safe_ident(view)
+
+    schema, table = _safe_ident(schema), _safe_ident(table)
     df = read_sql(
         mode,
         queryable,
         f"""
         SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = '{schema}' AND TABLE_NAME = '{view}'
+        WHERE TABLE_SCHEMA = '{schema}' AND TABLE_NAME = '{table}'
         ORDER BY ORDINAL_POSITION
         """,
     )
     return [str(x) for x in df["COLUMN_NAME"].tolist()]
+
+
+def discover_gal_columns(
+    mode: str, queryable: Any, schema: str = "dbo", view: str = "VW_GAL"
+) -> list[str]:
+    return discover_table_columns(mode, queryable, schema=schema, table=view)
+
+
+# Famílias CID10 correlatas aos agravos prioritários LACEN/CIEVS
+CID_FAMILIA_SQL_CASES: tuple[tuple[str, str], ...] = (
+    (
+        "hepatite",
+        "({cid} LIKE 'B15%' OR {cid} LIKE 'B16%' OR {cid} LIKE 'B17%' "
+        "OR {cid} LIKE 'B18%' OR {cid} LIKE 'B19%')",
+    ),
+    (
+        "tuberculose",
+        "({cid} LIKE 'A15%' OR {cid} LIKE 'A16%' OR {cid} LIKE 'A17%' "
+        "OR {cid} LIKE 'A18%' OR {cid} LIKE 'A19%')",
+    ),
+    (
+        "dengue_arbovirose",
+        "({cid} LIKE 'A90%' OR {cid} LIKE 'A91%' OR {cid} LIKE 'A92%' "
+        "OR {cid} LIKE 'A95%')",
+    ),
+)
+
+CID_FAMILIA_PREFIXES: dict[str, tuple[str, ...]] = {
+    "hepatite": ("B15", "B16", "B17", "B18", "B19"),
+    "tuberculose": ("A15", "A16", "A17", "A18", "A19"),
+    "dengue_arbovirose": ("A90", "A91", "A92", "A95"),
+}
+
+# Colunas preferidas no sample recente (quando existirem)
+INTERNACAO_SAMPLE_COLS: tuple[str, ...] = (
+    "AnoInternacao",
+    "MesInternacao",
+    "DiaInternacao",
+    "AnoCompetencia",
+    "MesCompetencia",
+    "MunicipioResidencia",
+    "CodigoMunicipioResidencia",
+    "MunicipioOcorrencia",
+    "CodigoMunicipioOcorrencia",
+    "DiagnosticoPrincipal",
+    "CodigoDiagnosticoPrincipal",
+    "DiagnosticoPrincipalCid10Capitulo",
+    "DiagnosticoSecundario",
+    "HospitalNome",
+    "CaraterInternacao",
+    "NumeroAIH",
+    "FoiAObito",
+    "PermanenciaDias",
+    "TeveDiariasUTI",
+    "NumeroInternacoes",
+)
+
+SIA_SAMPLE_COLS: tuple[str, ...] = (
+    "AnoAtendimento",
+    "MesAtendimento",
+    "AnoApresentacao",
+    "MesApresentacao",
+    "MunicipioResidencia",
+    "CodigoMunicipioResidencia",
+    "MunicipioAtendimento",
+    "CidPrincipal",
+    "CodigoCidPrincipal",
+    "CidPrincipalCid10Capitulo",
+    "ProcedimentoNome",
+    "ProcedimentoCodigo",
+    "QuantidadeAprovada",
+    "ValorAprovado",
+)
+
+SIA_APAC_SAMPLE_COLS: tuple[str, ...] = (
+    "AnoCompetencia",
+    "MesCompetencia",
+    "AnoInicioApac",
+    "MesInicioApac",
+    "DiaInicioApac",
+    "MunicipioResidencia",
+    "CodigoMunicipioResidencia",
+    "CausaBasica",
+    "CausaCid10Capitulo",
+    "ProcedimentoNome",
+    "ProcedimentoCodigo",
+    "QuantidadeAprovada",
+    "ValorAprovado",
+    "TipoApac",
+)
+
+
+def _cid_familia_case_sql(cid_expr: str) -> str:
+    parts = [
+        f"WHEN {cond.format(cid=cid_expr)} THEN N'{fam}'"
+        for fam, cond in CID_FAMILIA_SQL_CASES
+    ]
+    return "CASE " + " ".join(parts) + " ELSE NULL END"
+
+
+def _normalize_cid_series(s: pd.Series) -> pd.Series:
+    return (
+        s.astype(str)
+        .str.upper()
+        .str.replace(r"[^A-Z0-9]", "", regex=True)
+        .str.strip()
+    )
+
+
+def cid_to_familia(cid: Any) -> str | None:
+    code = str(cid or "").upper().replace(".", "").replace(" ", "")
+    if len(code) < 3:
+        return None
+    head = code[:3]
+    for fam, prefixes in CID_FAMILIA_PREFIXES.items():
+        if any(code.startswith(p) or head == p for p in prefixes):
+            return fam
+    return None
+
+
+def check_sisreg_tcp(timeout: float = 2.0) -> dict[str, Any]:
+    """Ping opcional do host SISREG (fora do DW). Nunca bloqueia o ETL."""
+    import os
+    import socket
+
+    try:
+        from lacen_dw import _load_dotenv_files
+
+        _load_dotenv_files()
+    except Exception:
+        pass
+
+    host = (os.getenv("SISREG_HOST") or "").strip()
+    if not host:
+        return {
+            "ok": None,
+            "host": None,
+            "port": None,
+            "note": "SISREG_HOST ausente — regulação fora do DW (não bloqueia)",
+        }
+    port = int(os.getenv("SISREG_PORT") or "1433")
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return {
+                "ok": True,
+                "host": host,
+                "port": port,
+                "note": "SISREG TCP OK (host separado; sem view no DW)",
+            }
+    except OSError as exc:
+        return {
+            "ok": False,
+            "host": host,
+            "port": port,
+            "note": f"SISREG TCP falhou (não bloqueia ETL): {type(exc).__name__}",
+        }
 
 
 def extract_vw_gal_weekly_agg(
@@ -315,6 +477,610 @@ def extract_optional_view(
         return None
 
 
+def _year_int_sql(col: str) -> str:
+    return f"TRY_CONVERT(int, [{col}])"
+
+
+def _month_int_sql(col: str) -> str:
+    """Mes no DW SES costuma ser '02.Fev' / '12.Dez' — pega os 2 dígitos iniciais."""
+    return (
+        f"COALESCE("
+        f"TRY_CONVERT(int, [{col}]), "
+        f"TRY_CONVERT(int, LEFT(LTRIM(RTRIM(CAST([{col}] AS NVARCHAR(20)))), 2))"
+        f")"
+    )
+
+
+def _day_int_sql(col: str) -> str:
+    return (
+        f"COALESCE("
+        f"TRY_CONVERT(int, [{col}]), "
+        f"TRY_CONVERT(int, LEFT(LTRIM(RTRIM(CAST([{col}] AS NVARCHAR(20)))), 2)), "
+        f"1)"
+    )
+
+
+def _sih_date_expr(cols: set[str]) -> Optional[str]:
+    """Expressão date a partir de Ano/Mes/DiaInternacao ou competência (mês PT-BR)."""
+    if {"AnoInternacao", "MesInternacao", "DiaInternacao"} <= cols:
+        y, m, d = (
+            _year_int_sql("AnoInternacao"),
+            _month_int_sql("MesInternacao"),
+            _day_int_sql("DiaInternacao"),
+        )
+        inter = (
+            f"CASE WHEN {y} IS NOT NULL AND {m} BETWEEN 1 AND 12 "
+            f"THEN TRY_CONVERT(date, DATEFROMPARTS({y}, {m}, "
+            f"CASE WHEN {d} BETWEEN 1 AND 31 THEN {d} ELSE 1 END)) "
+            f"ELSE NULL END"
+        )
+        if {"AnoCompetencia", "MesCompetencia"} <= cols:
+            yc, mc = _year_int_sql("AnoCompetencia"), _month_int_sql("MesCompetencia")
+            return (
+                f"COALESCE({inter}, "
+                f"CASE WHEN {yc} IS NOT NULL AND {mc} BETWEEN 1 AND 12 "
+                f"THEN TRY_CONVERT(date, DATEFROMPARTS({yc}, {mc}, 1)) ELSE NULL END)"
+            )
+        return inter
+    if {"AnoCompetencia", "MesCompetencia"} <= cols:
+        yc, mc = _year_int_sql("AnoCompetencia"), _month_int_sql("MesCompetencia")
+        return (
+            f"CASE WHEN {yc} IS NOT NULL AND {mc} BETWEEN 1 AND 12 "
+            f"THEN TRY_CONVERT(date, DATEFROMPARTS({yc}, {mc}, 1)) ELSE NULL END"
+        )
+    return None
+
+
+def _sia_date_expr(cols: set[str]) -> Optional[str]:
+    pairs = (
+        ("AnoAtendimento", "MesAtendimento"),
+        ("AnoApresentacao", "MesApresentacao"),
+        ("AnoCompetencia", "MesCompetencia"),
+    )
+    for ycol, mcol in pairs:
+        if ycol in cols and mcol in cols:
+            y, m = _year_int_sql(ycol), _month_int_sql(mcol)
+            return (
+                f"CASE WHEN {y} IS NOT NULL AND {m} BETWEEN 1 AND 12 "
+                f"THEN TRY_CONVERT(date, DATEFROMPARTS({y}, {m}, 1)) ELSE NULL END"
+            )
+    return None
+
+
+def _parse_month_pt(val: Any) -> Optional[int]:
+    if val is None or (isinstance(val, float) and pd.isna(val)):
+        return None
+    try:
+        n = int(val)
+        if 1 <= n <= 12:
+            return n
+    except (TypeError, ValueError):
+        pass
+    s = str(val).strip()
+    if len(s) >= 2 and s[:2].isdigit():
+        n = int(s[:2])
+        if 1 <= n <= 12:
+            return n
+    return None
+
+
+def _parse_year(val: Any) -> Optional[int]:
+    try:
+        n = int(float(str(val).strip()[:4]))
+        return n if n >= 2000 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _pick_cols(available: set[str], preferred: tuple[str, ...]) -> list[str]:
+    return [c for c in preferred if c in available]
+
+
+def extract_vw_internacao_recent(
+    mode: str,
+    queryable: Any,
+    *,
+    schema: str = "dbo",
+    view: str | None = None,
+    days_back: int = 180,
+    top: int = 80_000,
+) -> tuple[Optional[pd.DataFrame], list[str]]:
+    """Amostra recente de VW_INTERNACAO (proxy SIH) → staging."""
+    import os
+
+    from lacen_dw import read_sql
+
+    schema = _safe_ident(schema or os.getenv("SIH_DW_SCHEMA") or "dbo")
+    view = _safe_ident(
+        view or os.getenv("SIH_DW_TABLE") or "VW_INTERNACAO"
+    )
+    cols = set(discover_table_columns(mode, queryable, schema, view))
+    if not cols:
+        _log(f"[DW] {schema}.{view} sem colunas")
+        return None, []
+    want = _pick_cols(cols, INTERNACAO_SAMPLE_COLS) or sorted(cols)[:40]
+    date_expr = _sih_date_expr(cols)
+    col_list = ", ".join(f"[{c}]" for c in want)
+    if date_expr:
+        sql = f"""
+        SELECT TOP ({int(top)}) {col_list}
+        FROM [{schema}].[{view}]
+        WHERE {date_expr} IS NOT NULL
+          AND {date_expr} >= DATEADD(day, -{int(days_back)}, CAST(GETDATE() AS date))
+          AND {date_expr} <= CAST(GETDATE() AS date)
+        ORDER BY {date_expr} DESC
+        """
+    else:
+        sql = f"SELECT TOP ({int(top)}) {col_list} FROM [{schema}].[{view}]"
+    _log(f"[DW] Micro {schema}.{view} TOP {top} / ~{days_back}d…")
+    try:
+        return read_sql(mode, queryable, sql), sorted(cols)
+    except Exception as exc:
+        _log(f"[DW] Extrato {view} falhou: {type(exc).__name__}: {exc}")
+        return None, sorted(cols)
+
+
+def extract_sia_recent(
+    mode: str,
+    queryable: Any,
+    table_name: str,
+    *,
+    schema: str = "dbo",
+    days_back: int = 180,
+    top: int = 60_000,
+    preferred_cols: tuple[str, ...] = SIA_SAMPLE_COLS,
+) -> tuple[Optional[pd.DataFrame], list[str]]:
+    """Amostra recente SIA / SIA_APAC com filtro de competência/atendimento."""
+    from lacen_dw import read_sql
+
+    schema, table_name = _safe_ident(schema), _safe_ident(table_name)
+    cols = set(discover_table_columns(mode, queryable, schema, table_name))
+    if not cols:
+        return None, []
+    want = _pick_cols(cols, preferred_cols) or sorted(cols)[:40]
+    date_expr = _sia_date_expr(cols)
+    col_list = ", ".join(f"[{c}]" for c in want)
+    if date_expr:
+        sql = f"""
+        SELECT TOP ({int(top)}) {col_list}
+        FROM [{schema}].[{table_name}]
+        WHERE {date_expr} IS NOT NULL
+          AND {date_expr} >= DATEADD(day, -{int(days_back)}, CAST(GETDATE() AS date))
+          AND {date_expr} <= CAST(GETDATE() AS date)
+        ORDER BY {date_expr} DESC
+        """
+    else:
+        sql = f"SELECT TOP ({int(top)}) {col_list} FROM [{schema}].[{table_name}]"
+    _log(f"[DW] Micro {schema}.{table_name} TOP {top} / ~{days_back}d…")
+    try:
+        return read_sql(mode, queryable, sql), sorted(cols)
+    except Exception as exc:
+        _log(f"[DW] Extrato {table_name} falhou: {type(exc).__name__}: {exc}")
+        return None, sorted(cols)
+
+
+def extract_sih_mun_cid_agg(
+    mode: str,
+    queryable: Any,
+    *,
+    schema: str = "dbo",
+    view: str | None = None,
+    days_back: int = 180,
+) -> Optional[pd.DataFrame]:
+    """Agrega mun × SE × família CID (hepatite/TB/arbov) no próprio DW."""
+    import os
+
+    from lacen_dw import read_sql
+
+    schema = _safe_ident(schema or os.getenv("SIH_DW_SCHEMA") or "dbo")
+    view = _safe_ident(view or os.getenv("SIH_DW_TABLE") or "VW_INTERNACAO")
+    cols = set(discover_table_columns(mode, queryable, schema, view))
+    date_expr = _sih_date_expr(cols)
+    mun_col = next(
+        (
+            c
+            for c in (
+                "MunicipioResidencia",
+                "MunicipioOcorrencia",
+                "CodigoMunicipioResidencia",
+            )
+            if c in cols
+        ),
+        None,
+    )
+    cid_col = next(
+        (
+            c
+            for c in (
+                "CodigoDiagnosticoPrincipal",
+                "DiagnosticoPrincipal",
+                "CodigoDiagnosticoPrincipalCid10Capitulo",
+            )
+            if c in cols
+        ),
+        None,
+    )
+    if not date_expr or not mun_col or not cid_col:
+        _log("[DW] Agg SIH: faltam data/mun/CID — skip SQL agg")
+        return None
+
+    cid_norm = (
+        f"UPPER(REPLACE(REPLACE(LTRIM(RTRIM(CAST([{cid_col}] AS NVARCHAR(20)))), '.', ''), ' ', ''))"
+    )
+    fam_expr = _cid_familia_case_sql(cid_norm)
+    d = f"({date_expr})"
+    epi_year = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
+    epi_week = f"DATEPART(iso_week, {d})"
+    sql = f"""
+    SELECT
+      {epi_year} AS epi_year,
+      {epi_week} AS epi_week,
+      UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))) AS municipio,
+      {fam_expr} AS cid_familia,
+      COUNT_BIG(*) AS n_internacoes,
+      MIN({d}) AS dt_min,
+      MAX({d}) AS dt_max
+    FROM [{schema}].[{view}]
+    WHERE {d} IS NOT NULL
+      AND {d} >= DATEADD(day, -{int(days_back)}, CAST(GETDATE() AS date))
+      AND {d} <= CAST(GETDATE() AS date)
+      AND {fam_expr} IS NOT NULL
+      AND LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200)))) <> ''
+    GROUP BY
+      {epi_year},
+      {epi_week},
+      UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))),
+      {fam_expr}
+    """
+    _log(f"[DW] Agg SIH mun×SE×CID família (~{days_back}d)…")
+    try:
+        return read_sql(mode, queryable, sql)
+    except Exception as exc:
+        _log(f"[DW] Agg SIH falhou: {type(exc).__name__}: {exc}")
+        return None
+
+
+def extract_sia_mun_cid_agg(
+    mode: str,
+    queryable: Any,
+    table_name: str = "SIA",
+    *,
+    schema: str = "dbo",
+    days_back: int = 180,
+) -> Optional[pd.DataFrame]:
+    """Agrega SIA mun × competência-mês × família CID (leve)."""
+    from lacen_dw import read_sql
+
+    schema, table_name = _safe_ident(schema), _safe_ident(table_name)
+    cols = set(discover_table_columns(mode, queryable, schema, table_name))
+    date_expr = _sia_date_expr(cols)
+    mun_col = next(
+        (
+            c
+            for c in (
+                "MunicipioResidencia",
+                "MunicipioAtendimento",
+                "CodigoMunicipioResidencia",
+            )
+            if c in cols
+        ),
+        None,
+    )
+    cid_col = next(
+        (
+            c
+            for c in (
+                "CodigoCidPrincipal",
+                "CidPrincipal",
+                "CausaBasica",
+                "CodigoCidPrincipalCid10Capitulo",
+            )
+            if c in cols
+        ),
+        None,
+    )
+    if not date_expr or not mun_col or not cid_col:
+        _log(f"[DW] Agg {table_name}: faltam data/mun/CID — skip")
+        return None
+
+    cid_norm = (
+        f"UPPER(REPLACE(REPLACE(LTRIM(RTRIM(CAST([{cid_col}] AS NVARCHAR(20)))), '.', ''), ' ', ''))"
+    )
+    fam_expr = _cid_familia_case_sql(cid_norm)
+    d = f"({date_expr})"
+    qty = (
+        "SUM(ISNULL([QuantidadeAprovada], 1))"
+        if "QuantidadeAprovada" in cols
+        else "COUNT_BIG(*)"
+    )
+    sql = f"""
+    SELECT
+      YEAR({d}) AS ano,
+      MONTH({d}) AS mes,
+      UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))) AS municipio,
+      {fam_expr} AS cid_familia,
+      COUNT_BIG(*) AS n_registros,
+      {qty} AS n_procedimentos
+    FROM [{schema}].[{table_name}]
+    WHERE {d} IS NOT NULL
+      AND {d} >= DATEADD(day, -{int(days_back)}, CAST(GETDATE() AS date))
+      AND {d} <= CAST(GETDATE() AS date)
+      AND {fam_expr} IS NOT NULL
+      AND LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200)))) <> ''
+    GROUP BY
+      YEAR({d}),
+      MONTH({d}),
+      UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))),
+      {fam_expr}
+    """
+    _log(f"[DW] Agg {table_name} mun×mês×CID família (~{days_back}d)…")
+    try:
+        return read_sql(mode, queryable, sql)
+    except Exception as exc:
+        _log(f"[DW] Agg {table_name} falhou: {type(exc).__name__}: {exc}")
+        return None
+
+
+def aggregate_internacao_from_sample(df: pd.DataFrame) -> pd.DataFrame:
+    """Fallback local: mun × semana × família CID a partir do sample."""
+    if df is None or df.empty:
+        return pd.DataFrame()
+    work = df.copy()
+    mun_col = next(
+        (
+            c
+            for c in (
+                "MunicipioResidencia",
+                "MunicipioOcorrencia",
+                "CodigoMunicipioResidencia",
+            )
+            if c in work.columns
+        ),
+        None,
+    )
+    cid_col = next(
+        (
+            c
+            for c in ("CodigoDiagnosticoPrincipal", "DiagnosticoPrincipal")
+            if c in work.columns
+        ),
+        None,
+    )
+    if not mun_col or not cid_col:
+        return pd.DataFrame()
+
+    def _row_date(r: pd.Series) -> Optional[date]:
+        y = _parse_year(r.get("AnoInternacao") or r.get("AnoCompetencia"))
+        m = _parse_month_pt(r.get("MesInternacao") or r.get("MesCompetencia"))
+        d = _parse_month_pt(r.get("DiaInternacao")) or 1
+        if not y or not m:
+            return None
+        try:
+            d = min(max(int(d), 1), 28)
+            return date(y, m, d)
+        except (TypeError, ValueError):
+            return None
+
+    work["_dt"] = work.apply(_row_date, axis=1)
+    work = work.dropna(subset=["_dt"])
+    if work.empty:
+        return pd.DataFrame()
+    iso = work["_dt"].apply(lambda d: d.isocalendar())
+    work["epi_year"] = [x[0] for x in iso]
+    work["epi_week"] = [x[1] for x in iso]
+    work["municipio"] = work[mun_col].astype(str).str.upper().str.strip()
+    work["cid_familia"] = work[cid_col].map(cid_to_familia)
+    work = work.dropna(subset=["cid_familia"])
+    if work.empty:
+        return pd.DataFrame()
+    g = (
+        work.groupby(["epi_year", "epi_week", "municipio", "cid_familia"], as_index=False)
+        .size()
+        .rename(columns={"size": "n_internacoes"})
+    )
+    return g
+
+
+def build_cruzamento_sih_resumo(
+    sih_agg: Optional[pd.DataFrame],
+    sia_agg: Optional[pd.DataFrame],
+    *,
+    top_n: int = 12,
+) -> dict[str, Any]:
+    """Resumo leve para briefing/VE/CIEVS (top mun por família)."""
+    caveat = (
+        "Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); "
+        "não atribui causalidade nem confirma surto. SISREG permanece em host separado."
+    )
+    top_mun: list[dict[str, Any]] = []
+    if sih_agg is not None and not sih_agg.empty:
+        g = sih_agg.copy()
+        g["n"] = pd.to_numeric(g.get("n_internacoes"), errors="coerce").fillna(0)
+        by = (
+            g.groupby(["municipio", "cid_familia"], as_index=False)["n"]
+            .sum()
+            .sort_values("n", ascending=False)
+        )
+        for _, r in by.head(top_n).iterrows():
+            top_mun.append(
+                {
+                    "fonte": "SIH/VW_INTERNACAO",
+                    "municipio": str(r["municipio"]),
+                    "cid_familia": str(r["cid_familia"]),
+                    "n": int(r["n"]),
+                }
+            )
+    if sia_agg is not None and not sia_agg.empty and len(top_mun) < top_n:
+        g = sia_agg.copy()
+        ncol = "n_procedimentos" if "n_procedimentos" in g.columns else "n_registros"
+        g["n"] = pd.to_numeric(g.get(ncol), errors="coerce").fillna(0)
+        by = (
+            g.groupby(["municipio", "cid_familia"], as_index=False)["n"]
+            .sum()
+            .sort_values("n", ascending=False)
+        )
+        for _, r in by.head(max(0, top_n - len(top_mun))).iterrows():
+            top_mun.append(
+                {
+                    "fonte": "SIA",
+                    "municipio": str(r["municipio"]),
+                    "cid_familia": str(r["cid_familia"]),
+                    "n": int(r["n"]),
+                }
+            )
+    return {
+        "caveat": caveat,
+        "top_mun": top_mun,
+        "sih_rows": int(len(sih_agg)) if sih_agg is not None else 0,
+        "sia_rows": int(len(sia_agg)) if sia_agg is not None else 0,
+        "familias": sorted(
+            {
+                str(x.get("cid_familia"))
+                for x in top_mun
+                if x.get("cid_familia")
+            }
+        ),
+    }
+
+
+def _save_df(stage: Path, stem: str, df: pd.DataFrame) -> dict[str, str]:
+    files: dict[str, str] = {}
+    pq = stage / f"{stem}.parquet"
+    csv = stage / f"{stem}.csv"
+    df.to_parquet(pq, index=False)
+    df.to_csv(csv, index=False, encoding="utf-8-sig")
+    files[stem] = pq.name
+    files[f"{stem}_csv"] = csv.name
+    return files
+
+
+def extract_sih_sia_bundle(
+    mode: str,
+    queryable: Any,
+    stage: Path,
+    *,
+    days_back: int = 180,
+    names: set[str] | None = None,
+) -> dict[str, Any]:
+    """
+    Extrai VW_INTERNACAO / SIA / SIA_APAC / INDICADORES* (amostra + aggs leves).
+    Grava `vw_internacao_recent.*`, `sia_recent.*`, aggs e resumo de cruzamento.
+    """
+    import os
+
+    names = {n.upper() for n in (names or set())}
+    meta: dict[str, Any] = {
+        "files": {},
+        "columns": {},
+        "sources": [],
+        "aggregates": {},
+    }
+    schema_sih = (os.getenv("SIH_DW_SCHEMA") or "dbo").strip() or "dbo"
+    view_sih = (os.getenv("SIH_DW_TABLE") or "VW_INTERNACAO").strip() or "VW_INTERNACAO"
+
+    # --- SIH proxy ---
+    if (not names) or view_sih.upper() in names or "VW_INTERNACAO" in names:
+        df_i, cols_i = extract_vw_internacao_recent(
+            mode, queryable, schema=schema_sih, view=view_sih, days_back=days_back
+        )
+        meta["columns"]["VW_INTERNACAO"] = cols_i
+        if df_i is not None and not df_i.empty:
+            meta["files"].update(_save_df(stage, "vw_internacao_recent", df_i))
+            meta["sources"].append(f"{schema_sih}.{view_sih}")
+            _log(f"[DW] vw_internacao_recent ← {len(df_i)} linhas")
+
+        agg_sih = extract_sih_mun_cid_agg(
+            mode, queryable, schema=schema_sih, view=view_sih, days_back=days_back
+        )
+        if (agg_sih is None or agg_sih.empty) and df_i is not None:
+            agg_sih = aggregate_internacao_from_sample(df_i)
+        if agg_sih is not None and not agg_sih.empty:
+            meta["files"].update(_save_df(stage, "sih_mun_cid_familia_agg", agg_sih))
+            # mun × week (soma famílias)
+            if {"epi_year", "epi_week", "municipio"} <= set(agg_sih.columns):
+                mun_week = (
+                    agg_sih.groupby(["epi_year", "epi_week", "municipio"], as_index=False)[
+                        "n_internacoes"
+                    ].sum()
+                    if "n_internacoes" in agg_sih.columns
+                    else agg_sih
+                )
+                meta["files"].update(_save_df(stage, "sih_mun_semana_agg", mun_week))
+            meta["aggregates"]["sih_mun_cid"] = int(len(agg_sih))
+        else:
+            agg_sih = None
+    else:
+        agg_sih = None
+
+    # --- SIA ---
+    agg_sia = None
+    if (not names) or "SIA" in names:
+        df_s, cols_s = extract_sia_recent(
+            mode,
+            queryable,
+            "SIA",
+            days_back=days_back,
+            preferred_cols=SIA_SAMPLE_COLS,
+        )
+        meta["columns"]["SIA"] = cols_s
+        if df_s is not None and not df_s.empty:
+            meta["files"].update(_save_df(stage, "sia_recent", df_s))
+            meta["sources"].append("dbo.SIA")
+            _log(f"[DW] sia_recent ← {len(df_s)} linhas")
+        agg_sia = extract_sia_mun_cid_agg(
+            mode, queryable, "SIA", days_back=days_back
+        )
+        if agg_sia is not None and not agg_sia.empty:
+            meta["files"].update(_save_df(stage, "sia_mun_cid_familia_agg", agg_sia))
+            meta["aggregates"]["sia_mun_cid"] = int(len(agg_sia))
+
+    # --- SIA_APAC (sample only; APAC CID menos útil para agravos agudos) ---
+    if (not names) or "SIA_APAC" in names:
+        df_a, cols_a = extract_sia_recent(
+            mode,
+            queryable,
+            "SIA_APAC",
+            days_back=days_back,
+            top=30_000,
+            preferred_cols=SIA_APAC_SAMPLE_COLS,
+        )
+        meta["columns"]["SIA_APAC"] = cols_a
+        if df_a is not None and not df_a.empty:
+            meta["files"].update(_save_df(stage, "sia_apac_recent", df_a))
+            meta["sources"].append("dbo.SIA_APAC")
+            _log(f"[DW] sia_apac_recent ← {len(df_a)} linhas")
+
+    # --- INDICADORES* ---
+    for ind in ("INDICADORES", "INDICADORESPACTUACAO", "INDICADORESVIGILANCIASAUDE"):
+        if names and ind not in names:
+            continue
+        top = 20_000 if ind == "INDICADORES" else 50_000
+        df_ind = extract_optional_view(mode, queryable, ind, top=top)
+        if df_ind is not None and not df_ind.empty:
+            safe = ind.lower()
+            meta["files"].update(_save_df(stage, safe, df_ind))
+            meta["sources"].append(f"dbo.{ind}")
+            meta["columns"][ind] = list(df_ind.columns.astype(str))
+            _log(f"[DW] {safe} ← {len(df_ind)} linhas")
+
+    resumo = build_cruzamento_sih_resumo(agg_sih, agg_sia)
+    resumo_path = stage / "cruzamento_sih_sia_resumo.json"
+    resumo_path.write_text(
+        json.dumps(resumo, indent=2, ensure_ascii=False, default=str),
+        encoding="utf-8",
+    )
+    meta["files"]["cruzamento_sih_sia_resumo"] = resumo_path.name
+    meta["resumo"] = resumo
+
+    # CSV tabular do top mun para briefing
+    top_rows = resumo.get("top_mun") or []
+    if top_rows:
+        top_df = pd.DataFrame(top_rows)
+        meta["files"].update(_save_df(stage, "cruzamento_sih_sia_top_mun", top_df))
+
+    return meta
+
+
 def run_extract(
     outdir: Path | str = "saida_pipeline",
     *,
@@ -381,6 +1147,24 @@ def run_extract(
         meta["micro_rows"] = int(len(micro))
 
         extracted_sources: list[str] = [gal_view]
+
+        # Bundle SIH/SIA/INDICADORES (amostra + aggs) — antes do loop genérico
+        sih_sia = extract_sih_sia_bundle(
+            mode, queryable, stage, days_back=max(90, int(micro_days)), names=names
+        )
+        meta["files"].update(sih_sia.get("files") or {})
+        meta["sih_sia_columns"] = sih_sia.get("columns") or {}
+        meta["sih_sia_aggregates"] = sih_sia.get("aggregates") or {}
+        meta["cruzamento_sih_sia"] = sih_sia.get("resumo") or {}
+        for src in sih_sia.get("sources") or []:
+            if src not in extracted_sources:
+                extracted_sources.append(src)
+
+        # Ping SISREG (host separado) — nunca bloqueia
+        sisreg_ping = check_sisreg_tcp()
+        meta["sisreg_ping"] = sisreg_ping
+        _log(f"[SISREG] {sisreg_ping.get('note')}")
+
         # Candidatos explícitos + fuzzy (SINAN/SIM/IndicaSUS/SISREG/SIH/SIA/CNES/pop)
         fuzzy_groups: tuple[tuple[str, tuple[str, ...]], ...] = (
             ("SINAN", ("VW_SINAN", "SINAN")),
@@ -393,7 +1177,20 @@ def run_extract(
             ("CNES", ("VW_CNES", "CNES")),
             ("POPULACAO", ("POPULAC",)),
         )
-        already = {gal_view}
+        # Já cobertos pelo bundle SIH/SIA/INDICADORES*
+        already = {
+            gal_view,
+            "VW_INTERNACAO",
+            "SIA",
+            "SIA_APAC",
+            "INDICADORES",
+            "INDICADORESPACTUACAO",
+            "INDICADORESVIGILANCIASAUDE",
+            "VW_SIH",
+            "VW_SIA",
+            "VW_AIH",
+            "SIH",
+        }
         extra_names: list[str] = []
         # 1) SINAN prioritários (vários agravos)
         for cand in SINAN_PRIORITY_VIEWS:
@@ -417,6 +1214,9 @@ def run_extract(
                     if pick not in already:
                         extra_names.append(pick)
                         already.add(pick)
+                continue
+            if label in ("SIH", "SIA", "INDICASUS"):
+                # Bundle dedicado já extraiu
                 continue
             vw_first = [n for n in matches if n.startswith("VW_")] or matches[:2]
             for pick in vw_first[:2]:
