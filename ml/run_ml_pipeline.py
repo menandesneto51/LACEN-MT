@@ -148,8 +148,15 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
 
     _log("[ML] Pipeline preditivo concluído.")
     try:
-        from ml.mirror_dw import append_alerta_historico, atualizar_desfechos, build_executive_summaries, mirror_to_dw
+        from ml.mirror_dw import (
+            append_alerta_historico,
+            seed_alertas_retrospectivos,
+            atualizar_desfechos,
+            build_executive_summaries,
+            mirror_to_dw,
+        )
         append_alerta_historico(outdir, risco, silencio)
+        seed_alertas_retrospectivos(outdir)
         atualizar_desfechos(outdir)
         build_executive_summaries(outdir)
         st = mirror_to_dw(outdir)

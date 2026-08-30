@@ -320,21 +320,158 @@ def append_alerta_historico(
     return hist_path
 
 
-def atualizar_desfechos(outdir: Path | str) -> Path:
+def _epi_add(year: int, week: int, delta: int) -> tuple[int, int]:
+    """Avança semanas epidemiológicas (aprox. ISO 1..52)."""
+    y, w = int(year), int(week) + int(delta)
+    while w > 52:
+        w -= 52
+        y += 1
+    while w < 1:
+        w += 52
+        y -= 1
+    return y, w
+
+
+def _epi_le(y1: int, w1: int, y2: int, w2: int) -> bool:
+    return (int(y1), int(w1)) <= (int(y2), int(w2))
+
+
+def seed_alertas_retrospectivos(
+    outdir: Path | str,
+    max_risco: int = 150,
+    max_silencio: int = 150,
+    horizon_weeks: int = 2,
+) -> Path:
+    """Carimba alertas em semanas com horizonte já observável (não só a fronteira).
+
+    Necessário para o loop alerta×desfecho ter pares de risco avaliáveis: o stamp
+    operacional só pega a última SE de cada série (ainda sem futuro).
+    """
     outdir = Path(outdir)
     hist_path = outdir / "alerta_historico.csv"
     weekly_path = outdir / "integrated_weekly_surveillance.csv"
-    if not hist_path.exists() or not weekly_path.exists():
+    if not weekly_path.exists():
+        return hist_path
+
+    w = pd.read_csv(
+        weekly_path,
+        usecols=lambda c: c in {
+            "municipio", "target", "epi_year", "epi_week", "tests", "positives",
+            "positividade", "risco_composto", "notificacoes",
+        },
+        low_memory=False,
+    )
+    if w.empty:
+        return hist_path
+
+    w["municipio"] = w["municipio"].astype(str).str.strip().str.upper()
+    for c in ("tests", "positives", "positividade", "risco_composto", "notificacoes", "epi_year", "epi_week"):
+        if c in w.columns:
+            w[c] = pd.to_numeric(w[c], errors="coerce")
+    w["tests"] = w["tests"].fillna(0)
+    w["positives"] = w["positives"].fillna(0)
+    w["risco_composto"] = w["risco_composto"].fillna(0)
+    w["positividade"] = w["positividade"].fillna(0)
+    if "notificacoes" not in w.columns:
+        w["notificacoes"] = 0.0
+    w["notificacoes"] = pd.to_numeric(w["notificacoes"], errors="coerce").fillna(0)
+
+    max_y = int(w["epi_year"].max())
+    max_w = int(w.loc[w["epi_year"] == max_y, "epi_week"].max())
+
+    rows_risco: list[dict] = []
+    rows_sil: list[dict] = []
+    w = w.sort_values(["municipio", "target", "epi_year", "epi_week"])
+    for (mun, tgt), g in w.groupby(["municipio", "target"], sort=False):
+        g = g.reset_index(drop=True)
+        if len(g) < horizon_weeks + 1:
+            continue
+        for i in range(0, len(g) - horizon_weeks):
+            r = g.iloc[i]
+            y, wk = int(r["epi_year"]), int(r["epi_week"])
+            hy, hw = _epi_add(y, wk, horizon_weeks)
+            if not _epi_le(hy, hw, max_y, max_w):
+                continue
+            alerta = (
+                (r["risco_composto"] >= 1.2)
+                or ((r["positividade"] >= 0.25) and (r["tests"] >= 2))
+                or (r["positives"] >= 2)
+            )
+            silencio = float(r["tests"]) <= 0
+            if alerta and len(rows_risco) < max_risco:
+                rows_risco.append({
+                    "data_emissao": "retrospectivo",
+                    "tipo": "risco",
+                    "municipio": mun,
+                    "agravo_alvo": tgt,
+                    "epi_year": y,
+                    "epi_week": wk,
+                    "prob": float(min(0.99, 0.5 + 0.1 * float(r["risco_composto"]))),
+                    "horizon_weeks": horizon_weeks,
+                    "desfecho": "",
+                    "confirmado": "",
+                })
+            if silencio and len(rows_sil) < max_silencio:
+                rows_sil.append({
+                    "data_emissao": "retrospectivo",
+                    "tipo": "silencio",
+                    "municipio": mun,
+                    "agravo_alvo": tgt,
+                    "epi_year": y,
+                    "epi_week": wk,
+                    "prob": 0.7,
+                    "horizon_weeks": horizon_weeks,
+                    "desfecho": "",
+                    "confirmado": "",
+                })
+        if len(rows_risco) >= max_risco and len(rows_sil) >= max_silencio:
+            break
+
+    rows = rows_risco + rows_sil
+    if not rows:
+        return hist_path
+
+    novo = pd.DataFrame(rows)
+    if hist_path.exists():
+        old = pd.read_csv(hist_path, low_memory=False)
+        comb = pd.concat([old, novo], ignore_index=True)
+    else:
+        comb = novo
+    key = ["data_emissao", "tipo", "municipio", "agravo_alvo", "epi_year", "epi_week"]
+    comb = comb.drop_duplicates(subset=[c for c in key if c in comb.columns], keep="last")
+    comb.to_csv(hist_path, index=False, encoding="utf-8-sig")
+    return hist_path
+
+
+def atualizar_desfechos(outdir: Path | str) -> Path:
+    """Fecha alerta×desfecho após horizonte SE.
+
+    Séries laboratoriais são esparsas: ausência de linha em SE+1..SE+2, depois que a
+    semana estadual já passou do horizonte, conta como zero exames (risco não
+    confirmado / silêncio confirmado). Enquanto o horizonte ainda não venceu,
+    mantém desfecho em aberto.
+    """
+    outdir = Path(outdir)
+    hist_path = outdir / "alerta_historico.csv"
+    weekly_csv = outdir / "integrated_weekly_surveillance.csv"
+    weekly_pq = outdir / "integrated_weekly_surveillance.parquet"
+    if not hist_path.exists() or not (weekly_csv.exists() or weekly_pq.exists()):
         return hist_path
 
     hist = pd.read_csv(hist_path, low_memory=False)
     if hist.empty or "municipio" not in hist.columns:
         return hist_path
 
-    w = pd.read_csv(weekly_path, usecols=lambda c: c in {
+    usecols = {
         "municipio", "target", "epi_year", "epi_week", "tests", "positives", "positividade",
         "notificacoes", "risco_composto",
-    }, low_memory=False)
+    }
+    if weekly_csv.exists():
+        w = pd.read_csv(weekly_csv, usecols=lambda c: c in usecols, low_memory=False)
+    else:
+        w = pd.read_parquet(weekly_pq)
+        w = w[[c for c in w.columns if c in usecols]]
+
     w["municipio"] = w["municipio"].astype(str).str.strip().str.upper()
     hist["municipio"] = hist["municipio"].astype(str).str.strip().str.upper()
     w["positividade"] = pd.to_numeric(w.get("positividade"), errors="coerce")
@@ -342,20 +479,41 @@ def atualizar_desfechos(outdir: Path | str) -> Path:
     w["positives"] = pd.to_numeric(w.get("positives"), errors="coerce").fillna(0)
     w["risco_composto"] = pd.to_numeric(w.get("risco_composto"), errors="coerce").fillna(0)
 
+    # Fronteira estadual: só fecha desfecho quando a SE de referência já avançou.
+    max_y = int(pd.to_numeric(w["epi_year"], errors="coerce").max())
+    max_w = int(
+        pd.to_numeric(w.loc[w["epi_year"] == max_y, "epi_week"], errors="coerce").max()
+    )
+
+    def _horizon_elapsed(y, wk, horizon: int) -> bool:
+        hy, hw = _epi_add(int(y), int(wk), int(horizon))
+        return _epi_le(hy, hw, max_y, max_w)
+
+    def _future_window(r, horizon: int) -> pd.DataFrame:
+        y, wk = r.get("epi_year"), r.get("epi_week")
+        if pd.isna(y) or pd.isna(wk):
+            return w.iloc[0:0]
+        y, wk = int(y), int(wk)
+        weeks = [_epi_add(y, wk, d) for d in range(1, horizon + 1)]
+        mask = False
+        for fy, fw in weeks:
+            mask = mask | ((w["epi_year"] == fy) & (w["epi_week"] == fw))
+        return w[
+            (w["municipio"] == r["municipio"])
+            & (w["target"].astype(str) == str(r.get("agravo_alvo", "")))
+            & mask
+        ]
+
     def _confirm_risco(r) -> str:
         y, wk = r.get("epi_year"), r.get("epi_week")
         if pd.isna(y) or pd.isna(wk):
             return ""
-        fut = w[
-            (w["municipio"] == r["municipio"])
-            & (w["target"].astype(str) == str(r.get("agravo_alvo", "")))
-            & (
-                ((w["epi_year"] == y) & (w["epi_week"] > wk) & (w["epi_week"] <= wk + 2))
-                | ((w["epi_year"] == y + 1) & (wk >= 51) & (w["epi_week"] <= 2))
-            )
-        ]
-        if fut.empty:
+        horizon = int(pd.to_numeric(r.get("horizon_weeks"), errors="coerce") or 2)
+        if not _horizon_elapsed(y, wk, horizon):
             return ""
+        fut = _future_window(r, horizon)
+        if fut.empty:
+            return "0"
         hit = (
             (fut["risco_composto"] >= 1.2).any()
             | ((fut["positividade"].fillna(0) >= 0.25) & (fut["tests"] >= 2)).any()
@@ -367,31 +525,59 @@ def atualizar_desfechos(outdir: Path | str) -> Path:
         y, wk = r.get("epi_year"), r.get("epi_week")
         if pd.isna(y) or pd.isna(wk):
             return ""
-        fut = w[
-            (w["municipio"] == r["municipio"])
-            & (w["target"].astype(str) == str(r.get("agravo_alvo", "")))
-            & (w["epi_year"] == y)
-            & (w["epi_week"] == wk + 1)
-        ]
-        if fut.empty:
+        if not _horizon_elapsed(y, wk, 1):
             return ""
+        fut = _future_window(r, 1)
+        if fut.empty:
+            return "1"
         return "1" if float(fut["tests"].sum()) <= 0 else "0"
 
-    mask_open = hist["confirmado"].astype(str).isin(["", "nan", "None"])
+    hist["confirmado"] = hist["confirmado"].astype(object)
+    hist["desfecho"] = hist["desfecho"].astype(object)
+    conf = hist["confirmado"]
+    mask_open = conf.isna() | conf.astype(str).str.strip().str.lower().isin(
+        ["", "nan", "none", "<na>", "nat"]
+    )
     for idx in hist.loc[mask_open].index:
         tipo = str(hist.at[idx, "tipo"])
         if tipo == "risco":
-            hist.at[idx, "confirmado"] = _confirm_risco(hist.loc[idx])
-            hist.at[idx, "desfecho"] = "alerta_lab" if hist.at[idx, "confirmado"] == "1" else (
-                "sem_confirmacao" if hist.at[idx, "confirmado"] == "0" else ""
+            c = _confirm_risco(hist.loc[idx])
+            hist.at[idx, "confirmado"] = c
+            hist.at[idx, "desfecho"] = (
+                "alerta_lab" if c == "1" else ("sem_confirmacao" if c == "0" else "")
             )
         elif tipo == "silencio":
-            hist.at[idx, "confirmado"] = _confirm_sil(hist.loc[idx])
-            hist.at[idx, "desfecho"] = "silencio" if hist.at[idx, "confirmado"] == "1" else (
-                "com_exame" if hist.at[idx, "confirmado"] == "0" else ""
+            c = _confirm_sil(hist.loc[idx])
+            hist.at[idx, "confirmado"] = c
+            hist.at[idx, "desfecho"] = (
+                "silencio" if c == "1" else ("com_exame" if c == "0" else "")
             )
 
+    def _norm_flag(v) -> str:
+        if pd.isna(v):
+            return ""
+        s = str(v).strip().lower()
+        if s in {"", "nan", "none", "<na>", "nat"}:
+            return ""
+        if s in {"0", "0.0", "false"}:
+            return "0"
+        if s in {"1", "1.0", "true"}:
+            return "1"
+        try:
+            return str(int(float(s)))
+        except Exception:
+            return ""
+
+    hist["confirmado"] = hist["confirmado"].map(_norm_flag)
+    hist["desfecho"] = hist["desfecho"].map(
+        lambda v: "" if pd.isna(v) or str(v).strip().lower() in {"", "nan", "none"} else str(v)
+    )
+
     hist.to_csv(hist_path, index=False, encoding="utf-8-sig")
+    try:
+        hist.to_parquet(outdir / "alerta_historico.parquet", index=False)
+    except Exception:
+        pass
     return hist_path
 
 
@@ -631,6 +817,7 @@ def main() -> int:
     risco = pd.read_csv(outdir / "ml_risco_predito.csv") if (outdir / "ml_risco_predito.csv").exists() else None
     sil = pd.read_csv(outdir / "ml_silencio_predito.csv") if (outdir / "ml_silencio_predito.csv").exists() else None
     append_alerta_historico(outdir, risco, sil)
+    seed_alertas_retrospectivos(outdir)
     atualizar_desfechos(outdir)
     build_executive_summaries(outdir)
     st = mirror_to_dw(outdir, do_bulk=not args.no_bulk)

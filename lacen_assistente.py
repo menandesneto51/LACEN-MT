@@ -99,15 +99,25 @@ def responder_sala_situacao(pergunta: str, outdir: Path | str = "saida_pipeline"
         return {"resposta": texto, "citacoes": citations, "fonte": "ml_risco_predito"}
 
     if "desfecho" in q or "histórico" in q or "historico" in q:
-        if hist.empty:
+        hist_full = _load(outdir, "alerta_historico.csv", 5000)
+        if hist_full.empty:
             return {"resposta": "alerta_historico.csv ainda não gerado.", "citacoes": [], "fonte": "local_rules"}
-        conf = hist[hist["confirmado"].astype(str).isin(["0", "1"])]
+        conf_flag = hist_full["confirmado"].astype(str).str.replace(r"\.0$", "", regex=True)
+        conf = hist_full[conf_flag.isin(["0", "1"])].copy()
+        conf["confirmado"] = conf_flag[conf_flag.isin(["0", "1"])].values
         if conf.empty:
-            texto = f"Há {len(hist)} alertas emitidos; desfechos ainda não avaliados (aguardar SE seguintes)."
+            texto = f"Há {len(hist_full)} alertas emitidos; desfechos ainda não avaliados (aguardar SE seguintes)."
         else:
             taxa = (conf["confirmado"].astype(str) == "1").mean()
-            texto = f"Alertas com desfecho: {len(conf)} | taxa de confirmação={taxa:.1%} (fonte: alerta_historico.csv)."
-        citations.append(f"n_hist={len(hist)}")
+            por_tipo = conf.groupby(conf["tipo"].astype(str))["confirmado"].apply(
+                lambda s: f"n={len(s)} conf={(s.astype(str)=='1').mean():.0%}"
+            ).to_dict()
+            texto = (
+                f"Alertas com desfecho: {len(conf)}/{len(hist_full)} | "
+                f"taxa de confirmação={taxa:.1%} | por tipo={por_tipo} "
+                "(fonte: alerta_historico.csv)."
+            )
+        citations.append(f"n_hist={len(hist_full)}; n_fechados={len(conf)}")
         return {"resposta": texto, "citacoes": citations, "fonte": "alerta_historico"}
 
     # Default: resumo executivo
