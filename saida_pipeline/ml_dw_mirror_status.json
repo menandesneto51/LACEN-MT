@@ -1,9 +1,28 @@
 {
-  "dw_ok": false,
-  "mirrored": [],
+  "dw_ok": true,
+  "mirrored": [
+    "ml_risco_predito.csv",
+    "ml_silencio_predito.csv",
+    "ml_backtest_summary.csv",
+    "alerta_historico.csv",
+    "alerta_emergencia_historico.csv",
+    "fila_operacional.csv",
+    "indicadores_rede_laboratorial.csv",
+    "qualidade_dado_municipal.csv"
+  ],
   "rows": {},
-  "skipped_create_denied": [],
-  "error": "DW inacess\u00edvel (VPN/rede). Escores permanecem em saida_pipeline.",
-  "ts": "2026-08-30T09:13:36.483143Z",
-  "ddl_script": "create_lacen_ml_tables.sql"
+  "skipped_create_denied": [
+    "lacen_ml_risco_predito",
+    "lacen_ml_silencio_predito",
+    "lacen_ml_backtest_summary",
+    "lacen_alerta_historico",
+    "lacen_alerta_emergencia_historico",
+    "lacen_fila_operacional",
+    "lacen_indicadores_rede",
+    "lacen_qualidade_dado"
+  ],
+  "error": "Conectado ao DW, mas sem permiss\u00e3o CREATE TABLE. Pe\u00e7a ao DBA para rodar saida_pipeline/sql/create_lacen_ml_tables.sql e depois reexecute: python -m ml.mirror_dw",
+  "ts": "2026-08-30T16:41:52.737786Z",
+  "ddl_script": "create_lacen_ml_tables.sql",
+  "driver": "ODBC Driver 18 for SQL Server"
 }

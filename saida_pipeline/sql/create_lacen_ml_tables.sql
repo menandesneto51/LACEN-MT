@@ -100,7 +100,7 @@ BEGIN
     [prob] FLOAT,
     [horizon_weeks] BIGINT,
     [desfecho] NVARCHAR(500),
-    [confirmado] FLOAT,
+    [confirmado] BIGINT,
     [_loaded_at] DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
     );
 END
@@ -180,10 +180,10 @@ IF OBJECT_ID(N'[dbo].[lacen_qualidade_dado]', N'U') IS NULL
 BEGIN
     CREATE TABLE [dbo].[lacen_qualidade_dado] (
     [municipio] NVARCHAR(500),
-    [exames] FLOAT,
-    [positivos] FLOAT,
+    [exames] BIGINT,
+    [positivos] BIGINT,
     [notif_join] FLOAT,
-    [semanas_com_dado] FLOAT,
+    [semanas_com_dado] BIGINT,
     [populacao] FLOAT,
     [notif_sinan] FLOAT,
     [confianca_dado] FLOAT,

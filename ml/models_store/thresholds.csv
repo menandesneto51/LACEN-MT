@@ -1,8 +1,9 @@
 ﻿modelo,familia,threshold,auc,precision_at_20
-risco,global,0.15,0.8933566433566433,0.15
-risco,tuberculose,0.35,0.9291716686674668,0.2
-risco,hepatite,0.05,,0.0
-risco,respiratorio,0.05,,0.0
-risco,outros,0.05,0.0337078651685393,0.0
-silencio,global,0.1,0.8079185424275885,0.95
-pressao,global,0.44999999999999996,0.8019622093023256,0.55
+risco,global,0.3,0.8523421193457958,0.85
+risco,arbovirose,0.25,0.7586482623067989,0.4
+risco,tuberculose,0.2,0.8070934843094105,0.85
+risco,hepatite,0.6,0.9009008204432062,0.85
+risco,respiratorio,0.15,0.7723888888888888,0.05
+risco,outros,0.2,0.8640163842441926,0.55
+silencio,global,0.05,0.8130981837591442,0.8
+pressao,global,0.3,0.9035889455823685,0.95

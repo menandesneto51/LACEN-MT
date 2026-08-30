@@ -1,29 +1,29 @@
-[CIEVS Relatório 2×/semana] 2026-SE20 — rede sob pressão — LACEN-MT · 2026-08-30 09:13 Hora Padrão Brasil Central
+[CIEVS Relatório 2×/semana] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 16:41 Hora Padrão Brasil Central
 ------------------------------------------------------------
 SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
-SE de referência: 2026-SE20 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-30 09:13 Hora Padrão Brasil Central
+SE de referência: 2026-SE30 (única para KPIs e rankings A–D)
+Gerado em: 2026-08-30 16:41 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
-Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi e top municípios alinhados à SE de referência 2026-SE20 (série integrated_weekly; soma estadual = soma municipal da mesma SE).
+Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi e top municípios alinhados à SE de referência 2026-SE30 (série integrated_weekly; soma estadual = soma municipal da mesma SE).
 
-KPIs: Positivos SE 0 (—) · Exames 67 · Mun. 28 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 4 · Confirmação 45%
-Aviso: Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 0 pos.) — referência = 2026-SE20 (última completa).
+KPIs: Positivos SE 169 (-1%) · Exames 2.902 · Mun. 117 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
+Aviso: Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d).
 
 — A · Situação lab-epi [Observado] —
-Observado: positivos SE20=0; SE anterior sem base
-1ª detecção/alerta (SE ref.): 0 mun.
+Observado: positivos estaduais SE30=169 vs SE29=170 (-1%)
+1ª detecção/alerta (SE ref.): 1 mun.
 Top positivos:
-  1. CUIABA — +0 · pos=0% · fam=tuberculose
-  2. VARZEA GRANDE — +0 · pos=0% · fam=meningite
-  3. TANGARA DA SERRA — +0 · pos=0% · fam=doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist
-  4. CACERES — +0 · pos=0% · fam=doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist
-  5. SINOP — +0 · pos=0% · fam=hepatite_b_hbv
+  1. CUIABA — +29 · pos=11% · fam=hepatite_b_hbv
+  2. VARZEA GRANDE — +26 · pos=5% · fam=toxoplasmose_citomegalov_rus_igg
+  3. JUINA — +24 · pos=43% · fam=hepatite_b_hbv
+  4. SORRISO — +13 · pos=6% · fam=hepatite_b_hbv
+  5. AGUA BOA — +6 · pos=35% · fam=hepatite_b_hbv
 Top divergências GAL×SINAN:
-  1. BARRA DO GARCAS — sinan_sem_exame · notif=177 · exames=0
-  2. GUARANTA DO NORTE — sinan_sem_exame · notif=49 · exames=0
-  3. CONFRESA — sinan_sem_exame · notif=42 · exames=0
-  4. COLNIZA — sinan_sem_exame · notif=42 · exames=0
-  5. PARANATINGA — sinan_sem_exame · notif=31 · exames=0
+  1. COLIDER — exame_sem_notif_semana · notif=0 · exames=73
+  2. BOA ESPERANCA DO NORTE — exame_sem_notif_semana · notif=0 · exames=93
+  3. NOVA MUTUM — exame_sem_notif_semana · notif=0 · exames=129
+  4. PARANAITA — exame_sem_notif_semana · notif=0 · exames=136
+  5. PONTES E LACERDA — exame_sem_notif_semana · notif=0 · exames=204
 
 — B · Rede [Derivado / Observado] —
 TAT p50=10,6d · p90=118,3d · %≤48h=36%
@@ -39,10 +39,8 @@ SLA por família:
   · outros: exames=26.712 · %≤48h=46% · TAT p90=146,4d · crise=não
   · respiratorio: exames=25.913 · %≤48h=57% · TAT p90=178,8d · crise=sim
 Silêncio GAL (vizinho quente):
-  1. VARZEA GRANDE — queda_absoluta · vizinho=CUIABA(critica), SANTO ANTONIO DO LEVERGER(moderada), NOSSA SENHORA DO LIVRAMENTO(alta)
-  2. PEIXOTO DE AZEVEDO — queda_absoluta · vizinho=NOVA GUARITA(moderada), NOVA SANTA HELENA(moderada), COLIDER(alta)
-  3. ALTA FLORESTA — queda_absoluta · vizinho=não identificado
-  4. VILA BELA DA SANTISSIMA TRINDADE — queda_absoluta · vizinho=não identificado
+  1. GUIA LOPES DA LAGUNA — queda_absoluta · vizinho=não identificado
+  2. INHAMBUPE — queda_absoluta · vizinho=não identificado
 
 — C · Ações —
 Fila operacional:
@@ -57,41 +55,41 @@ Fila operacional:
   9. SAO JOSE DOS QUATRO MARCOS | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
   10. CASSILANDIA | alerta_laboratorial | CRÍTICO | Ativar busca ativa de TB e validar fluxo de coleta/envio ao LACEN em até 48h. | 48h [Observado]
 Predito Alta/Crítica:
-  1. CUIABA | Crítico | tuberculose | estabelecimentos CNES: 52.500; leitos CNES: 62.000 | prob=29%
-  2. RONDONOPOLIS | Crítico | tuberculose | estabelecimentos CNES: 21.400; leitos CNES: 17.400 | prob=24%
-  3. CACERES | Crítico | tuberculose | estabelecimentos CNES: 6.300; leitos CNES: 8.380 | prob=22%
-  4. VARZEA GRANDE | Crítico | tuberculose | leitos CNES: 15.100; estabelecimentos CNES: 6.790 | prob=19%
-  5. SINOP | Crítico | tuberculose | estabelecimentos CNES: 17.600; leitos CNES: 11.200 | prob=17%
+  1. CUIABA | Crítico | hepatite | estabelecimentos CNES: 52.500; leitos CNES: 62.000 | prob=95%
+  2. VARZEA GRANDE | Crítico | hepatite | estabelecimentos CNES: 6.790; equipes ESF: 3.050 | prob=94%
+  3. JUINA | Crítico | hepatite | estabelecimentos CNES: 2.650; leitos CNES: 3.020 | prob=94%
+  4. CASTANHEIRA | Crítico | hepatite | estabelecimentos CNES: 429; exames MA8: 7,88 | prob=93%
+  5. SORRISO | Crítico | hepatite | estabelecimentos CNES: 8.870; leitos CNES: 8.460 | prob=93%
 Pressão predita (top):
-  1. MATUPA | critica | 82% | backlog estimado: 781; tests ma4: 63,8
-  2. GUARANTA DO NORTE | critica | 81% | backlog estimado: 937; tests ma4: 72,2
-  3. ITAUBA | critica | 78% | backlog estimado: 734; tests ma4: 61,2
+  1. VARZEA GRANDE | critica | 98% | estabelecimentos CNES: 6.790; leitos CNES: 15.100
+  2. CUIABA | critica | 98% | estabelecimentos CNES: 52.500; leitos CNES: 62.000
+  3. LUCAS DO RIO VERDE | critica | 98% | estabelecimentos CNES: 6.740; tests ma4: 264
 
 — D · Qualidade —
-Observado: 163 mun. com qualidade (rede GAL=133); faixas: baixa=83, boa=39, moderada=34, alta=7
-Observado: confirmação alertas rodada anterior = 45% (33/73); modo=prospectivo_carimbado
+Observado: 363 mun. com qualidade (rede GAL=133); faixas: boa=265, alta=98
+Observado: confirmação alertas rodada anterior = 78% (78/100); modo=prospectivo_carimbado
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
-Fonte primária: arquivo local (DW indisponível)
-Fontes: saida_pipeline (17 artefatos)
+Fonte primária: DW · Datawarehouse (VW_GAL) + arquivo local
+Fontes: dbo.VW_GAL, + saida_pipeline complementar (17 artefatos)
 Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
 <b>SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
-SE 2026-SE20 · <b>rede sob pressão</b>
-2026-08-30 09:13 Hora Padrão Brasil Central
+SE 2026-SE30 · <b>rede sob pressão</b>
+2026-08-30 16:41 Hora Padrão Brasil Central
 
 <b>KPIs</b>
-Pos 0 (—) · TAT 10,6/118,3d · %≤48h 36%
-Pressão máx 80,8 · Silêncios 4 · Confirmação 45%
-<i>Atenção: SE 2026-SE21 ainda parcial na série lab (4 exames / 0 pos.) — referência = 2026-SE20 (última completa).</i>
+Pos 169 (-1%) · TAT 10,6/118,3d · %≤48h 36%
+Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
+<i>Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d).</i>
 
 <b>A — Lab-epi</b> (top 5)
-• CUIABA: +0 (0%)
-• VARZEA GRANDE: +0 (0%)
-• TANGARA DA SERRA: +0 (0%)
-• CACERES: +0 (0%)
-• SINOP: +0 (0%)
+• CUIABA: +29 (11%)
+• VARZEA GRANDE: +26 (5%)
+• JUINA: +24 (43%)
+• SORRISO: +13 (6%)
+• AGUA BOA: +6 (35%)
 
 <b>B — Rede</b> (top 5 pressão)
 • VARZEA GRANDE: critica / 80,8
@@ -113,8 +111,8 @@ Pressão máx 80,8 · Silêncios 4 · Confirmação 45%
 → Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância · 7 dias
 <b>Predito</b>
 • CUIABA [Crítico] estabelecimentos CNES: 52.500; leitos CNES: 62.000
-• RONDONOPOLIS [Crítico] estabelecimentos CNES: 21.400; leitos CNES: 17.400
-• CACERES [Crítico] estabelecimentos CNES: 6.300; leitos CNES: 8.380
+• VARZEA GRANDE [Crítico] estabelecimentos CNES: 6.790; equipes ESF: 3.050
+• JUINA [Crítico] estabelecimentos CNES: 2.650; leitos CNES: 3.020
 
 <a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Abrir painel LACEN</a>
-Fonte: arquivo local (DW indisponível)
+Fonte: DW · Datawarehouse (VW_GAL) + arquivo local

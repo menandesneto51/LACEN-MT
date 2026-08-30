@@ -1,7 +1,7 @@
 {
   "sklearn": true,
   "modelo_versao": "sklearn_v2",
-  "n_rows": 24685,
+  "n_rows": 31502,
   "n_train_weeks": 83,
   "n_test_weeks": 21,
   "models": {
@@ -33,81 +33,176 @@
         "tests_pct_estadual",
         "semanas_consec_sem_exame"
       ],
-      "n_train": 24248,
-      "n_test": 437,
-      "auc_test": 0.8933566433566433,
-      "threshold": 0.15,
-      "f1_at_threshold": 0.2857142857142857,
-      "precision_at_20": 0.15,
-      "precision_at_50": 0.14,
-      "pos_rate_train": 0.06866545694490267,
+      "n_train": 25538,
+      "n_test": 5964,
+      "auc_test": 0.8523421193457958,
+      "threshold": 0.3,
+      "f1_at_threshold": 0.5258823529411765,
+      "precision_at_20": 0.85,
+      "precision_at_50": 0.88,
+      "pos_rate_train": 0.14918944318270813,
       "importance": [
         {
+          "feature": "positividade_ma8",
+          "importance": 0.36388
+        },
+        {
           "feature": "tests_ma8",
-          "importance": 0.45649
+          "importance": 0.28697
         },
         {
           "feature": "risco_composto",
-          "importance": 0.24042
+          "importance": 0.14578
         },
         {
-          "feature": "tests",
-          "importance": 0.11189
+          "feature": "incidencia_100k",
+          "importance": 0.08543
         },
         {
-          "feature": "tests_trend",
-          "importance": 0.0412
-        },
-        {
-          "feature": "positividade_ma8",
-          "importance": 0.03274
-        },
-        {
-          "feature": "notificacoes",
-          "importance": 0.02888
-        },
-        {
-          "feature": "exames_por_notif",
-          "importance": 0.02573
-        },
-        {
-          "feature": "tests_pct_estadual",
-          "importance": 0.01733
-        },
-        {
-          "feature": "indice_vulnerabilidade",
-          "importance": 0.0144
-        },
-        {
-          "feature": "cnes_equipes_esf",
-          "importance": 0.00892
-        },
-        {
-          "feature": "cnes_leitos_total",
-          "importance": 0.00663
-        },
-        {
-          "feature": "cnes_estabelecimentos",
-          "importance": 0.00559
+          "feature": "positividade",
+          "importance": 0.03439
         },
         {
           "feature": "positividade_trend",
-          "importance": 0.00509
+          "importance": 0.02296
+        },
+        {
+          "feature": "tests",
+          "importance": 0.01155
+        },
+        {
+          "feature": "tests_trend",
+          "importance": 0.01149
+        },
+        {
+          "feature": "notificacoes",
+          "importance": 0.00995
+        },
+        {
+          "feature": "tests_pct_estadual",
+          "importance": 0.00907
+        },
+        {
+          "feature": "exames_por_notif",
+          "importance": 0.00548
+        },
+        {
+          "feature": "cnes_estabelecimentos",
+          "importance": 0.00541
+        },
+        {
+          "feature": "cnes_leitos_total",
+          "importance": 0.00287
+        },
+        {
+          "feature": "cnes_equipes_esf",
+          "importance": 0.00149
         },
         {
           "feature": "n_eventos_climaticos",
-          "importance": 0.0026
-        },
-        {
-          "feature": "confianca_dado",
-          "importance": 0.00116
+          "importance": 0.00129
         }
       ]
     },
     "risco_por_familia": {
       "arbovirose": {
-        "status": "skipped",
-        "reason": "amostra insuficiente"
+        "status": "ok",
+        "path": "risco_gb_arbovirose.joblib",
+        "tag": "arbovirose",
+        "features": [
+          "positividade",
+          "positividade_trend",
+          "risco_composto",
+          "tests",
+          "notificacoes",
+          "indice_vulnerabilidade",
+          "tests_trend",
+          "incidencia_100k",
+          "tests_ma8",
+          "positividade_ma8",
+          "precipitation_sum_mm",
+          "temperature_2m_max",
+          "n_eventos_climaticos",
+          "cnes_estabelecimentos",
+          "cnes_leitos_total",
+          "cnes_equipes_esf",
+          "vizinhos_em_alerta",
+          "confianca_dado",
+          "gap_sinan_sem_exame",
+          "exames_por_notif",
+          "tests_pct_estadual",
+          "semanas_consec_sem_exame"
+        ],
+        "n_train": 9261,
+        "n_test": 1412,
+        "auc_test": 0.7586482623067989,
+        "threshold": 0.25,
+        "f1_at_threshold": 0.38596491228070173,
+        "precision_at_20": 0.4,
+        "precision_at_50": 0.42,
+        "pos_rate_train": 0.2177950545297484,
+        "importance": [
+          {
+            "feature": "tests_ma8",
+            "importance": 0.47035
+          },
+          {
+            "feature": "risco_composto",
+            "importance": 0.17398
+          },
+          {
+            "feature": "positividade_trend",
+            "importance": 0.07981
+          },
+          {
+            "feature": "incidencia_100k",
+            "importance": 0.06841
+          },
+          {
+            "feature": "positividade_ma8",
+            "importance": 0.06123
+          },
+          {
+            "feature": "positividade",
+            "importance": 0.02467
+          },
+          {
+            "feature": "n_eventos_climaticos",
+            "importance": 0.02211
+          },
+          {
+            "feature": "tests_trend",
+            "importance": 0.01623
+          },
+          {
+            "feature": "tests_pct_estadual",
+            "importance": 0.01522
+          },
+          {
+            "feature": "confianca_dado",
+            "importance": 0.01504
+          },
+          {
+            "feature": "tests",
+            "importance": 0.01156
+          },
+          {
+            "feature": "cnes_estabelecimentos",
+            "importance": 0.01048
+          },
+          {
+            "feature": "indice_vulnerabilidade",
+            "importance": 0.00845
+          },
+          {
+            "feature": "cnes_equipes_esf",
+            "importance": 0.00844
+          },
+          {
+            "feature": "notificacoes",
+            "importance": 0.00811
+          }
+        ]
       },
       "tuberculose": {
         "status": "ok",
@@ -137,74 +232,74 @@
           "tests_pct_estadual",
           "semanas_consec_sem_exame"
         ],
-        "n_train": 4180,
-        "n_test": 245,
-        "auc_test": 0.9291716686674669,
-        "threshold": 0.35,
-        "f1_at_threshold": 0.5,
-        "precision_at_20": 0.2,
-        "precision_at_50": 0.12,
-        "pos_rate_train": 0.11244019138755981,
+        "n_train": 4657,
+        "n_test": 1426,
+        "auc_test": 0.8070934843094105,
+        "threshold": 0.2,
+        "f1_at_threshold": 0.5373563218390806,
+        "precision_at_20": 0.85,
+        "precision_at_50": 0.84,
+        "pos_rate_train": 0.15975950182520937,
         "importance": [
           {
             "feature": "tests",
-            "importance": 0.2939
-          },
-          {
-            "feature": "tests_ma8",
-            "importance": 0.22433
-          },
-          {
-            "feature": "risco_composto",
-            "importance": 0.05975
-          },
-          {
-            "feature": "tests_pct_estadual",
-            "importance": 0.05797
+            "importance": 0.32433
           },
           {
             "feature": "cnes_equipes_esf",
-            "importance": 0.05284
-          },
-          {
-            "feature": "exames_por_notif",
-            "importance": 0.05022
-          },
-          {
-            "feature": "cnes_estabelecimentos",
-            "importance": 0.04588
-          },
-          {
-            "feature": "tests_trend",
-            "importance": 0.04136
-          },
-          {
-            "feature": "positividade_trend",
-            "importance": 0.03945
-          },
-          {
-            "feature": "cnes_leitos_total",
-            "importance": 0.03358
+            "importance": 0.17557
           },
           {
             "feature": "positividade_ma8",
-            "importance": 0.03201
+            "importance": 0.13666
+          },
+          {
+            "feature": "tests_ma8",
+            "importance": 0.08962
+          },
+          {
+            "feature": "positividade_trend",
+            "importance": 0.04355
+          },
+          {
+            "feature": "tests_trend",
+            "importance": 0.02907
           },
           {
             "feature": "notificacoes",
-            "importance": 0.0294
+            "importance": 0.02905
           },
           {
-            "feature": "positividade",
-            "importance": 0.00979
+            "feature": "tests_pct_estadual",
+            "importance": 0.02583
+          },
+          {
+            "feature": "exames_por_notif",
+            "importance": 0.0241
+          },
+          {
+            "feature": "cnes_estabelecimentos",
+            "importance": 0.02379
           },
           {
             "feature": "incidencia_100k",
-            "importance": 0.0082
+            "importance": 0.02088
+          },
+          {
+            "feature": "indice_vulnerabilidade",
+            "importance": 0.01663
           },
           {
             "feature": "confianca_dado",
-            "importance": 0.00688
+            "importance": 0.01648
+          },
+          {
+            "feature": "risco_composto",
+            "importance": 0.01631
+          },
+          {
+            "feature": "n_eventos_climaticos",
+            "importance": 0.01502
           }
         ]
       },
@@ -236,74 +331,74 @@
           "tests_pct_estadual",
           "semanas_consec_sem_exame"
         ],
-        "n_train": 3062,
-        "n_test": 66,
-        "auc_test": null,
-        "threshold": 0.05,
-        "f1_at_threshold": 0.0,
-        "precision_at_20": 0.0,
-        "precision_at_50": 0.0,
-        "pos_rate_train": 0.0310254735467015,
+        "n_train": 3292,
+        "n_test": 881,
+        "auc_test": 0.9009008204432062,
+        "threshold": 0.6,
+        "f1_at_threshold": 0.7633333333333334,
+        "precision_at_20": 0.85,
+        "precision_at_50": 0.88,
+        "pos_rate_train": 0.2187120291616039,
         "importance": [
           {
-            "feature": "tests_trend",
-            "importance": 0.22659
+            "feature": "positividade_ma8",
+            "importance": 0.61744
           },
           {
             "feature": "tests_ma8",
-            "importance": 0.22652
-          },
-          {
-            "feature": "tests_pct_estadual",
-            "importance": 0.20647
-          },
-          {
-            "feature": "risco_composto",
-            "importance": 0.09524
-          },
-          {
-            "feature": "tests",
-            "importance": 0.08195
+            "importance": 0.17363
           },
           {
             "feature": "indice_vulnerabilidade",
-            "importance": 0.06229
+            "importance": 0.04534
           },
           {
-            "feature": "confianca_dado",
-            "importance": 0.03575
-          },
-          {
-            "feature": "cnes_equipes_esf",
-            "importance": 0.03244
-          },
-          {
-            "feature": "cnes_leitos_total",
-            "importance": 0.01538
-          },
-          {
-            "feature": "cnes_estabelecimentos",
-            "importance": 0.0128
-          },
-          {
-            "feature": "vizinhos_em_alerta",
-            "importance": 0.00229
-          },
-          {
-            "feature": "gap_sinan_sem_exame",
-            "importance": 0.00228
+            "feature": "incidencia_100k",
+            "importance": 0.03248
           },
           {
             "feature": "positividade",
-            "importance": 0.0
+            "importance": 0.02683
+          },
+          {
+            "feature": "tests_pct_estadual",
+            "importance": 0.02477
+          },
+          {
+            "feature": "tests_trend",
+            "importance": 0.01837
+          },
+          {
+            "feature": "risco_composto",
+            "importance": 0.01399
+          },
+          {
+            "feature": "confianca_dado",
+            "importance": 0.01299
+          },
+          {
+            "feature": "cnes_equipes_esf",
+            "importance": 0.0122
+          },
+          {
+            "feature": "cnes_estabelecimentos",
+            "importance": 0.00855
           },
           {
             "feature": "positividade_trend",
-            "importance": 0.0
+            "importance": 0.00524
           },
           {
-            "feature": "notificacoes",
-            "importance": 0.0
+            "feature": "n_eventos_climaticos",
+            "importance": 0.00344
+          },
+          {
+            "feature": "tests",
+            "importance": 0.00267
+          },
+          {
+            "feature": "cnes_leitos_total",
+            "importance": 0.00207
           }
         ]
       },
@@ -335,61 +430,65 @@
           "tests_pct_estadual",
           "semanas_consec_sem_exame"
         ],
-        "n_train": 2221,
-        "n_test": 26,
-        "auc_test": null,
-        "threshold": 0.05,
-        "f1_at_threshold": 0.0,
-        "precision_at_20": 0.0,
-        "precision_at_50": 0.0,
-        "pos_rate_train": 0.014858171994597028,
+        "n_train": 2204,
+        "n_test": 762,
+        "auc_test": 0.7723888888888888,
+        "threshold": 0.15,
+        "f1_at_threshold": 0.07692307692307691,
+        "precision_at_20": 0.05,
+        "precision_at_50": 0.02,
+        "pos_rate_train": 0.022686025408348458,
         "importance": [
           {
             "feature": "risco_composto",
-            "importance": 0.26538
+            "importance": 0.20784
           },
           {
             "feature": "tests_pct_estadual",
-            "importance": 0.20005
+            "importance": 0.20179
           },
           {
             "feature": "tests_trend",
-            "importance": 0.16976
+            "importance": 0.17205
           },
           {
             "feature": "tests_ma8",
-            "importance": 0.1391
+            "importance": 0.15248
           },
           {
             "feature": "tests",
-            "importance": 0.08464
+            "importance": 0.07091
           },
           {
             "feature": "indice_vulnerabilidade",
-            "importance": 0.06019
-          },
-          {
-            "feature": "cnes_estabelecimentos",
-            "importance": 0.03855
+            "importance": 0.05997
           },
           {
             "feature": "cnes_leitos_total",
-            "importance": 0.02122
+            "importance": 0.04918
           },
           {
-            "feature": "cnes_equipes_esf",
-            "importance": 0.01507
-          },
-          {
-            "feature": "confianca_dado",
-            "importance": 0.00605
-          },
-          {
-            "feature": "positividade",
-            "importance": 0.0
+            "feature": "cnes_estabelecimentos",
+            "importance": 0.03883
           },
           {
             "feature": "positividade_trend",
+            "importance": 0.03179
+          },
+          {
+            "feature": "n_eventos_climaticos",
+            "importance": 0.00849
+          },
+          {
+            "feature": "cnes_equipes_esf",
+            "importance": 0.00648
+          },
+          {
+            "feature": "positividade_ma8",
+            "importance": 0.00018
+          },
+          {
+            "feature": "positividade",
             "importance": 0.0
           },
           {
@@ -398,10 +497,6 @@
           },
           {
             "feature": "incidencia_100k",
-            "importance": 0.0
-          },
-          {
-            "feature": "positividade_ma8",
             "importance": 0.0
           }
         ]
@@ -434,74 +529,74 @@
           "tests_pct_estadual",
           "semanas_consec_sem_exame"
         ],
-        "n_train": 5143,
-        "n_test": 90,
-        "auc_test": 0.0337078651685393,
-        "threshold": 0.05,
-        "f1_at_threshold": 0.0,
-        "precision_at_20": 0.0,
-        "precision_at_50": 0.0,
-        "pos_rate_train": 0.007972000777756174,
+        "n_train": 6124,
+        "n_test": 1483,
+        "auc_test": 0.8640163842441926,
+        "threshold": 0.2,
+        "f1_at_threshold": 0.41666666666666663,
+        "precision_at_20": 0.55,
+        "precision_at_50": 0.42,
+        "pos_rate_train": 0.04555845852384063,
         "importance": [
           {
-            "feature": "tests_ma8",
-            "importance": 0.27354
+            "feature": "positividade_ma8",
+            "importance": 0.36924
           },
           {
-            "feature": "tests_pct_estadual",
-            "importance": 0.18184
-          },
-          {
-            "feature": "tests_trend",
-            "importance": 0.13496
-          },
-          {
-            "feature": "risco_composto",
-            "importance": 0.12322
+            "feature": "incidencia_100k",
+            "importance": 0.09848
           },
           {
             "feature": "positividade_trend",
-            "importance": 0.07125
+            "importance": 0.08586
+          },
+          {
+            "feature": "tests_ma8",
+            "importance": 0.07548
+          },
+          {
+            "feature": "tests_trend",
+            "importance": 0.0694
           },
           {
             "feature": "indice_vulnerabilidade",
-            "importance": 0.04622
+            "importance": 0.0582
           },
           {
-            "feature": "exames_por_notif",
-            "importance": 0.03578
+            "feature": "risco_composto",
+            "importance": 0.05195
           },
           {
-            "feature": "vizinhos_em_alerta",
-            "importance": 0.03011
-          },
-          {
-            "feature": "confianca_dado",
-            "importance": 0.02473
-          },
-          {
-            "feature": "positividade_ma8",
-            "importance": 0.0199
-          },
-          {
-            "feature": "cnes_estabelecimentos",
-            "importance": 0.01761
+            "feature": "tests_pct_estadual",
+            "importance": 0.05078
           },
           {
             "feature": "cnes_leitos_total",
-            "importance": 0.01611
-          },
-          {
-            "feature": "tests",
-            "importance": 0.01341
+            "importance": 0.04477
           },
           {
             "feature": "cnes_equipes_esf",
-            "importance": 0.00776
+            "importance": 0.04312
           },
           {
-            "feature": "n_eventos_climaticos",
-            "importance": 0.00191
+            "feature": "cnes_estabelecimentos",
+            "importance": 0.02222
+          },
+          {
+            "feature": "confianca_dado",
+            "importance": 0.00977
+          },
+          {
+            "feature": "positividade",
+            "importance": 0.00957
+          },
+          {
+            "feature": "exames_por_notif",
+            "importance": 0.00483
+          },
+          {
+            "feature": "tests",
+            "importance": 0.00328
           }
         ]
       }
@@ -526,69 +621,69 @@
         "cnes_estabelecimentos",
         "exames_por_notif"
       ],
-      "n_train": 24248,
-      "n_test": 437,
-      "auc_test": 0.8079185424275885,
-      "threshold": 0.1,
-      "f1_at_threshold": 0.7186761229314421,
-      "precision_at_20": 0.95,
-      "precision_at_50": 0.84,
-      "pos_rate_train": 0.1923045199604091,
+      "n_train": 25538,
+      "n_test": 5964,
+      "auc_test": 0.8130981837591442,
+      "threshold": 0.05,
+      "f1_at_threshold": 0.6626024805549716,
+      "precision_at_20": 0.8,
+      "precision_at_50": 0.78,
+      "pos_rate_train": 0.15165635523533558,
       "importance": [
         {
-          "feature": "tests_ma8",
-          "importance": 0.75145
-        },
-        {
-          "feature": "tests",
-          "importance": 0.08354
-        },
-        {
-          "feature": "solicitacoes_100k",
-          "importance": 0.05147
-        },
-        {
-          "feature": "cnes_estabelecimentos",
-          "importance": 0.04383
-        },
-        {
           "feature": "semanas_sem_exame",
-          "importance": 0.02816
+          "importance": 0.45579
+        },
+        {
+          "feature": "tests_ma8",
+          "importance": 0.25045
         },
         {
           "feature": "confianca_dado",
-          "importance": 0.01775
+          "importance": 0.1461
+        },
+        {
+          "feature": "tests",
+          "importance": 0.07513
+        },
+        {
+          "feature": "solicitacoes_100k",
+          "importance": 0.03647
+        },
+        {
+          "feature": "cnes_estabelecimentos",
+          "importance": 0.01442
         },
         {
           "feature": "indice_vulnerabilidade",
-          "importance": 0.01367
-        },
-        {
-          "feature": "exames_por_notif",
-          "importance": 0.00417
-        },
-        {
-          "feature": "notificacoes",
-          "importance": 0.00272
+          "importance": 0.00906
         },
         {
           "feature": "positividade",
-          "importance": 0.00234
+          "importance": 0.00853
         },
         {
-          "feature": "gap_sinan_sem_exame",
-          "importance": 0.00079
+          "feature": "exames_por_notif",
+          "importance": 0.00223
         },
         {
           "feature": "vizinhos_em_alerta",
-          "importance": 0.0001
+          "importance": 0.00088
+        },
+        {
+          "feature": "notificacoes",
+          "importance": 0.00069
+        },
+        {
+          "feature": "silencio_com_vizinho_alerta",
+          "importance": 0.00024
         },
         {
           "feature": "semanas_consec_sem_exame",
           "importance": 0.0
         },
         {
-          "feature": "silencio_com_vizinho_alerta",
+          "feature": "gap_sinan_sem_exame",
           "importance": 0.0
         }
       ]

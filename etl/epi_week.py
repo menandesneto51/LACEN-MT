@@ -2,7 +2,8 @@
 """Semana epidemiológica (ISO / alinhada ao pipeline LACEN e DATEPART iso_week no DW).
 
 Convenção do sistema: `datetime.isocalendar()` (segunda–domingo), igual a
-`DATEPART(iso_week, …)` / `DATEPART(isoyear, …)` no SQL Server.
+`DATEPART(iso_week, …)` e ISO-year via `YEAR(DATEADD(day, 26 - iso_week, d))`
+(compatível com SQL Server anterior a 2022; `DATEPART(isoyear,…)` só existe no 2022+).
 A SE de referência operacional é a **última semana completa** relativa a `hoje`
 (a semana corrente ainda em curso não é tratada como “atual” sem banner).
 """

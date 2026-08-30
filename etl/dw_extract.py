@@ -181,10 +181,16 @@ def extract_vw_gal_weekly_agg(
     agravo_sql = f"[{agravo_col}]" if agravo_col else "N''"
     days = max(7, int(weeks_back) * 7 + 14)
 
+    # isoyear exige SQL Server 2022+; fórmula YEAR(DATEADD(day, 26-iso_week, d))
+    # é compatível com versões anteriores e alinha ao isocalendar() Python.
+    d = f"CAST([{date_col}] AS date)"
+    epi_year_expr = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
+    epi_week_expr = f"DATEPART(iso_week, {d})"
+
     sql = f"""
     SELECT
-      DATEPART(isoyear, CAST([{date_col}] AS date)) AS epi_year,
-      DATEPART(iso_week, CAST([{date_col}] AS date)) AS epi_week,
+      {epi_year_expr} AS epi_year,
+      {epi_week_expr} AS epi_week,
       UPPER(LTRIM(RTRIM([{mun_col}]))) AS municipio,
       LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))) AS agravo_raw,
       LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400))))) AS exame_raw,
@@ -207,8 +213,8 @@ def extract_vw_gal_weekly_agg(
       AND CAST([{date_col}] AS date) <= CAST(GETDATE() AS date)
       AND LTRIM(RTRIM([{mun_col}])) <> ''
     GROUP BY
-      DATEPART(isoyear, CAST([{date_col}] AS date)),
-      DATEPART(iso_week, CAST([{date_col}] AS date)),
+      {epi_year_expr},
+      {epi_week_expr},
       UPPER(LTRIM(RTRIM([{mun_col}]))),
       LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))),
       LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400)))))
