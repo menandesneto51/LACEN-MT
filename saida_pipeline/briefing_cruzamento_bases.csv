@@ -3,7 +3,7 @@ SINAN,True,"vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_ac
 GAL,True,"vw_gal_micro_recent.csv, vw_gal_micro_recent.parquet, vw_gal_micro_recent_for_rede.csv, vw_gal_weekly_agg.csv",Exames LACEN — demanda e positividade,extraído
 SIH,True,"cruzamento_sih_sia_top_mun.csv, cruzamento_sih_sia_top_mun.parquet, sih_mun_cid_familia_agg.csv, sih_mun_cid_familia_agg.parquet",Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun),extraído
 SIA,True,"cruzamento_sih_sia_top_mun.csv, cruzamento_sih_sia_top_mun.parquet, sia_mun_cid_familia_agg.csv, sia_mun_cid_familia_agg.parquet",Produção ambulatorial correlata (SIA/SIA_APAC),extraído
-SIVEP/SRAG,True,"sivep_malaria.csv, sivep_malaria.parquet, vw_sinan_sindromerespiratoriaagudagrave.csv, vw_sinan_sindromerespiratoriaagudagrave.parquet",SRAG / respiratório,extraído
+SIVEP/SRAG,True,"sivep_malaria.csv, sivep_malaria.parquet, vw_sinan_sindromerespiratoriaagudagrave.csv, vw_sinan_sindromerespiratoriaagudagrave.parquet",SRAG/respiratório — inventário apenas; não seção padrão do Radar,extraído
 SIM,True,"sim.csv, sim.parquet",Óbitos — letalidade contextual,extraído
 CNES,True,"cnes_equipamentos.csv, cnes_equipamentos.parquet, cnes_estabelecimentos.csv, cnes_estabelecimentos.parquet",Capacidade da rede (leitos/equipes),extraído
 IndicaSUS,True,"indicadores.csv, indicadores.parquet, indicadorespactuacao.csv, indicadorespactuacao.parquet",Pactuação / INDICADORES* no DW + host IndicaSUS (indicasus_*),extraído

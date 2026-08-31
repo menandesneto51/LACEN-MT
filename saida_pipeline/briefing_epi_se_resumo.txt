@@ -20,11 +20,11 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · hepatite_b_hbv: JUINA(+24; 49,6 positivos por 100 mil habitantes), CUIABA(+21; 3,0 positivos por 100 mil habitantes), SORRISO(+13; 10,4 positivos por 100 mil habitantes)
   · chikungunya: CAMPO NOVO DO PARECIS(+0; 0,0 positivos por 100 mil habitantes), CUIABA(+0; 0,0 positivos por 100 mil habitantes), SAPEZAL(+0; 0,0 positivos por 100 mil habitantes)
 4) Vizinhos na mesma situação:
-  · tuberculose: CUIABA ↔ VARZEA GRANDE (+4/+3)
-  · tuberculose: CUIABA ↔ CHAPADA DOS GUIMARAES (+4/+1)
-  · tuberculose: VARZEA GRANDE ↔ CHAPADA DOS GUIMARAES (+3/+1)
-  · hepatite_b_hbv: JUINA ↔ CASTANHEIRA (+24/+1)
-  · hepatite_b_hbv: CUIABA ↔ VARZEA GRANDE (+21/+1)
+  · dengue: VARZEA GRANDE ↔ CUIABA (+3/+0)
+  · dengue: VARZEA GRANDE ↔ SANTO ANTONIO DO LEVERGER (+3/+0)
+  · dengue: VARZEA GRANDE ↔ NOSSA SENHORA DO LIVRAMENTO (+3/+0)
+  · dengue: LUCAS DO RIO VERDE ↔ SORRISO (+0/+0)
+  · dengue: LUCAS DO RIO VERDE ↔ NOVA UBIRATA (+0/+0)
 5) Risco de dispersão:
   · [Observado] dengue: alta demanda (2130 exames) com baixa confirmação laboratorial (0.1% pos.) — atenção territorial; não interpreta como surto confirmado.
   · [Observado] tuberculose: 3 par(es) de municípios vizinhos com positivos (CUIABA↔VARZEA GRANDE, CUIABA↔CHAPADA DOS GUIMARAES) — risco local/contatos; investigar rede de transmissão e incompletos.
@@ -33,20 +33,17 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · [Predito] Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
 5b) Cartões de risco (evento):
   · dengue × CUIABA: prob=alto impacto=alto · investigar [Derivado]
-  · hepatite_b_hbv × CUIABA: prob=alto impacto=médio · investigar [Derivado]
-  · hepatite_b_hbv × JUINA: prob=alto impacto=médio · investigar [Derivado]
-  · dengue × VARZEA GRANDE: prob=alto impacto=médio · investigar [Derivado]
-  · tuberculose × CUIABA: prob=alto impacto=médio · investigar [Derivado]
+  · dengue × VARZEA GRANDE: prob=alto impacto=alto · investigar [Derivado]
+  · dengue × LUCAS DO RIO VERDE: prob=alto impacto=médio · investigar [Derivado]
+  · dengue × SORRISO: prob=alto impacto=médio · investigar [Derivado]
+  · dengue × NOSSA SENHORA DO LIVRAMENTO: prob=alto impacto=baixo · investigar [Observado]
 6) GAL×SINAN (qualquer agravo): 40 gal_sem_sinan · 0 sinan_sem_gal
 7) Geo: nível=bairro_cep — Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_s
 7b) Cruzamento SIH/SIA (proxy VW_INTERNACAO):
-  · CANARANA × dengue_arbovirose: n=42 [SIH/VW_INTERNACAO]
-  · DIAMANTINO × dengue_arbovirose: n=39 [SIH/VW_INTERNACAO]
-  · TANGARA DA SERRA × dengue_arbovirose: n=35 [SIH/VW_INTERNACAO]
   · CUIABA × dengue_arbovirose: n=31 [SIH/VW_INTERNACAO]
-  · NOVA XAVANTINA × dengue_arbovirose: n=23 [SIH/VW_INTERNACAO]
-  · TABAPORA × dengue_arbovirose: n=22 [SIH/VW_INTERNACAO]
-  Caveat: Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
+  · VARZEA GRANDE × dengue_arbovirose: n=19 [SIH/VW_INTERNACAO]
+  · JUINA × dengue_arbovirose: n=16 [SIH/VW_INTERNACAO]
+  Caveat: Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; nã
 7c) Sinais IndicaSUS / SISREG:
   · IndicaSUS ocupação: Complementar Intensivo / Descartado n=10 (2026-03-21)
   · IndicaSUS ocupação: Clínico Isolamento / Descartado n=8 (2026-04-02)
@@ -60,4 +57,12 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · SISREG amb pendente: SINOP n=24798
   · SISREG amb pendente: SINOP n=21950
   Caveat: IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+8) Score prioridade municipal (proposta para homologação):
+  · LUCAS DO RIO VERDE: score=4.0001 (lab=1.0, pos=0.0001, lacuna=1.0, SIH=0.0)
+  · CUIABA: score=3.7397 (lab=0.1394, pos=1.0, lacuna=0.3214, SIH=1.0)
+  · VARZEA GRANDE: score=3.0556 (lab=0.5745, pos=0.0161, lacuna=0.6869, SIH=0.6129)
+  · SORRISO: score=2.3438 (lab=0.2725, pos=0.619, lacuna=0.2883, SIH=0.0)
+  · JUINA: score=2.0828 (lab=0.0, pos=0.7447, lacuna=0.0772, SIH=0.5161)
+Nota marcadores: Positividade por marcador é agregada do GAL micro; IgG/anti-HBs não geram alerta agudo. Não declara surto.
 Nota: positividade IgG/sorologia elevada ≠ surto agudo.
+Alertas específicos: 8 arquivo(s) em saida_pipeline/alertas_especificos/

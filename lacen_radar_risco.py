@@ -61,7 +61,7 @@ def _lacen_pertinente(target: str, familia: str) -> bool:
     keys = (
         "hepatite", "hbv", "hcv", "tubercul", "meningite", "hantavir",
         "leptospir", "oropouche", "chikung", "zika", "dengue", "malaria",
-        "leishmani", "sifilis", "sífilis", "srag", "influenza", "covid",
+        "leishmani", "sifilis", "sífilis",
     )
     blob = f"{t} {f}"
     return any(k in blob for k in keys)

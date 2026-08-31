@@ -167,3 +167,9 @@ saida_pipeline/*
 !ml/models_store/*.joblib
 !saida_pipeline/staging_dw/bancos_interesse_avaliacao.md
 !saida_pipeline/briefing_sinais_rede_externa.csv
+!saida_pipeline/score_prioridade_municipal.csv
+!saida_pipeline/modelo_definitivo_pendencias.md
+!saida_pipeline/positividade_por_marcador.csv
+!saida_pipeline/positividade_por_marcador_resumo.md
+!saida_pipeline/alertas_especificos/
+!saida_pipeline/alertas_especificos/**

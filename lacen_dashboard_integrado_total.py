@@ -1741,8 +1741,43 @@ if modulo == "Visão executiva":
             ):
                 st.caption(
                     "Observado (lab integrated_weekly) · Predito (ML se presente). "
-                    "Positividade IgG/sorologia elevada ≠ surto agudo."
+                    "Positividade IgG/sorologia elevada ≠ surto agudo. "
+                    "Anti-HBs / IgG ≠ hepatite B aguda."
                 )
+                # Score prioridade municipal (proposta homologação)
+                score_path = Path(folder) / "score_prioridade_municipal.csv"
+                if score_path.exists():
+                    try:
+                        df_score = pd.read_csv(score_path)
+                        if not df_score.empty:
+                            st.markdown(
+                                "**Prioridade municipal (proposta para homologação)**"
+                            )
+                            st.caption(
+                                "score = 3×excesso_lab + 2×positividade_anomala "
+                                "+ 1×lacuna_sinan + 1×internações_graves (0–1)."
+                            )
+                            cols_sc = [
+                                c
+                                for c in [
+                                    "municipio",
+                                    "score",
+                                    "excesso_lab_0_1",
+                                    "positividade_anomala_0_1",
+                                    "lacuna_sinan_0_1",
+                                    "internacoes_graves_0_1",
+                                    "rotulo",
+                                ]
+                                if c in df_score.columns
+                            ]
+                            show_table(
+                                df_score[cols_sc].head(10),
+                                "Score prioridade",
+                                max_rows=10,
+                                key="score_prioridade_mun",
+                            )
+                    except Exception:  # noqa: BLE001
+                        pass
                 pergunta_col = "pergunta" if "pergunta" in df_briefing.columns else None
                 if pergunta_col:
                     labels = {

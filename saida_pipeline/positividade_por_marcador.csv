@@ -1,0 +1,101 @@
+﻿municipio,familia,marcador,classe,metodologia,n_exames,n_positivos,n_negativos,positividade,alerta_agudo,nota_pt
+VARZEA GRANDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,198,37,146,20.2%,True,IgM: sugere infecção recente — sinal para investigação.
+LUCAS DO RIO VERDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,139,35,96,26.7%,True,IgM: sugere infecção recente — sinal para investigação.
+CUIABA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,148,33,106,23.7%,True,IgM: sugere infecção recente — sinal para investigação.
+CAMPINAPOLIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,78,25,45,35.7%,True,IgM: sugere infecção recente — sinal para investigação.
+JUINA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,30,24,6,80.0%,True,"HBsAg: infecção ativa (aguda ou crônica) — sinal laboratorial; cruzar com clínica, IgM e notificação (não declarar surto só com isso)."
+SORRISO,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,173,23,133,14.7%,True,IgM: sugere infecção recente — sinal para investigação.
+CUIABA,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,21,5,16,23.8%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+CUIABA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,42,4,37,9.8%,True,IgM: sugere infecção recente — sinal para investigação.
+VARZEA GRANDE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,11,3,8,27.3%,True,IgM: sugere infecção recente — sinal para investigação.
+JUINA,hepatite_b,anti_HBc_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,30,2,28,6.7%,True,Anti-HBc IgM: compatível com infecção aguda (ou reativação) — sinal laboratorial ativo para a VE.
+NOVA MUTUM,outros,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,11,2,9,18.2%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+JUINA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,9,2,7,22.2%,True,IgM: sugere infecção recente — sinal para investigação.
+VARZEA GRANDE,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,79,1,78,1.3%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+CUIABA,hepatite_a,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,8,1,7,12.5%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+AGUA BOA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,7,1,6,14.3%,True,IgM: sugere infecção recente — sinal para investigação.
+NOVA MUTUM,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,1,5,16.7%,True,"HBsAg: infecção ativa (aguda ou crônica) — sinal laboratorial; cruzar com clínica, IgM e notificação (não declarar surto só com isso)."
+NOVA MUTUM,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,4,20.0%,True,IgM: sugere infecção recente — sinal para investigação.
+SORRISO,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,1,1,50.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+AGUA BOA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,1,0,100.0%,True,"HBsAg: infecção ativa (aguda ou crônica) — sinal laboratorial; cruzar com clínica, IgM e notificação (não declarar surto só com isso)."
+JUINA,hepatite_b,HBeAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,30,0,30,0.0%,True,HBeAg: marcador de replicação — contextualizar com DNA e clínica.
+RONDONOPOLIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,8,0,7,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+RONDONOPOLIS,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,7,0,6,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+NOVA MUTUM,hepatite_b,anti_HBc_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,0,6,0.0%,True,Anti-HBc IgM: compatível com infecção aguda (ou reativação) — sinal laboratorial ativo para a VE.
+NOVA MUTUM,hepatite_b,HBeAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,0,6,0.0%,True,HBeAg: marcador de replicação — contextualizar com DNA e clínica.
+CUIABA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,0,4,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+CUIABA,hepatite_b,HBeAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,0,4,0.0%,True,HBeAg: marcador de replicação — contextualizar com DNA e clínica.
+CUIABA,hepatite_b,anti_HBc_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,0,4,0.0%,True,Anti-HBc IgM: compatível com infecção aguda (ou reativação) — sinal laboratorial ativo para a VE.
+CUIABA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,0,4,0.0%,True,"HBsAg: infecção ativa (aguda ou crônica) — sinal laboratorial; cruzar com clínica, IgM e notificação (não declarar surto só com isso)."
+VARZEA GRANDE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,0,3,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+PEIXOTO DE AZEVEDO,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,0,3,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+NOVA MUTUM,hepatite_a,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,3,0,3,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+BARRA DO BUGRES,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,0,2,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+CUIABA,meningite,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,0,2,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+RONDONOPOLIS,tuberculose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+AGUA BOA,hepatite_a,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+AGUA BOA,hepatite_b,HBeAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,HBeAg: marcador de replicação — contextualizar com DNA e clínica.
+AGUA BOA,hepatite_b,anti_HBc_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,Anti-HBc IgM: compatível com infecção aguda (ou reativação) — sinal laboratorial ativo para a VE.
+RONDONOPOLIS,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,1,0,1,0.0%,True,IgM: sugere infecção recente — sinal para investigação.
+CUIABA,tuberculose,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+VARZEA GRANDE,hepatite_a,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+RONDONOPOLIS,hepatite_a,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+BARRA DO BUGRES,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,1,0,1,0.0%,True,IgM: janela de infecção recente — sinal laboratorial ativo.
+CUIABA,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,701,78,591,11.7%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+CUIABA,tuberculose,nao_mapeado,indeterminado,Cultura,672,67,161,29.4%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+VARZEA GRANDE,dengue,IgG,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,129,59,66,47.2%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+CUIABA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,116,58,37,61.1%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+VARZEA GRANDE,outros,IgG,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,82,47,31,60.3%,False,IgG/sorologia: reflete soroprevalência — não tratar como epidemia aguda.
+SORRISO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,61,35,23,60.3%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+VARZEA GRANDE,tuberculose,nao_mapeado,indeterminado,Coloração de Ziehl-Neelsen,259,32,95,25.2%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+VARZEA GRANDE,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,306,30,264,10.2%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+JUINA,hepatite_b,anti_HBc_total,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,30,28,2,93.3%,False,Anti-HBc total: contato passado ou crônico possível — não basta sozinho para alerta de aguda.
+JUINA,hepatite_b,anti_HBe,indeterminado,Imunoensaio de Micropartículas por Quimioluminescência,30,26,4,86.7%,False,Anti-HBe: fase da infecção — interpretar no painel completo.
+CUIABA,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,63,21,39,35.0%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+JUINA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,45,19,22,46.3%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+LUCAS DO RIO VERDE,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,76,17,58,22.7%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+VARZEA GRANDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,37,17,16,51.5%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+CUIABA,chikungunya,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,30,16,13,55.2%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+SORRISO,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,78,15,63,19.2%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+RONDONOPOLIS,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,628,14,609,2.2%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+SORRISO,tuberculose,nao_mapeado,indeterminado,Cultura,59,13,37,26.0%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+CUIABA,outros,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,32,13,17,43.3%,False,IgG/sorologia: reflete soroprevalência — não tratar como epidemia aguda.
+RONDONOPOLIS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,32,12,16,42.9%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+BARRA DO BUGRES,tuberculose,nao_mapeado,indeterminado,Teste de Sensibilidade,28,12,3,80.0%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+CUIABA,outros,nao_mapeado,indeterminado,Coloração de Ziehl-Neelsen,329,11,41,21.2%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+NOVA MUTUM,tuberculose,nao_mapeado,indeterminado,Cultura,45,11,21,34.4%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+LUCAS DO RIO VERDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,19,11,8,57.9%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+BARRA DO BUGRES,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,20,10,10,50.0%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+RONDONOPOLIS,outros,nao_mapeado,indeterminado,Micológico Direto,48,9,36,20.0%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+RONDONOPOLIS,tuberculose,nao_mapeado,indeterminado,Cultura,53,8,38,17.4%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+CUIABA,hepatite_c,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,37,8,27,22.9%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+CAMPINAPOLIS,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,19,8,11,42.1%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+NOVA MUTUM,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,8,4,66.7%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+VARZEA GRANDE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,403,7,395,1.7%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+SORRISO,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,50,7,38,15.6%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+CAMPINAPOLIS,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,34,7,25,21.9%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+VARZEA GRANDE,hepatite_c,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,16,7,9,43.8%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+RONDONOPOLIS,outros,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,37,6,30,16.7%,False,IgG/sorologia: reflete soroprevalência — não tratar como epidemia aguda.
+LUCAS DO RIO VERDE,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,31,6,24,20.0%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+PEIXOTO DE AZEVEDO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,26,6,14,30.0%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+AGUA BOA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,13,6,6,50.0%,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+VARZEA GRANDE,chikungunya,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,10,6,4,60.0%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+CUIABA,hepatite_a,IgG,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,7,6,1,85.7%,False,IgG/sorologia: reflete soroprevalência — não tratar como epidemia aguda.
+CAMPINAPOLIS,tuberculose,nao_mapeado,indeterminado,Cultura,19,5,10,33.3%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+RONDONOPOLIS,hepatite_c,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,11,5,5,50.0%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+LUCAS DO RIO VERDE,hepatite_c,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,9,4,5,44.4%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+RONDONOPOLIS,chikungunya,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,7,4,2,66.7%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+CUIABA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,487,3,484,0.6%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+VARZEA GRANDE,outros,nao_mapeado,indeterminado,Coloração de Ziehl-Neelsen,47,3,35,7.9%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+JUINA,hepatite_b,anti_HBs,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,30,3,27,10.0%,False,Anti-HBs: imunidade vacinal ou contato passado — não interpretar como infecção aguda.
+LUCAS DO RIO VERDE,tuberculose,nao_mapeado,indeterminado,Cultura,22,3,11,21.4%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+RONDONOPOLIS,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,6,3,3,50.0%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+LUCAS DO RIO VERDE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,56,2,54,3.6%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+CUIABA,hepatite_c,nao_mapeado,indeterminado,Imunoensaio de Micropartículas por Quimioluminescência,44,2,42,4.5%,False,Marcador sem mapeamento seguro — revisar laudo nominal.
+NOVA MUTUM,tuberculose,molecular,molecular_presenca_ausencia,PCR em Tempo Real,26,2,22,8.3%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+NOVA MUTUM,outros,molecular,molecular_presenca_ausencia,PCR em Tempo Real,20,2,18,10.0%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."
+NOVA MUTUM,outros,IgG,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,10,2,8,20.0%,False,IgG/sorologia: reflete soroprevalência — não tratar como epidemia aguda.
+JUINA,dengue,IgG,nao_agudo_soroprevalencia,Enzimaimunoensaio,6,2,4,33.3%,False,IgG isolada: soroprevalência / infecção passada — não alerta agudo.
+NOVA MUTUM,hepatite_b,anti_HBs,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,6,2,4,33.3%,False,Anti-HBs: imunidade vacinal ou contato passado — não interpretar como infecção aguda.
+NOVA MUTUM,hepatite_b,anti_HBc_total,nao_agudo_soroprevalencia,Imunoensaio de Micropartículas por Quimioluminescência,6,2,4,33.3%,False,Anti-HBc total: contato passado ou crônico possível — não basta sozinho para alerta de aguda.
+SORRISO,hepatite_c,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,5,2,3,40.0%,True,"Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência."

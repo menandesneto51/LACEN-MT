@@ -1,6 +1,6 @@
 {
   "se": "2026-SE30",
-  "gerado_em": "2026-08-30 21:32 Hora Padrão Brasil Central",
+  "gerado_em": "2026-08-31 09:03 Hora Padrão Brasil Central",
   "fonte_notificacoes": "proxy_exames_GAL",
   "n_casos_especiais": 1,
   "casos": [
@@ -108,13 +108,12 @@
       "agravo": "hepatite_b_hbv",
       "municipio": "JUINA",
       "severidade": "alta",
-      "evidencia": "SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE · vizinhos: JUINA↔CASTANHEIRA",
+      "evidencia": "SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE",
       "destinatarios": {
         "SES-MT": "Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar VE municipal/regional na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`) — sem declarar surto/epidemia automaticamente.",
         "CIEVS": "Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergência — linguagem «investigar», não «há surto».",
         "Área técnica — Hepatites virais": "Programa hepatite: estratificar definição de caso em JUINA; orientar rede sobre notificação e conduta técnica do agravo hepatite_b_hbv.",
-        "Município — JUINA": "VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar exame × notificação; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).",
-        "Municípios próximos": "Possível cluster / risco de dispersão (hepatite_b_hbv): JUINA↔CASTANHEIRA. Reforçar vigilância ativa e comunicação entre VE municipais; não interpretar par vizinho como surto intermunicipal automático."
+        "Município — JUINA": "VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar exame × notificação; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento)."
       }
     }
   ],
@@ -129,26 +128,8 @@
   ],
   "fontes_cache": [],
   "cruzamento_sih_sia": {
-    "caveat": "Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.",
+    "caveat": "Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.",
     "top_mun": [
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "CANARANA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 42
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "DIAMANTINO",
-        "cid_familia": "dengue_arbovirose",
-        "n": 39
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "TANGARA DA SERRA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 35
-      },
       {
         "fonte": "SIH/VW_INTERNACAO",
         "municipio": "CUIABA",
@@ -157,45 +138,9 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "NOVA XAVANTINA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 23
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "TABAPORA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 22
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
         "municipio": "VARZEA GRANDE",
         "cid_familia": "dengue_arbovirose",
         "n": 19
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "BARRA DO GARCAS",
-        "cid_familia": "dengue_arbovirose",
-        "n": 19
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "CONFRESA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 18
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "JUARA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 17
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "PONTES E LACERDA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 17
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
@@ -208,6 +153,20 @@
     "sia_rows": 692,
     "familias": [
       "dengue_arbovirose"
+    ],
+    "filtro": "municipios_em_sinal_positividade_ou_demanda",
+    "municipios_filtro": [
+      "AGUA BOA",
+      "BARRA DO BUGRES",
+      "CAMPINAPOLIS",
+      "CUIABA",
+      "JUINA",
+      "LUCAS DO RIO VERDE",
+      "NOVA MUTUM",
+      "PEIXOTO DE AZEVEDO",
+      "RONDONOPOLIS",
+      "SORRISO",
+      "VARZEA GRANDE"
     ]
   },
   "sinais_rede": {

@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 21:32 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-31 09:03 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
@@ -73,13 +73,16 @@ SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): d
 
 | Agravo | Par | Positivos | Dist. km |
 |--------|-----|-----------|----------|
-| tuberculose | CUIABA ↔ VARZEA GRANDE | +4 / +3 | 6.8 |
-| tuberculose | CUIABA ↔ CHAPADA DOS GUIMARAES | +4 / +1 | 40.1 |
-| tuberculose | VARZEA GRANDE ↔ CHAPADA DOS GUIMARAES | +3 / +1 | 46.0 |
-| hepatite_b_hbv | JUINA ↔ CASTANHEIRA | +24 / +1 | 30.8 |
-| hepatite_b_hbv | CUIABA ↔ VARZEA GRANDE | +21 / +1 | 6.8 |
-| hepatite_b_hbv | CUIABA ↔ ACORIZAL | +21 / +1 | 52.8 |
-| hepatite_b_hbv | CUIABA ↔ JANGADA | +21 / +1 | 57.8 |
+| dengue | VARZEA GRANDE ↔ CUIABA | +3 / +0 | 6.8 |
+| dengue | VARZEA GRANDE ↔ SANTO ANTONIO DO LEVERGER | +3 / +0 | 25.1 |
+| dengue | VARZEA GRANDE ↔ NOSSA SENHORA DO LIVRAMENTO | +3 / +0 | 26.4 |
+| dengue | LUCAS DO RIO VERDE ↔ SORRISO | +0 / +0 | 60.1 |
+| dengue | LUCAS DO RIO VERDE ↔ NOVA UBIRATA | +0 / +0 | 71.5 |
+| dengue | LUCAS DO RIO VERDE ↔ TAPURAH | +0 / +0 | 76.1 |
+| dengue | SORRISO ↔ VERA | +0 / +0 | 51.1 |
+| dengue | SORRISO ↔ IPIRANGA DO NORTE | +0 / +0 | 55.8 |
+| dengue | SORRISO ↔ LUCAS DO RIO VERDE | +0 / +0 | 60.1 |
+| dengue | CUIABA ↔ VARZEA GRANDE | +0 / +3 | 6.8 |
 
 ## 7. Riscos / dispersão (Top 10)
 
@@ -136,7 +139,7 @@ _Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetr
 | GAL | extraído | Exames LACEN — demanda e positividade |
 | SIH | extraído | Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun) |
 | SIA | extraído | Produção ambulatorial correlata (SIA/SIA_APAC) |
-| SIVEP/SRAG | extraído | SRAG / respiratório |
+| SIVEP/SRAG | extraído | SRAG/respiratório — inventário apenas; não seção padrão do Radar |
 | SIM | extraído | Óbitos — letalidade contextual |
 | CNES | extraído | Capacidade da rede (leitos/equipes) |
 | IndicaSUS | extraído | Pactuação / INDICADORES* no DW + host IndicaSUS (indicasus_*) |
@@ -150,20 +153,11 @@ Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
 
 | Município | Família CID | N | Fonte |
 |-----------|-------------|---|-------|
-| CANARANA | dengue_arbovirose | 42 | SIH/VW_INTERNACAO |
-| DIAMANTINO | dengue_arbovirose | 39 | SIH/VW_INTERNACAO |
-| TANGARA DA SERRA | dengue_arbovirose | 35 | SIH/VW_INTERNACAO |
 | CUIABA | dengue_arbovirose | 31 | SIH/VW_INTERNACAO |
-| NOVA XAVANTINA | dengue_arbovirose | 23 | SIH/VW_INTERNACAO |
-| TABAPORA | dengue_arbovirose | 22 | SIH/VW_INTERNACAO |
 | VARZEA GRANDE | dengue_arbovirose | 19 | SIH/VW_INTERNACAO |
-| BARRA DO GARCAS | dengue_arbovirose | 19 | SIH/VW_INTERNACAO |
-| CONFRESA | dengue_arbovirose | 18 | SIH/VW_INTERNACAO |
-| JUARA | dengue_arbovirose | 17 | SIH/VW_INTERNACAO |
-| PONTES E LACERDA | dengue_arbovirose | 17 | SIH/VW_INTERNACAO |
 | JUINA | dengue_arbovirose | 16 | SIH/VW_INTERNACAO |
 
-_Caveat:_ Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
+_Caveat:_ Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
 
 ## 7f. Sinais IndicaSUS / SISREG (rede e regulação)
 
@@ -239,13 +233,12 @@ _Caveat:_ IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); n�
 ## 9. Recomendações por destinatário / agravo
 
 ### JUINA × hepatite_b_hbv (alta)
-_Evidência:_ SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE · vizinhos: JUINA↔CASTANHEIRA
+_Evidência:_ SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE
 
 - **SES-MT:** Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar VE municipal/regional na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`) — sem declarar surto/epidemia automaticamente.
 - **CIEVS:** Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergência — linguagem «investigar», não «há surto».
 - **Área técnica — Hepatites virais:** Programa hepatite: estratificar definição de caso em JUINA; orientar rede sobre notificação e conduta técnica do agravo hepatite_b_hbv.
 - **Município — JUINA:** VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar exame × notificação; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).
-- **Municípios próximos:** Possível cluster / risco de dispersão (hepatite_b_hbv): JUINA↔CASTANHEIRA. Reforçar vigilância ativa e comunicação entre VE municipais; não interpretar par vizinho como surto intermunicipal automático.
 
 
 ## 10. Citações e fontes

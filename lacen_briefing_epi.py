@@ -1403,7 +1403,11 @@ def inventariar_cruzamento_bases(
             "Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun)",
         ),
         ("SIA", ("sia", "ambulator"), "Produção ambulatorial correlata (SIA/SIA_APAC)"),
-        ("SIVEP/SRAG", ("sivep", "srag", "sindromerespiratoria"), "SRAG / respiratório"),
+        (
+            "SIVEP/SRAG",
+            ("sivep", "srag", "sindromerespiratoria"),
+            "SRAG/respiratório — inventário apenas; não seção padrão do Radar",
+        ),
         ("SIM", ("sim", "obito", "óbito"), "Óbitos — letalidade contextual"),
         ("CNES", ("cnes",), "Capacidade da rede (leitos/equipes)"),
         (
@@ -1632,6 +1636,12 @@ class BriefingEpi:
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
     cruzamento_sih_sia: dict[str, Any] = field(default_factory=dict)
     sinais_rede: dict[str, Any] = field(default_factory=dict)
+    score_prioridade: list[dict[str, Any]] = field(default_factory=list)
+    marcadores: list[dict[str, Any]] = field(default_factory=list)
+    lacunas_vigilancia: list[dict[str, Any]] = field(default_factory=list)
+    alertas_especificos: list[str] = field(default_factory=list)
+    nota_marcadores: str = ""
+    nota_populacao: str = ""
     fontes: list[str] = field(default_factory=list)
     usou_ml: bool = False
     nota_taxas: str = ""
@@ -1753,9 +1763,28 @@ class BriefingEpi:
             cav = str(rede.get("caveat") or "")
             if cav:
                 lines.append(f"  Caveat: {cav[:160]}")
+        if self.score_prioridade:
+            lines.append(
+                "8) Score prioridade municipal (proposta para homologação):"
+            )
+            for s in self.score_prioridade[:5]:
+                lines.append(
+                    f"  · {s.get('municipio')}: score={s.get('score')} "
+                    f"(lab={s.get('excesso_lab_0_1')}, "
+                    f"pos={s.get('positividade_anomala_0_1')}, "
+                    f"lacuna={s.get('lacuna_sinan_0_1')}, "
+                    f"SIH={s.get('internacoes_graves_0_1')})"
+                )
+        if self.nota_marcadores:
+            lines.append(f"Nota marcadores: {self.nota_marcadores[:180]}")
         if any(x.get("caveat_igg") for x in self.maior_positividade):
             lines.append(
                 "Nota: positividade IgG/sorologia elevada ≠ surto agudo."
+            )
+        if self.alertas_especificos:
+            lines.append(
+                f"Alertas específicos: {len(self.alertas_especificos)} arquivo(s) "
+                "em saida_pipeline/alertas_especificos/"
             )
         return lines
 
@@ -2026,12 +2055,22 @@ def computar_briefing_epi(
         locs, weekly, yw, pop_lookup, nivel="municipio"
     )
 
-    # Vizinhos: eixos com positivos (TB, hepatite, top posi não-IgG, dengue se pos>0)
-    # + qualquer top solicitado com positivos (co-sinal territorial)
+    # Vizinhos: parte dos municípios citados no sinal (localidades de alta
+    # positividade / pico de demanda), não qualquer par com positivos.
+    # Exclui alvos respiratórios genéricos salvo se estiverem no sinal explícito.
+    def _eh_respiratorio_generico(t: str) -> bool:
+        tl = (t or "").casefold()
+        return any(
+            k in tl
+            for k in ("respirat", "influenza", "srag", "covid", "sivep", "virus_respiratorio")
+        )
+
     eixos: list[str] = []
     for x in sol + posi:
         t = str(x.get("target") or "")
         if not t or t in eixos:
+            continue
+        if _eh_respiratorio_generico(t):
             continue
         if _is_tb(t) or _is_hepatite(t) or (
             not _is_igg(t) and float(x.get("positivos") or 0) > 0
@@ -2040,15 +2079,62 @@ def computar_briefing_epi(
         if len(eixos) >= 6:
             break
     if not eixos:
-        eixos = [str(x["target"]) for x in sol[:2] if x.get("target")]
+        eixos = [
+            str(x["target"])
+            for x in sol[:2]
+            if x.get("target") and not _eh_respiratorio_generico(str(x["target"]))
+        ]
+
+    # Âncoras = municípios das localidades dos eixos priorizados
+    ancoras_sinal: list[tuple[str, str]] = []
+    for loc in locs:
+        t = str(loc.get("target") or "")
+        mun = _norm_mun(loc.get("municipio"))
+        if t in eixos and mun and (t, mun) not in ancoras_sinal:
+            if float(loc.get("positivos") or 0) > 0 or float(loc.get("exames") or 0) >= 20:
+                ancoras_sinal.append((t, mun))
+        if len(ancoras_sinal) >= 8:
+            break
 
     viz_pares: list[dict[str, Any]] = []
-    for t in eixos:
-        pares = vizinhos_mesma_situacao(weekly, viz, yw, t, max_pares=4)
-        viz_pares.extend(pares)
-        if len(viz_pares) >= 10:
-            break
-    viz_pares = viz_pares[:10]
+    try:
+        from lacen_prioridade_municipal import vizinhos_a_partir_do_sinal
+
+        for t, mun in ancoras_sinal:
+            pares = vizinhos_a_partir_do_sinal(
+                weekly, viz, yw, municipio_ancora=mun, target=t, max_viz=3
+            )
+            viz_pares.extend(pares)
+            if len(viz_pares) >= 12:
+                break
+    except Exception:  # noqa: BLE001
+        for t in eixos:
+            pares = vizinhos_mesma_situacao(weekly, viz, yw, t, max_pares=4)
+            viz_pares.extend(pares)
+            if len(viz_pares) >= 10:
+                break
+    # Complementa com pares co-positivos clássicos se ainda houver espaço
+    if len(viz_pares) < 6:
+        for t in eixos:
+            pares = vizinhos_mesma_situacao(weekly, viz, yw, t, max_pares=3)
+            for p in pares:
+                key = (
+                    p.get("target"),
+                    tuple(sorted((str(p.get("municipio")), str(p.get("vizinho"))))),
+                )
+                if any(
+                    (
+                        v.get("target"),
+                        tuple(sorted((str(v.get("municipio")), str(v.get("vizinho"))))),
+                    )
+                    == key
+                    for v in viz_pares
+                ):
+                    continue
+                viz_pares.append(p)
+            if len(viz_pares) >= 10:
+                break
+    viz_pares = viz_pares[:12]
 
     risco = risco_dispersao(
         weekly,
@@ -2076,13 +2162,77 @@ def computar_briefing_epi(
     if presentes:
         fontes.append("DW cruzamento: " + ", ".join(presentes[:6]))
 
-    sih_sia = carregar_cruzamento_sih_sia(outdir)
+    sih_sia_raw = carregar_cruzamento_sih_sia(outdir)
+    # Municípios do sinal (alta positividade OU pico de demanda nas localidades)
+    muns_sinal: list[str] = []
+    for loc in locs:
+        mun = _norm_mun(loc.get("municipio"))
+        if not mun:
+            continue
+        dlt = _num(loc.get("delta_pct"))
+        posi_v = _num(loc.get("positividade"))
+        if (
+            (dlt is not None and dlt >= 25)
+            or (posi_v is not None and posi_v >= 0.15 and float(loc.get("positivos") or 0) > 0)
+            or float(loc.get("positivos") or 0) >= 3
+        ):
+            if mun not in muns_sinal:
+                muns_sinal.append(mun)
+    for loc in locs[:15]:
+        mun = _norm_mun(loc.get("municipio"))
+        if mun and mun not in muns_sinal:
+            muns_sinal.append(mun)
+        if len(muns_sinal) >= 20:
+            break
+    try:
+        from lacen_prioridade_municipal import filtrar_sih_para_sinais
+
+        sih_sia = filtrar_sih_para_sinais(
+            sih_sia_raw, municipios_sinal=muns_sinal
+        )
+    except Exception:  # noqa: BLE001
+        sih_sia = sih_sia_raw
     if sih_sia.get("top_mun"):
-        fontes.append("Cruzamento SIH/SIA (VW_INTERNACAO)")
+        fontes.append("Cruzamento SIH (municípios do sinal)")
 
     sinais_rede = carregar_sinais_rede_externa(outdir)
     if sinais_rede.get("presente"):
         fontes.append("IndicaSUS/SISREG (ocupação + filas)")
+
+    # Marcadores / metodologia (GAL micro)
+    marcadores_linhas: list[dict[str, Any]] = []
+    nota_marcadores = ""
+    marcadores_payload: dict[str, Any] = {}
+    try:
+        from lacen_agente_marcadores import (
+            agregar_positividade_marcadores,
+            persistir_positividade_marcadores,
+        )
+
+        marcadores_payload = agregar_positividade_marcadores(
+            outdir, mun_filtro=muns_sinal[:12] or None, top=100
+        )
+        marcadores_linhas = list(marcadores_payload.get("linhas") or [])
+        persistir_positividade_marcadores(marcadores_payload, outdir)
+        nota_marcadores = str(marcadores_payload.get("caveat") or "")
+        if marcadores_linhas:
+            fontes.append("GAL micro — positividade por marcador/metodologia")
+    except Exception:  # noqa: BLE001
+        nota_marcadores = (
+            "Marcadores nominais indisponíveis nesta remessa "
+            "(GAL micro ausente ou erro de leitura)."
+        )
+
+    # Lacunas de vigilância (SINAN, IndicaSUS, SISREG, SIM — não só GAL×SINAN)
+    lacunas: list[dict[str, Any]] = []
+    try:
+        from lacen_prioridade_municipal import coletar_lacunas_vigilancia
+
+        lacunas = coletar_lacunas_vigilancia(outdir, municipios=muns_sinal, top=40)
+        if lacunas:
+            fontes.append("Lacunas multi-base (SINAN/IndicaSUS/SISREG/SIM)")
+    except Exception:  # noqa: BLE001
+        lacunas = []
 
     try:
         from lacen_radar_risco import gerar_cartoes_risco
@@ -2102,8 +2252,82 @@ def computar_briefing_epi(
     except Exception:  # noqa: BLE001
         cartoes = []
 
+    # Score prioridade municipal (proposta homologação)
+    score_rows: list[dict[str, Any]] = []
+    alertas_paths: list[str] = []
+    try:
+        from lacen_prioridade_municipal import (
+            calcular_score_prioridade_municipal,
+            persistir_score_prioridade,
+            escrever_alertas_especificos,
+            gerar_modelo_pendencias,
+        )
+
+        score_rows = calcular_score_prioridade_municipal(
+            localidades=locs,
+            solicitados=sol,
+            positividade=posi,
+            gal_sinan=gal_sinan,
+            cruzamento_sih_sia=sih_sia,
+            se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
+        )
+        if score_rows:
+            persistir_score_prioridade(score_rows, outdir)
+            fontes.append("score prioridade municipal (proposta homologação)")
+
+        alert_paths = escrever_alertas_especificos(
+            se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
+            cartoes=cartoes,
+            localidades=locs,
+            vizinhos=viz_pares,
+            gal_sinan=gal_sinan,
+            cruzamento_sih_sia=sih_sia,
+            lacunas=lacunas,
+            marcadores=marcadores_linhas,
+            outdir=outdir,
+            max_alertas=8,
+        )
+        alertas_paths = [str(p) for p in alert_paths]
+        if alertas_paths:
+            fontes.append(f"alertas específicos ({len(alertas_paths)})")
+    except Exception:  # noqa: BLE001
+        score_rows = []
+        alertas_paths = []
+
+    nota_pop = ""
     if pop_lookup:
         fontes.append("populacao (weekly/populacao_municipio)")
+        nota_pop = (
+            "Taxas usam a melhor POPULACAO disponível no staging/weekly; "
+            "se a série não for IBGE 2026, o denominador é o mais recente carregado."
+        )
+        pop_csv = Path(outdir) / "staging_dw" / "populacao.csv"
+        if pop_csv.exists():
+            try:
+                prow = _read_csv_sample(pop_csv, max_rows=5)
+                anos = {
+                    str(r.get("ano") or r.get("Ano") or r.get("year") or "").strip()
+                    for r in prow
+                    if str(r.get("ano") or r.get("Ano") or r.get("year") or "").strip()
+                }
+                if anos:
+                    nota_pop = (
+                        f"POPULACAO no staging com ano(s) {', '.join(sorted(anos)[:3])} "
+                        "— usar como denominador; confirmar se equivale a IBGE 2026."
+                    )
+            except OSError:
+                pass
+        try:
+            from lacen_prioridade_municipal import gerar_modelo_pendencias
+
+            gerar_modelo_pendencias(
+                outdir,
+                marcadores_payload=marcadores_payload,
+                weekly_n_se=len(weekly),
+                pop_ano_nota=nota_pop,
+            )
+        except Exception:  # noqa: BLE001
+            pass
 
     briefing = BriefingEpi(
         se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
@@ -2123,6 +2347,12 @@ def computar_briefing_epi(
         cruzamento_bases=cruz,
         cruzamento_sih_sia=sih_sia,
         sinais_rede=sinais_rede,
+        score_prioridade=score_rows,
+        marcadores=marcadores_linhas,
+        lacunas_vigilancia=lacunas,
+        alertas_especificos=alertas_paths,
+        nota_marcadores=nota_marcadores,
+        nota_populacao=nota_pop,
         fontes=fontes,
         usou_ml=usou_ml,
         nota_taxas=nota_taxas,
@@ -2485,11 +2715,59 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
         "usou_ml": briefing.usou_ml,
         "nota_igg": (
             "Caveat: positividade elevada em IgG/sorologia reflete "
-            "soroprevalência — não tratar como epidemia aguda."
+            "soroprevalência — não tratar como epidemia aguda. "
+            "Anti-HBs / IgG ≠ hepatite B aguda; HBsAg, IgM anti-HBc e HBV-DNA "
+            "são sinais ativos/confirmatórios."
             if any(x.get("caveat_igg") for x in briefing.maior_positividade)
             or any(r.get("caveat_igg") for r in briefing.risco)
-            else ""
+            or any(
+                str(m.get("classe") or "") == "nao_agudo_soroprevalencia"
+                for m in (briefing.marcadores or [])[:20]
+            )
+            else str(briefing.nota_marcadores or "")
         ),
+        "nota_marcadores": str(briefing.nota_marcadores or ""),
+        "nota_populacao": str(briefing.nota_populacao or ""),
+        "score_prioridade": [
+            {
+                "municipio": str(s.get("municipio") or ""),
+                "score": str(s.get("score") or ""),
+                "excesso_lab_0_1": str(s.get("excesso_lab_0_1") or ""),
+                "positividade_anomala_0_1": str(s.get("positividade_anomala_0_1") or ""),
+                "lacuna_sinan_0_1": str(s.get("lacuna_sinan_0_1") or ""),
+                "internacoes_graves_0_1": str(s.get("internacoes_graves_0_1") or ""),
+                "rotulo": str(s.get("rotulo") or "proposta para homologação"),
+            }
+            for s in (briefing.score_prioridade or [])[:15]
+        ],
+        "marcadores_top": [
+            {
+                "municipio": str(m.get("municipio") or ""),
+                "familia": str(m.get("familia") or ""),
+                "marcador": str(m.get("marcador") or ""),
+                "classe": str(m.get("classe") or ""),
+                "n_exames": str(m.get("n_exames") or ""),
+                "n_positivos": str(m.get("n_positivos") or ""),
+                "positividade": (
+                    f"{100.0 * float(m['positividade']):.1f}%"
+                    if m.get("positividade") is not None
+                    else "—"
+                ),
+                "nota_pt": str(m.get("nota_pt") or "")[:160],
+            }
+            for m in (briefing.marcadores or [])[:12]
+        ],
+        "lacunas_vigilancia": [
+            {
+                "fonte": str(x.get("fonte") or ""),
+                "municipio": str(x.get("municipio") or ""),
+                "tipo": str(x.get("tipo") or ""),
+                "detalhe": str(x.get("detalhe") or "")[:160],
+                "presente": "sim" if x.get("presente") else "",
+            }
+            for x in (briefing.lacunas_vigilancia or [])[:15]
+        ],
+        "alertas_especificos": list(briefing.alertas_especificos or [])[:8],
     }
 
 

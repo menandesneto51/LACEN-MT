@@ -1,0 +1,63 @@
+# Alerta específico — hepatite_b_hbv × JUINA
+
+**Semana epidemiológica:** 2026-SE30
+**Destinatários:** área técnica · Vigilância Epidemiológica (VE) municipal · CIEVS
+
+> **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
+
+## 1. Evidência
+
+- Agravo/alvo: **hepatite_b_hbv**
+- Município: **JUINA**
+- Exames: 46 · positivos: 24
+- Positividade: 0.5217391304347826
+- Variação: caiu 23% em relação à semana anterior
+- Probabilidade: alto · Impacto: baixo · Confiança: Derivado
+- Veredito operacional: investigar
+
+## 2. Interpretação de marcadores
+
+- HBsAg (Imunoensaio de Micropartículas por Quimioluminescência): 24 positivos / 30 exames — HBsAg: infecção ativa (aguda ou crônica) — sinal laboratorial; cruzar com clínica, IgM e notificação (não declarar surto só com isso).
+- anti_HBc_IgM (Imunoensaio de Micropartículas por Quimioluminescência): 2 positivos / 30 exames — Anti-HBc IgM: compatível com infecção aguda (ou reativação) — sinal laboratorial ativo para a VE.
+- IgM (Enzimaimunoensaio): 2 positivos / 9 exames — IgM: sugere infecção recente — sinal para investigação.
+- HBeAg (Imunoensaio de Micropartículas por Quimioluminescência): 0 positivos / 30 exames — HBeAg: marcador de replicação — contextualizar com DNA e clínica.
+- anti_HBe (Imunoensaio de Micropartículas por Quimioluminescência): 26 positivos / 30 exames — Anti-HBe: fase da infecção — interpretar no painel completo.
+- HBV_DNA (PCR em Tempo Real): 19 positivos / 45 exames — HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
+- Caveat: IgG / anti-HBs / soroprevalência **não** elevam alerta agudo.
+
+## 3. Taxas e local
+
+- JUINA: +24.0 (0.5217391304347826) · 49,6 positivos por 100 mil habitantes
+
+## 4. Vizinhos (a partir do município do sinal)
+
+- Sem pares vizinhos com o mesmo alvo a partir deste município nesta SE.
+
+## 5. Internações (SIH)
+
+- JUINA × dengue_arbovirose: n=16 [SIH/VW_INTERNACAO]
+
+## 6. Lacunas de vigilância
+
+- GAL×SINAN: gal_sem_sinan — 46.0 exames / 0.0 notificações (hepatite)
+- GAL×SINAN: gal_sem_sinan — 10.0 exames / 0.0 notificações (dengue)
+- SINAN: Notificação compulsória — vínculo mun×agravo com GAL [presente]
+- GAL: Exames LACEN — demanda e positividade [presente]
+- SIH: Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun) [presente]
+- SIA: Produção ambulatorial correlata (SIA/SIA_APAC) [presente]
+- SIVEP/SRAG: Base respiratória/SRAG listada só como inventário — não entra como seção padrão do Radar salvo sinal explícito. [presente]
+- SIM: Óbitos — letalidade contextual [presente]
+
+## 7. Ações sugeridas
+
+- CIEVS: Priorizar investigação de hepatite_b_hbv em JUINA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+- VE municipal: Investigar casos/contatos de hepatite_b_hbv em JUINA; verificar oportunidade de notificação e busca ativa.
+- Área técnica: Validar critérios clínico-laboratoriais de hepatite_b_hbv; orientar rede sobre definição de caso.
+- Vizinhos: —
+- LACEN: Apoiar hepatite_b_hbv: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
+
+## 8. Disclaimer
+
+Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
+
+_Gerado em 2026-08-31 09:03 Hora Padrão Brasil Central_

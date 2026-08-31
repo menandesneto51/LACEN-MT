@@ -631,6 +631,11 @@ class RelatorioCIEVS:
     briefing_sinais_rede: dict[str, Any] = field(default_factory=dict)
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
+    score_prioridade: list[dict[str, str]] = field(default_factory=list)
+    marcadores_top: list[dict[str, str]] = field(default_factory=list)
+    lacunas_vigilancia: list[dict[str, str]] = field(default_factory=list)
+    alertas_especificos: list[str] = field(default_factory=list)
+    nota_marcadores: str = ""
     # Bloco F — Parecer VE (IA + Guia MS) opcional
     ve_resumo: str = ""
     ve_casos: list[dict[str, str]] = field(default_factory=list)
@@ -2407,6 +2412,52 @@ def montar_relatorio(
     )
     if briefing.get("nota_igg"):
         nota += " " + str(briefing["nota_igg"])
+    if briefing.get("nota_marcadores") and briefing.get("nota_marcadores") not in nota:
+        nota += " " + str(briefing["nota_marcadores"])
+    if briefing.get("nota_populacao"):
+        nota += " " + str(briefing["nota_populacao"])
+
+    # Internações: preferir SIH já filtrado aos municípios do sinal
+    intern_alerta = list(
+        ((briefing.get("cruzamento_sih_sia") or {}).get("top_mun") or [])
+    )
+    internacoes_fmt: list[dict[str, str]] = []
+    if intern_alerta:
+        for row in intern_alerta[:15]:
+            fam = _nome_agravo_pt(str(row.get("cid_familia") or ""))
+            internacoes_fmt.append(
+                {
+                    "familia": fam,
+                    "familia_pt": fam,
+                    "municipio": _mun_titulo(str(row.get("municipio") or "—")),
+                    "municipio_key": str(row.get("municipio") or "").upper(),
+                    "n": str(row.get("n") or "0"),
+                    "n_raw": str(row.get("n") or "0"),
+                    "fonte": "internações (SIH · municípios do sinal)",
+                }
+            )
+    else:
+        internacoes_fmt = carregar_internacoes_alerta(outdir, top_por_familia=5)
+
+    # Filtra SLA respiratório genérico salvo se houver sinal explícito no briefing
+    sinais_txt = " ".join(
+        [
+            str(x.get("target") or "")
+            for x in (briefing.get("mais_solicitados") or [])
+            + (briefing.get("maior_positividade") or [])
+        ]
+        + [str(c.get("target") or "") for c in ve_casos]
+    ).casefold()
+    tem_sinal_respiratorio = any(
+        k in sinais_txt for k in ("respirat", "influenza", "srag", "covid", "sivep")
+    )
+    sla_filtrada = []
+    for s in sla_fam:
+        fam_cf = str(s.get("familia") or "").casefold()
+        if any(k in fam_cf for k in ("respirat", "influenza", "srag", "covid")):
+            if not tem_sinal_respiratorio:
+                continue
+        sla_filtrada.append(s)
 
     return RelatorioCIEVS(
         semana_epidemiologica=se,
@@ -2442,10 +2493,15 @@ def montar_relatorio(
         briefing_cruzamento_sih_sia_caveat=str(
             (briefing.get("cruzamento_sih_sia") or {}).get("caveat") or ""
         ),
-        internacoes_por_agravo=carregar_internacoes_alerta(outdir, top_por_familia=5),
+        internacoes_por_agravo=internacoes_fmt,
         briefing_sinais_rede=dict(briefing.get("sinais_rede") or {}),
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
+        score_prioridade=list(briefing.get("score_prioridade") or []),
+        marcadores_top=list(briefing.get("marcadores_top") or []),
+        lacunas_vigilancia=list(briefing.get("lacunas_vigilancia") or []),
+        alertas_especificos=list(briefing.get("alertas_especificos") or []),
+        nota_marcadores=str(briefing.get("nota_marcadores") or ""),
         ve_resumo=ve_resumo,
         ve_casos=ve_casos,
         ve_recomendacoes=ve_recs,
@@ -2456,7 +2512,7 @@ def montar_relatorio(
         pct_48h=pct48,
         top_pressao=top_pressao,
         silencio_vizinho_quente=silencio,
-        sla_por_familia=sla_fam,
+        sla_por_familia=sla_filtrada,
         contagem_faixa_pressao=faixa_press[:6],
         fila_acoes=fila,
         preditos_alta=preditos,
@@ -2707,6 +2763,40 @@ def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
                 )
             )
 
+    # Score municipal (proposta homologação) + caveat marcadores
+    scores = list(rel.score_prioridade or [])[:5]
+    if scores:
+        lines.extend(
+            [
+                "",
+                "<b>Prioridade municipal</b> "
+                "<i>(proposta para homologação CIEVS)</i>",
+            ]
+        )
+        for s in scores:
+            lines.append(
+                html.escape(
+                    _tg_clip(
+                        f"• {_mun_titulo(str(s.get('municipio') or ''))}: "
+                        f"score {s.get('score', '—')} "
+                        f"(lab {s.get('excesso_lab_0_1', '—')} · "
+                        f"pos {s.get('positividade_anomala_0_1', '—')} · "
+                        f"lacuna {s.get('lacuna_sinan_0_1', '—')} · "
+                        f"internações {s.get('internacoes_graves_0_1', '—')})",
+                        180,
+                    )
+                )
+            )
+        lines.append(
+            html.escape(
+                "Fórmula: 3×excesso lab + 2×positividade anômala "
+                "+ 1×lacuna SINAN + 1×internações graves (0–1)."
+            )
+        )
+    if rel.nota_marcadores or rel.briefing_nota_igg:
+        cave = (rel.briefing_nota_igg or rel.nota_marcadores or "")[:160]
+        lines.append(html.escape(f"Marcadores: {cave}"))
+
     terr: list[str] = []
     for v in (rel.briefing_vizinhos or [])[:5]:
         nome = _nome_agravo_pt(str(v.get("target") or ""))
@@ -2921,6 +3011,28 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             )
             if c.get("acao_cievs"):
                 lines.append(f"     CIEVS: {c['acao_cievs']}")
+
+    if rel.score_prioridade:
+        lines.extend(
+            [
+                "",
+                "— Prioridade municipal (proposta para homologação CIEVS) —",
+                "score = 3*excesso_lab + 2*positividade_anomala "
+                "+ 1*lacuna_sinan + 1*internacoes_graves (componentes 0–1)",
+            ]
+        )
+        for i, s in enumerate(rel.score_prioridade[:8], 1):
+            lines.append(
+                f"  {i}. {s.get('municipio', '—')}: score={s.get('score', '—')} "
+                f"(lab={s.get('excesso_lab_0_1', '—')}, "
+                f"pos={s.get('positividade_anomala_0_1', '—')}, "
+                f"lacuna={s.get('lacuna_sinan_0_1', '—')}, "
+                f"SIH={s.get('internacoes_graves_0_1', '—')})"
+            )
+    if rel.briefing_nota_igg or rel.nota_marcadores:
+        lines.append(
+            f"Marcadores: {(rel.briefing_nota_igg or rel.nota_marcadores)[:220]}"
+        )
 
     lines.extend(
         [
@@ -3429,6 +3541,30 @@ surto/epidemia automaticamente (Guia MS).
     cartao_rows,
     "(sem cartões nesta SE)",
 )}
+
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
+Prioridade municipal — proposta para homologação</h3>
+<p style="font-size:13px;color:#3d4f6f">
+Fórmula: <code>score = 3×excesso_lab + 2×positividade_anomala + 1×lacuna_sinan
++ 1×internações_graves</code> (componentes normalizados 0–1).
+Não substitui decisão da VE/CIEVS.
+</p>
+{_html_table(
+    ["Município", "Score", "Excesso lab", "Pos. anômala", "Lacuna SINAN", "Internações"],
+    [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(str(s.get('municipio') or ''))}</td>"
+        f"<td style='padding:6px 8px'><b>{html.escape(str(s.get('score') or ''))}</b></td>"
+        f"<td style='padding:6px 8px'>{html.escape(str(s.get('excesso_lab_0_1') or ''))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(str(s.get('positividade_anomala_0_1') or ''))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(str(s.get('lacuna_sinan_0_1') or ''))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(str(s.get('internacoes_graves_0_1') or ''))}</td>"
+        "</tr>"
+        for s in (rel.score_prioridade or [])[:10]
+    ],
+    "(score ainda não calculado nesta SE)",
+)}
+{f"<p style='font-size:12px;color:#5a6a82'><i>{html.escape((rel.briefing_nota_igg or rel.nota_marcadores or '')[:320])}</i></p>" if (rel.briefing_nota_igg or rel.nota_marcadores) else ""}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 A — Situação lab-epi</h3>
