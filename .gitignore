@@ -184,3 +184,5 @@ saida_pipeline/*
 !saida_pipeline/canal_endemico.xlsx
 !saida_pipeline/canal_endemico_limites.csv
 !saida_pipeline/canal_endemico_metadados.csv
+
+!conhecimento_ve/Validacao_Canal_Endemico.xlsx

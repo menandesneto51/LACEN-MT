@@ -1,19 +1,19 @@
-<!DOCTYPE html><html lang='pt-BR'><head><meta charset='utf-8'/><title>alerta_hepatite_b_hbv_cuiaba_2026_se30</title></head><body><pre style='font-family:Segoe UI,Arial,sans-serif;white-space:pre-wrap'># Alerta específico — hepatite_b_hbv × CUIABA
+# Alerta específico — hepatite × CUIABA
 
 **Semana epidemiológica:** 2026-SE30
 **Destinatários:** área técnica · Vigilância Epidemiológica (VE) municipal · CIEVS
 
-&gt; **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
+> **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
 
 ## 1. Evidência
 
-- Agravo/alvo: **hepatite_b_hbv**
+- Agravo/alvo: **hepatite**
 - Município: **CUIABA**
-- Exames: 21 · positivos: 21
-- Positividade: 1.0
-- Variação: caiu 23% em relação à semana anterior
-- Probabilidade: alto · Impacto: alto · Confiança: Derivado
-- Veredito operacional: investigar
+- Exames: 35 · positivos: 21
+- Positividade: None
+- Variação: sem comparação com a semana anterior
+- Probabilidade: médio · Impacto: baixo · Confiança: Derivado
+- Veredito operacional: monitorar
 
 ## 2. Interpretação de marcadores
 
@@ -28,7 +28,7 @@
 
 ## 3. Taxas e local
 
-- CUIABA: +21.0 (1.0) · 3,0 positivos por 100 mil habitantes
+- Sem detalhe municipal adicional além do cartão.
 
 ## 4. Vizinhos (a partir do município do sinal)
 
@@ -58,15 +58,14 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Canal endêmico em zona epidêmica (estatística) em hepatite_b_hbv em CUIABA: priorizar investigação (não declarar epidemia automaticamente).
-- VE municipal: Investigar casos/contatos de hepatite_b_hbv em CUIABA; verificar oportunidade de notificação e busca ativa.
-- Área técnica: Validar critérios clínico-laboratoriais de hepatite_b_hbv; orientar rede sobre definição de caso.
-- Vizinhos: Alerta coordenado aos municípios vizinhos com sinal de hepatite_b_hbv.
-- LACEN: Apoiar hepatite_b_hbv: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
+- CIEVS: Manter hepatite em CUIABA sob monitoramento na sala de situação; revisar na próxima SE.
+- VE municipal: Acompanhar tendência de hepatite em CUIABA; reforçar notificação oportuna se houver suspeitos.
+- Área técnica: Acompanhar positividade/demanda de hepatite; alertar se persistir alta.
+- Vizinhos: —
+- LACEN: Apoiar hepatite: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
 
 ## 8. Disclaimer
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
 _Gerado em 2026-08-31 11:11 Hora Padrão Brasil Central_
-</pre></body></html>

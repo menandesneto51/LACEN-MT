@@ -875,6 +875,8 @@ def vizinhos_mesma_situacao(
         for viz, dist in vidx.get(mun, [])[:8]:
             if viz not in anchors:
                 continue
+            if pos_by_mun[mun] <= 0 or pos_by_mun[viz] <= 0:
+                continue
             key = tuple(sorted((mun, viz)))
             if key in seen:
                 continue
@@ -2272,14 +2274,22 @@ def computar_briefing_epi(
             escrever_alertas_especificos,
             gerar_modelo_pendencias,
         )
+        from ml.canal_endemico_bortman import carregar_indice_bortman
 
+        se_ref = str(pick.get("se_iso") or _fmt_se(*yw))
+        try:
+            canal_idx = carregar_indice_bortman(outdir, se_iso=se_ref)
+        except Exception:  # noqa: BLE001
+            canal_idx = {}
         score_rows = calcular_score_prioridade_municipal(
             localidades=locs,
             solicitados=sol,
             positividade=posi,
             gal_sinan=gal_sinan,
             cruzamento_sih_sia=sih_sia,
-            se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
+            se_iso=se_ref,
+            canal_idx=canal_idx,
+            marcadores=marcadores_linhas,
         )
         if score_rows:
             persistir_score_prioridade(score_rows, outdir)
@@ -2634,6 +2644,8 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
                 "tipo_sinal": "Observado",
             }
             for v in briefing.vizinhos
+            if (_num(v.get("positivos_ancora"), 0) or 0) > 0
+            and (_num(v.get("positivos_vizinho"), 0) or 0) > 0
         ],
         "risco": [
             {
@@ -2742,10 +2754,16 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
             {
                 "municipio": str(s.get("municipio") or ""),
                 "score": str(s.get("score") or ""),
-                "excesso_lab_0_1": str(s.get("excesso_lab_0_1") or ""),
-                "positividade_anomala_0_1": str(s.get("positividade_anomala_0_1") or ""),
-                "lacuna_sinan_0_1": str(s.get("lacuna_sinan_0_1") or ""),
-                "internacoes_graves_0_1": str(s.get("internacoes_graves_0_1") or ""),
+                "excesso_lab_0_1": str(s.get("excesso_lab_0_1") or "sem dado"),
+                "positividade_anomala_0_1": str(
+                    s.get("positividade_anomala_0_1") or "sem dado"
+                ),
+                "lacuna_sinan_0_1": str(s.get("lacuna_sinan_0_1") or "sem dado"),
+                "internacoes_graves_0_1": str(
+                    s.get("internacoes_graves_0_1") or "sem dado"
+                ),
+                "n_componentes_validos": str(s.get("n_componentes_validos") or ""),
+                "zona_canal": str(s.get("zona_canal") or ""),
                 "rotulo": str(s.get("rotulo") or "proposta para homologação"),
             }
             for s in (briefing.score_prioridade or [])[:15]

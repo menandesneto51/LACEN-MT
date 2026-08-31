@@ -382,13 +382,13 @@ def montar_cartao_risco(
     # Canal endêmico: reforça recomendação em linguagem clara
     if zona_bortman == "epidemia":
         acoes["CIEVS"] = _clip(
-            f"Canal endêmico acima do limite histórico em {nome_evt}: "
+            f"Canal endêmico em zona epidêmica (estatística) em {nome_evt}: "
             f"priorizar investigação (não declarar epidemia automaticamente)."
         )
         if not acoes.get("VE municipal"):
             acoes["VE municipal"] = _clip(
-                f"Investigar {tgt} em {mun}: casos acima do esperado "
-                f"para esta semana nos últimos anos."
+                f"Investigar {tgt} em {mun}: exames positivos acima do esperado "
+                f"para esta semana nos últimos anos (marcador de alerta)."
             )
     elif zona_bortman == "alerta":
         tip = (

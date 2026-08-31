@@ -12,19 +12,19 @@
 - Exames: 409 · positivos: 3
 - Positividade: 0.007334963325183374
 - Variação: subiu 162% em relação à semana anterior
-- Probabilidade: alto · Impacto: médio · Confiança: Derivado
+- Probabilidade: alto · Impacto: baixo · Confiança: Derivado
 - Veredito operacional: investigar
 
 ## 2. Interpretação de marcadores
 
-- IgM (Enzimaimunoensaio): 30 positivos / 79 exames — IgM dengue: sugere infecção recente — sinal para investigação.
+- TRM_TB (PCR em Tempo Real): 30 positivos / 306 exames — TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+- IgM (Enzimaimunoensaio): 30 positivos / 79 exames — IgM dengue: infecção recente — sinal para investigação.
 - cultura_TB (Cultura): 24 positivos / 94 exames — Cultura para micobactérias: padrão-ouro confirmatório.
+- HBV_DNA (PCR em Tempo Real): 17 positivos / 37 exames — HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 - IgM (Enzimaimunoensaio): 8 positivos / 65 exames — IgM chikungunya: infecção recente — sinal ativo.
-- BAAR (Coloração de Ziehl-Neelsen): 7 positivos / 101 exames — BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-- IgM (Enzimaimunoensaio): 1 positivos / 55 exames — IgM zika: sugere infecção recente.
-- IgM (Imunoensaio de Micropartículas por Quimioluminescência): 1 positivos / 51 exames — Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-- IgM (Imunoensaio de Micropartículas por Quimioluminescência): 1 positivos / 34 exames — CMV IgM: possível infecção recente — contextualizar.
-- IgM (Enzimaimunoensaio): 0 positivos / 8 exames — IgM genérica: janela de infecção recente — sinal laboratorial ativo.
+- BAAR (Coloração de Ziehl-Neelsen): 7 positivos / 101 exames — BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+- HCV_RNA (RT-PCR em tempo real): 7 positivos / 16 exames — RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+- PCR_VZV (PCR em Tempo Real): 5 positivos / 9 exames — Varicela/VZV molecular: presença do agente — contextualizar surto institucional.
 
 ## 3. Taxas e local
 
@@ -32,10 +32,10 @@
 
 ## 4. Vizinhos (a partir do município do sinal)
 
-- VARZEA GRANDE ↔ CUIABA: +3.0/+0.0 (exames 409.0/99.0)
-- VARZEA GRANDE ↔ SANTO ANTONIO DO LEVERGER: +3.0/+0.0 (exames 409.0/4.0)
-- VARZEA GRANDE ↔ NOSSA SENHORA DO LIVRAMENTO: +3.0/+0.0 (exames 409.0/6.0)
-- CUIABA ↔ VARZEA GRANDE: +0.0/+3.0 (exames 99.0/409.0)
+- CUIABA ↔ VARZEA GRANDE: +4.0/+3.0 (exames 69.0/39.0)
+- VARZEA GRANDE ↔ CUIABA: +3.0/+4.0 (exames 39.0/69.0)
+- VARZEA GRANDE ↔ CHAPADA DOS GUIMARAES: +3.0/+1.0 (exames 39.0/2.0)
+- CUIABA ↔ VARZEA GRANDE: +21.0/+1.0 (exames 21.0/1.0)
 
 ## 5. Internações (SIH)
 
@@ -57,14 +57,14 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Canal endêmico acima do limite histórico em dengue em VARZEA GRANDE: priorizar investigação (não declarar epidemia automaticamente).
+- CIEVS: Priorizar investigação de dengue em VARZEA GRANDE: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
 - VE municipal: Investigar casos/contatos de dengue em VARZEA GRANDE; verificar oportunidade de notificação e busca ativa.
 - Área técnica: Validar critérios clínico-laboratoriais de dengue; orientar rede sobre definição de caso.
-- Vizinhos: Alerta coordenado aos municípios vizinhos com sinal de dengue.
+- Vizinhos: —
 - LACEN: Apoiar dengue: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
 
 ## 8. Disclaimer
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 10:19 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 11:11 Hora Padrão Brasil Central_

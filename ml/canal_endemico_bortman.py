@@ -31,7 +31,21 @@ if str(ROOT) not in sys.path:
 OUT_XLSX = "canal_endemico.xlsx"
 OUT_CSV = "canal_endemico_classificacao.csv"
 MIN_ANOS_BASELINE = 3
+MIN_N_MARCADOR = 5
 ZONAS_RISCO = frozenset({"alerta", "epidemia"})
+ZONA_LABEL_PT = {
+    "epidemia": "zona epidêmica (estatística)",
+    "alerta": "zona de alerta (estatística)",
+    "seguranca": "zona de segurança",
+    "sucesso": "zona de sucesso",
+    "sem_dado": "sem dado histórico",
+    "volume_insuficiente": "volume insuficiente no marcador",
+}
+
+
+def zona_canal_rotulo_pt(zona: str) -> str:
+    z = (zona or "").casefold().strip()
+    return ZONA_LABEL_PT.get(z, z or "—")
 
 
 def _log(msg: str) -> None:
@@ -178,6 +192,9 @@ def montar_serie(
 
 
 def _classificar_zona(casos: float, p25: float, p50: float, p75: float) -> str:
+    # 0 exames positivos nunca é zona epidêmica (P75=0 → 0≥P75 era falso positivo).
+    if casos <= 0:
+        return "sucesso"
     if casos < p25:
         return "sucesso"
     if casos < p50:
@@ -286,6 +303,154 @@ def calcular_canal_bortman(
     return classif, limites
 
 
+def _agravo_para_familia(agravo: str) -> str:
+    a = str(agravo or "").casefold()
+    a = (
+        a.replace("á", "a")
+        .replace("ã", "a")
+        .replace("é", "e")
+        .replace("í", "i")
+        .replace("ó", "o")
+        .replace("ç", "c")
+    )
+    if "hepatite_b" in a or "hbv" in a:
+        return "hepatite_b"
+    if "hepatite_c" in a or "hcv" in a:
+        return "hepatite_c"
+    if "chikung" in a:
+        return "chikungunya"
+    if a.startswith("dengue") or "dengue" in a:
+        return "dengue"
+    if "tubercul" in a:
+        return "tuberculose"
+    if "meningit" in a:
+        return "meningite"
+    if "oropouche" in a or "mayaro" in a:
+        return "arbovirose_outra"
+    if "zika" in a:
+        return "zika"
+    if "igg" in a:
+        return "nao_agudo"
+    return a.split("_")[0] if a else ""
+
+
+def aplicar_numerador_marcador(
+    classif: pd.DataFrame,
+    outdir: Path,
+    *,
+    ano: int,
+    se: int,
+    n_minimo: int = MIN_N_MARCADOR,
+) -> pd.DataFrame:
+    """
+    Substitui o numerador da SE atual pelos positivos do marcador de alerta
+    (conta_bortman). IgG/cicatriz não entram. n < n_minimo não vira epidemia.
+    """
+    if classif is None or classif.empty:
+        return classif
+    out = classif.copy()
+    try:
+        from lacen_agente_marcadores import contar_marcadores_semana
+    except Exception as exc:  # noqa: BLE001
+        _log(f"[Bortman][AVISO] marcadores indisponíveis ({exc})")
+        out["numerador"] = "positivos_semanais_brutos"
+        return out
+
+    counts = contar_marcadores_semana(outdir, ano=ano, se=se, uso="bortman")
+    exames_l: list[Any] = []
+    pos_l: list[Any] = []
+    marc_l: list[str] = []
+    num_l: list[str] = []
+    zonas: list[str] = []
+    razoes: list[Any] = []
+
+    for _, row in out.iterrows():
+        fam = _agravo_para_familia(str(row.get("agravo") or ""))
+        mun = _norm_mun(row.get("municipio"))
+        info = counts.get((fam, mun)) if fam and fam != "nao_agudo" else None
+        p25 = row.get("p25")
+        p50 = row.get("p50")
+        p75 = row.get("p75")
+        n_anos = int(row.get("n_anos_baseline") or 0)
+        zona = str(row.get("zona") or "sem_dado")
+        razao = row.get("razao_vs_p50")
+
+        if info:
+            n_ex = int(info["n_exames"])
+            n_pos = int(info["n_positivos"])
+            exames_l.append(n_ex)
+            pos_l.append(n_pos)
+            marc_l.append(str(info.get("marcador_alerta") or ""))
+            num_l.append("marcador_alerta")
+            out.at[row.name, "casos"] = float(n_pos)
+            # Volume frágil: poucos exames OU poucos positivos → não rotular
+            # zona epidêmica/alerta (ex.: dengue VG com n=2 ou 3).
+            if n_ex < n_minimo or n_pos < n_minimo:
+                if n_anos >= MIN_ANOS_BASELINE and pd.notna(p25) and pd.notna(p75):
+                    zona_tmp = _classificar_zona(
+                        float(n_pos), float(p25), float(p50), float(p75)
+                    )
+                    if zona_tmp in ("epidemia", "alerta") or n_ex < n_minimo:
+                        zona = "volume_insuficiente"
+                        razao = None
+                    else:
+                        zona = zona_tmp
+                        razao = (
+                            round(float(n_pos) / float(p50), 4)
+                            if p50 and float(p50) > 0
+                            else None
+                        )
+                else:
+                    zona = "volume_insuficiente"
+                    razao = None
+            elif n_anos >= MIN_ANOS_BASELINE and pd.notna(p25) and pd.notna(p75):
+                zona = _classificar_zona(
+                    float(n_pos), float(p25), float(p50), float(p75)
+                )
+                razao = (
+                    round(float(n_pos) / float(p50), 4)
+                    if p50 and float(p50) > 0
+                    else None
+                )
+            else:
+                zona = "sem_dado"
+                razao = None
+        else:
+            exames_l.append(None)
+            pos_l.append(None)
+            marc_l.append("")
+            casos_brutos = float(row.get("casos") or 0)
+            # Agravo de IgG no weekly: não classificar epidemia
+            if fam == "nao_agudo" and zona in ("epidemia", "alerta"):
+                zona = "sem_dado"
+                num_l.append("bruto_igg_bloqueado")
+            elif casos_brutos <= 0 and zona in ("epidemia", "alerta"):
+                # P75=0 + casos=0 gerava falso "epidemia" no fallback bruto
+                zona = "sucesso"
+                num_l.append("positivos_semanais_brutos")
+            elif casos_brutos < n_minimo and zona in ("epidemia", "alerta"):
+                zona = "volume_insuficiente"
+                num_l.append("positivos_semanais_brutos")
+            else:
+                num_l.append("positivos_semanais_brutos")
+
+        zonas.append(zona)
+        razoes.append(razao)
+
+    out["exames_marcador"] = exames_l
+    out["positivos_marcador"] = pos_l
+    out["marcador_alerta"] = marc_l
+    out["numerador"] = num_l
+    out["zona"] = zonas
+    out["razao_vs_p50"] = razoes
+    n_ok = sum(1 for x in num_l if x == "marcador_alerta")
+    _log(
+        f"[Bortman] Numerador marcador: {n_ok}/{len(out)} combinações "
+        f"(n_mínimo={n_minimo})"
+    )
+    return out
+
+
 def _sheet_metadados(
     *,
     ano_atual: int,
@@ -316,9 +481,14 @@ def _sheet_metadados(
         ("n_combinacoes_classificadas", str(n_classif)),
         (
             "filtro_marcadores",
-            "Radar usa conta_bortman/conta_alerta_agudo de conhecimento_ve/regras_agravo_gal.csv; "
-            "IgG/anti-HBs não elevam cartão epidemia",
+            "Numerador da SE atual = positivos com conta_bortman "
+            "(regras_agravo_gal); IgG/anti-HBs fora. "
+            f"n_mínimo={MIN_N_MARCADOR} para zona epidêmica. "
+            "Zona 'epidemia' = classificação estatística (P75), "
+            "não declaração epidemiológica.",
         ),
+        ("n_minimo_marcador", str(MIN_N_MARCADOR)),
+        ("terminologia_zona_epidemia", "zona epidêmica (estatística)"),
     ]
     for z, n in sorted(zona_counts.items()):
         rows.append((f"zona_count_{z}", str(n)))
@@ -402,6 +572,9 @@ def run_canal_endemico(
         se_atual=se,
         anos_baseline=anos_baseline,
     )
+    classif = aplicar_numerador_marcador(
+        classif, Path(outdir), ano=ano, se=se
+    )
     zona_counts = (
         classif["zona"].value_counts().to_dict() if not classif.empty else {}
     )
@@ -478,6 +651,10 @@ def carregar_indice_bortman(
             "razao_vs_p50": row.get("razao_vs_p50"),
             "n_anos_baseline": row.get("n_anos_baseline"),
             "serie": str(row.get("serie") or serie),
+            "exames_marcador": row.get("exames_marcador"),
+            "positivos_marcador": row.get("positivos_marcador"),
+            "marcador_alerta": row.get("marcador_alerta"),
+            "numerador": row.get("numerador"),
         }
     return out
 
@@ -562,6 +739,10 @@ def listar_zonas_atencao(
                 "serie": str(row.get("serie") or serie),
                 "ano": row.get("ano"),
                 "semana_epidemiologica": row.get("semana_epidemiologica"),
+                "exames_marcador": row.get("exames_marcador"),
+                "positivos_marcador": row.get("positivos_marcador"),
+                "marcador_alerta": row.get("marcador_alerta"),
+                "numerador": row.get("numerador"),
             }
         )
         if len(out) >= max(1, int(top)):

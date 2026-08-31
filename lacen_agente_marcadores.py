@@ -556,6 +556,74 @@ def classificar_exame(
     )
 
 
+def contar_marcadores_semana(
+    outdir: Path | str = OUTDIR_DEFAULT,
+    *,
+    ano: int,
+    se: int,
+    uso: str = "bortman",
+) -> dict[tuple[str, str], dict[str, Any]]:
+    """
+    Conta exames/positivos da SE (Data_Liberacao) só com marcadores
+    ``conta_bortman`` ou ``conta_alerta_agudo`` (regras_agravo_gal).
+    Chave: (familia, municipio_norm).
+    """
+    import pandas as pd
+
+    outdir = Path(outdir)
+    stage = outdir / "staging_dw"
+    path = stage / "vw_gal_micro_recent.parquet"
+    if not path.exists():
+        path = stage / "vw_gal_micro_recent.csv"
+    if not path.exists():
+        return {}
+    df = pd.read_parquet(path) if path.suffix == ".parquet" else pd.read_csv(path)
+    if df.empty:
+        return {}
+    col_dt = "Data_Liberacao_dt" if "Data_Liberacao_dt" in df.columns else "Data_Coleta_dt"
+    if col_dt not in df.columns:
+        return {}
+    dts = pd.to_datetime(df[col_dt], errors="coerce")
+    iso = dts.dt.isocalendar()
+    mask = (iso.year == int(ano)) & (iso.week == int(se))
+    df = df.loc[mask].fillna("")
+    flag_key = "conta_bortman" if uso == "bortman" else "conta_alerta_agudo"
+    buckets: dict[tuple[str, str], dict[str, Any]] = {}
+    for r in df.to_dict(orient="records"):
+        exame = str(r.get("Exame") or r.get("exame") or "")
+        met = str(r.get("Metodologia") or r.get("metodologia") or "")
+        agravo = str(r.get("Agravo_Requisicao") or r.get("Agravo_Gal") or "")
+        campos = [str(r.get(f"Campo_Resultado_{i}") or "") for i in range(1, 7)]
+        clf = classificar_exame(
+            exame, metodologia=met, agravo=agravo, campos_resultado=campos
+        )
+        usa = clf.conta_bortman if uso == "bortman" else clf.conta_alerta_agudo
+        if not usa:
+            continue
+        mun = _norm(r.get("Municipio_Residencia_Paciente") or "").upper()
+        if not mun:
+            continue
+        key = (clf.familia, mun)
+        b = buckets.get(key)
+        if b is None:
+            b = {
+                "familia": clf.familia,
+                "municipio": mun,
+                "n_exames": 0,
+                "n_positivos": 0,
+                "marcadores": set(),
+            }
+            buckets[key] = b
+        b["n_exames"] += 1
+        if clf.resultado_binario == "positivo":
+            b["n_positivos"] += 1
+        b["marcadores"].add(clf.marcador)
+    for b in buckets.values():
+        b["marcador_alerta"] = "+".join(sorted(b["marcadores"]))
+        del b["marcadores"]
+    return buckets
+
+
 def _ler_gal_micro(outdir: Path) -> list[dict[str, str]]:
     stage = outdir / "staging_dw"
     # Prefer parquet via pandas; fallback CSV sample

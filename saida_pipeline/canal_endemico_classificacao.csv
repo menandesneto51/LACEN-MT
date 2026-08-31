@@ -1,273 +1,273 @@
-﻿ano,semana_epidemiologica,agravo,municipio,serie,casos,n_anos_baseline,anos_baseline,p25,p50,p75,zona,razao_vs_p50
-2026,30,chikungunya,CAMPO NOVO DO PARECIS,positivos,0,3,"2023,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,chikungunya,CHAPADA DOS GUIMARAES,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,chikungunya,CRUZEIRO DO SUL,positivos,0,0,,,,,sem_dado,
-2026,30,chikungunya,CUIABA,positivos,0,3,"2021,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,chikungunya,PACARAIMA,positivos,0,0,,,,,sem_dado,
-2026,30,chikungunya,PONTES E LACERDA,positivos,0,2,"2023,2025",0.25,0.5,0.75,sem_dado,
-2026,30,chikungunya,RONDONOPOLIS,positivos,0,2,"2022,2024",0.25,0.5,0.75,sem_dado,
-2026,30,chikungunya,SAPEZAL,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,chikungunya,SINOP,positivos,0,3,"2021,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,chikungunya,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,chikungunya,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,criptococose_toxoplasmose_igg,CUIABA,positivos,1,0,,,,,sem_dado,
-2026,30,criptococose_toxoplasmose_igm,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,ALTA FLORESTA,positivos,0,3,"2021,2024,2025",2.0,4.0,5.5,sucesso,0.0
-2026,30,dengue,ALTO GARCAS,positivos,0,2,"2023,2025",1.0,1.0,1.0,sem_dado,
-2026,30,dengue,ANTONIO PRADO,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,ASSIS BRASIL,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,BELEM,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,BOA ESPERANCA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,BOA VISTA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,BRASNORTE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,CACERES,positivos,0,4,"2021,2022,2024,2025",0.0,0.5,1.0,seguranca,0.0
-2026,30,dengue,CAMPINAPOLIS,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,dengue,CAMPO NOVO DO PARECIS,positivos,0,2,"2023,2025",0.25,0.5,0.75,sem_dado,
-2026,30,dengue,CAMPO VERDE,positivos,0,2,"2023,2025",3.5,7.0,10.5,sem_dado,
-2026,30,dengue,CHAPADA DOS GUIMARAES,positivos,0,2,"2023,2025",0.0,0.0,0.0,sem_dado,
-2026,30,dengue,CHAPADAO DO SUL,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,COLIDER,positivos,0,2,"2024,2025",0.75,1.5,2.25,sem_dado,
-2026,30,dengue,COLNIZA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,COMODORO,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,dengue,CONCORDIA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,CONQUISTA D''OESTE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,CRUZEIRO DO SUL,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,CUIABA,positivos,0,4,"2021,2022,2024,2025",0.0,0.0,0.25,alerta,
-2026,30,dengue,CURITIBA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,DENISE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,GOIANESIA DO PARA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,GUARANTA DO NORTE,positivos,0,3,"2023,2024,2025",0.0,0.0,34.5,alerta,
-2026,30,dengue,IPIRANGA DO NORTE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,ITANHANGA,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,JACAREACANGA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,JAURU,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,JUINA,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,LARANJAL DO JARI,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,LUCAS DO RIO VERDE,positivos,0,1,2025,25.0,25.0,25.0,sem_dado,
-2026,30,dengue,LUIS EDUARDO MAGALHAES,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,MANAUS,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,MARCELANDIA,positivos,0,2,"2021,2025",2.5,3.0,3.5,sem_dado,
-2026,30,dengue,MIRASSOL D''OESTE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,dengue,NOSSA SENHORA DO LIVRAMENTO,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,NOVA MARILANDIA,positivos,0,1,2025,1.0,1.0,1.0,sem_dado,
-2026,30,dengue,NOVA MUTUM,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,dengue,NOVA UBIRATA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,dengue,NOVO HORIZONTE DO NORTE,positivos,0,1,2025,1.0,1.0,1.0,sem_dado,
-2026,30,dengue,PACARAIMA,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,PARANAITA,positivos,0,1,2025,1.0,1.0,1.0,sem_dado,
-2026,30,dengue,PARAUAPEBAS,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,PEDRO GOMES,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,PEIXOTO DE AZEVEDO,positivos,0,1,2025,3.0,3.0,3.0,sem_dado,
-2026,30,dengue,POCONE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,PONTES E LACERDA,positivos,0,3,"2023,2024,2025",0.5,1.0,3.0,sucesso,0.0
-2026,30,dengue,PORTO ALEGRE DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,PRESIDENTE SARNEY,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,PRIMAVERA DO LESTE,positivos,0,3,"2021,2024,2025",1.5,3.0,12.0,sucesso,0.0
-2026,30,dengue,QUERENCIA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,RONDONOPOLIS,positivos,0,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,dengue,ROSARIO OESTE,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,SANTA INES,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,SANTANA DO MARANHAO,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,SANTO ANTONIO DO LEVERGER,positivos,0,4,"2021,2022,2024,2025",0.0,1.0,2.0,seguranca,0.0
-2026,30,dengue,SAO DOMINGOS DO CAPIM,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,SAO JOSE DO RIO CLARO,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,dengue,SINOP,positivos,0,3,"2023,2024,2025",0.0,0.0,0.5,alerta,
-2026,30,dengue,SORRISO,positivos,0,3,"2023,2024,2025",0.5,1.0,19.5,sucesso,0.0
-2026,30,dengue,TABAPORA,positivos,0,1,2025,2.0,2.0,2.0,sem_dado,
-2026,30,dengue,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,dengue,TIJUCAS,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,VALE DE SAO DOMINGOS,positivos,0,0,,,,,sem_dado,
-2026,30,dengue,VARZEA GRANDE,positivos,3,5,"2021,2022,2023,2024,2025",0.0,1.0,2.0,epidemia,3.0
-2026,30,dengue,VERA,positivos,0,1,2025,2.0,2.0,2.0,sem_dado,
-2026,30,dengue,VILHENA,positivos,0,0,,,,,sem_dado,
-2026,30,doen_a_de_chagas_chagas_igg,CAMPO VERDE,positivos,1,0,,,,,sem_dado,
-2026,30,doen_a_de_chagas_mayaro_biologia_molecular,COLIDER,positivos,0,0,,,,,sem_dado,
-2026,30,doen_a_de_creutzfeldt_jakob_mayaro_biologia_molecular,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,ALTO TAQUARI,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,CACERES,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,NOVA OLIMPIA,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,PORTO ESTRELA,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,RIO BRANCO,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,RONDONOPOLIS,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,TANGARA DA SERRA,positivos,0,0,,,,,sem_dado,
-2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,
-2026,30,esporotricose_humana_cultura_para_fungos,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,febre_amarela,CAMPO NOVO DO PARECIS,positivos,0,0,,,,,sem_dado,
-2026,30,hansen_ase_hansen_ase,CUIABA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,hansen_ase_hansen_ase,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,
-2026,30,hantavirus,BREU BRANCO,positivos,0,0,,,,,sem_dado,
-2026,30,hantavirus,NOVA MARILANDIA,positivos,0,0,,,,,sem_dado,
-2026,30,hantavirus,SAO JOSE DO RIO CLARO,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_a,AGUA BOA,positivos,1,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,ACORIZAL,positivos,1,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,AGUA BOA,positivos,5,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_b_hbv,ALTO ARAGUAIA,positivos,1,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,ARIPUANA,positivos,5,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,BARRA DO GARCAS,positivos,1,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,hepatite_b_hbv,CACERES,positivos,0,1,2021,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_b_hbv,CANARANA,positivos,1,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_b_hbv,CASTANHEIRA,positivos,1,2,"2023,2024",0.75,1.5,2.25,sem_dado,
-2026,30,hepatite_b_hbv,COLIDER,positivos,4,4,"2021,2023,2024,2025",0.0,1.0,2.5,epidemia,4.0
-2026,30,hepatite_b_hbv,COLNIZA,positivos,1,2,"2021,2025",1.0,1.0,1.0,sem_dado,
-2026,30,hepatite_b_hbv,CUIABA,positivos,21,5,"2021,2022,2023,2024,2025",3.0,3.0,8.0,epidemia,7.0
-2026,30,hepatite_b_hbv,GAUCHA DO NORTE,positivos,2,1,2022,1.0,1.0,1.0,sem_dado,
-2026,30,hepatite_b_hbv,GUARANTA DO NORTE,positivos,1,2,"2021,2023",3.5,4.0,4.5,sem_dado,
-2026,30,hepatite_b_hbv,JANGADA,positivos,1,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,hepatite_b_hbv,JAURU,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,JUINA,positivos,24,3,"2023,2024,2025",2.0,4.0,10.0,epidemia,6.0
-2026,30,hepatite_b_hbv,LUCAS DO RIO VERDE,positivos,0,1,2022,2.0,2.0,2.0,sem_dado,
-2026,30,hepatite_b_hbv,MATUPA,positivos,3,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,MERCEDES,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,NOBRES,positivos,1,1,2025,1.0,1.0,1.0,sem_dado,
-2026,30,hepatite_b_hbv,NOVA XAVANTINA,positivos,1,2,"2024,2025",0.75,1.5,2.25,sem_dado,
-2026,30,hepatite_b_hbv,PEIXOTO DE AZEVEDO,positivos,6,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,PORTO ALEGRE DO NORTE,positivos,1,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,QUERENCIA,positivos,1,1,2025,3.0,3.0,3.0,sem_dado,
-2026,30,hepatite_b_hbv,SAO JOSE DO RIO CLARO,positivos,1,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_b_hbv,SAPEZAL,positivos,1,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_b_hbv,SINOP,positivos,0,5,"2021,2022,2023,2024,2025",0.0,1.0,3.0,seguranca,0.0
-2026,30,hepatite_b_hbv,SORRISO,positivos,13,4,"2021,2023,2024,2025",0.75,2.0,5.75,epidemia,6.5
-2026,30,hepatite_b_hbv,TANGARA DA SERRA,positivos,0,2,"2021,2024",0.25,0.5,0.75,sem_dado,
-2026,30,hepatite_b_hbv,TERRA NOVA DO NORTE,positivos,3,0,,,,,sem_dado,
-2026,30,hepatite_b_hbv,VARZEA GRANDE,positivos,1,4,"2022,2023,2024,2025",0.75,1.5,2.0,seguranca,0.6667
-2026,30,hepatite_c_hcv,AGUA BOA,positivos,0,2,"2023,2024",0.25,0.5,0.75,sem_dado,
-2026,30,hepatite_c_hcv,ARAPUTANGA,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_c_hcv,BOA ESPERANCA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_c_hcv,CAMPINAPOLIS,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_c_hcv,CUIABA,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,3.0,alerta,
-2026,30,hepatite_c_hcv,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_c_hcv,MIRASSOL D''OESTE,positivos,0,0,,,,,sem_dado,
-2026,30,hepatite_c_hcv,NOVA XAVANTINA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_c_hcv,SINOP,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,hepatite_c_hcv,SORRISO,positivos,0,2,"2021,2025",0.0,0.0,0.0,sem_dado,
-2026,30,herpes_simples_fungos,CARLINDA,positivos,0,0,,,,,sem_dado,
-2026,30,hiv,JUARA,positivos,2,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,infec_o_coloniza_o_fungos,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,
-2026,30,infec_o_coloniza_o_v_rus_respirat_rios,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,infec_o_coloniza_o_v_rus_respirat_rios,SAO JOSE DOS QUATRO MARCOS,positivos,0,0,,,,,sem_dado,
-2026,30,influenza,CUIABA,positivos,0,3,"2023,2024,2025",0.0,0.0,0.0,epidemia,
-2026,30,influenza,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,influenza,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,
-2026,30,influenza,MANCIO LIMA,positivos,0,0,,,,,sem_dado,
-2026,30,influenza,POCONE,positivos,0,0,,,,,sem_dado,
-2026,30,leptospira,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,leptospira,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,ARIPUANA,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,CAMPO VERDE,positivos,1,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,meningite,CUIABA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,meningite,DOM AQUINO,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,FIGUEIROPOLIS D''OESTE,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,JUARA,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,PORTO ALEGRE DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,PRIMAVERA DO LESTE,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,meningite,QUERENCIA,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,SAPEZAL,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,SINOP,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,SORRISO,positivos,0,0,,,,,sem_dado,
-2026,30,meningite,VARZEA GRANDE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,micose_bact_rias_cultura,GUIRATINGA,positivos,0,0,,,,,sem_dado,
-2026,30,micose_bact_rias_teste_de_sensibilidade,GUIRATINGA,positivos,0,0,,,,,sem_dado,
-2026,30,micose_cultura_para_fungos,SENADOR CANEDO,positivos,0,0,,,,,sem_dado,
-2026,30,micose_fungos,GUIRATINGA,positivos,0,0,,,,,sem_dado,
-2026,30,micose_fungos,RONDONOPOLIS,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,BREU BRANCO,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,CAMPO NOVO DO PARECIS,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,COLIDER,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,CUIABA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,oropouche,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,NOVA MARILANDIA,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,PRIMAVERA DO LESTE,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,SAO JOSE DO RIO CLARO,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,TANGARA DA SERRA,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,TEFE,positivos,0,0,,,,,sem_dado,
-2026,30,oropouche,VARZEA GRANDE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,parvovirose_parvov_rus_b19_igg,CUIABA,positivos,1,0,,,,,sem_dado,
-2026,30,parvovirose_parvov_rus_b19_igm,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,sarampo_mayaro_biologia_molecular,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,
-2026,30,sars_cov_2,AGUA BOA,positivos,0,2,"2021,2023",21.75,42.5,63.25,sem_dado,
-2026,30,sars_cov_2,CAMPO NOVO DO PARECIS,positivos,0,4,"2021,2022,2024,2025",0.0,0.5,11.25,seguranca,0.0
-2026,30,sars_cov_2,CHAPADA DOS GUIMARAES,positivos,0,2,"2021,2025",2.5,5.0,7.5,sem_dado,
-2026,30,sars_cov_2,CUIABA,positivos,0,5,"2021,2022,2023,2024,2025",0.0,4.0,30.0,seguranca,0.0
-2026,30,sars_cov_2,PEDRA PRETA,positivos,0,0,,,,,sem_dado,
-2026,30,sars_cov_2,PRIMAVERA DO LESTE,positivos,0,3,"2021,2024,2025",0.0,0.0,0.5,alerta,
-2026,30,sars_cov_2,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,2.0,3.0,seguranca,0.0
-2026,30,sifilis,BRASNORTE,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igg,BARRA DO GARCAS,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igg,CUIABA,positivos,2,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igg,GUARANTA DO NORTE,positivos,2,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igg,PLANALTO DA SERRA,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igg,VARZEA GRANDE,positivos,15,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igm,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igm,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igm,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igm,PLANALTO DA SERRA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_citomegalov_rus_igm,VARZEA GRANDE,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,toxoplasmose_rub_ola_igg,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_rub_ola_igm,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,CAMPO NOVO DO PARECIS,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,JACIARA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,NOVA MARILANDIA,positivos,2,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,TANGARA DA SERRA,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,TAPURAH,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igg,VARZEA GRANDE,positivos,4,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,CAMPO NOVO DO PARECIS,positivos,1,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,CUIABA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,JACIARA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,NOVA MARILANDIA,positivos,2,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,TANGARA DA SERRA,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,TAPURAH,positivos,0,0,,,,,sem_dado,
-2026,30,toxoplasmose_toxoplasmose_igm,VARZEA GRANDE,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,ACORIZAL,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,AGUA BOA,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,ALTA FLORESTA,positivos,0,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,tuberculose,AQUIDAUANA,positivos,1,0,,,,,sem_dado,
-2026,30,tuberculose,ARAPUTANGA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,BARRA DO BUGRES,positivos,4,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CACERES,positivos,1,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CAMPINAPOLIS,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CAMPO NOVO DO PARECIS,positivos,1,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CAMPO VERDE,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CANARANA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CASTILHO,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,CERES,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,CHAPADA DOS GUIMARAES,positivos,1,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,COLIDER,positivos,1,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,COLNIZA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,COTRIGUACU,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,CUIABA,positivos,4,2,"2024,2025",0.75,1.5,2.25,sem_dado,
-2026,30,tuberculose,DOURADOS,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,GLORIA D''OESTE,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,GUARANTA DO NORTE,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,JUARA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,LUCAS DO RIO VERDE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,MIRASSOL D''OESTE,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,NAVEGANTES,positivos,2,0,,,,,sem_dado,
-2026,30,tuberculose,NOBRES,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,NORTELANDIA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,NOVA MARINGA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,NOVA MUTUM,positivos,2,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,PEIXOTO DE AZEVEDO,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,PETROLINA,positivos,1,0,,,,,sem_dado,
-2026,30,tuberculose,PLANALTO DA SERRA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,POCONE,positivos,0,2,"2024,2025",0.25,0.5,0.75,sem_dado,
-2026,30,tuberculose,PORTO ESPERIDIAO,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,PRIMAVERA DO LESTE,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,QUERENCIA,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,RONDONOPOLIS,positivos,3,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,SANTO ANTONIO DO LEVERGER,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,SAO FELIX DO ARAGUAIA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,SAPEZAL,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,SIDROLANDIA,positivos,0,0,,,,,sem_dado,
-2026,30,tuberculose,SINOP,positivos,1,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,SORRISO,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,
-2026,30,tuberculose,VARZEA GRANDE,positivos,3,2,"2024,2025",0.75,1.5,2.25,sem_dado,
-2026,30,zika,CUIABA,positivos,0,4,"2021,2022,2024,2025",0.0,1.0,3.0,seguranca,0.0
-2026,30,zika,TEOFILO OTONI,positivos,0,0,,,,,sem_dado,
-2026,30,zika,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,1.0,alerta,
+﻿ano,semana_epidemiologica,agravo,municipio,serie,casos,n_anos_baseline,anos_baseline,p25,p50,p75,zona,razao_vs_p50,exames_marcador,positivos_marcador,marcador_alerta,numerador
+2026,30,chikungunya,CAMPO NOVO DO PARECIS,positivos,0,3,"2023,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,chikungunya,CHAPADA DOS GUIMARAES,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,CRUZEIRO DO SUL,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,CUIABA,positivos,0,3,"2021,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,chikungunya,PACARAIMA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,PONTES E LACERDA,positivos,0,2,"2023,2025",0.25,0.5,0.75,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,RONDONOPOLIS,positivos,0,2,"2022,2024",0.25,0.5,0.75,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,SAPEZAL,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,SINOP,positivos,0,3,"2021,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,chikungunya,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,chikungunya,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,criptococose_toxoplasmose_igg,CUIABA,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,criptococose_toxoplasmose_igm,CUIABA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,ALTA FLORESTA,positivos,0,3,"2021,2024,2025",2.0,4.0,5.5,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,dengue,ALTO GARCAS,positivos,0,2,"2023,2025",1.0,1.0,1.0,volume_insuficiente,,3.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,ANTONIO PRADO,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,ASSIS BRASIL,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,BELEM,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,BOA ESPERANCA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,BOA VISTA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,BRASNORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CACERES,positivos,0,4,"2021,2022,2024,2025",0.0,0.5,1.0,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,dengue,CAMPINAPOLIS,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CAMPO NOVO DO PARECIS,positivos,0,2,"2023,2025",0.25,0.5,0.75,volume_insuficiente,,4.0,0.0,IgM,marcador_alerta
+2026,30,dengue,CAMPO VERDE,positivos,0,2,"2023,2025",3.5,7.0,10.5,volume_insuficiente,,3.0,0.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,CHAPADA DOS GUIMARAES,positivos,0,2,"2023,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,CHAPADAO DO SUL,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,dengue,COLIDER,positivos,0,2,"2024,2025",0.75,1.5,2.25,volume_insuficiente,,4.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,COLNIZA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,COMODORO,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CONCORDIA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CONQUISTA D''OESTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CRUZEIRO DO SUL,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,CUIABA,positivos,1,4,"2021,2022,2024,2025",0.0,0.0,0.25,volume_insuficiente,,9.0,1.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,CURITIBA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,DENISE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,GOIANESIA DO PARA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,GUARANTA DO NORTE,positivos,0,3,"2023,2024,2025",0.0,0.0,34.5,volume_insuficiente,,2.0,0.0,IgM,marcador_alerta
+2026,30,dengue,IPIRANGA DO NORTE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,ITANHANGA,positivos,1,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,1.0,IgM,marcador_alerta
+2026,30,dengue,JACAREACANGA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,JAURU,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,IgM,marcador_alerta
+2026,30,dengue,JUINA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,LARANJAL DO JARI,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,LUCAS DO RIO VERDE,positivos,4,1,2025,25.0,25.0,25.0,volume_insuficiente,,35.0,4.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,LUIS EDUARDO MAGALHAES,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,MANAUS,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,MARCELANDIA,positivos,0,2,"2021,2025",2.5,3.0,3.5,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,dengue,MIRASSOL D''OESTE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,dengue,NOSSA SENHORA DO LIVRAMENTO,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,NOVA MARILANDIA,positivos,0,1,2025,1.0,1.0,1.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,NOVA MUTUM,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,NOVA UBIRATA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,NOVO HORIZONTE DO NORTE,positivos,0,1,2025,1.0,1.0,1.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PACARAIMA,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PARANAITA,positivos,2,1,2025,1.0,1.0,1.0,volume_insuficiente,,3.0,2.0,IgM,marcador_alerta
+2026,30,dengue,PARAUAPEBAS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PEDRO GOMES,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PEIXOTO DE AZEVEDO,positivos,0,1,2025,3.0,3.0,3.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,POCONE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PONTES E LACERDA,positivos,1,3,"2023,2024,2025",0.5,1.0,3.0,volume_insuficiente,,1.0,1.0,IgM,marcador_alerta
+2026,30,dengue,PORTO ALEGRE DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PRESIDENTE SARNEY,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,PRIMAVERA DO LESTE,positivos,0,3,"2021,2024,2025",1.5,3.0,12.0,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,dengue,QUERENCIA,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,RONDONOPOLIS,positivos,0,2,"2024,2025",0.25,0.5,0.75,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,ROSARIO OESTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,SANTA INES,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,SANTANA DO MARANHAO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,SANTO ANTONIO DO LEVERGER,positivos,0,4,"2021,2022,2024,2025",0.0,1.0,2.0,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,dengue,SAO DOMINGOS DO CAPIM,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,SAO JOSE DO RIO CLARO,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,SINOP,positivos,0,3,"2023,2024,2025",0.0,0.0,0.5,volume_insuficiente,,3.0,0.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,SORRISO,positivos,2,3,"2023,2024,2025",0.5,1.0,19.5,volume_insuficiente,,16.0,2.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,TABAPORA,positivos,0,1,2025,2.0,2.0,2.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.25,0.5,0.75,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,dengue,TIJUCAS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,dengue,VALE DE SAO DOMINGOS,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_arbovirose,marcador_alerta
+2026,30,dengue,VARZEA GRANDE,positivos,2,5,"2021,2022,2023,2024,2025",0.0,1.0,2.0,volume_insuficiente,,21.0,2.0,IgM+PCR_arbovirose,marcador_alerta
+2026,30,dengue,VERA,positivos,0,1,2025,2.0,2.0,2.0,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,dengue,VILHENA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_a_de_chagas_chagas_igg,CAMPO VERDE,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_a_de_chagas_mayaro_biologia_molecular,COLIDER,positivos,0,0,,,,,volume_insuficiente,,16.0,0.0,molecular,marcador_alerta
+2026,30,doen_a_de_creutzfeldt_jakob_mayaro_biologia_molecular,LUCAS DO RIO VERDE,positivos,0,0,,,,,volume_insuficiente,,679.0,0.0,molecular,marcador_alerta
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,ALTO TAQUARI,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,CACERES,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,NOVA OLIMPIA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,PORTO ESTRELA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,RIO BRANCO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,RONDONOPOLIS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,TANGARA DA SERRA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,esporotricose_humana_cultura_para_fungos,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,febre_amarela,CAMPO NOVO DO PARECIS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hansen_ase_hansen_ase,CUIABA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hansen_ase_hansen_ase,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hantavirus,BREU BRANCO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hantavirus,NOVA MARILANDIA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hantavirus,SAO JOSE DO RIO CLARO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hepatite,CUIABA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hepatite_a,AGUA BOA,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hepatite_b_hbv,ACORIZAL,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,AGUA BOA,positivos,2,1,2024,0.0,0.0,0.0,volume_insuficiente,,4.0,2.0,HBV_DNA+HBsAg+anti_HBc_IgM,marcador_alerta
+2026,30,hepatite_b_hbv,ALTO ARAGUAIA,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,ARIPUANA,positivos,2,0,,,,,volume_insuficiente,,4.0,2.0,HBV_DNA+HBsAg+anti_HBc_IgM,marcador_alerta
+2026,30,hepatite_b_hbv,BARRA DO GARCAS,positivos,0,2,"2024,2025",0.25,0.5,0.75,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,CACERES,positivos,1,1,2021,0.0,0.0,0.0,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,CANARANA,positivos,1,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,CASTANHEIRA,positivos,0,2,"2023,2024",0.75,1.5,2.25,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,COLIDER,positivos,3,4,"2021,2023,2024,2025",0.0,1.0,2.5,volume_insuficiente,,4.0,3.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,COLNIZA,positivos,0,2,"2021,2025",1.0,1.0,1.0,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,CUIABA,positivos,11,5,"2021,2022,2023,2024,2025",3.0,3.0,8.0,epidemia,3.6667,21.0,11.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,GAUCHA DO NORTE,positivos,0,1,2022,1.0,1.0,1.0,volume_insuficiente,,2.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,GUARANTA DO NORTE,positivos,0,2,"2021,2023",3.5,4.0,4.5,volume_insuficiente,,4.0,0.0,HBV_DNA+HBsAg+anti_HBc_IgM,marcador_alerta
+2026,30,hepatite_b_hbv,JANGADA,positivos,0,2,"2024,2025",0.25,0.5,0.75,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,JAURU,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,JUINA,positivos,8,3,"2023,2024,2025",2.0,4.0,10.0,alerta,2.0,22.0,8.0,HBV_DNA+HBsAg+anti_HBc_IgM,marcador_alerta
+2026,30,hepatite_b_hbv,LUCAS DO RIO VERDE,positivos,8,1,2022,2.0,2.0,2.0,sem_dado,,11.0,8.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,MATUPA,positivos,1,0,,,,,volume_insuficiente,,3.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,MERCEDES,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,NOBRES,positivos,0,1,2025,1.0,1.0,1.0,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,NOVA XAVANTINA,positivos,0,2,"2024,2025",0.75,1.5,2.25,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,PEIXOTO DE AZEVEDO,positivos,1,0,,,,,volume_insuficiente,,6.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,PORTO ALEGRE DO NORTE,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,QUERENCIA,positivos,1,1,2025,3.0,3.0,3.0,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,SAO JOSE DO RIO CLARO,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,SAPEZAL,positivos,1,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,SINOP,positivos,1,5,"2021,2022,2023,2024,2025",0.0,1.0,3.0,volume_insuficiente,,4.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,SORRISO,positivos,7,4,"2021,2023,2024,2025",0.75,2.0,5.75,epidemia,3.5,13.0,7.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,TANGARA DA SERRA,positivos,1,2,"2021,2024",0.25,0.5,0.75,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,TERRA NOVA DO NORTE,positivos,3,0,,,,,volume_insuficiente,,3.0,3.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_b_hbv,VARZEA GRANDE,positivos,1,4,"2022,2023,2024,2025",0.75,1.5,2.0,volume_insuficiente,,1.0,1.0,HBV_DNA,marcador_alerta
+2026,30,hepatite_c_hcv,AGUA BOA,positivos,0,2,"2023,2024",0.25,0.5,0.75,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hepatite_c_hcv,ARAPUTANGA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,BOA ESPERANCA DO NORTE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,CAMPINAPOLIS,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,CUIABA,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,3.0,volume_insuficiente,,3.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,LUCAS DO RIO VERDE,positivos,2,0,,,,,volume_insuficiente,,2.0,2.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,MIRASSOL D''OESTE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,NOVA XAVANTINA,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,SINOP,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,HCV_RNA,marcador_alerta
+2026,30,hepatite_c_hcv,SORRISO,positivos,1,2,"2021,2025",0.0,0.0,0.0,volume_insuficiente,,2.0,1.0,HCV_RNA,marcador_alerta
+2026,30,herpes_simples_fungos,CARLINDA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,hiv,JUARA,positivos,2,1,2025,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,infec_o_coloniza_o_fungos,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,infec_o_coloniza_o_v_rus_respirat_rios,CUIABA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,infec_o_coloniza_o_v_rus_respirat_rios,SAO JOSE DOS QUATRO MARCOS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,influenza,CUIABA,positivos,0,3,"2023,2024,2025",0.0,0.0,0.0,sucesso,,,,,positivos_semanais_brutos
+2026,30,influenza,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,influenza,LUCAS DO RIO VERDE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,influenza,MANCIO LIMA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,influenza,POCONE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,leptospira,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,leptospira,VARZEA GRANDE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,meningite,ARIPUANA,positivos,0,0,,,,,volume_insuficiente,,2.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,CAMPO VERDE,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,CUIABA,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,4.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,DOM AQUINO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,meningite,FIGUEIROPOLIS D''OESTE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,JUARA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,LUCAS DO RIO VERDE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,PORTO ALEGRE DO NORTE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,PRIMAVERA DO LESTE,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,QUERENCIA,positivos,0,0,,,,,volume_insuficiente,,2.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,SAPEZAL,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,SINOP,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,SORRISO,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,PCR_cultura_LCR,marcador_alerta
+2026,30,meningite,VARZEA GRANDE,positivos,0,1,2025,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,micose_bact_rias_cultura,GUIRATINGA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,micose_bact_rias_teste_de_sensibilidade,GUIRATINGA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,micose_cultura_para_fungos,SENADOR CANEDO,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,micose_fungos,GUIRATINGA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,micose_fungos,RONDONOPOLIS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,oropouche,BREU BRANCO,positivos,0,0,,,,,volume_insuficiente,,4.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,CAMPO NOVO DO PARECIS,positivos,0,0,,,,,volume_insuficiente,,93.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,COLIDER,positivos,0,0,,,,,volume_insuficiente,,16.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,CUIABA,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,118.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,LUCAS DO RIO VERDE,positivos,0,0,,,,,volume_insuficiente,,679.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,NOVA MARILANDIA,positivos,0,0,,,,,volume_insuficiente,,8.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,PRIMAVERA DO LESTE,positivos,0,0,,,,,volume_insuficiente,,27.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,SAO JOSE DO RIO CLARO,positivos,0,0,,,,,volume_insuficiente,,9.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,TANGARA DA SERRA,positivos,0,0,,,,,volume_insuficiente,,71.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,TEFE,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,molecular,marcador_alerta
+2026,30,oropouche,VARZEA GRANDE,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,408.0,0.0,molecular,marcador_alerta
+2026,30,parvovirose_parvov_rus_b19_igg,CUIABA,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,parvovirose_parvov_rus_b19_igm,CUIABA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,sarampo_mayaro_biologia_molecular,VARZEA GRANDE,positivos,0,0,,,,,volume_insuficiente,,408.0,0.0,molecular,marcador_alerta
+2026,30,sars_cov_2,AGUA BOA,positivos,0,2,"2021,2023",21.75,42.5,63.25,sem_dado,,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,CAMPO NOVO DO PARECIS,positivos,0,4,"2021,2022,2024,2025",0.0,0.5,11.25,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,CHAPADA DOS GUIMARAES,positivos,0,2,"2021,2025",2.5,5.0,7.5,sem_dado,,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,CUIABA,positivos,0,5,"2021,2022,2023,2024,2025",0.0,4.0,30.0,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,PEDRA PRETA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,PRIMAVERA DO LESTE,positivos,0,3,"2021,2024,2025",0.0,0.0,0.5,sucesso,,,,,positivos_semanais_brutos
+2026,30,sars_cov_2,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,2.0,3.0,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,sifilis,BRASNORTE,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igg,BARRA DO GARCAS,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igg,CUIABA,positivos,2,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igg,GUARANTA DO NORTE,positivos,2,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igg,PLANALTO DA SERRA,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igg,VARZEA GRANDE,positivos,15,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igm,BARRA DO GARCAS,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_citomegalov_rus_igm,CUIABA,positivos,0,0,,,,,volume_insuficiente,,2.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_citomegalov_rus_igm,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igm,PLANALTO DA SERRA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_citomegalov_rus_igm,VARZEA GRANDE,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,6.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_rub_ola_igg,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_rub_ola_igm,GUARANTA DO NORTE,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,BARRA DO GARCAS,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,CAMPO NOVO DO PARECIS,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,CUIABA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,JACIARA,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,NOVA MARILANDIA,positivos,2,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,TANGARA DA SERRA,positivos,1,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,TAPURAH,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igg,VARZEA GRANDE,positivos,4,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,toxoplasmose_toxoplasmose_igm,BARRA DO GARCAS,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,CAMPO NOVO DO PARECIS,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,CUIABA,positivos,0,0,,,,,volume_insuficiente,,2.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,JACIARA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,NOVA MARILANDIA,positivos,2,0,,,,,volume_insuficiente,,2.0,2.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,TANGARA DA SERRA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,TAPURAH,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,IgM,marcador_alerta
+2026,30,toxoplasmose_toxoplasmose_igm,VARZEA GRANDE,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,6.0,0.0,IgM,marcador_alerta
+2026,30,tuberculose,ACORIZAL,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,AGUA BOA,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,4.0,0.0,BAAR+TRM_TB,marcador_alerta
+2026,30,tuberculose,ALTA FLORESTA,positivos,0,2,"2024,2025",0.25,0.5,0.75,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,AQUIDAUANA,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,ARAPUTANGA,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,BARRA DO BUGRES,positivos,4,1,2025,0.0,0.0,0.0,volume_insuficiente,,4.0,4.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,CACERES,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,2.0,0.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,CAMPINAPOLIS,positivos,3,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,3.0,3.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,CAMPO NOVO DO PARECIS,positivos,1,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,1.0,LF_LAM,marcador_alerta
+2026,30,tuberculose,CAMPO VERDE,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,4.0,0.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,CANARANA,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,12.0,0.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,CASTILHO,positivos,0,0,,,,,volume_insuficiente,,2.0,0.0,BAAR+TRM_TB,marcador_alerta
+2026,30,tuberculose,CERES,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,CHAPADA DOS GUIMARAES,positivos,1,1,2024,0.0,0.0,0.0,volume_insuficiente,,2.0,1.0,BAAR+cultura_TB,marcador_alerta
+2026,30,tuberculose,COLIDER,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,COLNIZA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,COTRIGUACU,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,CUIABA,positivos,11,2,"2024,2025",0.75,1.5,2.25,sem_dado,,65.0,11.0,BAAR+LF_LAM+TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,DOURADOS,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,2.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,GLORIA D''OESTE,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,GUARANTA DO NORTE,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,JUARA,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,LUCAS DO RIO VERDE,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,4.0,0.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,MIRASSOL D''OESTE,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,NAVEGANTES,positivos,2,0,,,,,volume_insuficiente,,2.0,2.0,BAAR,marcador_alerta
+2026,30,tuberculose,NOBRES,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,tuberculose,NORTELANDIA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,NOVA MARINGA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,BAAR,marcador_alerta
+2026,30,tuberculose,NOVA MUTUM,positivos,1,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,4.0,1.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,PEIXOTO DE AZEVEDO,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,PETROLINA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,PLANALTO DA SERRA,positivos,1,0,,,,,volume_insuficiente,,1.0,1.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,POCONE,positivos,0,2,"2024,2025",0.25,0.5,0.75,volume_insuficiente,,2.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,PORTO ESPERIDIAO,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,PRIMAVERA DO LESTE,positivos,2,0,,,,,volume_insuficiente,,2.0,2.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,QUERENCIA,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,2.0,0.0,TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,RONDONOPOLIS,positivos,2,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,8.0,2.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,SANTO ANTONIO DO LEVERGER,positivos,0,1,2024,0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,BAAR,marcador_alerta
+2026,30,tuberculose,SAO FELIX DO ARAGUAIA,positivos,0,1,2025,0.0,0.0,0.0,volume_insuficiente,,2.0,0.0,cultura_TB,marcador_alerta
+2026,30,tuberculose,SAPEZAL,positivos,0,1,2024,0.0,0.0,0.0,sem_dado,,,,,positivos_semanais_brutos
+2026,30,tuberculose,SIDROLANDIA,positivos,0,0,,,,,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,SINOP,positivos,2,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,12.0,2.0,BAAR+TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,SORRISO,positivos,1,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,6.0,1.0,BAAR+TRM_TB+cultura_TB,marcador_alerta
+2026,30,tuberculose,TANGARA DA SERRA,positivos,0,2,"2024,2025",0.0,0.0,0.0,volume_insuficiente,,1.0,0.0,TRM_TB,marcador_alerta
+2026,30,tuberculose,VARZEA GRANDE,positivos,4,2,"2024,2025",0.75,1.5,2.25,volume_insuficiente,,37.0,4.0,BAAR+TRM_TB+cultura_TB,marcador_alerta
+2026,30,zika,CUIABA,positivos,0,4,"2021,2022,2024,2025",0.0,1.0,3.0,sucesso,0.0,,,,positivos_semanais_brutos
+2026,30,zika,TEOFILO OTONI,positivos,0,0,,,,,sem_dado,,,,,positivos_semanais_brutos
+2026,30,zika,VARZEA GRANDE,positivos,0,5,"2021,2022,2023,2024,2025",0.0,0.0,1.0,sucesso,,,,,positivos_semanais_brutos

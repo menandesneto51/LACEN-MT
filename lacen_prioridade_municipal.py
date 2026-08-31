@@ -4,8 +4,10 @@
 Score de prioridade municipal (proposta p/ homologação CIEVS) +
 alertas específicos por sinal + pendências do modelo definitivo.
 
-score = 3*excesso_lab + 2*positividade_anomala + 1*lacuna_sinan + 1*internacoes_graves
-Componentes normalizados 0–1 de forma transparente.
+score = (3*excesso_lab + 2*positividade_anomala + 1*lacuna_sinan + 1*internacoes_graves)
+        / soma dos pesos dos componentes VÁLIDOS
+Ausente ≠ 0 (NaN não participa). excesso_lab vem da zona do canal endêmico.
+positividade_anomala usa só marcador de alerta (n ≥ 5).
 """
 from __future__ import annotations
 
@@ -23,6 +25,22 @@ OUTDIR_DEFAULT = ROOT / "saida_pipeline"
 SCORE_CSV = "score_prioridade_municipal.csv"
 PENDENCIAS_MD = "modelo_definitivo_pendencias.md"
 ALERTAS_DIR = "alertas_especificos"
+
+PESOS_SCORE = {
+    "excesso_lab": 3.0,
+    "positividade_anomala": 2.0,
+    "lacuna_sinan": 1.0,
+    "internacoes_graves": 1.0,
+}
+ZONA_EXCESSO = {
+    "epidemia": 1.0,
+    "alerta": 0.7,
+    "seguranca": 0.3,
+    "sucesso": 0.0,
+}
+N_MINIMO_MARCADOR = 5
+POS_TETO = 0.20  # 20%+ no marcador = 1.0
+INTERN_TETO = 50.0
 
 
 def _num(val: Any, default: float | None = None) -> float | None:
@@ -62,14 +80,52 @@ def _slug(text: str) -> str:
 
 
 def _norm01(values: Sequence[float]) -> list[float]:
-    """Min-max 0–1; se todos iguais, retorna 0."""
-    xs = [float(v) for v in values]
+    """Min-max 0–1; se todos iguais, retorna 0. Ignora NaN na faixa."""
+    xs = [float(v) for v in values if v is not None and not math.isnan(float(v))]
     if not xs:
-        return []
+        return [float("nan") for _ in values]
     lo, hi = min(xs), max(xs)
-    if hi <= lo:
-        return [0.0 for _ in xs]
-    return [(v - lo) / (hi - lo) for v in xs]
+    out: list[float] = []
+    for v in values:
+        if v is None or math.isnan(float(v)):
+            out.append(float("nan"))
+        elif hi <= lo:
+            out.append(0.0)
+        else:
+            out.append((float(v) - lo) / (hi - lo))
+    return out
+
+
+def _fmt_comp(v: float | None) -> str:
+    if v is None or (isinstance(v, float) and math.isnan(v)):
+        return "sem dado"
+    return f"{v:.4f}".rstrip("0").rstrip(".")
+
+
+def _clip01(valor: float | None, minimo: float, maximo: float) -> float:
+    if valor is None or (isinstance(valor, float) and math.isnan(valor)):
+        return float("nan")
+    if maximo <= minimo:
+        return 1.0 if valor > minimo else 0.0
+    x = (float(valor) - minimo) / (maximo - minimo)
+    return max(0.0, min(1.0, x))
+
+
+def score_com_ausentes(componentes: dict[str, float | None]) -> tuple[float, int]:
+    """Soma ponderada / pesos válidos. Sem nenhum componente → (nan, 0)."""
+    soma = 0.0
+    pesos = 0.0
+    n_ok = 0
+    for nome, peso in PESOS_SCORE.items():
+        v = componentes.get(nome)
+        if v is None or (isinstance(v, float) and math.isnan(v)):
+            continue
+        soma += peso * float(v)
+        pesos += peso
+        n_ok += 1
+    if pesos <= 0:
+        return float("nan"), 0
+    return soma / pesos, n_ok
 
 
 def _pct_frase(delta_pct: float | None) -> str:
@@ -92,127 +148,180 @@ def calcular_score_prioridade_municipal(
     gal_sinan: Sequence[dict[str, Any]] | None = None,
     cruzamento_sih_sia: dict[str, Any] | None = None,
     se_iso: str = "—",
+    canal_idx: dict[tuple[str, str], dict[str, Any]] | None = None,
+    marcadores: Sequence[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """
     Proposta para homologação CIEVS.
 
-    score = 3*excesso_lab + 2*positividade_anomala + 1*lacuna_sinan + 1*internacoes_graves
-    Cada componente é normalizado 0–1 entre os municípios candidatos.
+    excesso_lab = zona do canal (epidemia=1, alerta=0.7, …); ausente → NaN.
+    positividade_anomala = marcador de alerta (n≥5), teto 20%; senão NaN.
+    Score = soma ponderada / pesos dos componentes válidos (ausente ≠ 0).
     """
-    # Agrega por município
-    by_mun: dict[str, dict[str, float]] = {}
+    by_mun: dict[str, dict[str, Any]] = {}
 
-    def _row(mun: str) -> dict[str, float]:
+    def _row(mun: str) -> dict[str, Any] | None:
         m = _norm_mun(mun)
         if not m or m in {"—", "-", "*ESTADO*"}:
-            return {}
+            return None
         return by_mun.setdefault(
             m,
             {
-                "excesso_lab_raw": 0.0,
-                "pos_anomala_raw": 0.0,
-                "lacuna_raw": 0.0,
-                "intern_raw": 0.0,
+                "excesso_lab": float("nan"),
+                "zona_canal": "",
+                "pos_marcador": float("nan"),
+                "n_exames_marcador": 0,
+                "lacuna": float("nan"),
+                "intern": float("nan"),
                 "exames": 0.0,
                 "positivos": 0.0,
             },
         )
 
-    # Excesso lab: Δ% positivo de demanda (solicitados) + volume local
-    delta_by_tgt: dict[str, float] = {}
-    for s in solicitados or []:
-        tgt = str(s.get("target") or "")
-        d = _num(s.get("delta_pct"))
-        if tgt and d is not None and d > 0:
-            delta_by_tgt[tgt] = max(delta_by_tgt.get(tgt, 0.0), float(d))
-
     for loc in localidades or []:
         r = _row(str(loc.get("municipio") or ""))
         if not r:
             continue
-        ex = _num(loc.get("exames"), 0) or 0
-        pos = _num(loc.get("positivos"), 0) or 0
-        r["exames"] += ex
-        r["positivos"] += pos
-        dlt = _num(loc.get("delta_pct"))
-        if dlt is None:
-            dlt = delta_by_tgt.get(str(loc.get("target") or ""), 0.0)
-        # excesso: volume * max(0, delta%/100)
-        r["excesso_lab_raw"] += ex * max(0.0, float(dlt or 0) / 100.0)
-        pv = _num(loc.get("positividade"))
-        if pv is not None and not loc.get("caveat_igg"):
-            # anomalia simples: positividade * positivos (peso amostra)
-            r["pos_anomala_raw"] = max(
-                r["pos_anomala_raw"], float(pv) * max(1.0, pos)
-            )
+        r["exames"] += _num(loc.get("exames"), 0) or 0
+        r["positivos"] += _num(loc.get("positivos"), 0) or 0
 
-    for p in positividade or []:
-        # Sem município: contribui pouco via flag estadual — skip mun-level
-        if p.get("caveat_igg"):
+    # Canal → excesso lab (pior zona do município)
+    for (ag, mun), info in (canal_idx or {}).items():
+        r = _row(mun)
+        if not r:
             continue
-        pv = _num(p.get("positividade"))
-        if pv is None:
+        zona = str(info.get("zona") or "").casefold()
+        if zona in {"volume_insuficiente", "sem_dado"}:
             continue
-        # reforça municípios já listados com mesma família/target
-        tgt = str(p.get("target") or "")
-        for loc in localidades or []:
-            if str(loc.get("target") or "") != tgt:
-                continue
-            r = _row(str(loc.get("municipio") or ""))
-            if not r:
-                continue
-            r["pos_anomala_raw"] = max(
-                r["pos_anomala_raw"],
-                float(pv) * max(1.0, _num(loc.get("positivos"), 0) or 0),
-            )
+        val = ZONA_EXCESSO.get(zona)
+        if val is None:
+            continue
+        cur = r["excesso_lab"]
+        if (isinstance(cur, float) and math.isnan(cur)) or val > float(cur or 0):
+            r["excesso_lab"] = val
+            r["zona_canal"] = zona
 
+    # Marcadores de alerta → positividade anômala
+    for m in marcadores or []:
+        if not (
+            m.get("conta_alerta_agudo")
+            or m.get("conta_bortman")
+            or m.get("alerta_agudo")
+        ):
+            continue
+        r = _row(str(m.get("municipio") or ""))
+        if not r:
+            continue
+        n_ex = int(_num(m.get("n_exames"), 0) or 0)
+        n_pos = int(_num(m.get("n_positivos"), 0) or 0)
+        r["n_exames_marcador"] += n_ex
+        pv = _num(m.get("positividade"))
+        if pv is None and n_ex > 0:
+            pv = n_pos / n_ex
+        if n_ex >= N_MINIMO_MARCADOR and pv is not None:
+            anom = _clip01(pv, 0.0, POS_TETO)
+            cur = r["pos_marcador"]
+            if isinstance(cur, float) and math.isnan(cur) or anom > (cur or 0):
+                r["pos_marcador"] = anom
+
+    seen_lacuna: set[str] = set()
     for g in gal_sinan or []:
-        if not (g.get("gal_sem_sinan") or str(g.get("flag") or "") == "gal_sem_sinan"):
-            continue
         r = _row(str(g.get("municipio") or ""))
         if not r:
             continue
-        r["lacuna_raw"] += _num(g.get("exames"), 0) or 0
+        seen_lacuna.add(_norm_mun(g.get("municipio")))
+        if g.get("gal_sem_sinan") or str(g.get("flag") or "") == "gal_sem_sinan":
+            r["lacuna"] = 1.0
+        elif isinstance(r["lacuna"], float) and math.isnan(r["lacuna"]):
+            r["lacuna"] = 0.0
 
+    seen_sih: set[str] = set()
     for row in (cruzamento_sih_sia or {}).get("top_mun") or []:
         r = _row(str(row.get("municipio") or ""))
         if not r:
             continue
-        r["intern_raw"] += _num(row.get("n"), 0) or 0
+        seen_sih.add(_norm_mun(row.get("municipio")))
+        n = _num(row.get("n"), 0) or 0
+        cur = r["intern"]
+        if isinstance(cur, float) and math.isnan(cur):
+            r["intern"] = n
+        else:
+            r["intern"] = float(cur) + n
+    for m, r in by_mun.items():
+        if m in seen_sih:
+            r["intern"] = _clip01(float(r["intern"]), 0.0, INTERN_TETO)
 
     if not by_mun:
         return []
 
-    muns = sorted(by_mun.keys())
-    excesso = _norm01([by_mun[m]["excesso_lab_raw"] for m in muns])
-    pos_a = _norm01([by_mun[m]["pos_anomala_raw"] for m in muns])
-    lacuna = _norm01([by_mun[m]["lacuna_raw"] for m in muns])
-    intern = _norm01([by_mun[m]["intern_raw"] for m in muns])
-
     out: list[dict[str, Any]] = []
-    for i, m in enumerate(muns):
-        e, p, l, g = excesso[i], pos_a[i], lacuna[i], intern[i]
-        score = 3.0 * e + 2.0 * p + 1.0 * l + 1.0 * g
+    for m, r in by_mun.items():
+        comps = {
+            "excesso_lab": r["excesso_lab"],
+            "positividade_anomala": r["pos_marcador"],
+            "lacuna_sinan": r["lacuna"],
+            "internacoes_graves": r["intern"]
+            if m in seen_sih
+            else float("nan"),
+        }
+        score, n_ok = score_com_ausentes(comps)
+        if n_ok == 0:
+            continue
+        # Só lacuna SINAN → score=1.0 artificial; não ranquear.
+        so_lacuna = (
+            n_ok == 1
+            and not (isinstance(comps["lacuna_sinan"], float) and math.isnan(comps["lacuna_sinan"]))
+            and (isinstance(comps["excesso_lab"], float) and math.isnan(comps["excesso_lab"]))
+            and (
+                isinstance(comps["positividade_anomala"], float)
+                and math.isnan(comps["positividade_anomala"])
+            )
+        )
+        if so_lacuna:
+            continue
         out.append(
             {
                 "se": se_iso,
                 "municipio": m,
-                "excesso_lab_0_1": round(e, 4),
-                "positividade_anomala_0_1": round(p, 4),
-                "lacuna_sinan_0_1": round(l, 4),
-                "internacoes_graves_0_1": round(g, 4),
-                "score": round(score, 4),
-                "exames": int(by_mun[m]["exames"]),
-                "positivos": int(by_mun[m]["positivos"]),
+                "zona_canal": r.get("zona_canal") or "",
+                "excesso_lab_0_1": _fmt_comp(comps["excesso_lab"]),
+                "positividade_anomala_0_1": _fmt_comp(comps["positividade_anomala"]),
+                "lacuna_sinan_0_1": _fmt_comp(comps["lacuna_sinan"]),
+                "internacoes_graves_0_1": _fmt_comp(comps["internacoes_graves"]),
+                "n_componentes_validos": n_ok,
+                "score": round(score, 4) if not math.isnan(score) else "",
+                "exames": int(r["exames"]),
+                "positivos": int(r["positivos"]),
+                "n_exames_marcador": int(r["n_exames_marcador"]),
                 "rotulo": "proposta para homologação",
                 "formula": (
-                    "score = 3*excesso_lab + 2*positividade_anomala "
-                    "+ 1*lacuna_sinan + 1*internacoes_graves "
-                    "(componentes normalizados 0–1)"
+                    "score = (3*excesso_lab + 2*pos_marcador_alerta "
+                    "+ 1*lacuna_sinan + 1*internacoes) / pesos válidos; "
+                    "ausente≠0; excesso=zona canal; n_marcador≥5"
                 ),
             }
         )
-    out.sort(key=lambda x: -float(x["score"]))
+
+    def _excesso_rank(x: dict[str, Any]) -> float:
+        v = x.get("excesso_lab_0_1")
+        if v in ("", None, "sem dado"):
+            return -1.0
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return -1.0
+
+    # Prioridade de exibição: zona do canal (excesso lab) primeiro — evita
+    # municípios só com lacuna/pos parcial (score normalizado = 1.0) passarem
+    # na frente de Juína/Cuiabá com sinal Bortman.
+    out.sort(
+        key=lambda x: (
+            -_excesso_rank(x),
+            -float(x["score"]) if x.get("score") not in ("", None) else 0.0,
+            -int(x.get("n_componentes_validos") or 0),
+            -int(x.get("positivos") or 0),
+        )
+    )
     return out
 
 
@@ -225,13 +334,16 @@ def persistir_score_prioridade(
     fields = [
         "se",
         "municipio",
+        "zona_canal",
         "excesso_lab_0_1",
         "positividade_anomala_0_1",
         "lacuna_sinan_0_1",
         "internacoes_graves_0_1",
+        "n_componentes_validos",
         "score",
         "exames",
         "positivos",
+        "n_exames_marcador",
         "rotulo",
         "formula",
     ]
@@ -325,6 +437,8 @@ def vizinhos_a_partir_do_sinal(
     vidx = _vizinhos_index(list(vizinhos_rows))
     out: list[dict[str, Any]] = []
     for viz, dist in vidx.get(ancora, [])[: max_viz * 2]:
+        if (pos_by.get(ancora, 0.0) or 0) <= 0 or (pos_by.get(viz, 0.0) or 0) <= 0:
+            continue
         out.append(
             {
                 "target": tgt,

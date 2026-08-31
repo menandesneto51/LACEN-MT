@@ -18,13 +18,13 @@
 ## 2. Interpretação de marcadores
 
 - HBsAg (Imunoensaio de Micropartículas por Quimioluminescência): 24 positivos / 30 exames — HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação.
+- HBV_DNA (PCR em Tempo Real): 19 positivos / 45 exames — HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 - anti_HBc_IgM (Imunoensaio de Micropartículas por Quimioluminescência): 2 positivos / 30 exames — Anti-HBc IgM: marcador de infecção aguda (ou reativação) — sinal para a VE.
-- IgM (Enzimaimunoensaio): 2 positivos / 3 exames — IgM dengue: sugere infecção recente — sinal para investigação.
-- HBeAg (Imunoensaio de Micropartículas por Quimioluminescência): 0 positivos / 30 exames — HBeAg: marcador de replicação — contextualizar com DNA e clínica.
-- cultura_TB (Cultura): 0 positivos / 12 exames — Cultura para micobactérias: padrão-ouro confirmatório.
-- BAAR (Coloração de Ziehl-Neelsen): 0 positivos / 4 exames — BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-- IgM (Enzimaimunoensaio): 0 positivos / 3 exames — IgM chikungunya: infecção recente — sinal ativo.
-- IgM (Enzimaimunoensaio): 0 positivos / 2 exames — IgM zika: sugere infecção recente.
+- IgM (Enzimaimunoensaio): 2 positivos / 3 exames — IgM dengue: infecção recente — sinal para investigação.
+- TRM_TB (PCR em Tempo Real): 1 positivos / 20 exames — TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+- PCR_cultura_LCR (Cultura): 1 positivos / 6 exames — PCR/cultura LCR: confirmação etiológica — investigar se agregação.
+- microscopia_LCR (Coloração de Gram): 1 positivos / 3 exames — Microscopia/Gram de LCR: sinal laboratorial — investigar com PCR/cultura.
+- HCV_RNA (RT-PCR em tempo real): 1 positivos / 2 exames — RNA HCV: presença/ausência do vírus — confirma infecção ativa.
 
 ## 3. Taxas e local
 
@@ -32,7 +32,7 @@
 
 ## 4. Vizinhos (a partir do município do sinal)
 
-- Sem pares vizinhos com o mesmo alvo a partir deste município nesta SE.
+- JUINA ↔ CASTANHEIRA: +24.0/+1.0 (exames 46.0/1.0)
 
 ## 5. Internações (SIH)
 
@@ -51,14 +51,14 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Canal endêmico acima do limite histórico em hepatite_b_hbv em JUINA: priorizar investigação (não declarar epidemia automaticamente).
+- CIEVS: Priorizar investigação de hepatite_b_hbv em JUINA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal. Canal endêmico em zona de alerta para hepati…
 - VE municipal: Investigar casos/contatos de hepatite_b_hbv em JUINA; verificar oportunidade de notificação e busca ativa.
 - Área técnica: Validar critérios clínico-laboratoriais de hepatite_b_hbv; orientar rede sobre definição de caso.
-- Vizinhos: —
+- Vizinhos: Alerta coordenado aos municípios vizinhos com sinal de hepatite_b_hbv.
 - LACEN: Apoiar hepatite_b_hbv: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
 
 ## 8. Disclaimer
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 10:19 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 11:11 Hora Padrão Brasil Central_
