@@ -540,6 +540,7 @@ class RelatorioCIEVS:
     briefing_cruzamento: list[dict[str, str]] = field(default_factory=list)
     briefing_cruzamento_sih_sia: list[dict[str, str]] = field(default_factory=list)
     briefing_cruzamento_sih_sia_caveat: str = ""
+    briefing_sinais_rede: dict[str, Any] = field(default_factory=dict)
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
     # Bloco F — Parecer VE (IA + Guia MS) opcional
@@ -1518,6 +1519,7 @@ def montar_relatorio(
         briefing_cruzamento_sih_sia_caveat=str(
             (briefing.get("cruzamento_sih_sia") or {}).get("caveat") or ""
         ),
+        briefing_sinais_rede=dict(briefing.get("sinais_rede") or {}),
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
         ve_resumo=ve_resumo,
@@ -1827,6 +1829,23 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             )
         if rel.briefing_cruzamento_sih_sia_caveat:
             lines.append(f"  Caveat: {rel.briefing_cruzamento_sih_sia_caveat[:180]}")
+    rede = rel.briefing_sinais_rede or {}
+    if rede.get("presente"):
+        lines.append("Sinais IndicaSUS / SISREG:")
+        for row in (rede.get("indicasus_ocupacao_top") or [])[:3]:
+            lines.append(
+                f"  · IndicaSUS: {row.get('tipo_leito')} / {row.get('situacao')} "
+                f"n={row.get('n')}"
+            )
+        for row in (rede.get("sisreg_hosp_top") or [])[:3]:
+            lines.append(
+                f"  · SISREG hosp: {row.get('municipio')} [{row.get('status')}] "
+                f"n={row.get('n')}"
+            )
+        for row in (rede.get("sisreg_amb_pendente_top") or [])[:2]:
+            lines.append(
+                f"  · SISREG amb pendente: {row.get('municipio')} n={row.get('n')}"
+            )
     if rel.briefing_nota_igg:
         lines.append(f"Nota: {rel.briefing_nota_igg}")
     if rel.briefing_fontes:
@@ -2220,6 +2239,42 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
     "(sem agregados SIH/SIA nesta remessa)",
 )}
 {f"<p style='font-size:12px;color:#5a6a82'><i>{html.escape(rel.briefing_cruzamento_sih_sia_caveat[:280])}</i></p>" if rel.briefing_cruzamento_sih_sia_caveat else ""}
+<p><b>Sinais IndicaSUS / SISREG</b></p>
+{_html_table(
+    ["Fonte", "Município/Tipo", "Status", "N"],
+    (
+        [
+            "<tr style='border-bottom:1px solid #e6ebf2'>"
+            f"<td style='padding:6px 8px'>IndicaSUS</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('tipo_leito','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('situacao','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('n','—')))}</td>"
+            "</tr>"
+            for r in ((rel.briefing_sinais_rede or {}).get("indicasus_ocupacao_top") or [])[:5]
+        ]
+        + [
+            "<tr style='border-bottom:1px solid #e6ebf2'>"
+            f"<td style='padding:6px 8px'>SISREG/hosp</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('municipio','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('status','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('n','—')))}</td>"
+            "</tr>"
+            for r in ((rel.briefing_sinais_rede or {}).get("sisreg_hosp_top") or [])[:5]
+        ]
+        + [
+            "<tr style='border-bottom:1px solid #e6ebf2'>"
+            f"<td style='padding:6px 8px'>SISREG/amb</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('municipio','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('status','—')))}</td>"
+            f"<td style='padding:6px 8px'>{html.escape(str(r.get('n','—')))}</td>"
+            "</tr>"
+            for r in ((rel.briefing_sinais_rede or {}).get("sisreg_amb_pendente_top") or [])[:4]
+        ]
+    )
+    if (rel.briefing_sinais_rede or {}).get("presente")
+    else [],
+    "(sem IndicaSUS/SISREG no staging)",
+)}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 F — Parecer VE (IA + Guia MS)</h3>

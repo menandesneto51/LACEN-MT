@@ -40,4 +40,17 @@ Tipo: Observado (lab) · Predito (ML se disponível)
   · NOVA XAVANTINA × dengue_arbovirose: n=23 [SIH/VW_INTERNACAO]
   · TABAPORA × dengue_arbovirose: n=22 [SIH/VW_INTERNACAO]
   Caveat: Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
+7c) Sinais IndicaSUS / SISREG:
+  · IndicaSUS ocupação: Complementar Intensivo / Descartado n=10 (2026-03-21)
+  · IndicaSUS ocupação: Clínico Isolamento / Descartado n=8 (2026-04-02)
+  · IndicaSUS ocupação: Complementar Intensivo / Descartado n=8 (2026-03-28)
+  · IndicaSUS ocupação: Complementar Intensivo / Descartado n=8 (2026-03-24)
+  · SISREG hosp: CUIABA [Aprovada] n=19036
+  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12231
+  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11244
+  · SISREG hosp: SINOP [Aprovada] n=6489
+  · SISREG amb pendente: CUIABA n=58884
+  · SISREG amb pendente: SINOP n=24798
+  · SISREG amb pendente: SINOP n=21950
+  Caveat: IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 Nota: positividade IgG/sorologia elevada ≠ surto agudo.

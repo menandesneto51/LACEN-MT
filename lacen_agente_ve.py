@@ -540,6 +540,7 @@ class ParecerVE:
     geo_hotspots: list[dict[str, Any]] = field(default_factory=list)
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
     cruzamento_sih_sia: dict[str, Any] = field(default_factory=dict)
+    sinais_rede: dict[str, Any] = field(default_factory=dict)
     casos_especiais: list[CasoEspecial] = field(default_factory=list)
     recomendacoes: dict[str, list[str]] = field(default_factory=dict)
     recomendacoes_por_agravo: list[dict[str, Any]] = field(default_factory=list)
@@ -1217,6 +1218,64 @@ def _render_markdown(p: ParecerVE) -> str:
             "(extrair `VW_INTERNACAO`/`SIA` via `etl/dw_extract`)._"
         )
 
+    lines += [
+        "",
+        "## 7f. Sinais IndicaSUS / SISREG (rede e regulação)",
+        "",
+    ]
+    rede = p.sinais_rede or {}
+    if rede.get("presente"):
+        occ = rede.get("indicasus_ocupacao_top") or []
+        if occ:
+            lines += [
+                "**IndicaSUS — ocupação (amostra):**",
+                "",
+                "| Tipo leito | Situação | Data | N |",
+                "|------------|----------|------|---|",
+            ]
+            for r in occ[:8]:
+                lines.append(
+                    f"| {r.get('tipo_leito','—')} | {r.get('situacao','—')} | "
+                    f"{r.get('data_ref','—')} | {_intish(r.get('n'))} |"
+                )
+            lines.append("")
+        hosp = rede.get("sisreg_hosp_top") or []
+        if hosp:
+            lines += [
+                "**SISREG hospitalar (top mun×status):**",
+                "",
+                "| Município | Status | N |",
+                "|-----------|--------|---|",
+            ]
+            for r in hosp[:8]:
+                lines.append(
+                    f"| {r.get('municipio','—')} | {r.get('status','—')} | "
+                    f"{_intish(r.get('n'))} |"
+                )
+            lines.append("")
+        amb = rede.get("sisreg_amb_pendente_top") or []
+        if amb:
+            lines += [
+                "**SISREG ambulatorial — pendentes/fila:**",
+                "",
+                "| Município | Status | N |",
+                "|-----------|--------|---|",
+            ]
+            for r in amb[:8]:
+                lines.append(
+                    f"| {r.get('municipio','—')} | {r.get('status','—')} | "
+                    f"{_intish(r.get('n'))} |"
+                )
+            lines.append("")
+        cav = str(rede.get("caveat") or "")
+        if cav:
+            lines.append(f"_Caveat:_ {cav}")
+    else:
+        lines.append(
+            "_Sem sinais IndicaSUS/SISREG no staging "
+            "(rode `etl/external_extract` com VPN)._"
+        )
+
     lines += ["", "## 8. Casos especiais (sinal lab × critérios Guia MS)", ""]
     if not p.casos_especiais:
         lines.append("_Nenhum caso especial acima dos limiares nesta SE._")
@@ -1487,6 +1546,22 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
     for r in ((p.cruzamento_sih_sia or {}).get("top_mun") or [])[:12]
 ])}
 {f"<p style='font-size:12px;color:#5a6a85'><i>{esc(str((p.cruzamento_sih_sia or {}).get('caveat') or '')[:280])}</i></p>" if (p.cruzamento_sih_sia or {}).get("caveat") else "<p style='font-size:12px'>(sem agregados SIH/SIA)</p>"}
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281">7f. IndicaSUS / SISREG</h3>
+{table(["Fonte", "Município/Tipo", "Status", "N"], (
+    [
+        ["IndicaSUS", str(r.get("tipo_leito","—")), str(r.get("situacao","—")), _intish(r.get("n"))]
+        for r in ((p.sinais_rede or {}).get("indicasus_ocupacao_top") or [])[:6]
+    ]
+    + [
+        ["SISREG/hosp", str(r.get("municipio","—")), str(r.get("status","—")), _intish(r.get("n"))]
+        for r in ((p.sinais_rede or {}).get("sisreg_hosp_top") or [])[:6]
+    ]
+    + [
+        ["SISREG/amb", str(r.get("municipio","—")), str(r.get("status","—")), _intish(r.get("n"))]
+        for r in ((p.sinais_rede or {}).get("sisreg_amb_pendente_top") or [])[:4]
+    ]
+) if (p.sinais_rede or {}).get("presente") else [])}
+{f"<p style='font-size:12px;color:#5a6a85'><i>{esc(str((p.sinais_rede or {}).get('caveat') or '')[:280])}</i></p>" if (p.sinais_rede or {}).get("presente") else "<p style='font-size:12px'>(sem IndicaSUS/SISREG no staging)</p>"}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">8. Casos especiais</h3>
 {casos_html or "<p>(nenhum)</p>"}
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281">9. Recomendações por destinatário</h3>
@@ -1798,6 +1873,7 @@ def gerar_parecer_ve(
         geo_hotspots=list(geo.get("hotspots") or [])[:15],
         cruzamento_bases=list(briefing.cruzamento_bases or []),
         cruzamento_sih_sia=dict(briefing.cruzamento_sih_sia or {}),
+        sinais_rede=dict(briefing.sinais_rede or {}),
         casos_especiais=casos,
         recomendacoes=recs,
         recomendacoes_por_agravo=por_agravo,
@@ -1882,6 +1958,7 @@ def persistir_parecer(
         "citacoes": [c.get("fonte") for c in parecer.citacoes],
         "fontes_cache": parecer.fontes_cache,
         "cruzamento_sih_sia": parecer.cruzamento_sih_sia or {},
+        "sinais_rede": parecer.sinais_rede or {},
     }
     paths["json"].write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"

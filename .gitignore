@@ -163,3 +163,5 @@ saida_pipeline/*
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv
 !ml/models_store/*.joblib
+!saida_pipeline/staging_dw/bancos_interesse_avaliacao.md
+!saida_pipeline/briefing_sinais_rede_externa.csv

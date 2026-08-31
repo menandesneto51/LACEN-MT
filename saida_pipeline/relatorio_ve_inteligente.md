@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 19:26 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-30 20:26 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
@@ -117,16 +117,16 @@ _Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetr
 |-----------|-------|--------|---|------|
 | CUIABA | *Não disponível | — | 2926 |  |
 | VARZEA GRANDE | *Não disponível | — | 1553 |  |
-| TANGARA DA SERRA | *Em Branco | — | 735 |  |
+| TANGARA DA SERRA | *Em Branco | — | 747 |  |
 | PEIXOTO DE AZEVEDO | *Não disponível | — | 716 |  |
+| CUIABA | PEDRA 90 | — | 586 |  |
 | SINOP | *Não disponível | — | 582 |  |
 | TANGARA DA SERRA | *Não disponível | — | 536 |  |
+| CUIABA | *Em Branco | — | 530 |  |
 | RONDONOPOLIS | *Não disponível | — | 508 |  |
 | CACERES | *Não disponível | — | 483 |  |
 | PONTES E LACERDA | *Não disponível | — | 400 |  |
 | BARRA DO GARCAS | *Não disponível | — | 387 |  |
-| SORRISO | *Não disponível | — | 353 |  |
-| TANGARA DA SERRA | CENTRO | — | 326 |  |
 
 ## 7d. Cruzamento de bases (DW staging)
 
@@ -139,8 +139,9 @@ _Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetr
 | SIVEP/SRAG | extraído | SRAG / respiratório |
 | SIM | extraído | Óbitos — letalidade contextual |
 | CNES | extraído | Capacidade da rede (leitos/equipes) |
-| IndicaSUS | extraído | Pactuação / INDICADORES* no DW (host IndicaSUS separado) |
-| SISREG | host separado (TCP OK; sem view DW) | Regulação — host SISREG_* separado (sem view no DW; ping opcional) |
+| IndicaSUS | extraído | Pactuação / INDICADORES* no DW + host IndicaSUS (indicasus_*) |
+| SISREG | extraído | Regulação — host SISREG_* (sisreg_* no staging; sem view no DW) |
+| SINASC | extraído | Nascidos vivos — contexto perinatal |
 | POPULACAO | extraído | Denominadores municipais |
 
 Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
@@ -163,6 +164,49 @@ Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
 | JUINA | dengue_arbovirose | 16 | SIH/VW_INTERNACAO |
 
 _Caveat:_ Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.
+
+## 7f. Sinais IndicaSUS / SISREG (rede e regulação)
+
+**IndicaSUS — ocupação (amostra):**
+
+| Tipo leito | Situação | Data | N |
+|------------|----------|------|---|
+| Complementar Intensivo | Descartado | 2026-03-21 | 10 |
+| Clínico Isolamento | Descartado | 2026-04-02 | 8 |
+| Complementar Intensivo | Descartado | 2026-03-28 | 8 |
+| Complementar Intensivo | Descartado | 2026-03-24 | 8 |
+| Complementar Intensivo | Descartado | 2026-03-23 | 8 |
+| Complementar Intensivo | Descartado | 2026-03-22 | 8 |
+| Clínico Isolamento | Descartado | 2026-03-11 | 8 |
+| Complementar Intensivo | Descartado | 2026-05-13 | 7 |
+
+**SISREG hospitalar (top mun×status):**
+
+| Município | Status | N |
+|-----------|--------|---|
+| CUIABA | Aprovada | 19036 |
+| VARZEA GRANDE | Aprovada | 12231 |
+| RONDONOPOLIS | Aprovada | 11244 |
+| SINOP | Aprovada | 6489 |
+| CUIABA | Negada | 4929 |
+| LUCAS DO RIO VERDE | Aprovada | 4097 |
+| TANGARA DA SERRA | Aprovada | 4097 |
+| PRIMAVERA DO LESTE | Aprovada | 4079 |
+
+**SISREG ambulatorial — pendentes/fila:**
+
+| Município | Status | N |
+|-----------|--------|---|
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 58884 |
+| SINOP | SOLICITAÇÃO / PENDENTE / REGULADOR | 24798 |
+| SINOP | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 21950 |
+| VARZEA GRANDE | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 21087 |
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 19416 |
+| CUIABA | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 17554 |
+| VARZEA GRANDE | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 12421 |
+| BARRA DO GARCAS | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 10432 |
+
+_Caveat:_ IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 
 ## 8. Casos especiais (sinal lab × critérios Guia MS)
 

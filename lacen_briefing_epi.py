@@ -34,6 +34,7 @@ GAL_SINAN_CSV = "briefing_gal_sinan_divergencia.csv"
 GEO_HOTSPOTS_CSV = "briefing_geo_hotspots.csv"
 CRUZAMENTO_CSV = "briefing_cruzamento_bases.csv"
 CRUZAMENTO_SIH_SIA_CSV = "briefing_cruzamento_sih_sia.csv"
+SINAIS_REDE_CSV = "briefing_sinais_rede_externa.csv"
 
 # Alinhado a lacen_relatorio_cievs._week_incomplete / _pick_se_lab
 _MIN_TESTS_COMPLETE = 50
@@ -1279,6 +1280,90 @@ def carregar_cruzamento_sih_sia(
     return empty
 
 
+def carregar_sinais_rede_externa(
+    outdir: Path | str = OUTDIR_DEFAULT,
+) -> dict[str, Any]:
+    """
+    Sinais leves IndicaSUS (ocupação) + SISREG (filas/status) do staging.
+    Não bloqueia se ausentes. Não inclui dados nominais.
+    """
+    stage = Path(outdir) / "staging_dw"
+    out: dict[str, Any] = {
+        "indicasus_ocupacao_top": [],
+        "sisreg_hosp_top": [],
+        "sisreg_amb_pendente_top": [],
+        "caveat": (
+            "IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); "
+            "não confirmam surto nem substituem GAL×SINAN."
+        ),
+        "presente": False,
+    }
+
+    occ_path = stage / "indicasus_ocupacao_agg.csv"
+    if occ_path.exists():
+        rows = _read_csv(occ_path)
+        scored: list[dict[str, Any]] = []
+        for r in rows:
+            n = _num(r.get("n"), 0.0) or 0.0
+            scored.append(
+                {
+                    "fonte": "IndicaSUS",
+                    "tipo_leito": str(r.get("tipo_leito") or "—")[:60],
+                    "situacao": str(r.get("situacao_covid") or r.get("situacao") or "—")[:40],
+                    "data_ref": str(r.get("data_ref") or "")[:12],
+                    "n": int(n),
+                }
+            )
+        scored.sort(key=lambda x: -int(x.get("n") or 0))
+        out["indicasus_ocupacao_top"] = scored[:12]
+        if scored:
+            out["presente"] = True
+
+    hosp_path = stage / "sisreg_hosp_mun_status_agg.csv"
+    if hosp_path.exists():
+        rows = _read_csv(hosp_path)
+        scored = []
+        for r in rows:
+            n = _num(r.get("n_solicitacoes") or r.get("n"), 0.0) or 0.0
+            scored.append(
+                {
+                    "fonte": "SISREG/hosp",
+                    "municipio": str(r.get("municipio") or "—")[:40],
+                    "status": str(r.get("status") or "—")[:40],
+                    "n": int(n),
+                }
+            )
+        scored.sort(key=lambda x: -int(x.get("n") or 0))
+        out["sisreg_hosp_top"] = scored[:10]
+        if scored:
+            out["presente"] = True
+
+    amb_path = stage / "sisreg_amb_mun_status_agg.csv"
+    if amb_path.exists():
+        rows = _read_csv(amb_path)
+        scored = []
+        for r in rows:
+            st = str(r.get("status_solicitacao") or r.get("status") or "").upper()
+            if "PENDENTE" not in st and "FILA" not in st:
+                continue
+            n = _num(r.get("n_solicitacoes") or r.get("n"), 0.0) or 0.0
+            scored.append(
+                {
+                    "fonte": "SISREG/amb",
+                    "municipio": str(r.get("municipio") or "—")[:40],
+                    "status": str(r.get("status_solicitacao") or r.get("status") or "—")[:60],
+                    "procedimento": str(r.get("nome_grupo_procedimento") or "")[:50],
+                    "n": int(n),
+                }
+            )
+        scored.sort(key=lambda x: -int(x.get("n") or 0))
+        out["sisreg_amb_pendente_top"] = scored[:10]
+        if scored:
+            out["presente"] = True
+
+    return out
+
+
 @dataclass
 class BriefingEpi:
     se_iso: str = "—"
@@ -1294,6 +1379,7 @@ class BriefingEpi:
     geo: dict[str, Any] = field(default_factory=dict)
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
     cruzamento_sih_sia: dict[str, Any] = field(default_factory=dict)
+    sinais_rede: dict[str, Any] = field(default_factory=dict)
     fontes: list[str] = field(default_factory=list)
     usou_ml: bool = False
     rows_flat: list[dict[str, str]] = field(default_factory=list)
@@ -1371,6 +1457,27 @@ class BriefingEpi:
             caveat = str(sih.get("caveat") or "")
             if caveat:
                 lines.append(f"  Caveat: {caveat[:160]}")
+        rede = self.sinais_rede or {}
+        if rede.get("presente"):
+            lines.append("7c) Sinais IndicaSUS / SISREG:")
+            for row in (rede.get("indicasus_ocupacao_top") or [])[:4]:
+                lines.append(
+                    f"  · IndicaSUS ocupação: {row.get('tipo_leito')} / "
+                    f"{row.get('situacao')} n={row.get('n')} ({row.get('data_ref')})"
+                )
+            for row in (rede.get("sisreg_hosp_top") or [])[:4]:
+                lines.append(
+                    f"  · SISREG hosp: {row.get('municipio')} [{row.get('status')}] "
+                    f"n={row.get('n')}"
+                )
+            for row in (rede.get("sisreg_amb_pendente_top") or [])[:3]:
+                lines.append(
+                    f"  · SISREG amb pendente: {row.get('municipio')} "
+                    f"n={row.get('n')}"
+                )
+            cav = str(rede.get("caveat") or "")
+            if cav:
+                lines.append(f"  Caveat: {cav[:160]}")
         if any(x.get("caveat_igg") for x in self.maior_positividade):
             lines.append(
                 "Nota: positividade IgG/sorologia elevada ≠ surto agudo."
@@ -1653,6 +1760,10 @@ def computar_briefing_epi(
     if sih_sia.get("top_mun"):
         fontes.append("Cruzamento SIH/SIA (VW_INTERNACAO)")
 
+    sinais_rede = carregar_sinais_rede_externa(outdir)
+    if sinais_rede.get("presente"):
+        fontes.append("IndicaSUS/SISREG (ocupação + filas)")
+
     briefing = BriefingEpi(
         se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
         se_tuple=yw,
@@ -1669,6 +1780,7 @@ def computar_briefing_epi(
         geo=geo,
         cruzamento_bases=cruz,
         cruzamento_sih_sia=sih_sia,
+        sinais_rede=sinais_rede,
         fontes=fontes,
         usou_ml=usou_ml,
     )
@@ -1759,6 +1871,48 @@ def persistir_briefing(
                     "cid_familia": row.get("cid_familia", ""),
                     "n": row.get("n", ""),
                     "caveat": caveat[:240],
+                }
+            )
+
+    # Sinais IndicaSUS / SISREG
+    rede_path = outdir / SINAIS_REDE_CSV
+    rede = briefing.sinais_rede or {}
+    rede_fields = ["fonte", "municipio", "status", "detalhe", "n", "caveat"]
+    cav_rede = str(rede.get("caveat") or "")
+    with rede_path.open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=rede_fields, extrasaction="ignore")
+        w.writeheader()
+        for row in rede.get("indicasus_ocupacao_top") or []:
+            w.writerow(
+                {
+                    "fonte": row.get("fonte", "IndicaSUS"),
+                    "municipio": "—",
+                    "status": row.get("situacao", ""),
+                    "detalhe": f"{row.get('tipo_leito', '')} @ {row.get('data_ref', '')}",
+                    "n": row.get("n", ""),
+                    "caveat": cav_rede[:240],
+                }
+            )
+        for row in rede.get("sisreg_hosp_top") or []:
+            w.writerow(
+                {
+                    "fonte": row.get("fonte", "SISREG/hosp"),
+                    "municipio": row.get("municipio", ""),
+                    "status": row.get("status", ""),
+                    "detalhe": "hospitalar",
+                    "n": row.get("n", ""),
+                    "caveat": cav_rede[:240],
+                }
+            )
+        for row in rede.get("sisreg_amb_pendente_top") or []:
+            w.writerow(
+                {
+                    "fonte": row.get("fonte", "SISREG/amb"),
+                    "municipio": row.get("municipio", ""),
+                    "status": row.get("status", ""),
+                    "detalhe": row.get("procedimento", ""),
+                    "n": row.get("n", ""),
+                    "caveat": cav_rede[:240],
                 }
             )
 
@@ -1910,6 +2064,35 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
                 for r in ((briefing.cruzamento_sih_sia or {}).get("top_mun") or [])[:12]
             ],
             "familias": list((briefing.cruzamento_sih_sia or {}).get("familias") or []),
+        },
+        "sinais_rede": {
+            "caveat": str((briefing.sinais_rede or {}).get("caveat") or ""),
+            "presente": bool((briefing.sinais_rede or {}).get("presente")),
+            "indicasus_ocupacao_top": [
+                {
+                    "tipo_leito": str(r.get("tipo_leito") or "—"),
+                    "situacao": str(r.get("situacao") or "—"),
+                    "data_ref": str(r.get("data_ref") or ""),
+                    "n": _fmt_num(r.get("n")),
+                }
+                for r in ((briefing.sinais_rede or {}).get("indicasus_ocupacao_top") or [])[:8]
+            ],
+            "sisreg_hosp_top": [
+                {
+                    "municipio": str(r.get("municipio") or "—"),
+                    "status": str(r.get("status") or "—"),
+                    "n": _fmt_num(r.get("n")),
+                }
+                for r in ((briefing.sinais_rede or {}).get("sisreg_hosp_top") or [])[:8]
+            ],
+            "sisreg_amb_pendente_top": [
+                {
+                    "municipio": str(r.get("municipio") or "—"),
+                    "status": str(r.get("status") or "—"),
+                    "n": _fmt_num(r.get("n")),
+                }
+                for r in ((briefing.sinais_rede or {}).get("sisreg_amb_pendente_top") or [])[:8]
+            ],
         },
         "fontes": list(briefing.fontes),
         "usou_ml": briefing.usou_ml,

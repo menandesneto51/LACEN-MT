@@ -1,6 +1,6 @@
 {
   "se": "2026-SE30",
-  "gerado_em": "2026-08-30 19:26 Hora Padrão Brasil Central",
+  "gerado_em": "2026-08-30 20:26 Hora Padrão Brasil Central",
   "fonte_notificacoes": "proxy_exames_GAL",
   "n_casos_especiais": 1,
   "casos": [
@@ -209,5 +209,229 @@
     "familias": [
       "dengue_arbovirose"
     ]
+  },
+  "sinais_rede": {
+    "indicasus_ocupacao_top": [
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-21",
+        "n": 10
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Clínico Isolamento",
+        "situacao": "Descartado",
+        "data_ref": "2026-04-02",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-28",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-24",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-23",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-22",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Clínico Isolamento",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-11",
+        "n": 8
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-05-13",
+        "n": 7
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-05-12",
+        "n": 7
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-04-30",
+        "n": 7
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-04-13",
+        "n": 7
+      },
+      {
+        "fonte": "IndicaSUS",
+        "tipo_leito": "Complementar Intensivo",
+        "situacao": "Descartado",
+        "data_ref": "2026-03-31",
+        "n": 7
+      }
+    ],
+    "sisreg_hosp_top": [
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "CUIABA",
+        "status": "Aprovada",
+        "n": 19036
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "VARZEA GRANDE",
+        "status": "Aprovada",
+        "n": 12231
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "RONDONOPOLIS",
+        "status": "Aprovada",
+        "n": 11244
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "SINOP",
+        "status": "Aprovada",
+        "n": 6489
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "CUIABA",
+        "status": "Negada",
+        "n": 4929
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "LUCAS DO RIO VERDE",
+        "status": "Aprovada",
+        "n": 4097
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "TANGARA DA SERRA",
+        "status": "Aprovada",
+        "n": 4097
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "PRIMAVERA DO LESTE",
+        "status": "Aprovada",
+        "n": 4079
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "SORRISO",
+        "status": "Aprovada",
+        "n": 3870
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "CACERES",
+        "status": "Aprovada",
+        "n": 3593
+      }
+    ],
+    "sisreg_amb_pendente_top": [
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "CUIABA",
+        "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
+        "procedimento": "",
+        "n": 58884
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "SINOP",
+        "status": "SOLICITAÇÃO / PENDENTE / REGULADOR",
+        "procedimento": "",
+        "n": 24798
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "SINOP",
+        "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
+        "procedimento": "",
+        "n": 21950
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "VARZEA GRANDE",
+        "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
+        "procedimento": "",
+        "n": 21087
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "CUIABA",
+        "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
+        "procedimento": "GRUPO - DIAGNOSTICO POR ULTRA-SONOGRAFIA",
+        "n": 19416
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "CUIABA",
+        "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
+        "procedimento": "",
+        "n": 17554
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "VARZEA GRANDE",
+        "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
+        "procedimento": "GRUPO - PATOLOGIA CLINICA (EXAMES DE LABORATORIO)",
+        "n": 12421
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "BARRA DO GARCAS",
+        "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
+        "procedimento": "GRUPO - DIAGNOSTICO EM LABORATORIO CLINICO",
+        "n": 10432
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "VARZEA GRANDE",
+        "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
+        "procedimento": "",
+        "n": 9785
+      },
+      {
+        "fonte": "SISREG/amb",
+        "municipio": "ALTA FLORESTA",
+        "status": "SOLICITAÇÃO / PENDENTE / REGULADOR",
+        "procedimento": "",
+        "n": 9488
+      }
+    ],
+    "caveat": "IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.",
+    "presente": true
   }
 }
