@@ -1,8 +1,8 @@
 @echo off
 cd /d "%~dp0"
-title LACEN MT — Relatorio CIEVS 2x/semana
+title LACEN MT — Radar LACEN (CIEVS)
 echo.
-echo === LACEN-MT / CIEVS / Vigidesastres — Relatorio 2x/semana ===
+echo === Radar LACEN · SES-MT / CIEVS / Vigidesastres ===
 echo Dados: saida_pipeline  ^|  Credenciais: .env (ver .env.example)
 echo Agenda sugerida: terca e sexta
 echo.

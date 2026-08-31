@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-LACEN MT — envio do relatório CIEVS 2×/semana (Telegram + e-mail).
+LACEN MT — envio do Radar LACEN / alerta CIEVS (Telegram + e-mail).
 
 Gera o payload institucional via `lacen_relatorio_cievs.py` a partir de
 `saida_pipeline` e dispara pelos mesmos canais do alerta de teste.
@@ -59,7 +59,7 @@ def _mask_secrets(text: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Relatório CIEVS 2×/semana (Telegram + e-mail)"
+        description="Radar LACEN — alerta CIEVS (Telegram + e-mail)"
     )
     parser.add_argument("--outdir", type=Path, default=OUTDIR_DEFAULT)
     parser.add_argument(

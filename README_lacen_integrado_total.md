@@ -52,7 +52,7 @@ python scripts/enviar_alerta_teste.py
 python scripts/enviar_alerta_teste.py --dry-run
 ```
 
-### Relatório CIEVS 2×/semana
+### Radar LACEN (alerta CIEVS)
 Payload institucional (blocos A–D) via `lacen_relatorio_cievs.py` — Telegram curto + e-mail completo:
 
 ```bat

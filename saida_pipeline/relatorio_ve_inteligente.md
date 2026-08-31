@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-30 20:26 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-30 20:56 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 

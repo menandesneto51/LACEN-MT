@@ -1,8 +1,8 @@
-[CIEVS Relatório 2×/semana] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 20:48 Hora Padrão Brasil Central
+[Radar LACEN] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 20:56 Hora Padrão Brasil Central
 ------------------------------------------------------------
-SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana
+Radar LACEN · SES-MT / CIEVS / Vigidesastres
 SE de referência: 2026-SE30 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-30 20:48 Hora Padrão Brasil Central
+Gerado em: 2026-08-30 20:56 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
 Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE30 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda.
 
@@ -164,46 +164,49 @@ Fontes: staging:VW_GAL, + saida_pipeline complementar (17 artefatos), integrated
 Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
-<b>SES-MT / LACEN-MT / CIEVS / Vigidesastres — Relatório 2×/semana</b>
+<b>📡 Radar LACEN · SES-MT / CIEVS / Vigidesastres</b>
 SE 2026-SE30 · <b>rede sob pressão</b>
-Fonte: DW · staging (VW_GAL) + saida_pipeline · atraso 4 SE (esp. 2026-SE34.)
-2026-08-30 20:48 Hora Padrão Brasil Central
+Fonte: DW · staging (VW_GAL) + saida_pipeline · atraso 4 SE (esp. 2026-SE34)
+2026-08-30 20:56 Hora Padrão Brasil Central
 
-<b>KPIs</b>
+📡 <b>KPIs</b>
 Pos 169 (-1%) · Exames 2.902 · TAT 10,6/118,3d · %≤48h 36%
 Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
 
-<b>Top solicitados</b> <i>(Δ SE-1)</i>
+🧪 <b>Demanda</b> <i>(Δ SE-1)</i>
 • dengue: n=2130 Δ%=+161.7% ↑ · +3 (0.1%)
 • tuberculose: n=222 Δ%=-62.3% ↓ · +25 (11.3%)
 • hepatite_b_hbv: n=155 Δ%=-22.9% ↓ · +101 (65.2%)
 • chikungunya: n=116 Δ%=+2.7% → · +0 (0.0%)
-• sars_cov_2: n=39 Δ%=-35.0% ↓ · +0 (0.0%)
 
-<b>Positividade</b> <i>(top 3)</i>
+📈 <b>Positividade</b>
 • hepatite_b_hbv: 65.2% Δ%=+63.7% ↑ (155 ex.)
 • tuberculose: 11.3% Δ%=+89.5% ↑ (222 ex.)
 • meningite: 3.2% Δ%=-12.9% ↓ (31 ex.)
 
-<b>Território</b>
+🗺️ <b>Território</b>
 • Vizinhos tuberculose: CUIABA ↔ VARZEA GRANDE (+4 / +3)
 • Vizinhos tuberculose: CUIABA ↔ CHAPADA DOS GUIMARAES (+4 / +1)
 • Vizinhos tuberculose: VARZEA GRANDE ↔ CHAPADA DOS GUIMARAES (+3 / +1)
 • GAL×SINAN LUCAS DO RIO VERDE×dengue: gal_sem_sinan
 • GAL×SINAN VARZEA GRANDE×dengue: gal_sem_sinan
 
-<b>Ações prioritárias</b> <i>(VE)</i>
-<b>1. CIEVS</b>
-→ Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); manter linguagem «investi… · 7 dias
-<b>2. SES-MT</b>
-→ Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar CRS/VE municipal na investigação conforme Guia MS (ref. local `notificav… · 15 dias
-<b>3. Área técnica — Hepatites virais</b>
-→ Programa hepatite: estratificar marcadores/definição de caso em JUINA; orientar rede sobre fluxo de notificação e conduta técnica do agravo… · 7 dias
+⚠️ <b>Recomendações</b>
+<b>1. CIEVS</b> — Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); manter linguage…
+<b>2. VE municipal / CRS</b> — Investigar pico de solicitações de dengue (n=2130, Δ%=+161.7%).
+<b>3. Área técnica / VE</b> — Validar positividade de hepatite_b_hbv (65.2%; 155 ex.); estratificar marcadores se aplicável.
+<b>4. CIEVS / VE municipais</b> — Reforçar vigilância ativa no cluster CUIABA ↔ VARZEA GRANDE (tuberculose); comunicar entre VE municipais.
+<b>5. VE municipal</b> — Conciliar GAL×SINAN em LUCAS DO RIO VERDE×dengue (gal_sem_sinan); checar notificação e fluxo de coleta.
+<b>6. LACEN / CRS</b> — Aliviar pressão de rede em VARZEA GRANDE (critica); revisar TAT, backlog e capacidade local.
+<b>7. Vigilância municipal + referência L…</b> — NOSSA SENHORA DO LIVRAMENTO: Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia……
+<b>8. SES-MT</b> — Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar CRS/VE municipal na investigação conforme Guia MS (ref. local…
+<b>9. VE municipal / CRS</b> — Investigar pico de solicitações de meningite (n=31, Δ%=+14.8%).
+<b>10. Área técnica / VE</b> — Validar positividade de tuberculose (11.3%; 222 ex.); estratificar marcadores se aplicável.
 
-<b>Parecer</b>
+✅ <b>Parecer</b>
 Juína HBV: 46 ex. / +24 (52.2%) — sinal lab; investigar (Guia MS); não declarar surto automático.
 
-<b>Predito</b> <i>(risco agravo)</i>
+🔮 <b>Predito</b> <i>(risco agravo)</i>
 • CASTANHEIRA/hepatite [Crítico] estabelecimentos CNES: 429; exames MA8: 7,88
 Rede: VARZEA GRANDE (critica), CACERES (critica), CUIABA (critica)
 

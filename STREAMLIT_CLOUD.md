@@ -65,7 +65,7 @@ O Cloud **exibe** alertas (fila, emergência, risco, silêncio, pressão) lidos 
 Disparo Telegram/e-mail **não** roda no Streamlit Cloud; use localmente:
 
 - Alerta teste: `python scripts/enviar_alerta_teste.py`
-- Relatório CIEVS 2×/semana (terça/sexta): `python scripts/enviar_relatorio_cievs.py --dry-run` ou `enviar_relatorio_cievs.bat`
+- Radar LACEN / alerta CIEVS (terça/sexta): `python scripts/enviar_relatorio_cievs.py --dry-run` ou `enviar_relatorio_cievs.bat`
 
 Credenciais em `.env` — ver `.env.example` (`TELEGRAM_*`, `SMTP`/`EMAIL_*`).
 
