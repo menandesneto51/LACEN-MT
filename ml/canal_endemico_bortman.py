@@ -477,6 +477,93 @@ def carregar_indice_bortman(
     return out
 
 
+def listar_zonas_atencao(
+    outdir: Path | str,
+    *,
+    se_iso: str | None = None,
+    serie: str = "positivos",
+    top: int = 10,
+) -> list[dict[str, Any]]:
+    """
+    Top município×agravo em zona alerta/epidemia para a SE atual.
+
+    Prioriza casos observados > 0; ignora combinações com baseline e casos
+    ambos zerados (artefato quando P25=P50=P75=0).
+    """
+    outdir = Path(outdir)
+    path = outdir / OUT_CSV
+    if not path.exists():
+        return []
+    try:
+        df = pd.read_csv(path, low_memory=False)
+    except OSError:
+        return []
+    if df.empty or "zona" not in df.columns:
+        return []
+    if "serie" in df.columns:
+        df = df[df["serie"].astype(str) == serie]
+    parsed = _parse_se_iso(se_iso) if se_iso else None
+    if parsed and "ano" in df.columns and "semana_epidemiologica" in df.columns:
+        y, w = parsed
+        df = df[
+            (pd.to_numeric(df["ano"], errors="coerce") == y)
+            & (pd.to_numeric(df["semana_epidemiologica"], errors="coerce") == w)
+        ]
+    df = df[df["zona"].astype(str).str.casefold().isin(ZONAS_RISCO)].copy()
+    if df.empty:
+        return []
+
+    for col in ("casos", "p25", "p50", "p75", "razao_vs_p50"):
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    # Descarta falso positivo: 0 casos com limite superior histórico também 0
+    if "casos" in df.columns and "p75" in df.columns:
+        mask_ruido = (df["casos"].fillna(0) <= 0) & (df["p75"].fillna(0) <= 0)
+        df = df[~mask_ruido]
+    # Para o alerta CIEVS: só combinações com casos observados (>0)
+    if "casos" in df.columns:
+        df = df[df["casos"].fillna(0) > 0]
+    if df.empty:
+        return []
+
+    zona_rank = df["zona"].astype(str).str.casefold().map(
+        {"epidemia": 0, "alerta": 1}
+    ).fillna(9)
+    casos_rank = -df["casos"].fillna(0) if "casos" in df.columns else 0
+    df = df.assign(_zr=zona_rank, _cr=casos_rank).sort_values(
+        ["_zr", "_cr"], kind="mergesort"
+    )
+
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for _, row in df.iterrows():
+        ag = str(row.get("agravo") or "").strip()
+        mun = _norm_mun(row.get("municipio"))
+        if not ag or not mun or (ag, mun) in seen:
+            continue
+        seen.add((ag, mun))
+        out.append(
+            {
+                "agravo": ag,
+                "municipio": mun,
+                "zona": str(row.get("zona") or "").casefold(),
+                "casos": row.get("casos"),
+                "p25": row.get("p25"),
+                "p50": row.get("p50"),
+                "p75": row.get("p75"),
+                "razao_vs_p50": row.get("razao_vs_p50"),
+                "n_anos_baseline": row.get("n_anos_baseline"),
+                "serie": str(row.get("serie") or serie),
+                "ano": row.get("ano"),
+                "semana_epidemiologica": row.get("semana_epidemiologica"),
+            }
+        )
+        if len(out) >= max(1, int(top)):
+            break
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Canal endêmico Bortman (P25/P50/P75) — LACEN / CIEVS"

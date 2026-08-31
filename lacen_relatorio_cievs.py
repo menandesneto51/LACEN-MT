@@ -632,6 +632,7 @@ class RelatorioCIEVS:
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
     score_prioridade: list[dict[str, str]] = field(default_factory=list)
+    canal_endemico: list[dict[str, str]] = field(default_factory=list)
     marcadores_top: list[dict[str, str]] = field(default_factory=list)
     lacunas_vigilancia: list[dict[str, str]] = field(default_factory=list)
     alertas_especificos: list[str] = field(default_factory=list)
@@ -1783,6 +1784,95 @@ def _fam_casa_com_sinal(fam: str, sinais: set[str]) -> bool:
     return False
 
 
+def _fmt_canal_num(val: Any) -> str:
+    """Número curto para canal endêmico (casos / limites)."""
+    if val is None or val == "":
+        return "—"
+    try:
+        f = float(val)
+    except (TypeError, ValueError):
+        return str(val)
+    if math.isnan(f):
+        return "—"
+    if abs(f - round(f)) < 1e-9:
+        return str(int(round(f)))
+    return f"{f:.1f}".rstrip("0").rstrip(".")
+
+
+def _zona_canal_pt(zona: str) -> str:
+    z = (zona or "").casefold().strip()
+    if z == "epidemia":
+        return "acima do limite histórico"
+    if z == "alerta":
+        return "zona de alerta"
+    return z or "—"
+
+
+def carregar_canal_endemico_alerta(
+    outdir: Path | str,
+    *,
+    se_iso: str | None = None,
+    top: int = 10,
+) -> list[dict[str, str]]:
+    """
+    Carrega canal_endemico_classificacao.csv e devolve top alerta/epidemia
+    em formato string para Telegram/e-mail.
+    """
+    try:
+        from ml.canal_endemico_bortman import listar_zonas_atencao
+    except Exception:  # noqa: BLE001
+        return []
+    rows = listar_zonas_atencao(outdir, se_iso=se_iso, top=top)
+    out: list[dict[str, str]] = []
+    for r in rows:
+        zona = str(r.get("zona") or "").casefold()
+        casos = _fmt_canal_num(r.get("casos"))
+        p50 = _fmt_canal_num(r.get("p50"))
+        p75 = _fmt_canal_num(r.get("p75"))
+        razao = r.get("razao_vs_p50")
+        razao_s = ""
+        try:
+            if razao is not None and str(razao).strip() != "":
+                rf = float(razao)
+                if not math.isnan(rf) and rf > 0:
+                    razao_s = f"{rf:.1f}× a mediana".replace(".0×", "×")
+        except (TypeError, ValueError):
+            razao_s = ""
+        out.append(
+            {
+                "agravo": str(r.get("agravo") or ""),
+                "agravo_pt": _nome_agravo_pt(str(r.get("agravo") or "")),
+                "municipio": str(r.get("municipio") or ""),
+                "municipio_pt": _mun_titulo(str(r.get("municipio") or "")),
+                "zona": zona,
+                "zona_pt": _zona_canal_pt(zona),
+                "casos": casos,
+                "mediana": p50,
+                "limite_superior": p75,
+                "razao_vs_mediana": razao_s,
+                "n_anos_baseline": _fmt_canal_num(r.get("n_anos_baseline")),
+            }
+        )
+    return out
+
+
+def _linha_canal_endemico(row: dict[str, str]) -> str:
+    """Uma linha legível: município × agravo — zona · casos vs mediana/limite."""
+    mun = row.get("municipio_pt") or _mun_titulo(str(row.get("municipio") or ""))
+    agr = row.get("agravo_pt") or _nome_agravo_pt(str(row.get("agravo") or ""))
+    zona = str(row.get("zona") or "").casefold()
+    zona_lbl = "EPIDEMIA" if zona == "epidemia" else "ALERTA"
+    casos = row.get("casos") or "—"
+    med = row.get("mediana") or "—"
+    lim = row.get("limite_superior") or "—"
+    razao = str(row.get("razao_vs_mediana") or "").strip()
+    extra = f"; {razao}" if razao else ""
+    return (
+        f"{mun} × {agr}: {zona_lbl} — {casos} casos "
+        f"(mediana histórica {med}; limite superior {lim}){extra}"
+    )
+
+
 def coletar_recomendacoes_alerta(
     rel: RelatorioCIEVS, *, max_n: int = 12
 ) -> list[dict[str, str]]:
@@ -1794,6 +1884,7 @@ def coletar_recomendacoes_alerta(
     """
     buckets: dict[str, list[dict[str, str]]] = {
         "ve": [],
+        "canal": [],
         "demanda": [],
         "positividade": [],
         "vizinhos": [],
@@ -1824,6 +1915,33 @@ def coletar_recomendacoes_alerta(
             acao = f"{acao} · prazo {prazo}" if acao else f"prazo {prazo}"
         agravo = _nome_agravo_pt(str(r.get("agravo") or ""))
         _add("ve", area, acao, f"ve|{area[:32]}|{agravo}|{acao[:40]}")
+
+    for c in (rel.canal_endemico or [])[:8]:
+        zona = str(c.get("zona") or "").casefold()
+        if zona not in {"epidemia", "alerta"}:
+            continue
+        mun = c.get("municipio_pt") or _mun_titulo(str(c.get("municipio") or ""))
+        agr = c.get("agravo_pt") or _nome_agravo_pt(str(c.get("agravo") or ""))
+        casos = c.get("casos") or "—"
+        lim = c.get("limite_superior") or "—"
+        if zona == "epidemia":
+            _add(
+                "canal",
+                "CIEVS / VE municipal",
+                f"{mun} ({agr}): {casos} casos acima do limite histórico "
+                f"({lim}) do canal endêmico — investigar; "
+                f"não declarar epidemia automaticamente.",
+                f"canal|{mun}|{agr}|ep",
+            )
+        else:
+            _add(
+                "canal",
+                "CIEVS / VE municipal",
+                f"{mun} ({agr}): zona de alerta no canal endêmico "
+                f"({casos} casos; limite {lim}) — reforçar monitoramento "
+                f"e cruzar com notificação.",
+                f"canal|{mun}|{agr}|al",
+            )
 
     for x in (rel.briefing_mais_solicitados or [])[:8]:
         tgt = str(x.get("target") or "")
@@ -1915,6 +2033,7 @@ def coletar_recomendacoes_alerta(
 
     order = (
         "ve",
+        "canal",
         "demanda",
         "positividade",
         "vizinhos",
@@ -2439,6 +2558,13 @@ def montar_relatorio(
     else:
         internacoes_fmt = carregar_internacoes_alerta(outdir, top_por_familia=5)
 
+    # Canal endêmico Bortman (alerta/epidemia da SE de referência)
+    canal_rows = carregar_canal_endemico_alerta(
+        outdir, se_iso=se if se != "—" else None, top=10
+    )
+    if canal_rows and "canal endêmico Bortman" not in " ".join(fontes).casefold():
+        fontes.append("canal_endemico_classificacao.csv (Bortman)")
+
     # Filtra SLA respiratório genérico salvo se houver sinal explícito no briefing
     sinais_txt = " ".join(
         [
@@ -2498,6 +2624,7 @@ def montar_relatorio(
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
         score_prioridade=list(briefing.get("score_prioridade") or []),
+        canal_endemico=canal_rows,
         marcadores_top=list(briefing.get("marcadores_top") or []),
         lacunas_vigilancia=list(briefing.get("lacunas_vigilancia") or []),
         alertas_especificos=list(briefing.get("alertas_especificos") or []),
@@ -2633,6 +2760,25 @@ def _coletar_sinais_atencao(rel: RelatorioCIEVS, *, max_n: int = 5) -> list[str]
         banda = str(p.get("banda") or "alto").lower()
         _push(f"Risco previsto {banda}: {mun} ({fam})")
 
+    for c in (rel.canal_endemico or [])[:4]:
+        if len(lines) >= max_n:
+            break
+        zona = str(c.get("zona") or "").casefold()
+        if zona not in {"epidemia", "alerta"}:
+            continue
+        mun = c.get("municipio_pt") or _mun_titulo(str(c.get("municipio") or ""))
+        agr = c.get("agravo_pt") or _nome_agravo_pt(str(c.get("agravo") or ""))
+        if zona == "epidemia":
+            _push(
+                f"Canal endêmico: {mun} × {agr} acima do limite histórico "
+                f"({c.get('casos', '—')} casos) — investigar"
+            )
+        else:
+            _push(
+                f"Canal endêmico: {mun} × {agr} em zona de alerta "
+                f"({c.get('casos', '—')} casos)"
+            )
+
     if not lines and rel.ve_resumo:
         _push(_tg_clip(_suavizar_texto_alerta(rel.ve_resumo), 160))
     if not lines:
@@ -2750,6 +2896,12 @@ def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
         for c in cartoes:
             taxa = str(c.get("taxa_positivos") or "").strip()
             taxa_bit = f" · {taxa}" if taxa else ""
+            zona = str(c.get("zona_bortman") or "").casefold()
+            zona_bit = ""
+            if zona == "epidemia":
+                zona_bit = " · canal: acima do limite histórico"
+            elif zona == "alerta":
+                zona_bit = " · canal: zona de alerta"
             lines.append(
                 html.escape(
                     _tg_clip(
@@ -2757,11 +2909,29 @@ def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
                         f"prob {c.get('probabilidade', '—')} / "
                         f"impacto {c.get('impacto', '—')} → "
                         f"{c.get('veredito', '—')} "
-                        f"[{c.get('confianca', 'Observado')}]{taxa_bit}",
+                        f"[{c.get('confianca', 'Observado')}]"
+                        f"{taxa_bit}{zona_bit}",
                         190,
                     )
                 )
             )
+
+    # Canal endêmico Bortman — top alerta/epidemia
+    canal = list(rel.canal_endemico or [])[:8]
+    if canal:
+        lines.extend(
+            [
+                "",
+                "📈 <b>Canal endêmico</b> "
+                "<i>(comparação com a mesma semana nos anos anteriores)</i>",
+                html.escape(
+                    "Acima do limite histórico = priorizar investigação; "
+                    "não declarar epidemia automaticamente."
+                ),
+            ]
+        )
+        for row in canal:
+            lines.append(html.escape(_tg_clip(_linha_canal_endemico(row), 175)))
 
     # Score municipal (proposta homologação) + caveat marcadores
     scores = list(rel.score_prioridade or [])[:5]
@@ -3011,6 +3181,18 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             )
             if c.get("acao_cievs"):
                 lines.append(f"     CIEVS: {c['acao_cievs']}")
+
+    if rel.canal_endemico:
+        lines.extend(
+            [
+                "",
+                "— Canal endêmico (comparação com a mesma semana nos anos anteriores) —",
+                "Acima do limite histórico = priorizar investigação; "
+                "não declarar epidemia automaticamente.",
+            ]
+        )
+        for i, row in enumerate(rel.canal_endemico[:10], 1):
+            lines.append(f"  {i}. {_linha_canal_endemico(row)}")
 
     if rel.score_prioridade:
         lines.extend(
@@ -3445,11 +3627,24 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
         f"<td style='padding:6px 8px'>{html.escape(c.get('confianca', '—'))}</td>"
         f"<td style='padding:6px 8px'><b>{html.escape(c.get('veredito', '—'))}</b></td>"
         f"<td style='padding:6px 8px'>{html.escape(c.get('taxa_positivos', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(_zona_canal_pt(str(c.get('zona_bortman') or '')) if c.get('zona_bortman') else '—')}</td>"
         f"<td style='padding:6px 8px'><small>"
         f"{html.escape(_tg_clip(str(c.get('acao_cievs') or ''), 120))}"
         f"</small></td>"
         "</tr>"
         for c in (rel.cartoes_risco or [])[:8]
+    ]
+    canal_rows_html = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('municipio_pt') or r.get('municipio') or '—')}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('agravo_pt') or r.get('agravo') or '—')}</td>"
+        f"<td style='padding:6px 8px'><b>{html.escape((r.get('zona') or '').upper() or '—')}</b></td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('casos') or '—')}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('mediana') or '—')}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('limite_superior') or '—')}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('razao_vs_mediana') or '—')}</td>"
+        "</tr>"
+        for r in (rel.canal_endemico or [])[:10]
     ]
     nota_igg_html = (
         f"<p style='background:#f0f4fa;border-left:4px solid #1B3281;padding:8px 12px;"
@@ -3537,9 +3732,22 @@ Probabilidade × impacto × confiança. Veredito operacional — não declara
 surto/epidemia automaticamente (Guia MS).
 </p>
 {_html_table(
-    ["Evento", "Prob.", "Impacto", "Confiança", "Veredito", "Taxa", "Ação CIEVS"],
+    ["Evento", "Prob.", "Impacto", "Confiança", "Veredito", "Taxa", "Canal endêmico", "Ação CIEVS"],
     cartao_rows,
     "(sem cartões nesta SE)",
+)}
+
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
+Canal endêmico — comparação histórica (método de Bortman)</h3>
+<p style="font-size:13px;color:#3d4f6f">
+Compara os casos da semana atual com a mesma semana nos anos anteriores
+(mediana e limite superior). <b>Acima do limite histórico</b> = priorizar
+investigação; <b>não declara epidemia automaticamente</b> (Guia MS).
+</p>
+{_html_table(
+    ["Município", "Agravo", "Zona", "Casos", "Mediana", "Limite superior", "vs mediana"],
+    canal_rows_html,
+    "(nenhum município×agravo em alerta/epidemia nesta SE)",
 )}
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">

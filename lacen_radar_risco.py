@@ -372,6 +372,29 @@ def montar_cartao_risco(
             f"deste agravo; comunicar resultados críticos à VE/CIEVS."
         )
 
+    # Canal endêmico: reforça recomendação em linguagem clara
+    if zona_bortman == "epidemia":
+        acoes["CIEVS"] = _clip(
+            f"Canal endêmico acima do limite histórico em {nome_evt}: "
+            f"priorizar investigação (não declarar epidemia automaticamente)."
+        )
+        if not acoes.get("VE municipal"):
+            acoes["VE municipal"] = _clip(
+                f"Investigar {tgt} em {mun}: casos acima do esperado "
+                f"para esta semana nos últimos anos."
+            )
+    elif zona_bortman == "alerta":
+        tip = (
+            f"Canal endêmico em zona de alerta para {nome_evt}: "
+            f"reforçar monitoramento e cruzar com notificação."
+        )
+        if veredito == "investigar":
+            acoes["CIEVS"] = _clip(
+                f"{acoes.get('CIEVS', '')} {tip}".strip()
+            )
+        else:
+            acoes["CIEVS"] = _clip(tip)
+
     score_rank = (
         _NIVEL_ORD.get(probabilidade, 0) * 3
         + _NIVEL_ORD.get(impacto, 0) * 2
@@ -676,6 +699,7 @@ def cartoes_para_relatorio(
                 ),
                 "acao_lacen": str(acoes.get("LACEN") or c.get("acao_lacen") or ""),
                 "tipo_sinal": str(c.get("tipo_sinal") or "Observado"),
+                "zona_bortman": str(c.get("zona_bortman") or ""),
             }
         )
     return out
