@@ -151,6 +151,8 @@ saida_pipeline/*
 !saida_pipeline/briefing_geo_hotspots.csv
 !saida_pipeline/briefing_cruzamento_bases.csv
 !saida_pipeline/briefing_cruzamento_sih_sia.csv
+!saida_pipeline/radar_eventos_risco.csv
+!saida_pipeline/radar_eventos_risco.parquet
 !saida_pipeline/relatorio_ve_inteligente.md
 !saida_pipeline/relatorio_ve_inteligente.html
 !saida_pipeline/relatorio_ve_acoes.csv

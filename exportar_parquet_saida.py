@@ -46,6 +46,7 @@ ESSENTIAL = [
     "executive_rede_summary.csv",
     "sim_qualidade.csv",
     "briefing_epi_se.csv",
+    "radar_eventos_risco.csv",
 ]
 
 

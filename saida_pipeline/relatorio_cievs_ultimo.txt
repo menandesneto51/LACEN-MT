@@ -1,13 +1,25 @@
-[Radar LACEN] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-30 21:32 Hora Padrão Brasil Central
+[Radar LACEN] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-31 07:47 Hora Padrão Brasil Central
 ------------------------------------------------------------
 Radar LACEN · CIEVS
 SE de referência: 2026-SE30 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-30 21:32 Hora Padrão Brasil Central
+Gerado em: 2026-08-31 07:47 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
 Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE30 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda.
 
 KPIs: Positivos SE 169 (-1%) · Exames 2.902 · Mun. 117 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
 Aviso: Atenção: SE ref 2026-SE30 atrasada 4 SE vs esperada 2026-SE34.
+
+— Visão executiva · Cartões de risco (CIEVS) —
+  1. dengue × CUIABA: prob=alto impacto=alto → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de dengue em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  2. hepatite_b_hbv × CUIABA: prob=alto impacto=médio → investigar [Derivado] · 3,0 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de hepatite_b_hbv em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  3. hepatite_b_hbv × JUINA: prob=alto impacto=médio → investigar [Derivado] · 49,6 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de hepatite_b_hbv em JUINA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  4. dengue × VARZEA GRANDE: prob=alto impacto=médio → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de dengue em VARZEA GRANDE: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  5. tuberculose × CUIABA: prob=alto impacto=médio → investigar [Derivado] · 0,6 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de tuberculose em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
 
 — A · Situação lab-epi [Observado] —
 Observado: positivos estaduais SE30=169 vs SE29=170 (-1%)
@@ -26,17 +38,17 @@ Top divergências GAL×SINAN:
   5. PONTES E LACERDA — exame_sem_notif_semana · notif=0 · exames=204
 
 — E · Briefing epidemiológico (5 perguntas) [Observado / Predito] —
-1) Mais solicitados (N + Δ vs SE-1):
-  1. dengue — n_se=2130 · n_ant=814 · Δ=1316 (+161.7%) ↑ · +3 · pos=0.1% [Observado]
-  2. tuberculose — n_se=222 · n_ant=589 · Δ=-367 (-62.3%) ↓ · +25 · pos=11.3% [Observado]
-  3. hepatite_b_hbv — n_se=155 · n_ant=201 · Δ=-46 (-22.9%) ↓ · +101 · pos=65.2% [Observado]
-  4. chikungunya — n_se=116 · n_ant=113 · Δ=3 (+2.7%) → · +0 · pos=0.0% [Observado]
-  5. sars_cov_2 — n_se=39 · n_ant=60 · Δ=-21 (-35.0%) ↓ · +0 · pos=0.0% [Observado]
-  6. meningite — n_se=31 · n_ant=27 · Δ=4 (+14.8%) ↑ · +1 · pos=3.2% [Observado]
-  7. oropouche — n_se=24 · n_ant=3 · Δ=21 (+700.0%) ↑ · +0 · pos=0.0% [Observado]
-  8. hepatite_c_hcv — n_se=23 · n_ant=33 · Δ=-10 (-30.3%) ↓ · +0 · pos=0.0% [Observado]
-  9. toxoplasmose_citomegalov_rus_igg — n_se=23 · n_ant=0 · Δ=23 (—) → · +21 · pos=91.3% [Observado]
-  10. toxoplasmose_citomegalov_rus_igm — n_se=23 · n_ant=0 · Δ=23 (—) → · +0 · pos=0.0% [Observado]
+1) Mais solicitados (N + Δ vs SE-1 + taxa/100 mil):
+  1. dengue — n_se=2130 · n_ant=814 · Δ=1316 (+161.7%) ↑ · +3 · pos=0.1% · 0,1 positivos por 100 mil habitantes [Observado]
+  2. tuberculose — n_se=222 · n_ant=589 · Δ=-367 (-62.3%) ↓ · +25 · pos=11.3% · 0,6 positivos por 100 mil habitantes [Observado]
+  3. hepatite_b_hbv — n_se=155 · n_ant=201 · Δ=-46 (-22.9%) ↓ · +101 · pos=65.2% · 2,6 positivos por 100 mil habitantes [Observado]
+  4. chikungunya — n_se=116 · n_ant=113 · Δ=3 (+2.7%) → · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  5. sars_cov_2 — n_se=39 · n_ant=60 · Δ=-21 (-35.0%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  6. meningite — n_se=31 · n_ant=27 · Δ=4 (+14.8%) ↑ · +1 · pos=3.2% · 0,0 positivos por 100 mil habitantes [Observado]
+  7. oropouche — n_se=24 · n_ant=3 · Δ=21 (+700.0%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  8. hepatite_c_hcv — n_se=23 · n_ant=33 · Δ=-10 (-30.3%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  9. toxoplasmose_citomegalov_rus_igg — n_se=23 · n_ant=0 · Δ=23 (—) → · +21 · pos=91.3% · 0,5 positivos por 100 mil habitantes [Observado]
+  10. toxoplasmose_citomegalov_rus_igm — n_se=23 · n_ant=0 · Δ=23 (—) → · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
 2) Maior positividade (Δ vs SE-1):
   1. hepatite_b_hbv — pos=65.2% · Δ%=+63.7% ↑ · med4SE=0.29 · 155 exames [Observado]
   2. tuberculose — pos=11.3% · Δ%=+89.5% ↑ · med4SE=0.06 · 222 exames [Observado]
@@ -120,7 +132,7 @@ Sinais IndicaSUS / SISREG:
   · SISREG amb pendente: CUIABA n=58884
   · SISREG amb pendente: SINOP n=24798
 Nota: Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda.
-Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO), IndicaSUS/SISREG (ocupação + filas)
+Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO), IndicaSUS/SISREG (ocupação + filas), cartões de risco evento (CIEVS), populacao (weekly/populacao_municipio)
 
 — F · Parecer VE (IA + Guia MS) —
 SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.3%); hepatite_b_hbv (155 ex., 65.2%). Destaque: JUINA × hepatite_b_hbv — 46 exames / +24 (52.2%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Comparação (dengue): vs SE-1 ↑ 1316 (+162%); acima da mediana das 4 SE. Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
@@ -179,14 +191,14 @@ Observado: confirmação alertas rodada anterior = 78% (78/100); modo=prospectiv
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
 Fonte primária: DW · staging (VW_GAL) + saida_pipeline
-Fontes: staging:VW_GAL, + saida_pipeline complementar (17 artefatos), integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO), IndicaSUS/SISREG (ocupação + filas), conhecimento_ve + lacen_agente_ve
+Fontes: staging:VW_GAL, + saida_pipeline complementar (17 artefatos), integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH/SIA (VW_INTERNACAO), IndicaSUS/SISREG (ocupação + filas), cartões de risco evento (CIEVS), populacao (weekly/populacao_municipio), conhecimento_ve + lacen_agente_ve
 Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
 <b>📡 Radar LACEN · CIEVS</b>
 semana epidemiológica 30/2026 · <b>rede sob pressão</b>
 Fontes: DW · staging (VW_GAL) + saida_pipeline (lab = uma fonte; cruzar com notificação) · bases atrasadas 4 semanas (esperada 2026-SE34)
-2026-08-30 21:32 Hora Padrão Brasil Central
+2026-08-31 07:47 Hora Padrão Brasil Central
 
 🚨 <b>Sinais de atenção</b> <i>(possível surto / epidemia / emergência / sinal novo)</i>
 • Juína × hepatite B: 46 exames / +24 (52.2%) — **Veredito preliminar (não substitui VE):** há **sinal laboratorial** relevante de hepati…
@@ -195,12 +207,19 @@ Fontes: DW · staging (VW_GAL) + saida_pipeline (lab = uma fonte; cruzar com not
 • Pico de demanda meningite: 31 exames (subiu 15% vs semana anterior) — possível aumento de casos / pressão sobre a VE.
 • Risco previsto crítico: Cuiabá (hepatite)
 
-📊 <b>Demanda e positividade</b> <i>(laboratório + notificação quando houver)</i>
-• Demanda dengue: 2130 exames, subiu 162% vs semana anterior; 3 positivos (0.1%)
-• Demanda tuberculose: 222 exames, caiu 62% vs semana anterior; 25 positivos (11.3%)
-• Demanda hepatite B: 155 exames, caiu 23% vs semana anterior; 101 positivos (65.2%)
-• Demanda chikungunya: 116 exames, quase estável (+2,7% vs semana anterior); 0 positivos (0.0%)
-• Demanda COVID-19: 39 exames, caiu 35% vs semana anterior; 0 positivos (0.0%)
+📊 <b>Demanda e positividade</b> <i>(laboratório + taxas /100 mil)</i>
+• Demanda dengue: 2130 exames, subiu 162% vs semana anterior; 3 positivos (0.1%); 0,1 positivos por 100 mil habitantes
+• Demanda tuberculose: 222 exames, caiu 62% vs semana anterior; 25 positivos (11.3%); 0,6 positivos por 100 mil habitantes
+• Demanda hepatite B: 155 exames, caiu 23% vs semana anterior; 101 positivos (65.2%); 2,6 positivos por 100 mil habitantes
+• Demanda chikungunya: 116 exames, quase estável (+2,7% vs semana anterior); 0 positivos (0.0%); 0,0 positivos por 100 mil habitantes
+• Demanda COVID-19: 39 exames, caiu 35% vs semana anterior; 0 positivos (0.0%); 0,0 positivos por 100 mil habitantes
+
+🃏 <b>Cartões de risco</b> <i>(evento · probabilidade × impacto)</i>
+• dengue × CUIABA: prob alto / impacto alto → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
+• hepatite_b_hbv × CUIABA: prob alto / impacto médio → investigar [Derivado] · 3,0 positivos por 100 mil habitantes
+• hepatite_b_hbv × JUINA: prob alto / impacto médio → investigar [Derivado] · 49,6 positivos por 100 mil habitantes
+• dengue × VARZEA GRANDE: prob alto / impacto médio → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
+• tuberculose × CUIABA: prob alto / impacto médio → investigar [Derivado] · 0,6 positivos por 100 mil habitantes
 
 🗺️ <b>Território / clusters</b>
 • Cluster vizinhos (tuberculose): CUIABA e VARZEA GRANDE (+4 / +3)

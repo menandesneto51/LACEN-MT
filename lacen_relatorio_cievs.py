@@ -619,6 +619,7 @@ class RelatorioCIEVS:
     briefing_localidades: list[dict[str, str]] = field(default_factory=list)
     briefing_vizinhos: list[dict[str, str]] = field(default_factory=list)
     briefing_risco: list[dict[str, str]] = field(default_factory=list)
+    cartoes_risco: list[dict[str, str]] = field(default_factory=list)
     briefing_gal_sinan: list[dict[str, str]] = field(default_factory=list)
     briefing_geo_nivel: str = "municipio"
     briefing_geo_nota: str = ""
@@ -2429,6 +2430,7 @@ def montar_relatorio(
         briefing_localidades=briefing.get("localidades") or [],
         briefing_vizinhos=briefing.get("vizinhos") or [],
         briefing_risco=briefing.get("risco") or [],
+        cartoes_risco=briefing.get("cartoes_risco") or [],
         briefing_gal_sinan=briefing.get("gal_sinan") or [],
         briefing_geo_nivel=str(briefing.get("geo_nivel") or "municipio"),
         briefing_geo_nota=str(briefing.get("geo_nota") or ""),
@@ -2645,9 +2647,12 @@ def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
         nome = _nome_agravo_pt(str(x.get("target") or ""))
         n_se = x.get("n_se", x.get("exames", "—"))
         var = _fmt_variacao_pt(x.get("delta_pct"), x.get("tendencia"))
+        taxa = str(x.get("frase_taxa_positivos") or "").strip()
+        taxa_bit = f"; {taxa}" if taxa else ""
         dem_pos.append(
             f"• Demanda {nome}: {n_se} exames, {var}; "
             f"{x.get('positivos', '—')} positivos ({x.get('positividade', '—')})"
+            f"{taxa_bit}"
         )
     for x in (rel.briefing_maior_positividade or [])[:5]:
         if len(dem_pos) >= 5:
@@ -2659,20 +2664,48 @@ def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
             else ""
         )
         var = _fmt_variacao_pt(x.get("delta_pct"), x.get("tendencia"))
+        taxa = str(x.get("frase_taxa_positivos") or "").strip()
+        taxa_bit = f"; {taxa}" if taxa else ""
         dem_pos.append(
             f"• Positividade {nome}: {x.get('positividade', '—')} "
-            f"({x.get('exames', '—')} exames; {var}){flag}"
+            f"({x.get('exames', '—')} exames; {var}){flag}{taxa_bit}"
         )
     if dem_pos:
         lines.extend(
             [
                 "",
                 "📊 <b>Demanda e positividade</b> "
-                "<i>(laboratório + notificação quando houver)</i>",
+                "<i>(laboratório + taxas /100 mil)</i>",
             ]
         )
         for t in dem_pos[:5]:
-            lines.append(html.escape(_tg_clip(t, 160)))
+            lines.append(html.escape(_tg_clip(t, 170)))
+
+    # Cartões de risco (top 5 eventos) — eixo CIEVS
+    cartoes = list(rel.cartoes_risco or [])[:5]
+    if cartoes:
+        lines.extend(
+            [
+                "",
+                "🃏 <b>Cartões de risco</b> "
+                "<i>(evento · probabilidade × impacto)</i>",
+            ]
+        )
+        for c in cartoes:
+            taxa = str(c.get("taxa_positivos") or "").strip()
+            taxa_bit = f" · {taxa}" if taxa else ""
+            lines.append(
+                html.escape(
+                    _tg_clip(
+                        f"• {c.get('evento', '—')}: "
+                        f"prob {c.get('probabilidade', '—')} / "
+                        f"impacto {c.get('impacto', '—')} → "
+                        f"{c.get('veredito', '—')} "
+                        f"[{c.get('confianca', 'Observado')}]{taxa_bit}",
+                        190,
+                    )
+                )
+            )
 
     terr: list[str] = []
     for v in (rel.briefing_vizinhos or [])[:5]:
@@ -2874,6 +2907,21 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
     if rel.aviso_atraso:
         lines.append(f"Aviso: {rel.aviso_atraso}")
 
+    if rel.cartoes_risco:
+        lines.extend(["", "— Visão executiva · Cartões de risco (CIEVS) —"])
+        for i, c in enumerate(rel.cartoes_risco[:5], 1):
+            taxa = c.get("taxa_positivos") or ""
+            taxa_bit = f" · {taxa}" if taxa else ""
+            lines.append(
+                f"  {i}. {c.get('evento', '—')}: "
+                f"prob={c.get('probabilidade', '—')} "
+                f"impacto={c.get('impacto', '—')} → "
+                f"{c.get('veredito', '—')} "
+                f"[{c.get('confianca', 'Observado')}]{taxa_bit}"
+            )
+            if c.get("acao_cievs"):
+                lines.append(f"     CIEVS: {c['acao_cievs']}")
+
     lines.extend(
         [
             "",
@@ -2901,13 +2949,16 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             "— E · Briefing epidemiológico (5 perguntas) [Observado / Predito] —",
         ]
     )
-    lines.append("1) Mais solicitados (N + Δ vs SE-1):")
+    lines.append("1) Mais solicitados (N + Δ vs SE-1 + taxa/100 mil):")
     for i, x in enumerate(rel.briefing_mais_solicitados[:10], 1):
+        taxa = x.get("frase_taxa_positivos") or ""
+        taxa_bit = f" · {taxa}" if taxa else ""
         lines.append(
             f"  {i}. {x['target']} — n_se={x.get('n_se', x['exames'])} · "
             f"n_ant={x.get('n_se_ant', '—')} · Δ={x.get('delta', '—')} "
             f"({x.get('delta_pct', '—')}) {x.get('tendencia', '→')} · "
-            f"+{x['positivos']} · pos={x['positividade']} [{x.get('tipo_sinal', 'Observado')}]"
+            f"+{x['positivos']} · pos={x['positividade']}{taxa_bit} "
+            f"[{x.get('tipo_sinal', 'Observado')}]"
         )
     lines.append("2) Maior positividade (Δ vs SE-1):")
     for i, x in enumerate(rel.briefing_maior_positividade[:10], 1):
@@ -3222,6 +3273,9 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
         f"<td style='padding:6px 8px'>{html.escape(x.get('delta_pct', '—'))}</td>"
         f"<td style='padding:6px 8px'>{html.escape(x.get('tendencia', '→'))}</td>"
         f"<td style='padding:6px 8px'>{html.escape(x['positividade'])}</td>"
+        f"<td style='padding:6px 8px'>"
+        f"{html.escape(x.get('frase_taxa_positivos') or x.get('taxa_positivos_100k') or '—')}"
+        f"</td>"
         f"<td style='padding:6px 8px'><small>{html.escape(x.get('tipo_sinal', 'Observado'))}</small></td>"
         "</tr>"
         for x in rel.briefing_mais_solicitados[:10]
@@ -3271,6 +3325,20 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
         "</tr>"
         for r in rel.briefing_risco
     ]
+    cartao_rows = [
+        "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('evento', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('probabilidade', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('impacto', '—'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('confianca', '—'))}</td>"
+        f"<td style='padding:6px 8px'><b>{html.escape(c.get('veredito', '—'))}</b></td>"
+        f"<td style='padding:6px 8px'>{html.escape(c.get('taxa_positivos', '—'))}</td>"
+        f"<td style='padding:6px 8px'><small>"
+        f"{html.escape(_tg_clip(str(c.get('acao_cievs') or ''), 120))}"
+        f"</small></td>"
+        "</tr>"
+        for c in (rel.cartoes_risco or [])[:8]
+    ]
     nota_igg_html = (
         f"<p style='background:#f0f4fa;border-left:4px solid #1B3281;padding:8px 12px;"
         f"font-size:13px'>{html.escape(rel.briefing_nota_igg)}</p>"
@@ -3318,6 +3386,18 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
 <p style="font-size:12px;color:#5a6a85"><em>{html.escape(rel.nota)}</em></p>
 
 <h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
+Visão executiva — cartões de risco (CIEVS)</h3>
+<p style="font-size:13px;color:#3d4f6f">
+Probabilidade × impacto × confiança. Veredito operacional — não declara
+surto/epidemia automaticamente (Guia MS).
+</p>
+{_html_table(
+    ["Evento", "Prob.", "Impacto", "Confiança", "Veredito", "Taxa", "Ação CIEVS"],
+    cartao_rows,
+    "(sem cartões nesta SE)",
+)}
+
+<h3 style="color:#1B3281;border-bottom:2px solid #1B3281;padding-bottom:4px">
 A — Situação lab-epi</h3>
 <p>{html.escape(rel.variacao_se)}</p>
 <p>1ª detecção/alerta na SE: <b>{rel.n_primeira_deteccao_alerta}</b> municípios</p>
@@ -3332,7 +3412,7 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
 </p>
 {nota_igg_html}
 <p><b>1) Mais solicitados</b> <small>(n_se · Δ vs SE-1)</small></p>
-{_html_table(["Agravo", "n_se", "n_se_ant", "Δ", "Δ%", "Tend.", "Positividade", "Sinal"], sol_rows)}
+{_html_table(["Agravo", "n_se", "n_se_ant", "Δ", "Δ%", "Tend.", "Positividade", "Taxa/100 mil", "Sinal"], sol_rows)}
 <p><b>2) Maior positividade</b>
 <small style="color:#5a6a85"> · min. 30 exames; Δ% vs SE-1; mediana 4 SE</small></p>
 {_html_table(["Agravo", "Positividade", "Δ%", "Tend.", "Med.4SE", "Exames", "Flag"], posi_rows)}

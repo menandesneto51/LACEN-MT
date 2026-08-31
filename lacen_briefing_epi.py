@@ -177,6 +177,251 @@ def _delta_vs_prev(
     }
 
 
+def _taxa_100k(n: float | None, pop: float | None) -> float | None:
+    """Taxa por 100 mil habitantes; None se população indisponível."""
+    if n is None or pop is None:
+        return None
+    try:
+        nn, pp = float(n), float(pop)
+    except (TypeError, ValueError):
+        return None
+    if pp <= 0 or math.isnan(pp) or math.isnan(nn):
+        return None
+    return 100_000.0 * nn / pp
+
+
+def _fmt_taxa_100k(taxa: float | None, *, digits: int = 1) -> str:
+    if taxa is None or (isinstance(taxa, float) and math.isnan(taxa)):
+        return "—"
+    return f"{float(taxa):.{digits}f}".replace(".", ",")
+
+
+def frase_taxa_positivos_100k(taxa: float | None, *, digits: int = 1) -> str:
+    """Linguagem simples p/ Telegram: 'X positivos por 100 mil habitantes'."""
+    if taxa is None or (isinstance(taxa, float) and math.isnan(taxa)):
+        return ""
+    return (
+        f"{_fmt_taxa_100k(taxa, digits=digits)} positivos por 100 mil habitantes"
+    )
+
+
+def carregar_populacao_lookup(
+    weekly: list[dict[str, str]] | Sequence[dict[str, Any]],
+    se: tuple[int, int],
+    outdir: Path | str | None = None,
+) -> dict[str, float]:
+    """
+    municipio -> população.
+    Preferência: populacao na weekly da SE/ano; fallback populacao_municipio.csv
+    (último ano <= ano da SE) e staging_dw/populacao.
+    """
+    lookup: dict[str, float] = {}
+    y0 = int(se[0])
+
+    def _ingest_row(mun: str, pop: float | None, *, overwrite: bool = False) -> None:
+        if not mun or pop is None or pop <= 0 or math.isnan(pop):
+            return
+        if overwrite or mun not in lookup:
+            lookup[mun] = float(pop)
+
+    # 1) Weekly na SE (e, se vazio, qualquer semana do mesmo ano)
+    for r in weekly:
+        y = _num(r.get("epi_year"))
+        w = _num(r.get("epi_week"))
+        if y is None or int(y) != y0:
+            continue
+        mun = _norm_mun(r.get("municipio"))
+        pop = _num(r.get("populacao"))
+        if w is not None and int(w) == int(se[1]):
+            _ingest_row(mun, pop, overwrite=True)
+        else:
+            _ingest_row(mun, pop, overwrite=False)
+
+    # 2) Fallback CSV oficial
+    roots: list[Path] = []
+    if outdir is not None:
+        roots.append(Path(outdir))
+    roots.append(OUTDIR_DEFAULT)
+    for root in roots:
+        pop_rows = _read_csv(root / "populacao_municipio.csv")
+        if not pop_rows:
+            pop_rows = _read_csv(root / "staging_dw" / "populacao.csv")
+        if not pop_rows:
+            continue
+        # último ano <= y0 por município
+        best: dict[str, tuple[int, float]] = {}
+        for r in pop_rows:
+            mun = _norm_mun(r.get("municipio") or r.get("Municipio"))
+            ano = _num(r.get("ano") or r.get("Ano"))
+            pop = _num(r.get("populacao") or r.get("POPULACAO") or r.get("pop"))
+            if not mun or ano is None or pop is None or pop <= 0:
+                continue
+            ia = int(ano)
+            if ia > y0:
+                continue
+            prev = best.get(mun)
+            if prev is None or ia > prev[0]:
+                best[mun] = (ia, float(pop))
+        for mun, (_ano, pop) in best.items():
+            _ingest_row(mun, pop, overwrite=False)
+        if lookup:
+            break
+    return lookup
+
+
+def populacao_estado(lookup: dict[str, float]) -> float | None:
+    if not lookup:
+        return None
+    total = sum(float(v) for v in lookup.values() if v and v > 0)
+    return total if total > 0 else None
+
+
+def _se_tem_dados(
+    weekly: list[dict[str, str]], se: tuple[int, int]
+) -> bool:
+    y0, w0 = se
+    for r in weekly:
+        y = _num(r.get("epi_year"))
+        w = _num(r.get("epi_week"))
+        if y is None or w is None or int(y) != y0 or int(w) != w0:
+            continue
+        if (_num(r.get("tests"), 0) or 0) > 0:
+            return True
+    return False
+
+
+def _agg_counts_target_se(
+    weekly: list[dict[str, str]],
+    se: tuple[int, int],
+    target: str,
+    *,
+    municipio: str | None = None,
+) -> dict[str, float]:
+    """Soma exames/positivos/notif na SE (estado ou 1 município)."""
+    y0, w0 = se
+    tgt = str(target or "").strip()
+    mun_f = _norm_mun(municipio) if municipio else ""
+    exames = pos = notif = 0.0
+    for r in weekly:
+        y = _num(r.get("epi_year"))
+        w = _num(r.get("epi_week"))
+        if y is None or w is None or int(y) != y0 or int(w) != w0:
+            continue
+        if str(r.get("target") or "").strip() != tgt:
+            continue
+        mun = _norm_mun(r.get("municipio"))
+        if not mun or mun.startswith("*"):
+            continue
+        if mun_f and mun != mun_f:
+            continue
+        exames += _num(r.get("tests"), 0) or 0
+        pos += _num(r.get("positives"), 0) or 0
+        notif += _num(r.get("notificacoes"), 0) or 0
+    return {"exames": exames, "positivos": pos, "notificacoes": notif}
+
+
+def enriquecer_com_taxas_100k(
+    ranked: list[dict[str, Any]],
+    weekly: list[dict[str, str]],
+    se: tuple[int, int],
+    pop_lookup: dict[str, float],
+    *,
+    nivel: str = "estado",
+) -> list[dict[str, Any]]:
+    """
+    Anexa taxa_exames_100k, taxa_positivos_100k, taxa_notif_100k (se SINAN>0),
+    comparações vs SE-1 e YoY (SE equivalente ano anterior) quando a série permite.
+    """
+    se_ant = _shift_se(se[0], se[1], -1)
+    se_yoy = (int(se[0]) - 1, int(se[1]))
+    yoy_ok = _se_tem_dados(weekly, se_yoy)
+    pop_uf = populacao_estado(pop_lookup)
+    out: list[dict[str, Any]] = []
+    for row in ranked:
+        r = dict(row)
+        tgt = str(r.get("target") or "")
+        mun = str(r.get("municipio") or "").strip()
+        mun_key = _norm_mun(mun) if nivel == "municipio" and mun else ""
+        if nivel == "municipio" and mun_key:
+            pop = pop_lookup.get(mun_key)
+        else:
+            pop = pop_uf
+        cur = {
+            "exames": float(r.get("exames") or 0),
+            "positivos": float(r.get("positivos") or 0),
+            "notificacoes": float(r.get("notificacoes") or 0),
+        }
+        # Se notif não veio no rank, busca na weekly
+        if cur["notificacoes"] <= 0:
+            got = _agg_counts_target_se(
+                weekly, se, tgt, municipio=mun_key or None
+            )
+            cur["notificacoes"] = float(got.get("notificacoes") or 0)
+            if cur["exames"] <= 0:
+                cur["exames"] = float(got.get("exames") or 0)
+            if cur["positivos"] <= 0:
+                cur["positivos"] = float(got.get("positivos") or 0)
+
+        ant = _agg_counts_target_se(
+            weekly, se_ant, tgt, municipio=mun_key or None
+        )
+        yoy = (
+            _agg_counts_target_se(weekly, se_yoy, tgt, municipio=mun_key or None)
+            if yoy_ok
+            else None
+        )
+
+        taxa_ex = _taxa_100k(cur["exames"], pop)
+        taxa_pos = _taxa_100k(cur["positivos"], pop)
+        taxa_nf = (
+            _taxa_100k(cur["notificacoes"], pop)
+            if cur["notificacoes"] > 0
+            else None
+        )
+        taxa_ex_ant = _taxa_100k(ant["exames"], pop)
+        taxa_pos_ant = _taxa_100k(ant["positivos"], pop)
+        taxa_nf_ant = (
+            _taxa_100k(ant["notificacoes"], pop)
+            if ant["notificacoes"] > 0
+            else None
+        )
+
+        def _d_taxa(a: float | None, b: float | None) -> float | None:
+            if a is None or b is None:
+                return None
+            return a - b
+
+        r["populacao_ref"] = pop
+        r["notificacoes"] = cur["notificacoes"]
+        r["taxa_exames_100k"] = taxa_ex
+        r["taxa_positivos_100k"] = taxa_pos
+        r["taxa_notif_100k"] = taxa_nf
+        r["taxa_exames_100k_se_ant"] = taxa_ex_ant
+        r["taxa_positivos_100k_se_ant"] = taxa_pos_ant
+        r["taxa_notif_100k_se_ant"] = taxa_nf_ant
+        r["delta_taxa_positivos_100k"] = _d_taxa(taxa_pos, taxa_pos_ant)
+        r["delta_taxa_exames_100k"] = _d_taxa(taxa_ex, taxa_ex_ant)
+        r["frase_taxa_positivos"] = frase_taxa_positivos_100k(taxa_pos)
+        if yoy_ok and yoy is not None:
+            taxa_pos_yoy = _taxa_100k(yoy["positivos"], pop)
+            taxa_ex_yoy = _taxa_100k(yoy["exames"], pop)
+            r["taxa_positivos_100k_yoy"] = taxa_pos_yoy
+            r["taxa_exames_100k_yoy"] = taxa_ex_yoy
+            r["delta_taxa_positivos_100k_yoy"] = _d_taxa(taxa_pos, taxa_pos_yoy)
+            r["yoy_disponivel"] = True
+            r["nota_yoy"] = ""
+        else:
+            r["taxa_positivos_100k_yoy"] = None
+            r["taxa_exames_100k_yoy"] = None
+            r["delta_taxa_positivos_100k_yoy"] = None
+            r["yoy_disponivel"] = False
+            r["nota_yoy"] = (
+                f"YoY omitido: sem série para {_fmt_se(*se_yoy)}"
+            )
+        out.append(r)
+    return out
+
+
 def _agg_metric_by_target(
     weekly: list[dict[str, str]],
     se: tuple[int, int],
@@ -429,9 +674,12 @@ def _agg_by_target(se_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     agg: dict[str, dict[str, float]] = {}
     for r in se_rows:
         tgt = str(r.get("target") or "").strip() or "—"
-        a = agg.setdefault(tgt, {"tests": 0.0, "positives": 0.0})
+        a = agg.setdefault(
+            tgt, {"tests": 0.0, "positives": 0.0, "notificacoes": 0.0}
+        )
         a["tests"] += _num(r.get("tests"), 0) or 0
         a["positives"] += _num(r.get("positives"), 0) or 0
+        a["notificacoes"] += _num(r.get("notificacoes"), 0) or 0
     rows: list[dict[str, Any]] = []
     for tgt, a in agg.items():
         tests = a["tests"]
@@ -442,6 +690,7 @@ def _agg_by_target(se_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
                 "target": tgt,
                 "exames": tests,
                 "positivos": pos,
+                "notificacoes": a["notificacoes"],
                 "positividade": posi,
                 "tipo_sinal": "Observado",
                 "baixa_amostra": False,
@@ -534,10 +783,11 @@ def localidades(
         if not mun:
             continue
         a = by_tgt.setdefault(tgt, {}).setdefault(
-            mun, {"positivos": 0.0, "exames": 0.0}
+            mun, {"positivos": 0.0, "exames": 0.0, "notificacoes": 0.0}
         )
         a["positivos"] += _num(r.get("positives"), 0) or 0
         a["exames"] += _num(r.get("tests"), 0) or 0
+        a["notificacoes"] += _num(r.get("notificacoes"), 0) or 0
 
     out: list[dict[str, Any]] = []
     for tgt in targets_top:
@@ -562,6 +812,7 @@ def localidades(
                     "municipio": mun,
                     "positivos": a["positivos"],
                     "exames": a["exames"],
+                    "notificacoes": a["notificacoes"],
                     "positividade": posi,
                     "tipo_sinal": "Observado",
                     "criterio": "positivos" if a["positivos"] > 0 else "exames",
@@ -1375,6 +1626,7 @@ class BriefingEpi:
     localidades: list[dict[str, Any]] = field(default_factory=list)
     vizinhos: list[dict[str, Any]] = field(default_factory=list)
     risco: list[dict[str, Any]] = field(default_factory=list)
+    cartoes_risco: list[dict[str, Any]] = field(default_factory=list)
     gal_sinan: list[dict[str, Any]] = field(default_factory=list)
     geo: dict[str, Any] = field(default_factory=dict)
     cruzamento_bases: list[dict[str, Any]] = field(default_factory=list)
@@ -1382,6 +1634,7 @@ class BriefingEpi:
     sinais_rede: dict[str, Any] = field(default_factory=dict)
     fontes: list[str] = field(default_factory=list)
     usou_ml: bool = False
+    nota_taxas: str = ""
     rows_flat: list[dict[str, str]] = field(default_factory=list)
 
     def resumo_linhas(self, max_risco: int = 5) -> list[str]:
@@ -1389,38 +1642,52 @@ class BriefingEpi:
             f"Briefing epidemiológico CIEVS — SE {self.se_iso}",
             "Tipo: Observado (lab) · Predito (ML se disponível)",
             "",
-            "1) Mais solicitados (N + Δ vs SE-1):",
+            "1) Mais solicitados (N + Δ vs SE-1 + taxa/100 mil):",
         ]
         for i, x in enumerate(self.mais_solicitados[:5], 1):
             dlt = x.get("delta")
             pct = x.get("delta_pct")
             pct_s = f"{pct:+.0f}%" if pct is not None else "—"
+            taxa_s = x.get("frase_taxa_positivos") or ""
+            if not taxa_s and x.get("taxa_positivos_100k") is not None:
+                taxa_s = frase_taxa_positivos_100k(x.get("taxa_positivos_100k"))
+            taxa_bit = f" · {taxa_s}" if taxa_s else ""
             lines.append(
                 f"  {i}. {x['target']}: {int(x['exames'])} exames · "
                 f"Δ={int(dlt) if dlt is not None else '—'} ({pct_s}) "
                 f"{x.get('tendencia', '→')} · +{int(x['positivos'])} "
-                f"({_pct(x.get('positividade'))}) [Observado]"
+                f"({_pct(x.get('positividade'))}){taxa_bit} [Observado]"
             )
+        if self.nota_taxas:
+            lines.append(f"  Nota taxas: {self.nota_taxas}")
         lines.append("2) Maior positividade (Δ vs SE-1):")
         for i, x in enumerate(self.maior_positividade[:5], 1):
             flag = " · baixa_amostra" if x.get("baixa_amostra") else ""
             igg = " · caveat IgG" if x.get("caveat_igg") else ""
             pct = x.get("delta_pct")
             pct_s = f"{pct:+.0f}%" if pct is not None else "—"
+            taxa_s = x.get("frase_taxa_positivos") or ""
+            taxa_bit = f" · {taxa_s}" if taxa_s else ""
             lines.append(
                 f"  {i}. {x['target']}: {_pct(x.get('positividade'))} "
                 f"({int(x['exames'])} exames) Δ%={pct_s} "
-                f"{x.get('tendencia', '→')}{flag}{igg} [Observado]"
+                f"{x.get('tendencia', '→')}{flag}{igg}{taxa_bit} [Observado]"
             )
         lines.append("3) Localidades (top targets):")
         by_t: dict[str, list[dict[str, Any]]] = {}
         for loc in self.localidades:
             by_t.setdefault(str(loc["target"]), []).append(loc)
         for tgt, locs in list(by_t.items())[:4]:
-            muns = ", ".join(
-                f"{L['municipio']}(+{int(L['positivos'])})" for L in locs[:3]
-            )
-            lines.append(f"  · {tgt}: {muns or '—'}")
+            bits = []
+            for L in locs[:3]:
+                tx = L.get("frase_taxa_positivos") or ""
+                if tx:
+                    bits.append(
+                        f"{L['municipio']}(+{int(L['positivos'])}; {tx})"
+                    )
+                else:
+                    bits.append(f"{L['municipio']}(+{int(L['positivos'])})")
+            lines.append(f"  · {tgt}: {', '.join(bits) or '—'}")
         lines.append("4) Vizinhos na mesma situação:")
         if self.vizinhos:
             for v in self.vizinhos[:5]:
@@ -1433,6 +1700,14 @@ class BriefingEpi:
         lines.append("5) Risco de dispersão:")
         for r in self.risco[:max_risco]:
             lines.append(f"  · [{r.get('tipo_sinal', 'Observado')}] {r['mensagem']}")
+        if self.cartoes_risco:
+            lines.append("5b) Cartões de risco (evento):")
+            for c in self.cartoes_risco[:5]:
+                lines.append(
+                    f"  · {c.get('evento', '—')}: prob={c.get('probabilidade', '—')} "
+                    f"impacto={c.get('impacto', '—')} · {c.get('veredito', '—')} "
+                    f"[{c.get('confianca', 'Observado')}]"
+                )
         if self.gal_sinan:
             n_gal = sum(1 for g in self.gal_sinan if g.get("gal_sem_sinan"))
             n_sin = sum(1 for g in self.gal_sinan if g.get("sinan_sem_gal"))
@@ -1524,6 +1799,9 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
         delta: Any = "",
         delta_pct: Any = "",
         tendencia: str = "",
+        taxa_exames_100k: Any = "",
+        taxa_positivos_100k: Any = "",
+        taxa_notif_100k: Any = "",
         detalhe: str = "",
         tipo_sinal: str = "Observado",
         flag: str = "",
@@ -1537,6 +1815,14 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             if abs(n) < 2 and abs(n) != int(abs(n)):
                 return f"{n:.4f}"
             return _fmt_num(n, 0)
+
+        def _taxa_cell(v: Any) -> str:
+            if v == "" or v is None:
+                return ""
+            n = _num(v)
+            if n is None:
+                return ""
+            return _fmt_taxa_100k(n)
 
         rows.append(
             {
@@ -1557,6 +1843,9 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
                 "delta": _smart_num(delta),
                 "delta_pct": _fmt_pct_delta(delta_pct),
                 "tendencia": tendencia or "",
+                "taxa_exames_100k": _taxa_cell(taxa_exames_100k),
+                "taxa_positivos_100k": _taxa_cell(taxa_positivos_100k),
+                "taxa_notif_100k": _taxa_cell(taxa_notif_100k),
                 "detalhe": detalhe,
                 "tipo_sinal": tipo_sinal,
                 "flag": flag,
@@ -1576,6 +1865,9 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             delta=x.get("delta"),
             delta_pct=x.get("delta_pct"),
             tendencia=str(x.get("tendencia") or ""),
+            taxa_exames_100k=x.get("taxa_exames_100k"),
+            taxa_positivos_100k=x.get("taxa_positivos_100k"),
+            taxa_notif_100k=x.get("taxa_notif_100k"),
             detalhe=f"mediana_4se={x.get('mediana_4se')}",
             tipo_sinal="Observado",
         )
@@ -1597,6 +1889,9 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             delta=x.get("delta"),
             delta_pct=x.get("delta_pct"),
             tendencia=str(x.get("tendencia") or ""),
+            taxa_exames_100k=x.get("taxa_exames_100k"),
+            taxa_positivos_100k=x.get("taxa_positivos_100k"),
+            taxa_notif_100k=x.get("taxa_notif_100k"),
             tipo_sinal="Observado",
             flag=";".join(flags),
         )
@@ -1611,6 +1906,9 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             exames=loc["exames"],
             positivos=loc["positivos"],
             positividade=loc.get("positividade"),
+            taxa_exames_100k=loc.get("taxa_exames_100k"),
+            taxa_positivos_100k=loc.get("taxa_positivos_100k"),
+            taxa_notif_100k=loc.get("taxa_notif_100k"),
             detalhe=str(loc.get("criterio") or ""),
             tipo_sinal="Observado",
         )
@@ -1698,6 +1996,25 @@ def computar_briefing_epi(
         yw,
         metric="positividade",
     )
+    pop_lookup = carregar_populacao_lookup(weekly, yw, outdir=outdir)
+    sol = enriquecer_com_taxas_100k(
+        sol, weekly, yw, pop_lookup, nivel="estado"
+    )
+    posi = enriquecer_com_taxas_100k(
+        posi, weekly, yw, pop_lookup, nivel="estado"
+    )
+    nota_taxas = ""
+    if not pop_lookup:
+        nota_taxas = "população indisponível — taxas /100 mil omitidas"
+    else:
+        yoy_flags = [bool(x.get("yoy_disponivel")) for x in sol[:3]]
+        if yoy_flags and not any(yoy_flags):
+            nota_taxas = str(sol[0].get("nota_yoy") or "YoY omitido (série)")
+        elif any(x.get("yoy_disponivel") for x in sol):
+            nota_taxas = "taxas vs SE-1 e YoY (mesma SE do ano anterior)"
+        else:
+            nota_taxas = "taxas vs SE-1"
+
     # Localidades: top 4 solicitados + top 2 positividade (únicos)
     tgt_loc: list[str] = []
     for x in sol[:4] + posi[:2]:
@@ -1705,6 +2022,9 @@ def computar_briefing_epi(
         if t and t not in tgt_loc:
             tgt_loc.append(t)
     locs = localidades(weekly, yw, tgt_loc, top_mun=5)
+    locs = enriquecer_com_taxas_100k(
+        locs, weekly, yw, pop_lookup, nivel="municipio"
+    )
 
     # Vizinhos: eixos com positivos (TB, hepatite, top posi não-IgG, dengue se pos>0)
     # + qualquer top solicitado com positivos (co-sinal territorial)
@@ -1764,6 +2084,27 @@ def computar_briefing_epi(
     if sinais_rede.get("presente"):
         fontes.append("IndicaSUS/SISREG (ocupação + filas)")
 
+    try:
+        from lacen_radar_risco import gerar_cartoes_risco
+
+        cartoes = gerar_cartoes_risco(
+            se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
+            solicitados=sol,
+            positividade=posi,
+            localidades=locs,
+            vizinhos=viz_pares,
+            gal_sinan=gal_sinan,
+            cruzamento_sih_sia=sih_sia,
+            top=12,
+        )
+        if cartoes:
+            fontes.append("cartões de risco evento (CIEVS)")
+    except Exception:  # noqa: BLE001
+        cartoes = []
+
+    if pop_lookup:
+        fontes.append("populacao (weekly/populacao_municipio)")
+
     briefing = BriefingEpi(
         se_iso=str(pick.get("se_iso") or _fmt_se(*yw)),
         se_tuple=yw,
@@ -1776,6 +2117,7 @@ def computar_briefing_epi(
         localidades=locs,
         vizinhos=viz_pares,
         risco=risco,
+        cartoes_risco=cartoes,
         gal_sinan=gal_sinan,
         geo=geo,
         cruzamento_bases=cruz,
@@ -1783,6 +2125,7 @@ def computar_briefing_epi(
         sinais_rede=sinais_rede,
         fontes=fontes,
         usou_ml=usou_ml,
+        nota_taxas=nota_taxas,
     )
     briefing.rows_flat = _flatten(briefing)
     return briefing
@@ -1809,6 +2152,9 @@ def persistir_briefing(
         "delta",
         "delta_pct",
         "tendencia",
+        "taxa_exames_100k",
+        "taxa_positivos_100k",
+        "taxa_notif_100k",
         "detalhe",
         "tipo_sinal",
         "flag",
@@ -1916,6 +2262,15 @@ def persistir_briefing(
                 }
             )
 
+    # Cartões de risco CIEVS
+    if briefing.cartoes_risco:
+        try:
+            from lacen_radar_risco import persistir_cartoes_risco
+
+            persistir_cartoes_risco(briefing.cartoes_risco, outdir)
+        except Exception:  # noqa: BLE001
+            pass
+
     return csv_path, txt_path
 
 
@@ -1956,10 +2311,38 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
             else "—",
         }
 
+    def _row_taxas(x: dict[str, Any]) -> dict[str, str]:
+        frase = str(x.get("frase_taxa_positivos") or "")
+        if not frase and x.get("taxa_positivos_100k") is not None:
+            frase = frase_taxa_positivos_100k(x.get("taxa_positivos_100k"))
+        notif = x.get("taxa_notif_100k")
+        yoy = x.get("taxa_positivos_100k_yoy")
+        return {
+            "taxa_exames_100k": _fmt_taxa_100k(x.get("taxa_exames_100k")),
+            "taxa_positivos_100k": _fmt_taxa_100k(x.get("taxa_positivos_100k")),
+            "taxa_notif_100k": (
+                _fmt_taxa_100k(notif) if notif is not None else ""
+            ),
+            "frase_taxa_positivos": frase,
+            "taxa_positivos_100k_yoy": (
+                _fmt_taxa_100k(yoy) if yoy is not None else ""
+            ),
+            "yoy_disponivel": "sim" if x.get("yoy_disponivel") else "",
+            "nota_yoy": str(x.get("nota_yoy") or ""),
+        }
+
+    try:
+        from lacen_radar_risco import cartoes_para_relatorio
+
+        cartoes_rel = cartoes_para_relatorio(briefing.cartoes_risco, top=8)
+    except Exception:  # noqa: BLE001
+        cartoes_rel = []
+
     return {
         "se_iso": briefing.se_iso,
         "usou_completa": briefing.usou_completa,
         "se_parcial": briefing.se_parcial,
+        "nota_taxas": briefing.nota_taxas,
         "mais_solicitados": [
             {
                 "target": str(x["target"]),
@@ -1968,6 +2351,7 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
                 "positividade": _pct(x.get("positividade")),
                 "tipo_sinal": "Observado",
                 **_row_delta(x),
+                **_row_taxas(x),
             }
             for x in briefing.mais_solicitados
         ],
@@ -1981,6 +2365,7 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
                 "caveat_igg": "sim" if x.get("caveat_igg") else "",
                 "tipo_sinal": "Observado",
                 **_row_delta(x),
+                **_row_taxas(x),
             }
             for x in briefing.maior_positividade
         ],
@@ -1992,9 +2377,11 @@ def briefing_para_relatorio(briefing: BriefingEpi) -> dict[str, Any]:
                 "exames": _fmt_num(x["exames"]),
                 "positividade": _pct(x.get("positividade")),
                 "tipo_sinal": "Observado",
+                **_row_taxas(x),
             }
             for x in briefing.localidades
         ],
+        "cartoes_risco": cartoes_rel,
         "vizinhos": [
             {
                 "target": str(v["target"]),
