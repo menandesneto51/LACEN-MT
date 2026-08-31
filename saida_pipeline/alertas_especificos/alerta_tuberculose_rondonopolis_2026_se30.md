@@ -60,4 +60,4 @@
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 09:03 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_

@@ -1,33 +1,33 @@
-[Radar LACEN] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-31 09:03 Hora Padrão Brasil Central
+[Radar LACEN] 2026-SE30 — rede sob pressão — LACEN-MT · 2026-08-31 10:07 Hora Padrão Brasil Central
 ------------------------------------------------------------
 Radar LACEN · CIEVS
 SE de referência: 2026-SE30 (única para KPIs e rankings A–D)
-Gerado em: 2026-08-31 09:03 Hora Padrão Brasil Central
+Gerado em: 2026-08-31 10:07 Hora Padrão Brasil Central
 Leitura situacional: rede sob pressão
 Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE30 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda. Anti-HBs / IgG ≠ hepatite B aguda; HBsAg, IgM anti-HBc e HBV-DNA são sinais ativos/confirmatórios. Positividade por marcador é agregada do GAL micro; IgG/anti-HBs não geram alerta agudo. Não declara surto. POPULACAO no staging com ano(s) 1996 — usar como denominador; confirmar se equivale a IBGE 2026.
 
-KPIs: Positivos SE 169 (-1%) · Exames 2.902 · Mun. 117 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 78%
-Aviso: Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d); SE ref 2026-SE30 atrasada 4 SE vs esperada 2026-SE34.
+KPIs: Positivos SE 169 (-1%) · Exames 2.902 · Mun. 117 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 2 · Confirmação 56%
+Aviso: Atenção: DW VW_GAL: última Data_Liberacao há 38 dias (limiar 14d); SE ref 2026-SE30 atrasada 5 SE vs esperada 2026-SE35.
 
 — Visão executiva · Cartões de risco (CIEVS) —
   1. dengue × CUIABA: prob=alto impacto=alto → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
      CIEVS: Priorizar investigação de dengue em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
-  2. dengue × VARZEA GRANDE: prob=alto impacto=alto → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
+  2. dengue × VARZEA GRANDE: prob=alto impacto=médio → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
      CIEVS: Priorizar investigação de dengue em VARZEA GRANDE: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
-  3. dengue × LUCAS DO RIO VERDE: prob=alto impacto=médio → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
-     CIEVS: Priorizar investigação de dengue em LUCAS DO RIO VERDE: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
-  4. dengue × SORRISO: prob=alto impacto=médio → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
-     CIEVS: Priorizar investigação de dengue em SORRISO: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
-  5. dengue × NOSSA SENHORA DO LIVRAMENTO: prob=alto impacto=baixo → investigar [Observado]
-     CIEVS: Priorizar investigação de dengue em NOSSA SENHORA DO LIVRAMENTO: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  3. hepatite_b_hbv × JUINA: prob=alto impacto=médio → investigar [Derivado] · 49,6 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de hepatite_b_hbv em JUINA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  4. hepatite_b_hbv × CUIABA: prob=alto impacto=médio → investigar [Derivado] · 3,0 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de hepatite_b_hbv em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+  5. hepatite_b_hbv × SORRISO: prob=alto impacto=médio → investigar [Derivado] · 10,4 positivos por 100 mil habitantes
+     CIEVS: Priorizar investigação de hepatite_b_hbv em SORRISO: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
 
 — Prioridade municipal (proposta para homologação CIEVS) —
 score = 3*excesso_lab + 2*positividade_anomala + 1*lacuna_sinan + 1*internacoes_graves (componentes 0–1)
   1. LUCAS DO RIO VERDE: score=4.0001 (lab=1.0, pos=0.0001, lacuna=1.0, SIH=)
   2. CUIABA: score=3.7397 (lab=0.1394, pos=1.0, lacuna=0.3214, SIH=1.0)
-  3. VARZEA GRANDE: score=3.0556 (lab=0.5745, pos=0.0161, lacuna=0.6869, SIH=0.6129)
+  3. VARZEA GRANDE: score=2.4427 (lab=0.5745, pos=0.0161, lacuna=0.6869, SIH=)
   4. SORRISO: score=2.3438 (lab=0.2725, pos=0.619, lacuna=0.2883, SIH=)
-  5. JUINA: score=2.0828 (lab=, pos=0.7447, lacuna=0.0772, SIH=0.5161)
+  5. JUINA: score=1.5666 (lab=, pos=0.7447, lacuna=0.0772, SIH=)
   6. PEIXOTO DE AZEVEDO: score=0.5714 (lab=, pos=0.2857, lacuna=, SIH=)
   7. CAMPINAPOLIS: score=0.5482 (lab=0.1376, pos=0.0001, lacuna=0.1352, SIH=)
   8. AGUA BOA: score=0.3255 (lab=, pos=0.1551, lacuna=0.0152, SIH=)
@@ -109,14 +109,10 @@ Top divergências GAL×SINAN:
   · CUIABA / PEDRA 90 · — n=586 ibge=
 Cruzamento DW: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, CNES, IndicaSUS, SISREG, SINASC, POPULACAO
 Cruzamento SIH/SIA (internações correlatas):
-  · CUIABA × dengue: n=31 [SIH/VW_INTERNACAO]
-  · VARZEA GRANDE × dengue: n=19 [SIH/VW_INTERNACAO]
-  · JUINA × dengue: n=16 [SIH/VW_INTERNACAO]
+  · CUIABA × dengue: n=12 [SIH/VW_INTERNACAO]
   Caveat: Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
 Internações por agravo (top mun):
-  · dengue: Cuiabá n=31
-  · dengue: Várzea Grande n=19
-  · dengue: Juína n=16
+  · dengue: Cuiabá n=12
 Apoio laboratorial (só se pertinente ao agravo):
   1. Arbovirose em sinal: checar capacidade de kits/reagentes e tempo de liberação (23% ≤48h) para não atrasar a VE.
   2. Juína (hepatite B): apoio laboratorial a marcadores confirmatórios se a VE municipal solicitar.
@@ -124,10 +120,10 @@ Sinais IndicaSUS / SISREG:
   · IndicaSUS: Complementar Intensivo / Descartado n=10
   · IndicaSUS: Clínico Isolamento / Descartado n=8
   · IndicaSUS: Complementar Intensivo / Descartado n=8
-  · SISREG hosp: CUIABA [Aprovada] n=19036
-  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12231
-  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11244
-  · SISREG amb pendente: CUIABA n=58884
+  · SISREG hosp: CUIABA [Aprovada] n=19093
+  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12276
+  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11284
+  · SISREG amb pendente: CUIABA n=58883
   · SISREG amb pendente: SINOP n=24798
 Nota: Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda. Anti-HBs / IgG ≠ hepatite B aguda; HBsAg, IgM anti-HBc e HBV-DNA são sinais ativos/confirmatórios.
 Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH (municípios do sinal), IndicaSUS/SISREG (ocupação + filas), GAL micro — positividade por marcador/metodologia, Lacunas multi-base (SINAN/IndicaSUS/SISREG/SIM), cartões de risco evento (CIEVS), score prioridade municipal (proposta homologação), alertas específicos (8), populacao (weekly/populacao_municipio)
@@ -183,7 +179,7 @@ Pressão predita (top):
 
 — D · Qualidade —
 Observado: 363 mun. com qualidade (rede GAL=133); faixas: boa=265, alta=98
-Observado: confirmação alertas rodada anterior = 78% (78/100); modo=prospectivo_carimbado
+Observado: confirmação alertas rodada anterior = 56% (129/229); modo=prospectivo_carimbado
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
 Fonte primária: DW · Datawarehouse (VW_GAL) + arquivo local
@@ -193,8 +189,8 @@ Modelo: lacen_relatorio_cievs.py
 --- Telegram ---
 <b>📡 Radar LACEN · CIEVS</b>
 semana epidemiológica 30/2026 · <b>rede sob pressão</b>
-Fontes: DW · Datawarehouse (VW_GAL) + arquivo local (lab = uma fonte; cruzar com notificação) · bases atrasadas 4 semanas (esperada 2026-SE34)
-2026-08-31 09:03 Hora Padrão Brasil Central
+Fontes: DW · Datawarehouse (VW_GAL) + arquivo local (lab = uma fonte; cruzar com notificação) · bases atrasadas 5 semanas (esperada 2026-SE35)
+2026-08-31 10:07 Hora Padrão Brasil Central
 
 🚨 <b>Sinais de atenção</b> <i>(possível surto / epidemia / emergência / sinal novo)</i>
 • Juína × hepatite B: 46 exames / +24 (52.2%) — **Veredito preliminar (não substitui VE):** há **sinal laboratorial** relevante de hepati…
@@ -212,17 +208,17 @@ Fontes: DW · Datawarehouse (VW_GAL) + arquivo local (lab = uma fonte; cruzar co
 
 🃏 <b>Cartões de risco</b> <i>(evento · probabilidade × impacto)</i>
 • dengue × CUIABA: prob alto / impacto alto → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
-• dengue × VARZEA GRANDE: prob alto / impacto alto → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
-• dengue × LUCAS DO RIO VERDE: prob alto / impacto médio → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
-• dengue × SORRISO: prob alto / impacto médio → investigar [Derivado] · 0,0 positivos por 100 mil habitantes
-• dengue × NOSSA SENHORA DO LIVRAMENTO: prob alto / impacto baixo → investigar [Observado]
+• dengue × VARZEA GRANDE: prob alto / impacto médio → investigar [Derivado] · 0,9 positivos por 100 mil habitantes
+• hepatite_b_hbv × JUINA: prob alto / impacto médio → investigar [Derivado] · 49,6 positivos por 100 mil habitantes
+• hepatite_b_hbv × CUIABA: prob alto / impacto médio → investigar [Derivado] · 3,0 positivos por 100 mil habitantes
+• hepatite_b_hbv × SORRISO: prob alto / impacto médio → investigar [Derivado] · 10,4 positivos por 100 mil habitantes
 
 <b>Prioridade municipal</b> <i>(proposta para homologação CIEVS)</i>
 • Lucas do Rio Verde: score 4.0001 (lab 1.0 · pos 0.0001 · lacuna 1.0 · internações )
 • Cuiabá: score 3.7397 (lab 0.1394 · pos 1.0 · lacuna 0.3214 · internações 1.0)
-• Várzea Grande: score 3.0556 (lab 0.5745 · pos 0.0161 · lacuna 0.6869 · internações 0.6129)
+• Várzea Grande: score 2.4427 (lab 0.5745 · pos 0.0161 · lacuna 0.6869 · internações )
 • Sorriso: score 2.3438 (lab 0.2725 · pos 0.619 · lacuna 0.2883 · internações )
-• Juína: score 2.0828 (lab  · pos 0.7447 · lacuna 0.0772 · internações 0.5161)
+• Juína: score 1.5666 (lab  · pos 0.7447 · lacuna 0.0772 · internações )
 Fórmula: 3×excesso lab + 2×positividade anômala + 1×lacuna SINAN + 1×internações graves (0–1).
 Marcadores: Caveat: positividade elevada em IgG/sorologia reflete soroprevalência — não tratar como epidemia aguda. Anti-HBs / IgG ≠ hepatite B aguda; HBsAg, IgM anti-HBc e
 
@@ -234,7 +230,7 @@ Marcadores: Caveat: positividade elevada em IgG/sorologia reflete soroprevalênc
 • Cluster vizinhos (dengue): LUCAS DO RIO VERDE e NOVA UBIRATA (+0 / +0)
 
 🏥 <b>Internações correlatas</b> <i>(gravidade)</i>
-• Dengue: Cuiabá (31); Várzea Grande (19); Juína (16)
+• Dengue: Cuiabá (12)
 
 🔎 <b>Lacunas de vigilância</b>
 • Lucas do Rio Verde (dengue): exame no laboratório sem notificação

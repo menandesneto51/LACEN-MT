@@ -1,6 +1,6 @@
 {
   "se": "2026-SE30",
-  "gerado_em": "2026-08-31 09:03 Hora Padrão Brasil Central",
+  "gerado_em": "2026-08-31 10:07 Hora Padrão Brasil Central",
   "fonte_notificacoes": "proxy_exames_GAL",
   "n_casos_especiais": 1,
   "casos": [
@@ -134,23 +134,11 @@
         "fonte": "SIH/VW_INTERNACAO",
         "municipio": "CUIABA",
         "cid_familia": "dengue_arbovirose",
-        "n": 31
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "VARZEA GRANDE",
-        "cid_familia": "dengue_arbovirose",
-        "n": 19
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "JUINA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 16
+        "n": 12
       }
     ],
-    "sih_rows": 395,
-    "sia_rows": 692,
+    "sih_rows": 136,
+    "sia_rows": 207,
     "familias": [
       "dengue_arbovirose"
     ],
@@ -261,61 +249,61 @@
         "fonte": "SISREG/hosp",
         "municipio": "CUIABA",
         "status": "Aprovada",
-        "n": 19036
+        "n": 19093
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "VARZEA GRANDE",
         "status": "Aprovada",
-        "n": 12231
+        "n": 12276
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "RONDONOPOLIS",
         "status": "Aprovada",
-        "n": 11244
+        "n": 11284
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "SINOP",
         "status": "Aprovada",
-        "n": 6489
+        "n": 6498
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "CUIABA",
         "status": "Negada",
-        "n": 4929
-      },
-      {
-        "fonte": "SISREG/hosp",
-        "municipio": "LUCAS DO RIO VERDE",
-        "status": "Aprovada",
-        "n": 4097
+        "n": 4948
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "TANGARA DA SERRA",
         "status": "Aprovada",
-        "n": 4097
+        "n": 4117
+      },
+      {
+        "fonte": "SISREG/hosp",
+        "municipio": "LUCAS DO RIO VERDE",
+        "status": "Aprovada",
+        "n": 4101
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "PRIMAVERA DO LESTE",
         "status": "Aprovada",
-        "n": 4079
+        "n": 4086
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "SORRISO",
         "status": "Aprovada",
-        "n": 3870
+        "n": 3886
       },
       {
         "fonte": "SISREG/hosp",
         "municipio": "CACERES",
         "status": "Aprovada",
-        "n": 3593
+        "n": 3610
       }
     ],
     "sisreg_amb_pendente_top": [
@@ -324,7 +312,7 @@
         "municipio": "CUIABA",
         "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
         "procedimento": "",
-        "n": 58884
+        "n": 58883
       },
       {
         "fonte": "SISREG/amb",
@@ -338,28 +326,28 @@
         "municipio": "SINOP",
         "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
         "procedimento": "",
-        "n": 21950
+        "n": 21949
       },
       {
         "fonte": "SISREG/amb",
         "municipio": "VARZEA GRANDE",
         "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
         "procedimento": "",
-        "n": 21087
+        "n": 21006
       },
       {
         "fonte": "SISREG/amb",
         "municipio": "CUIABA",
         "status": "SOLICITAÇÃO / PENDENTE / FILA DE ESPERA",
         "procedimento": "GRUPO - DIAGNOSTICO POR ULTRA-SONOGRAFIA",
-        "n": 19416
+        "n": 19417
       },
       {
         "fonte": "SISREG/amb",
         "municipio": "CUIABA",
         "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
         "procedimento": "",
-        "n": 17554
+        "n": 17561
       },
       {
         "fonte": "SISREG/amb",
@@ -380,7 +368,7 @@
         "municipio": "VARZEA GRANDE",
         "status": "AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE",
         "procedimento": "",
-        "n": 9785
+        "n": 9780
       },
       {
         "fonte": "SISREG/amb",

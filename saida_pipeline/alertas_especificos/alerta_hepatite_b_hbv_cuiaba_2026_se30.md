@@ -12,7 +12,7 @@
 - Exames: 21 · positivos: 21
 - Positividade: 1.0
 - Variação: caiu 23% em relação à semana anterior
-- Probabilidade: alto · Impacto: baixo · Confiança: Derivado
+- Probabilidade: alto · Impacto: médio · Confiança: Derivado
 - Veredito operacional: investigar
 
 ## 2. Interpretação de marcadores
@@ -39,7 +39,7 @@
 
 ## 5. Internações (SIH)
 
-- CUIABA × dengue_arbovirose: n=31 [SIH/VW_INTERNACAO]
+- CUIABA × dengue_arbovirose: n=12 [SIH/VW_INTERNACAO]
 
 ## 6. Lacunas de vigilância
 
@@ -67,4 +67,4 @@
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 09:03 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_

@@ -1,693 +1,208 @@
 ﻿ano,mes,municipio,cid_familia,n_registros,n_procedimentos
-2026,6,CLAUDIA,tuberculose,1,1
-2026,6,NOVA MUTUM,tuberculose,13,13
-2026,5,SAO JOSE DO RIO CLARO,tuberculose,1,1
-2026,5,NOVA MARINGA,tuberculose,2,2
-2026,5,CACERES,dengue_arbovirose,43,43
-2026,4,QUERENCIA,dengue_arbovirose,3,7
-2026,5,SAO JOSE DOS QUATRO MARCOS,hepatite,1,1
-2026,4,510183,tuberculose,1,1
-2026,6,ALTO GARCAS,tuberculose,1,1
-2026,4,NAZARIO,dengue_arbovirose,3,3
-2026,4,SAO GONCALO DO AMARANTE,hepatite,1,1
-2026,5,CANTA,dengue_arbovirose,1,1
-2026,5,NOVA GUARITA,tuberculose,1,1
-2026,5,NOVO SANTO ANTONIO,hepatite,7,7
-2026,6,GAUCHA DO NORTE,tuberculose,2,2
-2026,4,NOVA OLIMPIA,hepatite,1,1
-2026,4,CONFRESA,hepatite,24,24
-2026,6,SANTO ANTONIO DO LEVERGER,hepatite,1,1
-2026,4,CAMPO NOVO DE RONDONIA,dengue_arbovirose,1,1
-2026,4,CONFRESA,tuberculose,1,1
-2026,4,NOVA MUTUM,dengue_arbovirose,8,8
-2026,5,RONDONOPOLIS,tuberculose,18,18
-2026,4,QUERENCIA,hepatite,6,6
-2026,4,NOSSA SENHORA DO LIVRAMENTO,hepatite,1,1
-2026,4,PINDARE-MIRIM,dengue_arbovirose,1,1
-2026,4,NOVA LACERDA,tuberculose,1,1
-2026,4,VALE DE SAO DOMINGOS,tuberculose,1,1
-2026,6,CANABRAVA DO NORTE,tuberculose,2,2
-2026,6,TABAPORA,dengue_arbovirose,6,24
-2026,4,SAO PEDRO DA CIPA,tuberculose,1,1
-2026,6,MIRASSOL D OESTE,tuberculose,1,1
-2026,4,OSASCO,tuberculose,1,1
-2026,5,ALTA FLORESTA,tuberculose,5,5
-2026,5,JUSCIMEIRA,dengue_arbovirose,3,5
-2026,5,MANAUS,dengue_arbovirose,1,1
-2026,4,PARAGOMINAS,tuberculose,1,1
-2026,5,CAMPINAPOLIS,tuberculose,16,16
-2026,4,ARIPUANA,tuberculose,2,2
-2026,4,PORTO ALEGRE DO NORTE,dengue_arbovirose,3,3
-2026,4,COTRIGUACU,tuberculose,1,1
-2026,6,RONDONOPOLIS,tuberculose,20,20
-2026,6,BANNACH,hepatite,1,1
-2026,6,MACHADINHO DOESTE,dengue_arbovirose,2,2
-2026,5,IPIRANGA DO NORTE,hepatite,1,1
-2026,4,NOVA SANTA HELENA,hepatite,3,3
-2026,4,SINOP,dengue_arbovirose,4,4
-2026,6,PEDRA PRETA,dengue_arbovirose,5,7
-2026,4,PEDRA PRETA,dengue_arbovirose,1,1
-2026,5,NOVA XAVANTINA,dengue_arbovirose,20,20
-2026,5,JI-PARANA,dengue_arbovirose,1,1
-2026,4,NOVA MARILANDIA,tuberculose,1,1
-2026,5,SANTO ANTONIO DO LEVERGER,tuberculose,4,4
-2026,5,SAO DOMINGOS,dengue_arbovirose,1,1
-2026,5,PEDRA PRETA,dengue_arbovirose,5,6
-2026,5,BRASNORTE,hepatite,1,1
-2026,6,NOVA MUTUM,hepatite,10,10
-2026,5,NOVA MUTUM,hepatite,21,21
-2026,4,VILHENA,dengue_arbovirose,1,1
-2026,5,PIMENTA BUENO,dengue_arbovirose,1,1
-2026,5,JURUENA,hepatite,13,13
-2026,4,VILHENA,tuberculose,1,1
-2026,6,BARAO DE MELGACO,tuberculose,1,1
-2026,5,COLNIZA,dengue_arbovirose,132,132
-2026,4,CLAUDIA,hepatite,1,1
-2026,4,VARZEA GRANDE,hepatite,23,23
-2026,6,VILHENA,dengue_arbovirose,3,3
-2026,5,CUIABA,hepatite,67,67
-2026,5,NOVA MUTUM,tuberculose,31,31
-2026,6,APUI,dengue_arbovirose,1,1
-2026,4,510183,hepatite,1,1
-2026,6,GUIRATINGA,tuberculose,1,1
-2026,6,SAO MIGUEL DO ARAGUAIA,dengue_arbovirose,3,3
-2026,6,CUJUBIM,dengue_arbovirose,1,1
-2026,6,MARCELANDIA,hepatite,2,2
-2026,6,TERRA NOVA DO NORTE,tuberculose,1,1
-2026,4,ARAPUTANGA,dengue_arbovirose,1,1
-2026,5,CAMPO NOVO DO PARECIS,dengue_arbovirose,5,5
-2026,4,ARIPUANA,hepatite,19,19
-2026,5,CHAPADA DOS GUIMARAES,tuberculose,7,7
-2026,5,FLORIANOPOLIS,tuberculose,1,1
-2026,5,SANTO ANTONIO DO LEVERGER,dengue_arbovirose,1,1
-2026,6,CEREJEIRAS,dengue_arbovirose,1,1
-2026,6,DIAMANTINO,tuberculose,3,3
-2026,5,PEIXOTO DE AZEVEDO,hepatite,1,1
-2026,4,PONTAL DO ARAGUAIA,dengue_arbovirose,19,19
-2026,5,PACARAIMA,dengue_arbovirose,3,15
-2026,6,PEIXOTO DE AZEVEDO,dengue_arbovirose,32,32
-2026,4,NOVA UBIRATA,tuberculose,4,4
-2026,6,SAO JOSE DOS QUATRO MARCOS,hepatite,1,1
-2026,5,GOIANIA,dengue_arbovirose,12,12
-2026,5,NOVO SAO JOAQUIM,dengue_arbovirose,17,34
-2026,5,CALDAS NOVAS,dengue_arbovirose,1,1
-2026,4,POXOREO,hepatite,1,1
-2026,4,CARLINDA,dengue_arbovirose,34,34
-2026,4,RONDONOPOLIS,tuberculose,18,18
-2026,5,COLIDER,dengue_arbovirose,2,2
-2026,4,CUJUBIM,dengue_arbovirose,1,1
-2026,4,CASTANHEIRA,hepatite,35,35
-2026,4,NOVA XAVANTINA,hepatite,4,4
-2026,6,APIACAS,tuberculose,1,1
-2026,5,BARAO DE MELGACO,tuberculose,1,1
-2026,4,SAO JOSE DOS QUATRO MARCOS,tuberculose,4,4
-2026,6,SAO JOSE DO RIO CLARO,tuberculose,2,2
-2026,6,CASTANHEIRA,dengue_arbovirose,1,1
-2026,5,COMODORO,hepatite,1,1
-2026,6,AGUA BOA,hepatite,3,3
-2026,4,DIAMANTINO,tuberculose,20,20
-2026,4,RIO VERDE,dengue_arbovirose,3,3
-2026,4,ALTO PARAGUAI,tuberculose,1,1
-2026,5,VILHENA,dengue_arbovirose,2,2
-2026,4,NOVA BRASILANDIA,tuberculose,1,1
-2026,4,GOIANIRA,dengue_arbovirose,11,11
-2026,6,MUNDO NOVO,hepatite,1,1
-2026,4,SERRA,dengue_arbovirose,1,1
-2026,5,VARZEA GRANDE,hepatite,20,20
-2026,6,BARRA DO GARCAS,hepatite,5,5
-2026,6,BARRA DO GARCAS,tuberculose,14,14
-2026,6,SORRISO,hepatite,11,11
-2026,5,TAPURAH,dengue_arbovirose,3,7
-2026,4,NORTELANDIA,tuberculose,4,4
-2026,4,COLIDER,tuberculose,9,9
-2026,5,ANANAS,dengue_arbovirose,5,5
-2026,4,RIO BRANCO,tuberculose,3,3
-2026,5,ARIPUANA,tuberculose,1,1
-2026,4,TANGARA DA SERRA,hepatite,86,86
-2026,6,JUINA,hepatite,22,22
-2026,6,SAO MIGUEL DOS CAMPOS,tuberculose,2,2
-2026,6,CHAPECO,hepatite,1,1
-2026,4,BRASNORTE,hepatite,36,36
-2026,4,MANAUS,tuberculose,5,5
-2026,5,NOVA ROSALANDIA,dengue_arbovirose,1,1
-2026,6,APARECIDA DE GOIANIA,tuberculose,1,1
-2026,6,COTRIGUACU,hepatite,2,2
-2026,6,NOVA CANAA DO NORTE,tuberculose,1,1
-2026,4,NOVA MARINGA,tuberculose,1,1
-2026,6,NOVA OLIMPIA,hepatite,1,1
-2026,5,NOVA MUTUM,dengue_arbovirose,10,11
-2026,6,BARRA DE SAO FRANCISCO,dengue_arbovirose,1,1
-2026,4,JUINA,dengue_arbovirose,160,159
-2026,6,CANARANA,dengue_arbovirose,4,8
-2026,5,PEIXOTO DE AZEVEDO,dengue_arbovirose,24,24
-2026,5,CAIAPONIA,dengue_arbovirose,5,5
-2026,5,SORRISO,hepatite,18,18
-2026,5,JUINA,tuberculose,17,17
-2026,5,PARANATINGA,dengue_arbovirose,1,1
-2026,4,APARECIDA DE GOIANIA,tuberculose,1,1
-2026,6,ROSARIO OESTE,hepatite,1,1
-2026,5,COTRIGUACU,dengue_arbovirose,8,16
-2026,5,GUARANTA DO NORTE,tuberculose,12,12
-2026,5,IPIRANGA DO NORTE,dengue_arbovirose,1,1
-2026,6,PEDRA PRETA,hepatite,1,1
-2026,5,DIAMANTINO,tuberculose,7,7
-2026,5,SAO MIGUEL DOS CAMPOS,tuberculose,2,2
-2026,6,BOM JESUS DO ARAGUAIA,tuberculose,2,2
-2026,4,GUIRATINGA,tuberculose,2,2
-2026,6,CUIABA,tuberculose,122,122
-2026,6,SORRISO,tuberculose,34,34
-2026,5,ARENAPOLIS,tuberculose,3,3
-2026,4,MANAUS,dengue_arbovirose,1,6
-2026,5,APIACAS,hepatite,1,1
-2026,5,BARRA DO GARCAS,hepatite,4,4
-2026,5,ARAPUTANGA,tuberculose,2,2
-2026,4,PARAUAPEBAS,dengue_arbovirose,1,4
-2026,6,ALTA FLORESTA DOESTE,dengue_arbovirose,1,2
-2026,5,BRASILIA,dengue_arbovirose,5,5
-2026,5,SERRA NOVA DOURADA,hepatite,9,9
-2026,5,SAO FELIX DO ARAGUAIA,tuberculose,4,4
-2026,4,CROMINIA,dengue_arbovirose,2,5
-2026,4,BRASNORTE,tuberculose,3,3
-2026,4,BARAO DE MELGACO,tuberculose,1,1
-2026,4,NOVA MUTUM,hepatite,30,30
-2026,6,GUARANTA DO NORTE,tuberculose,14,14
-2026,4,BARREIRAS,tuberculose,2,2
-2026,5,PORTO VELHO,dengue_arbovirose,1,1
-2026,4,CUIABA,tuberculose,117,118
-2026,4,SANTO ANTONIO DO LEVERGER,dengue_arbovirose,5,6
-2026,5,RIO CLARO,hepatite,1,1
-2026,5,INHUMAS,dengue_arbovirose,1,1
-2026,4,ALTO GARCAS,tuberculose,1,1
-2026,4,SAO PEDRO DA CIPA,hepatite,1,1
-2026,5,CAMPO VERDE,hepatite,5,5
-2026,4,NOVO SANTO ANTONIO,hepatite,2,2
-2026,5,GENERAL CARNEIRO,dengue_arbovirose,6,6
-2026,5,CAMPINAPOLIS,dengue_arbovirose,18,18
-2026,6,VILHENA,hepatite,1,1
-2026,6,510183,hepatite,2,2
-2026,4,ROSARIO OESTE,tuberculose,3,3
-2026,4,NOVA MONTE VERDE,dengue_arbovirose,2,4
-2026,4,PARANATINGA,hepatite,1,1
-2026,5,JUARA,hepatite,5,5
-2026,6,RIBEIRAO CASCALHEIRA,tuberculose,1,1
-2026,4,QUERENCIA,tuberculose,1,1
-2026,6,POXOREO,tuberculose,2,2
-2026,6,RESERVA DO CABACAL,tuberculose,1,1
-2026,4,CACERES,tuberculose,48,48
-2026,6,MATUPA,hepatite,3,3
-2026,6,ROSARIO OESTE,tuberculose,1,1
-2026,6,SANTO ANTONIO DO LEVERGER,tuberculose,5,5
-2026,6,JUSCIMEIRA,tuberculose,2,2
-2026,6,BARRA DO BUGRES,tuberculose,17,17
-2026,5,POCONE,tuberculose,7,7
-2026,5,RESERVA DO CABACAL,tuberculose,1,1
-2026,5,PORTO DOS GAUCHOS,dengue_arbovirose,12,12
-2026,4,CASTANHEIRA,tuberculose,1,1
-2026,5,VALE DE SAO DOMINGOS,tuberculose,1,1
-2026,6,JUINA,dengue_arbovirose,38,38
-2026,6,SAO FELIX DO ARAGUAIA,tuberculose,9,9
-2026,6,CAMPO VERDE,tuberculose,9,9
-2026,4,LUCAS DO RIO VERDE,tuberculose,19,19
-2026,4,GUARANTA DO NORTE,dengue_arbovirose,6,6
-2026,5,MARINGA,tuberculose,1,1
-2026,4,ROSARIO OESTE,hepatite,1,1
-2026,6,SAPEZAL,hepatite,1,1
-2026,5,NOVA CANAA DO NORTE,dengue_arbovirose,3,3
-2026,6,BALNEARIO CAMBORIU,dengue_arbovirose,1,1
-2026,6,JACIARA,hepatite,1,1
-2026,5,SORRISO,tuberculose,37,37
-2026,4,VERA,dengue_arbovirose,1,1
-2026,6,JUARA,dengue_arbovirose,236,881
-2026,5,JARDINOPOLIS,tuberculose,1,13
-2026,6,BRASNORTE,hepatite,1,1
-2026,6,TANGARA DA SERRA,dengue_arbovirose,3,3
-2026,5,ALTO PARAGUAI,hepatite,1,1
-2026,6,GAUCHA DO NORTE,hepatite,4,4
-2026,4,ARENAPOLIS,tuberculose,1,1
-2026,4,IPIRANGA DO NORTE,hepatite,1,1
-2026,5,NOVA NAZARE,dengue_arbovirose,2,4
-2026,5,GUARULHOS,dengue_arbovirose,1,1
-2026,5,CONQUISTA D OESTE,dengue_arbovirose,1,1
-2026,4,NOVA BRASILANDIA DOESTE,dengue_arbovirose,1,1
-2026,4,RIBEIRAO CASCALHEIRA,tuberculose,1,1
-2026,5,COLNIZA,tuberculose,1,1
-2026,6,SAPEZAL,dengue_arbovirose,4,12
-2026,5,PONTES E LACERDA,hepatite,12,12
-2026,5,CHAPADA DOS GUIMARAES,hepatite,1,1
-2026,6,MARIALVA,dengue_arbovirose,1,1
-2026,5,NOVA XAVANTINA,hepatite,3,3
-2026,5,NOVA CANAA DO NORTE,hepatite,2,2
-2026,4,NOVA UBIRATA,dengue_arbovirose,10,11
-2026,5,NOBRES,tuberculose,1,1
 2026,6,JUINA,tuberculose,33,33
-2026,4,GUARANTA DO NORTE,tuberculose,19,19
 2026,6,LUCAS DO RIO VERDE,tuberculose,15,15
-2026,5,RIO BRANCO,tuberculose,1,1
-2026,6,QUERENCIA,tuberculose,2,2
-2026,5,DENISE,hepatite,1,1
-2026,4,COTRIGUACU,dengue_arbovirose,14,5
-2026,6,SINOP,tuberculose,15,15
-2026,6,NOVA NAZARE,dengue_arbovirose,3,4
-2026,4,ARAGARCAS,dengue_arbovirose,3,3
-2026,4,PORTO ALEGRE DO NORTE,hepatite,2,2
-2026,6,POCONE,tuberculose,4,4
-2026,5,NOVO HORIZONTE DO NORTE,dengue_arbovirose,42,42
-2026,5,SAO JOSE DO POVO,hepatite,1,1
-2026,5,COLORADO DO OESTE,dengue_arbovirose,1,1
-2026,5,CAMPO VERDE,dengue_arbovirose,16,16
-2026,6,TANGARA DA SERRA,tuberculose,88,88
-2026,4,PRIMAVERA DO LESTE,hepatite,29,29
-2026,4,CACERES,hepatite,45,44
-2026,4,COMODORO,tuberculose,1,1
-2026,4,COTRIGUACU,hepatite,11,11
-2026,6,CARLINDA,dengue_arbovirose,1,1
-2026,6,GUARUJA,dengue_arbovirose,1,1
-2026,5,MACHADINHO DOESTE,dengue_arbovirose,1,1
-2026,6,CANARANA,tuberculose,40,40
-2026,6,PRIMAVERA DO LESTE,hepatite,6,6
-2026,4,COLNIZA,tuberculose,3,3
-2026,6,ALTO GARCAS,hepatite,1,1
-2026,6,ARAGUAIANA,tuberculose,1,1
+2026,6,NOVA MUTUM,tuberculose,13,13
+2026,6,CLAUDIA,tuberculose,1,1
+2026,6,GUARANTA DO NORTE,tuberculose,14,14
+2026,6,JUINA,dengue_arbovirose,38,38
+2026,6,CAMPO VERDE,tuberculose,9,9
+2026,6,SAO FELIX DO ARAGUAIA,tuberculose,9,9
+2026,6,BALNEARIO CAMBORIU,dengue_arbovirose,1,1
+2026,6,SAPEZAL,hepatite,1,1
+2026,6,JACIARA,hepatite,1,1
+2026,6,GAUCHA DO NORTE,hepatite,4,4
+2026,6,TANGARA DA SERRA,dengue_arbovirose,3,3
 2026,6,VARZEA GRANDE,tuberculose,65,65
-2026,5,PORTO VELHO,tuberculose,2,2
-2026,4,PARANAITA,tuberculose,11,11
-2026,6,ACORIZAL,tuberculose,3,3
-2026,6,PARANAITA,dengue_arbovirose,1,1
-2026,6,NOVA MARINGA,tuberculose,1,1
-2026,4,CUIABA,hepatite,51,51
-2026,6,PARANAITA,tuberculose,3,3
-2026,4,VILA PROPICIO,dengue_arbovirose,3,3
-2026,4,MIRASSOL D OESTE,hepatite,2,2
-2026,5,ARIPUANA,dengue_arbovirose,3,3
-2026,4,ALTA FLORESTA,hepatite,3,3
-2026,4,ALTO PARAGUAI,dengue_arbovirose,1,1
-2026,4,SANTO ANTONIO DO LEVERGER,hepatite,1,1
-2026,5,ARIPUANA,hepatite,24,24
-2026,6,PRIMAVERA DO LESTE,tuberculose,12,12
-2026,6,DOM AQUINO,hepatite,1,1
-2026,4,GUARANTA DO NORTE,hepatite,21,21
-2026,6,PLANALTO DA SERRA,dengue_arbovirose,5,5
-2026,6,CASTANHEIRA,tuberculose,2,2
-2026,5,PARANAITA,tuberculose,10,10
-2026,6,PINHEIROS,tuberculose,1,1
-2026,6,PALMITAL,tuberculose,1,1
-2026,6,TANGARA DA SERRA,hepatite,54,64
-2026,5,RONDONOPOLIS,hepatite,16,16
-2026,6,FELIZ NATAL,hepatite,1,1
-2026,6,VARZEA GRANDE,hepatite,10,10
-2026,4,RESERVA DO CABACAL,tuberculose,3,3
-2026,5,CLAUDIA,hepatite,1,1
-2026,4,MANICORE,dengue_arbovirose,1,1
-2026,5,CACERES,tuberculose,35,35
-2026,4,CANARANA,hepatite,17,17
-2026,4,PEIXOTO DE AZEVEDO,tuberculose,14,14
-2026,4,FIGUEIROPOLIS D OESTE,dengue_arbovirose,1,1
-2026,5,BOM JESUS DO TOCANTINS,dengue_arbovirose,1,1
-2026,5,GENERAL CARNEIRO,tuberculose,1,1
-2026,6,ALTA FLORESTA,tuberculose,4,4
-2026,6,NOVA UBIRATA,tuberculose,1,1
-2026,5,CACERES,hepatite,23,22
-2026,4,PARANAITA,hepatite,2,2
-2026,4,NOVO LINO,dengue_arbovirose,3,3
-2026,5,BOM JESUS DO ARAGUAIA,hepatite,21,21
-2026,6,TOME-ACU,dengue_arbovirose,1,1
-2026,4,SAO JOSE,hepatite,1,1
-2026,5,APUI,dengue_arbovirose,1,1
-2026,4,ARIQUEMES,dengue_arbovirose,1,1
-2026,5,HUMAITA,dengue_arbovirose,1,1
-2026,4,NORTELANDIA,hepatite,1,1
-2026,4,CHAPADA DOS GUIMARAES,hepatite,2,2
-2026,4,ALTA FLORESTA,tuberculose,11,11
-2026,4,ARIPUANA,dengue_arbovirose,3,3
-2026,6,ROLIM DE MOURA,dengue_arbovirose,1,1
-2026,6,QUIRINOPOLIS,tuberculose,1,1
-2026,6,CUIABA,dengue_arbovirose,7,7
-2026,4,ALTA FLORESTA,dengue_arbovirose,5,5
-2026,5,PONTES E LACERDA,dengue_arbovirose,17,19
-2026,4,CHAPADA DOS GUIMARAES,dengue_arbovirose,12,12
 2026,6,BRASNORTE,tuberculose,2,2
-2026,4,AGUA BOA,hepatite,1,1
-2026,4,CAMPO VERDE,hepatite,1,1
-2026,5,CAMPOS DE JULIO,dengue_arbovirose,20,20
-2026,4,AGUA BOA,dengue_arbovirose,22,45
-2026,4,SAO JOSE DO POVO,tuberculose,1,1
-2026,6,CAMPOS DE JULIO,tuberculose,1,1
-2026,4,NOVA MUTUM,tuberculose,31,31
-2026,5,LUCAS DO RIO VERDE,tuberculose,28,28
-2026,5,AGUA BOA,tuberculose,11,11
-2026,5,SAPEZAL,dengue_arbovirose,1,1
-2026,4,SANTA TEREZINHA,hepatite,3,3
-2026,4,PRIMAVERA DO LESTE,tuberculose,5,5
-2026,6,MONTES CLAROS,hepatite,1,1
-2026,5,NOVA MARINGA,dengue_arbovirose,4,5
-2026,6,COLIDER,tuberculose,4,4
-2026,4,CAMPINAPOLIS,dengue_arbovirose,1,1
-2026,6,SERRA NOVA DOURADA,hepatite,1,1
-2026,4,GOIANIA,dengue_arbovirose,3,3
-2026,4,PALOTINA,dengue_arbovirose,1,1
-2026,4,JUINA,hepatite,84,84
-2026,6,MATUPA,tuberculose,1,1
-2026,6,PORTO ALEGRE DO NORTE,tuberculose,2,2
-2026,4,CACERES,dengue_arbovirose,84,84
-2026,5,MATUPA,hepatite,3,3
-2026,5,JUARA,dengue_arbovirose,144,522
-2026,5,PALMEIRAS DE GOIAS,dengue_arbovirose,6,6
-2026,5,CANARANA,hepatite,4,4
-2026,6,NOVA BANDEIRANTES,dengue_arbovirose,1,1
-2026,6,GUARANTA DO NORTE,dengue_arbovirose,4,6
-2026,6,JACIARA,tuberculose,1,1
-2026,4,TANGARA DA SERRA,dengue_arbovirose,1,1
-2026,6,MARCELANDIA,dengue_arbovirose,3,3
-2026,6,510183,tuberculose,1,1
-2026,5,TANGARA DA SERRA,tuberculose,123,123
-2026,5,COTRIGUACU,tuberculose,1,1
-2026,6,PORTO ESPERIDIAO,tuberculose,1,1
-2026,4,APIACAS,hepatite,1,1
-2026,6,BARREIRAS,tuberculose,1,1
-2026,6,SOBRADINHO,tuberculose,1,1
-2026,4,SAO JOSE DO XINGU,tuberculose,8,8
-2026,5,JUSCIMEIRA,tuberculose,2,3
-2026,4,TAPURAH,dengue_arbovirose,13,13
-2026,4,JUSCIMEIRA,dengue_arbovirose,3,8
-2026,5,ALTO GARCAS,tuberculose,1,1
-2026,4,TABAPORA,tuberculose,1,1
-2026,6,NOVA XAVANTINA,hepatite,5,5
-2026,5,SANTA TEREZINHA,hepatite,3,3
-2026,5,BRASNORTE,tuberculose,8,8
-2026,4,NOVA MARINGA,dengue_arbovirose,6,6
-2026,4,CAMPOS DE JULIO,tuberculose,1,1
-2026,4,ANAPOLIS,dengue_arbovirose,3,3
-2026,6,ARIQUEMES,dengue_arbovirose,1,1
-2026,4,TORIXOREU,dengue_arbovirose,7,7
-2026,5,PORTO ALEGRE DO NORTE,dengue_arbovirose,1,1
-2026,4,SAO JOSE DO RIO CLARO,dengue_arbovirose,1,1
-2026,5,PONTAL DO ARAGUAIA,hepatite,1,1
-2026,5,NOVA UBIRATA,tuberculose,1,1
-2026,5,PRIMAVERA DO LESTE,hepatite,1,1
-2026,5,COLIDER,tuberculose,7,7
-2026,5,TAPEJARA,dengue_arbovirose,1,1
-2026,5,CONFRESA,dengue_arbovirose,2,2
-2026,5,GAUCHA DO NORTE,hepatite,1,1
-2026,6,ARIPUANA,tuberculose,5,5
-2026,6,PONTES E LACERDA,hepatite,1,1
-2026,4,AGUA DOCE DO NORTE,dengue_arbovirose,1,1
-2026,6,JABOATAO DOS GUARARAPES,tuberculose,1,1
-2026,5,NOVA XAVANTINA,tuberculose,2,2
-2026,6,COLNIZA,tuberculose,2,2
-2026,4,ITUMBIARA,dengue_arbovirose,3,9
-2026,4,CAMPO GRANDE,dengue_arbovirose,2,2
-2026,6,UNIAO DO SUL,tuberculose,2,2
-2026,5,TANGARA DA SERRA,dengue_arbovirose,1,1
-2026,6,ALTO ALEGRE DOS PARECIS,dengue_arbovirose,1,1
-2026,6,ALTAMIRA,tuberculose,1,1
-2026,4,RONDONOPOLIS,hepatite,2,2
-2026,5,ALTA FLORESTA,dengue_arbovirose,5,5
-2026,5,NOVA MARILANDIA,tuberculose,1,1
-2026,5,ALTO GARCAS,hepatite,1,1
-2026,6,APIACAS,dengue_arbovirose,1,1
-2026,4,CANARANA,tuberculose,24,24
-2026,5,ITANHANGA,dengue_arbovirose,4,4
-2026,4,JUINA,tuberculose,41,41
-2026,5,VARZEA GRANDE,dengue_arbovirose,38,42
-2026,5,QUERENCIA,hepatite,12,12
-2026,4,SAO JOSE DOS QUATRO MARCOS,dengue_arbovirose,1,1
-2026,4,BARRA DO GARCAS,dengue_arbovirose,415,415
-2026,5,SINOP,hepatite,7,7
-2026,4,CLAUDIA,tuberculose,1,1
-2026,4,JANGADA,hepatite,1,1
-2026,4,GENERAL CARNEIRO,tuberculose,1,1
-2026,6,RIBEIRAOZINHO,tuberculose,1,1
-2026,4,PORTO DOS GAUCHOS,dengue_arbovirose,10,10
-2026,4,CAMPO NOVO DO PARECIS,hepatite,5,5
-2026,4,MARCELANDIA,hepatite,7,7
-2026,6,RONDONOPOLIS,hepatite,15,15
-2026,6,AGUA BOA,tuberculose,6,6
-2026,5,JACIARA,tuberculose,3,3
-2026,4,LUCAS DO RIO VERDE,dengue_arbovirose,105,105
-2026,5,PLANALTO DA SERRA,dengue_arbovirose,5,5
-2026,5,COTRIGUACU,hepatite,18,18
-2026,4,SAO JOSE DO RIO CLARO,hepatite,1,1
-2026,4,GENERAL CARNEIRO,dengue_arbovirose,3,3
-2026,6,SAO JOSE DO RIO CLARO,hepatite,1,1
-2026,5,CANARANA,dengue_arbovirose,5,5
-2026,6,SEARA,tuberculose,1,1
-2026,4,NOVA LACERDA,hepatite,2,2
-2026,4,RONDONOPOLIS,dengue_arbovirose,165,165
-2026,4,BARRA DO GARCAS,tuberculose,14,14
-2026,4,NOBRES,tuberculose,2,2
-2026,4,NOVO MUNDO,tuberculose,2,2
-2026,4,JURUENA,hepatite,12,12
-2026,4,AGUA BOA,tuberculose,10,10
-2026,5,CONFRESA,hepatite,4,4
-2026,4,COLIDER,hepatite,1,1
-2026,6,CAMPO NOVO DO PARECIS,tuberculose,5,5
-2026,5,NOVA MONTE VERDE,tuberculose,1,1
-2026,4,APARECIDA DE GOIANIA,hepatite,1,1
-2026,6,ALTA FLORESTA,hepatite,4,4
-2026,6,COLIDER,dengue_arbovirose,1,0
-2026,6,CUIABA,hepatite,37,37
-2026,5,VARZEA GRANDE,tuberculose,66,66
-2026,6,ARAPUTANGA,tuberculose,2,2
-2026,4,VILA RICA,tuberculose,2,2
-2026,4,SALTO DO CEU,hepatite,1,1
-2026,4,CAMPO NOVO DO PARECIS,tuberculose,6,6
-2026,6,CAMPINAPOLIS,dengue_arbovirose,6,21
-2026,4,URANIA,dengue_arbovirose,3,3
-2026,6,RIO VERDE,dengue_arbovirose,1,1
-2026,4,NOVA BANDEIRANTES,hepatite,3,3
-2026,6,RIO BRANCO,tuberculose,1,1
-2026,5,AGUA BOA,hepatite,4,4
-2026,5,SAO JOSE DOS QUATRO MARCOS,tuberculose,5,5
-2026,4,VOTUPORANGA,dengue_arbovirose,1,1
-2026,4,NOVA LACERDA,dengue_arbovirose,4,4
-2026,4,SIDROLANDIA,tuberculose,1,1
-2026,5,IPIRANGA DO NORTE,tuberculose,3,3
-2026,5,MIRASSOL D OESTE,tuberculose,1,1
-2026,6,PEIXOTO DE AZEVEDO,tuberculose,4,4
-2026,5,JUINA,hepatite,75,75
-2026,5,LUCAS DO RIO VERDE,hepatite,3,3
-2026,5,PEIXOTO DE AZEVEDO,tuberculose,9,9
-2026,5,PARANAITA,hepatite,5,5
-2026,4,PRATA,dengue_arbovirose,1,1
-2026,6,ARENAPOLIS,hepatite,1,1
-2026,4,SORRISO,tuberculose,37,37
-2026,4,TAPURAH,tuberculose,1,1
+2026,6,TANGARA DA SERRA,hepatite,54,64
+2026,6,VILHENA,dengue_arbovirose,3,3
 2026,6,PONTES E LACERDA,tuberculose,37,37
 2026,6,CHAPADA DOS GUIMARAES,tuberculose,7,7
 2026,6,JURUENA,dengue_arbovirose,1,1
-2026,5,CONFRESA,tuberculose,3,3
-2026,4,COLNIZA,dengue_arbovirose,128,128
-2026,4,JUARA,dengue_arbovirose,127,471
-2026,6,SANTO ANTONIO DO LESTE,dengue_arbovirose,2,2
-2026,5,ROSARIO OESTE,hepatite,1,1
-2026,5,SINOP,dengue_arbovirose,6,6
 2026,6,ALVORADA DOESTE,dengue_arbovirose,1,1
-2026,5,PORTO ALEGRE DO NORTE,tuberculose,1,1
-2026,6,CACOAL,dengue_arbovirose,1,1
-2026,5,MATUPA,tuberculose,8,8
-2026,4,PONTES E LACERDA,tuberculose,5,5
-2026,4,DIAMANTINO,hepatite,1,1
-2026,4,DIAMANTINO,dengue_arbovirose,1,1
-2026,5,COSTA RICA,dengue_arbovirose,1,1
-2026,6,BOA VISTA,dengue_arbovirose,1,1
-2026,4,CHAPADA DOS GUIMARAES,tuberculose,13,13
-2026,4,ALTO BOA VISTA,hepatite,3,3
-2026,6,JI-PARANA,dengue_arbovirose,2,2
-2026,4,COLNIZA,hepatite,45,45
-2026,4,CAMPINAPOLIS,tuberculose,6,6
-2026,4,JURUENA,dengue_arbovirose,4,3
-2026,6,CHAPADA DOS GUIMARAES,hepatite,2,2
-2026,5,CONCEICAO DAS ALAGOAS,dengue_arbovirose,1,1
-2026,5,NOVA MONTE VERDE,dengue_arbovirose,3,10
-2026,5,SAO JOSE DO XINGU,tuberculose,7,7
-2026,4,APARECIDA DE GOIANIA,dengue_arbovirose,3,3
-2026,4,MIRASSOL D OESTE,tuberculose,2,2
-2026,5,BARAO DE MELGACO,hepatite,1,1
-2026,6,CAMPO NOVO DO PARECIS,dengue_arbovirose,1,1
-2026,5,CONQUISTA D OESTE,tuberculose,1,1
-2026,5,NOSSA SENHORA DO LIVRAMENTO,tuberculose,1,1
-2026,6,PARANAITA,hepatite,2,2
-2026,4,TRES LAGOAS,tuberculose,1,1
-2026,4,PONTES E LACERDA,dengue_arbovirose,43,53
-2026,6,PEIXOTO DE AZEVEDO,hepatite,1,1
-2026,4,BURITICUPU,dengue_arbovirose,1,1
-2026,6,ORIXIMINA,dengue_arbovirose,1,1
-2026,5,ROSARIO OESTE,tuberculose,1,1
-2026,4,SANTO ANTONIO DO LEVERGER,tuberculose,6,6
-2026,4,TARAUACA,dengue_arbovirose,1,1
-2026,5,SAO FELIX DO ARAGUAIA,dengue_arbovirose,8,8
-2026,5,BOM JESUS DE GOIAS,dengue_arbovirose,2,2
-2026,6,AGUA BOA,dengue_arbovirose,1,1
-2026,4,VARZEA PAULISTA,dengue_arbovirose,2,2
-2026,5,URUPA,dengue_arbovirose,1,1
-2026,4,SANTA CARMEM,tuberculose,7,7
-2026,5,CAMPO VERDE,tuberculose,9,9
-2026,4,PORTO ALEGRE DO NORTE,tuberculose,2,2
-2026,4,ITIQUIRA,tuberculose,1,1
-2026,6,SINOP,dengue_arbovirose,14,26
-2026,5,SINOP,tuberculose,31,31
-2026,6,RIBEIRAO CASCALHEIRA,hepatite,2,2
-2026,4,SINOP,hepatite,8,8
-2026,5,LUCAS DO RIO VERDE,dengue_arbovirose,249,250
-2026,4,ARAPUTANGA,hepatite,1,1
-2026,4,ITAUBA,hepatite,1,1
-2026,4,JUARA,hepatite,8,8
-2026,4,CAMPOS DE JULIO,dengue_arbovirose,10,10
-2026,5,TERRA NOVA DO NORTE,hepatite,15,15
-2026,5,VILA RICA,hepatite,1,1
-2026,5,BARRA DO GARCAS,tuberculose,19,19
-2026,4,VARZEA GRANDE,dengue_arbovirose,146,158
-2026,4,PRIMAVERA DO LESTE,dengue_arbovirose,3,3
-2026,6,CAMPO NOVO DE RONDONIA,dengue_arbovirose,1,1
-2026,5,SANTA TEREZINHA,tuberculose,3,3
-2026,5,AGUA BOA,dengue_arbovirose,21,30
-2026,6,ARIPUANA,dengue_arbovirose,4,4
-2026,4,SAO FELIX DO ARAGUAIA,hepatite,1,1
-2026,6,JUARA,tuberculose,9,9
-2026,4,SAPEZAL,hepatite,3,3
-2026,5,JUINA,dengue_arbovirose,72,72
-2026,6,COLNIZA,dengue_arbovirose,141,141
-2026,6,COLNIZA,hepatite,1,1
-2026,5,CANABRAVA DO NORTE,hepatite,1,1
-2026,4,CAMPO NOVO DO PARECIS,dengue_arbovirose,5,5
-2026,4,TANGARA DA SERRA,tuberculose,98,98
-2026,5,PLANALTO DA SERRA,hepatite,1,1
-2026,4,NOVO SAO JOAQUIM,dengue_arbovirose,18,40
-2026,4,CANABRAVA DO NORTE,hepatite,6,6
-2026,6,ACREUNA,tuberculose,1,1
-2026,6,DIAMANTINO,hepatite,1,1
-2026,5,REDENCAO,dengue_arbovirose,1,1
-2026,6,CACERES,tuberculose,20,20
-2026,6,NOVA BANDEIRANTES,hepatite,3,3
-2026,5,RIBEIRAO CASCALHEIRA,hepatite,2,2
-2026,4,PORTO VELHO,tuberculose,2,2
+2026,6,CASTANHEIRA,dengue_arbovirose,1,1
+2026,6,SAO JOSE DO RIO CLARO,tuberculose,2,2
+2026,6,APIACAS,tuberculose,1,1
 2026,6,COTRIGUACU,dengue_arbovirose,13,9
 2026,6,PORTO DOS GAUCHOS,tuberculose,1,1
-2026,5,CACAULANDIA,dengue_arbovirose,1,1
-2026,4,BRASNORTE,dengue_arbovirose,1,0
-2026,6,TABAPORA,tuberculose,5,5
-2026,5,CLAUDIA,dengue_arbovirose,31,31
-2026,5,GUIRATINGA,hepatite,1,1
-2026,5,ARAGARCAS,dengue_arbovirose,6,6
-2026,5,SAO JOSE DOS CAMPOS,tuberculose,1,1
-2026,6,COLIDER,hepatite,3,3
-2026,6,PIRANHAS,dengue_arbovirose,1,1
-2026,4,NOVA XAVANTINA,dengue_arbovirose,43,53
-2026,6,GUARANTA DO NORTE,hepatite,18,18
-2026,5,MIRASSOL D OESTE,hepatite,2,2
-2026,6,VILA RICA,tuberculose,5,5
-2026,4,JANGADA,tuberculose,1,1
-2026,5,POCONE,hepatite,8,8
-2026,6,NOVO MUNDO,tuberculose,1,1
+2026,6,NOVA MONTE VERDE,hepatite,2,2
+2026,6,SORRISO,hepatite,11,11
+2026,6,BARRA DO GARCAS,tuberculose,14,14
+2026,6,BARRA DO GARCAS,hepatite,5,5
+2026,6,ARAPUTANGA,tuberculose,2,2
 2026,6,TERRA NOVA DO NORTE,hepatite,1,1
-2026,5,PONTES E LACERDA,tuberculose,41,41
-2026,4,IPIRANGA DO NORTE,tuberculose,2,2
-2026,4,CUIABA,dengue_arbovirose,5,5
-2026,5,DIAMANTINO,hepatite,4,4
-2026,6,RIO BRANCO,dengue_arbovirose,1,1
-2026,4,LUCAS DO RIO VERDE,hepatite,21,21
-2026,4,JUSCIMEIRA,tuberculose,2,2
-2026,6,TAPURAH,tuberculose,1,1
+2026,6,NOVO MUNDO,tuberculose,1,1
+2026,6,PONTES E LACERDA,dengue_arbovirose,53,72
+2026,6,CANARANA,dengue_arbovirose,4,8
+2026,6,ROSARIO OESTE,hepatite,1,1
 2026,6,NOVA GUARITA,hepatite,2,2
-2026,4,SANTA CRUZ,dengue_arbovirose,2,2
-2026,5,QUERENCIA,tuberculose,1,1
-2026,4,ARAPUTANGA,tuberculose,3,3
-2026,5,JACIARA,hepatite,1,1
-2026,5,QUERENCIA,dengue_arbovirose,8,8
-2026,5,BARRA DO GARCAS,dengue_arbovirose,804,810
-2026,5,ALTA FLORESTA,hepatite,5,5
-2026,5,JURUENA,dengue_arbovirose,6,6
+2026,6,TAPURAH,tuberculose,1,1
+2026,6,CARLINDA,hepatite,2,2
+2026,6,BOA VISTA,tuberculose,1,1
+2026,6,NOBRES,tuberculose,3,3
+2026,6,VARZEA GRANDE,dengue_arbovirose,81,86
+2026,6,CAMPOS DE JULIO,dengue_arbovirose,2,2
+2026,6,ROLIM DE MOURA,dengue_arbovirose,1,1
+2026,6,TABAPORA,dengue_arbovirose,6,24
+2026,6,MIRASSOL D OESTE,tuberculose,1,1
+2026,6,FELIZ NATAL,hepatite,1,1
+2026,6,PEIXOTO DE AZEVEDO,dengue_arbovirose,32,32
+2026,6,SAO JOSE DOS QUATRO MARCOS,hepatite,1,1
+2026,6,NOVA XAVANTINA,hepatite,5,5
+2026,6,PEIXOTO DE AZEVEDO,tuberculose,4,4
+2026,6,ARENAPOLIS,hepatite,1,1
+2026,6,TERRA NOVA DO NORTE,dengue_arbovirose,4,7
+2026,6,VILHENA,hepatite,1,1
+2026,6,510183,hepatite,2,2
+2026,6,MATUPA,hepatite,3,3
+2026,6,ROSARIO OESTE,tuberculose,1,1
+2026,6,SANTO ANTONIO DO LEVERGER,hepatite,1,1
+2026,6,ARAGUAIANA,tuberculose,1,1
+2026,6,ALTO GARCAS,hepatite,1,1
+2026,6,PARANAITA,tuberculose,3,3
+2026,6,DOM AQUINO,hepatite,1,1
+2026,6,PRIMAVERA DO LESTE,tuberculose,12,12
+2026,6,CAMPOS DE JULIO,tuberculose,1,1
+2026,6,COLIDER,tuberculose,4,4
+2026,6,SERRA NOVA DOURADA,hepatite,1,1
+2026,6,ARIPUANA,tuberculose,5,5
+2026,6,NOVA MUTUM,hepatite,10,10
+2026,6,ALTO ALEGRE DOS PARECIS,dengue_arbovirose,1,1
+2026,6,UNIAO DO SUL,tuberculose,2,2
+2026,6,RONDONOPOLIS,hepatite,15,15
+2026,6,AGUA BOA,tuberculose,6,6
+2026,6,DIAMANTINO,hepatite,1,1
+2026,6,ACREUNA,tuberculose,1,1
+2026,6,AGUA BOA,hepatite,3,3
+2026,6,PIRANHAS,dengue_arbovirose,1,1
+2026,6,RIO VERDE,dengue_arbovirose,1,1
+2026,6,PARANATINGA,hepatite,1,1
+2026,6,SINOP,dengue_arbovirose,14,26
+2026,6,RIBEIRAO CASCALHEIRA,hepatite,2,2
+2026,6,SINOP,tuberculose,15,15
+2026,6,NOVA NAZARE,dengue_arbovirose,3,4
+2026,6,POCONE,tuberculose,4,4
+2026,6,CARLINDA,dengue_arbovirose,1,1
+2026,6,GUARUJA,dengue_arbovirose,1,1
+2026,6,SANTO ANTONIO DO LEVERGER,tuberculose,5,5
+2026,6,JUSCIMEIRA,tuberculose,2,2
+2026,6,JUARA,dengue_arbovirose,236,881
+2026,6,BRASNORTE,hepatite,1,1
+2026,6,CANARANA,tuberculose,40,40
+2026,6,PRIMAVERA DO LESTE,hepatite,6,6
+2026,6,VARZEA GRANDE,hepatite,10,10
+2026,6,RONDONOPOLIS,tuberculose,20,20
+2026,6,MACHADINHO DOESTE,dengue_arbovirose,2,2
+2026,6,BANNACH,hepatite,1,1
+2026,6,JACIARA,tuberculose,1,1
+2026,6,MARCELANDIA,dengue_arbovirose,3,3
+2026,6,GUARANTA DO NORTE,dengue_arbovirose,4,6
+2026,6,510183,tuberculose,1,1
+2026,6,BARAO DE MELGACO,tuberculose,1,1
+2026,6,ARIQUEMES,dengue_arbovirose,1,1
+2026,6,CUJUBIM,dengue_arbovirose,1,1
+2026,6,SAO MIGUEL DO ARAGUAIA,dengue_arbovirose,3,3
+2026,6,GUIRATINGA,tuberculose,1,1
+2026,6,COLNIZA,dengue_arbovirose,141,141
+2026,6,COLNIZA,hepatite,1,1
+2026,6,CACOAL,dengue_arbovirose,1,1
+2026,6,BOA VISTA,dengue_arbovirose,1,1
+2026,6,CUIABA,hepatite,37,37
+2026,6,JUINA,hepatite,22,22
+2026,6,SAO MIGUEL DOS CAMPOS,tuberculose,2,2
+2026,6,CHAPECO,hepatite,1,1
+2026,6,RIO BRANCO,dengue_arbovirose,1,1
+2026,6,HUMAITA,dengue_arbovirose,1,1
+2026,6,CAMPO NOVO DE RONDONIA,dengue_arbovirose,1,1
+2026,6,CUIABA,tuberculose,122,122
+2026,6,SORRISO,tuberculose,34,34
+2026,6,CUIABA,dengue_arbovirose,7,7
+2026,6,QUIRINOPOLIS,tuberculose,1,1
+2026,6,PINHEIROS,tuberculose,1,1
+2026,6,MONTES CLAROS,hepatite,1,1
+2026,6,MATUPA,tuberculose,1,1
+2026,6,PORTO ALEGRE DO NORTE,tuberculose,2,2
+2026,6,PEDRA PRETA,dengue_arbovirose,5,7
+2026,6,PONTES E LACERDA,hepatite,1,1
+2026,6,APUI,dengue_arbovirose,1,1
+2026,6,MARCELANDIA,hepatite,2,2
+2026,6,TERRA NOVA DO NORTE,tuberculose,1,1
 2026,6,SAO JOSE DO POVO,tuberculose,1,1
 2026,6,CANARANA,hepatite,5,5
-2026,4,CAMPO VERDE,tuberculose,19,19
-2026,4,ESTIVA,tuberculose,1,1
-2026,5,NOVA SANTA HELENA,hepatite,1,1
-2026,5,CARLINDA,tuberculose,1,1
-2026,4,VILA RICA,hepatite,11,11
-2026,6,TERRA NOVA DO NORTE,dengue_arbovirose,4,7
-2026,4,ALTO ARAGUAIA,hepatite,1,1
-2026,4,NOVA XAVANTINA,tuberculose,2,2
-2026,4,PLANALTO DA SERRA,dengue_arbovirose,6,6
-2026,4,VALE DE SAO DOMINGOS,dengue_arbovirose,15,18
-2026,5,CASTANHEIRAS,dengue_arbovirose,1,1
-2026,6,CAMPO VERDE,hepatite,1,1
-2026,5,RONDONOPOLIS,dengue_arbovirose,64,64
-2026,4,BARRA DO GARCAS,hepatite,7,7
-2026,4,UNIAO DO SUL,tuberculose,1,1
-2026,5,TAPURAH,tuberculose,1,1
-2026,6,NOVA MONTE VERDE,hepatite,2,2
-2026,5,ROLIM DE MOURA,dengue_arbovirose,1,1
-2026,4,SERRA NOVA DOURADA,hepatite,3,3
-2026,4,NOSSA SENHORA DO LIVRAMENTO,tuberculose,1,1
-2026,5,JUARA,tuberculose,14,14
-2026,6,PARANATINGA,hepatite,1,1
-2026,4,JAURU,tuberculose,1,1
-2026,4,RIBEIRAO CASCALHEIRA,dengue_arbovirose,3,6
-2026,4,JUARA,tuberculose,3,3
-2026,6,HUMAITA,dengue_arbovirose,1,1
-2026,5,NOVA BANDEIRANTES,tuberculose,1,1
-2026,4,SANTO ANTONIO DO LESTE,dengue_arbovirose,5,9
-2026,6,JURUENA,hepatite,1,1
+2026,6,TABAPORA,tuberculose,5,5
+2026,6,VILA RICA,tuberculose,5,5
+2026,6,GUARANTA DO NORTE,hepatite,18,18
+2026,6,NOVA CANAA DO NORTE,tuberculose,1,1
+2026,6,COTRIGUACU,hepatite,2,2
+2026,6,APARECIDA DE GOIANIA,tuberculose,1,1
 2026,6,RONDONOPOLIS,dengue_arbovirose,75,75
-2026,5,PRIMAVERA DO LESTE,tuberculose,11,11
-2026,4,SAO JOSE DOS CAMPOS,tuberculose,1,1
-2026,5,SANTO ANTONIO DO LEVERGER,hepatite,2,2
-2026,6,VARZEA GRANDE,dengue_arbovirose,81,86
-2026,4,CLAUDIA,dengue_arbovirose,40,40
-2026,6,CAMPOS DE JULIO,dengue_arbovirose,2,2
-2026,5,SAO MIGUEL DO GUAPORE,dengue_arbovirose,1,1
-2026,6,PONTES E LACERDA,dengue_arbovirose,53,72
-2026,5,NOVA NAZARE,hepatite,1,1
-2026,4,POCONE,tuberculose,5,5
-2026,4,MATUPA,dengue_arbovirose,7,15
-2026,4,JARDINOPOLIS,tuberculose,1,1
-2026,4,CANARANA,dengue_arbovirose,1,2
-2026,5,SAO JOSE DO RIO CLARO,hepatite,3,3
-2026,5,POXOREO,tuberculose,1,1
-2026,5,PONTAL DO ARAGUAIA,dengue_arbovirose,25,25
-2026,5,COLNIZA,hepatite,18,18
-2026,6,BOA VISTA,tuberculose,1,1
-2026,6,CARLINDA,hepatite,2,2
-2026,5,CANARANA,tuberculose,30,30
+2026,6,BOM JESUS DO ARAGUAIA,tuberculose,2,2
+2026,6,SAPEZAL,dengue_arbovirose,4,12
+2026,6,RIBEIRAO CASCALHEIRA,tuberculose,1,1
+2026,6,BARRA DO BUGRES,tuberculose,17,17
+2026,6,GAUCHA DO NORTE,tuberculose,2,2
+2026,6,ALTA FLORESTA,tuberculose,4,4
+2026,6,NOVA UBIRATA,tuberculose,1,1
+2026,6,TOME-ACU,dengue_arbovirose,1,1
+2026,6,ACORIZAL,tuberculose,3,3
+2026,6,NOVA MARINGA,tuberculose,1,1
+2026,6,PARANAITA,dengue_arbovirose,1,1
+2026,6,CANABRAVA DO NORTE,tuberculose,2,2
+2026,6,PALMITAL,tuberculose,1,1
+2026,6,PORTO ESPERIDIAO,tuberculose,1,1
+2026,6,SOBRADINHO,tuberculose,1,1
+2026,6,BARREIRAS,tuberculose,1,1
+2026,6,SEARA,tuberculose,1,1
+2026,6,SAO JOSE DO RIO CLARO,hepatite,1,1
+2026,6,CAMPO VERDE,hepatite,1,1
+2026,6,CAMPO NOVO DO PARECIS,dengue_arbovirose,1,1
+2026,6,PARANAITA,hepatite,2,2
+2026,6,ORIXIMINA,dengue_arbovirose,1,1
+2026,6,PEIXOTO DE AZEVEDO,hepatite,1,1
+2026,6,BARRA DE SAO FRANCISCO,dengue_arbovirose,1,1
+2026,6,NOVA OLIMPIA,hepatite,1,1
 2026,6,NOSSA SENHORA DO LIVRAMENTO,tuberculose,2,2
-2026,4,SANTA ROSA,tuberculose,1,1
 2026,6,CACERES,hepatite,1,1
-2026,4,ARAGUAIANA,tuberculose,1,1
-2026,5,VILA RICA,tuberculose,1,1
-2026,4,BARRA DO BUGRES,tuberculose,11,11
-2026,5,CASTANHEIRA,hepatite,12,12
-2026,5,NORTELANDIA,tuberculose,2,2
-2026,6,SAPEZAL,tuberculose,4,4
-2026,4,SAO PAULO,dengue_arbovirose,2,2
-2026,5,BARRA DO BUGRES,tuberculose,10,10
-2026,5,CHAPADA DOS GUIMARAES,dengue_arbovirose,6,6
-2026,5,GUARANTA DO NORTE,hepatite,38,38
-2026,4,SINOP,tuberculose,27,27
 2026,6,CAMPINAPOLIS,tuberculose,13,13
-2026,4,NOVO HORIZONTE DO NORTE,dengue_arbovirose,35,35
+2026,6,MARIALVA,dengue_arbovirose,1,1
+2026,6,QUERENCIA,tuberculose,2,2
+2026,6,ALTA FLORESTA DOESTE,dengue_arbovirose,1,2
+2026,6,ALTO GARCAS,tuberculose,1,1
+2026,6,TANGARA DA SERRA,tuberculose,88,88
+2026,6,POXOREO,tuberculose,2,2
+2026,6,RESERVA DO CABACAL,tuberculose,1,1
+2026,6,ALTAMIRA,tuberculose,1,1
+2026,6,APIACAS,dengue_arbovirose,1,1
+2026,6,RIBEIRAOZINHO,tuberculose,1,1
+2026,6,JI-PARANA,dengue_arbovirose,2,2
+2026,6,MUNDO NOVO,hepatite,1,1
+2026,6,CAMPO NOVO DO PARECIS,tuberculose,5,5
+2026,6,ALTA FLORESTA,hepatite,4,4
+2026,6,COLIDER,dengue_arbovirose,1,0
+2026,6,CAMPINAPOLIS,dengue_arbovirose,6,21
+2026,6,SAPEZAL,tuberculose,4,4
+2026,6,JURUENA,hepatite,1,1
 2026,6,NOVA SANTA HELENA,hepatite,2,2
-2026,4,SORRISO,hepatite,20,20
-2026,5,TANGARA DA SERRA,hepatite,98,98
-2026,4,NOVA CANAA DO NORTE,dengue_arbovirose,1,1
-2026,6,IPORA,tuberculose,1,1
-2026,4,CAMPINA GRANDE DO SUL,dengue_arbovirose,1,1
-2026,5,CUIABA,tuberculose,100,100
-2026,4,BARRA DO BUGRES,dengue_arbovirose,3,3
 2026,6,NORTELANDIA,tuberculose,2,2
-2026,5,NOVA MARINGA,hepatite,2,2
-2026,5,JURUENA,tuberculose,1,1
 2026,6,TURILANDIA,dengue_arbovirose,1,1
-2026,5,CAMPO NOVO DO PARECIS,tuberculose,9,9
+2026,6,CASTANHEIRA,tuberculose,2,2
+2026,6,PLANALTO DA SERRA,dengue_arbovirose,5,5
+2026,6,CEREJEIRAS,dengue_arbovirose,1,1
+2026,6,DIAMANTINO,tuberculose,3,3
+2026,6,NOVA BANDEIRANTES,dengue_arbovirose,1,1
+2026,6,JABOATAO DOS GUARARAPES,tuberculose,1,1
+2026,6,COLNIZA,tuberculose,2,2
+2026,6,RIO BRANCO,tuberculose,1,1
+2026,6,JUARA,tuberculose,9,9
+2026,6,SANTO ANTONIO DO LESTE,dengue_arbovirose,2,2
+2026,6,CACERES,tuberculose,20,20
+2026,6,NOVA BANDEIRANTES,hepatite,3,3
+2026,6,CHAPADA DOS GUIMARAES,hepatite,2,2
+2026,6,COLIDER,hepatite,3,3
+2026,6,AGUA BOA,dengue_arbovirose,1,1
+2026,6,PEDRA PRETA,hepatite,1,1
 2026,6,ALTO PARAGUAI,hepatite,1,1
-2026,5,LUCIARA,dengue_arbovirose,6,6
 2026,6,CONFRESA,tuberculose,4,4
-2026,5,CAMPO NOVO DO PARECIS,hepatite,8,8
 2026,6,SAO JOSE DOS QUATRO MARCOS,tuberculose,1,1
-2026,4,IPORA,tuberculose,1,1
-2026,6,NOBRES,tuberculose,3,3
-2026,4,POCONE,hepatite,2,2
-2026,5,COLIDER,hepatite,3,3
-2026,4,APIACAS,dengue_arbovirose,1,1
-2026,4,VARZEA GRANDE,tuberculose,65,65
-2026,5,CUIABA,dengue_arbovirose,2,2
-2026,5,JUSCIMEIRA,hepatite,1,1
+2026,6,IPORA,tuberculose,1,1
+2026,6,ARIPUANA,dengue_arbovirose,4,4

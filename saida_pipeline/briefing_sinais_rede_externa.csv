@@ -11,23 +11,23 @@ IndicaSUS,—,Descartado,Complementar Intensivo @ 2026-05-12,7,IndicaSUS/SISREG 
 IndicaSUS,—,Descartado,Complementar Intensivo @ 2026-04-30,7,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 IndicaSUS,—,Descartado,Complementar Intensivo @ 2026-04-13,7,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 IndicaSUS,—,Descartado,Complementar Intensivo @ 2026-03-31,7,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,CUIABA,Aprovada,hospitalar,19036,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,VARZEA GRANDE,Aprovada,hospitalar,12231,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,RONDONOPOLIS,Aprovada,hospitalar,11244,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,SINOP,Aprovada,hospitalar,6489,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,CUIABA,Negada,hospitalar,4929,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,LUCAS DO RIO VERDE,Aprovada,hospitalar,4097,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,TANGARA DA SERRA,Aprovada,hospitalar,4097,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,PRIMAVERA DO LESTE,Aprovada,hospitalar,4079,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,SORRISO,Aprovada,hospitalar,3870,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/hosp,CACERES,Aprovada,hospitalar,3593,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,CUIABA,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,,58884,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,CUIABA,Aprovada,hospitalar,19093,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,VARZEA GRANDE,Aprovada,hospitalar,12276,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,RONDONOPOLIS,Aprovada,hospitalar,11284,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,SINOP,Aprovada,hospitalar,6498,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,CUIABA,Negada,hospitalar,4948,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,TANGARA DA SERRA,Aprovada,hospitalar,4117,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,LUCAS DO RIO VERDE,Aprovada,hospitalar,4101,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,PRIMAVERA DO LESTE,Aprovada,hospitalar,4086,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,SORRISO,Aprovada,hospitalar,3886,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/hosp,CACERES,Aprovada,hospitalar,3610,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,CUIABA,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,,58883,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 SISREG/amb,SINOP,SOLICITAÇÃO / PENDENTE / REGULADOR,,24798,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,SINOP,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,21950,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,VARZEA GRANDE,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,,21087,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,CUIABA,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,GRUPO - DIAGNOSTICO POR ULTRA-SONOGRAFIA,19416,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,CUIABA,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,17554,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,SINOP,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,21949,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,VARZEA GRANDE,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,,21006,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,CUIABA,SOLICITAÇÃO / PENDENTE / FILA DE ESPERA,GRUPO - DIAGNOSTICO POR ULTRA-SONOGRAFIA,19417,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,CUIABA,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,17561,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 SISREG/amb,VARZEA GRANDE,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,GRUPO - PATOLOGIA CLINICA (EXAMES DE LABORATORIO),12421,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 SISREG/amb,BARRA DO GARCAS,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,GRUPO - DIAGNOSTICO EM LABORATORIO CLINICO,10432,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
-SISREG/amb,VARZEA GRANDE,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,9785,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
+SISREG/amb,VARZEA GRANDE,AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE,,9780,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 SISREG/amb,ALTA FLORESTA,SOLICITAÇÃO / PENDENTE / REGULADOR,,9488,IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.

@@ -12,7 +12,7 @@
 - Exames: 409 · positivos: 3
 - Positividade: 0.007334963325183374
 - Variação: subiu 162% em relação à semana anterior
-- Probabilidade: alto · Impacto: alto · Confiança: Derivado
+- Probabilidade: alto · Impacto: médio · Confiança: Derivado
 - Veredito operacional: investigar
 
 ## 2. Interpretação de marcadores
@@ -38,7 +38,7 @@
 
 ## 5. Internações (SIH)
 
-- VARZEA GRANDE × dengue_arbovirose: n=19 [SIH/VW_INTERNACAO]
+- Sem internações SIH filtradas para este município/sinal.
 
 ## 6. Lacunas de vigilância
 
@@ -66,4 +66,4 @@
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 09:03 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_

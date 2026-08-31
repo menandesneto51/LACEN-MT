@@ -1470,6 +1470,368 @@ retrospectivo,risco,AGUA BOA,tuberculose_cultura,2023,25,0.5671158351417861,2,se
 2026-08-30,silencio,BARRA DO GARCAS,toxoplasmose_citomegalov_rus_igm,2026,30,0.5806,2,,
 2026-08-30,silencio,PRIMAVERA DO LESTE,toxoplasmose_mayaro_biologia_molecular,2026,14,0.5806,2,silencio,1
 2026-08-30,silencio,PRIMAVERA DO LESTE,toxoplasmose_citomegalov_rus_igm,2026,13,0.5806,2,silencio,1
+2026-08-31,risco,CUIABA,hepatite_b_hbv,2026,30,0.9495,2,,
+2026-08-31,risco,VARZEA GRANDE,hepatite_b_hbv,2026,30,0.9361,2,,
+2026-08-31,risco,JUINA,hepatite_b_hbv,2026,30,0.9354,2,,
+2026-08-31,risco,PRIMAVERA DO LESTE,hepatite_b_hbv,2026,28,0.9351,2,sem_confirmacao,0
+2026-08-31,risco,RONDONOPOLIS,hepatite_b_hbv,2026,29,0.9322,2,,
+2026-08-31,risco,COTRIGUACU,hepatite_b_hbv,2026,23,0.9315,2,sem_confirmacao,0
+2026-08-31,risco,ALTA FLORESTA,hepatite_b_hbv,2026,28,0.9315,2,sem_confirmacao,0
+2026-08-31,risco,CASTANHEIRA,hepatite_b_hbv,2026,30,0.9292,2,,
+2026-08-31,risco,SORRISO,hepatite_b_hbv,2026,30,0.9266,2,,
+2026-08-31,risco,SERRA NOVA DOURADA,hepatite_b_hbv,2026,22,0.926,2,sem_confirmacao,0
+2026-08-31,risco,TERRA NOVA DO NORTE,hepatite_b_hbv,2026,30,0.9256,2,,
+2026-08-31,risco,ARIPUANA,hepatite_b_hbv,2026,30,0.923,2,,
+2026-08-31,risco,MARCELANDIA,hepatite_b_hbv,2026,25,0.9208,2,sem_confirmacao,0
+2026-08-31,risco,NOVO SANTO ANTONIO,hepatite_b_hbv,2026,20,0.9187,2,sem_confirmacao,0
+2026-08-31,risco,LUCAS DO RIO VERDE,dengue,2026,30,0.9105,2,,
+2026-08-31,risco,JUARA,hepatite_b_hbv,2026,29,0.9078,2,,
+2026-08-31,risco,CONFRESA,hepatite_b_hbv,2026,28,0.9035,2,sem_confirmacao,0
+2026-08-31,risco,JURUENA,hepatite_b_hbv,2026,29,0.9033,2,,
+2026-08-31,risco,PEIXOTO DE AZEVEDO,hepatite_b_hbv,2026,30,0.9014,2,,
+2026-08-31,risco,TERRA NOVA DO NORTE,hepatite_a,2026,29,0.899,2,,
+2026-08-31,risco,QUERENCIA,hepatite_b_hbv,2026,30,0.8853,2,,
+2026-08-31,risco,CANARANA,hepatite_b_hbv,2026,30,0.8806,2,,
+2026-08-31,risco,BOM JESUS DO ARAGUAIA,hepatite_b_hbv,2026,21,0.8644,2,sem_confirmacao,0
+2026-08-31,risco,CUIABA,toxoplasmose_toxoplasmose_igg,2026,30,0.8625,2,,
+2026-08-31,risco,PARANAITA,hepatite_b_hbv,2026,25,0.8607,2,sem_confirmacao,0
+2026-08-31,risco,NOVA XAVANTINA,hepatite_a,2026,21,0.8575,2,sem_confirmacao,0
+2026-08-31,risco,COLIDER,hepatite_b_hbv,2026,30,0.8558,2,,
+2026-08-31,risco,BRASNORTE,hepatite_b_hbv,2026,29,0.8445,2,,
+2026-08-31,risco,MATUPA,hepatite_b_hbv,2026,30,0.8409,2,,
+2026-08-31,risco,GUARANTA DO NORTE,hepatite_b_hbv,2026,30,0.8361,2,,
+2026-08-31,risco,AGUA BOA,hepatite_b_hbv,2026,30,0.836,2,,
+2026-08-31,risco,NOVA XAVANTINA,hepatite_b_hbv,2026,30,0.8319,2,,
+2026-08-31,risco,MIRASSOL D''OESTE,hepatite_b_hbv,2026,26,0.8271,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,dengue,2026,30,0.816,2,,
+2026-08-31,risco,CUIABA,infec_o_coloniza_o_pesquisa_de_carbapenemases,2026,29,0.8158,2,,
+2026-08-31,risco,CUIABA,citomegalov_rus_citomegalov_rus_igg,2026,22,0.8046,2,sem_confirmacao,0
+2026-08-31,risco,CACERES,chikungunya,2026,17,0.8044,2,sem_confirmacao,0
+2026-08-31,risco,VILA RICA,hepatite_b_hbv,2026,28,0.8031,2,sem_confirmacao,0
+2026-08-31,risco,COLNIZA,hepatite_b_hbv,2026,30,0.7979,2,,
+2026-08-31,risco,PORTO ALEGRE DO NORTE,hepatite_b_hbv,2026,30,0.7977,2,,
+2026-08-31,risco,CUIABA,tuberculose,2026,30,0.7953,2,,
+2026-08-31,risco,ALTO BOA VISTA,hepatite_b_hbv,2026,17,0.7951,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,toxoplasmose_citomegalov_rus_igg,2026,30,0.7908,2,,
+2026-08-31,risco,CUIABA,toxoplasmose_citomegalov_rus_igg,2026,30,0.7869,2,,
+2026-08-31,risco,CUIABA,infec_o_coloniza_o_cultura_para_fungos,2026,28,0.7627,2,sem_confirmacao,0
+2026-08-31,risco,NOVO MUNDO,hepatite_b_hbv,2026,28,0.7509,2,sem_confirmacao,0
+2026-08-31,risco,TABAPORA,hepatite_b_hbv,2025,51,0.731,2,sem_confirmacao,0
+2026-08-31,risco,SANTA TEREZINHA,hepatite_b_hbv,2026,28,0.7283,2,sem_confirmacao,0
+2026-08-31,risco,PONTES E LACERDA,hepatite_b_hbv,2026,29,0.7282,2,,
+2026-08-31,risco,VERA,zika,2025,35,0.726,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,tuberculose,2026,30,0.7209,2,,
+2026-08-31,risco,NOVA BANDEIRANTES,hepatite_b_hbv,2026,25,0.6969,2,sem_confirmacao,0
+2026-08-31,risco,NOVA SANTA HELENA,hepatite_b_hbv,2026,28,0.6968,2,sem_confirmacao,0
+2026-08-31,risco,CAMPO VERDE,hepatite_b_hbv,2026,29,0.6842,2,,
+2026-08-31,risco,BARRA DO GARCAS,hepatite_b_hbv,2026,30,0.6785,2,,
+2026-08-31,risco,DIAMANTINO,hepatite_b_hbv,2026,28,0.6624,2,sem_confirmacao,0
+2026-08-31,risco,CANABRAVA DO NORTE,hepatite_b_hbv,2026,22,0.6599,2,sem_confirmacao,0
+2026-08-31,risco,MATUPA,hepatite_a,2025,31,0.6581,2,sem_confirmacao,0
+2026-08-31,risco,JACIARA,hepatite_b_hbv,2026,28,0.6511,2,sem_confirmacao,0
+2026-08-31,risco,BARAO DE MELGACO,sars_cov_2,2026,18,0.6476,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,infec_o_coloniza_o_cultura_para_fungos,2026,28,0.6188,2,sem_confirmacao,0
+2026-08-31,risco,CANARANA,zika,2025,37,0.6109,2,sem_confirmacao,0
+2026-08-31,risco,CUIABA,htlv_htlv_i_ii_v_rus_linfotr_pico_humano_tipo_i_e_ii,2026,19,0.6101,2,sem_confirmacao,0
+2026-08-31,risco,CUIABA,hepatite_a,2026,29,0.6059,2,,
+2026-08-31,risco,COLIDER,doen_a_de_chagas_chagas_igg,2026,29,0.5726,2,,
+2026-08-31,risco,NOVA SANTA HELENA,chikungunya,2025,27,0.5713,2,sem_confirmacao,0
+2026-08-31,risco,CUIABA,dengue,2026,30,0.5664,2,,
+2026-08-31,risco,BARAO DE MELGACO,influenza,2026,20,0.5444,2,sem_confirmacao,0
+2026-08-31,risco,CACERES,zika,2026,17,0.5392,2,sem_confirmacao,0
+2026-08-31,risco,CANARANA,leishmaniose,2026,23,0.5371,2,sem_confirmacao,0
+2026-08-31,risco,SORRISO,zika,2025,42,0.5357,2,sem_confirmacao,0
+2026-08-31,risco,CAMPINAPOLIS,dengue,2026,30,0.5286,2,,
+2026-08-31,risco,PONTES E LACERDA,dengue,2026,30,0.5242,2,,
+2026-08-31,risco,NOVA UBIRATA,chikungunya,2025,37,0.5209,2,sem_confirmacao,0
+2026-08-31,risco,POCONE,zika,2025,51,0.5153,2,sem_confirmacao,0
+2026-08-31,risco,CANARANA,doen_a_de_chagas_chagas,2026,28,0.4908,2,sem_confirmacao,0
+2026-08-31,risco,FELIZ NATAL,zika,2025,31,0.4891,2,sem_confirmacao,0
+2026-08-31,risco,PLANALTO DA SERRA,chikungunya,2025,32,0.4872,2,sem_confirmacao,0
+2026-08-31,risco,CANARANA,doen_a_de_chagas_chagas_igg,2026,28,0.4701,2,sem_confirmacao,0
+2026-08-31,risco,LAMBARI D''OESTE,dengue,2026,17,0.4594,2,sem_confirmacao,0
+2026-08-31,risco,TANGARA DA SERRA,dengue,2026,30,0.4575,2,,
+2026-08-31,risco,LUCAS DO RIO VERDE,zika,2026,15,0.4552,2,sem_confirmacao,0
+2026-08-31,risco,COLIDER,doen_a_de_chagas_chagas,2026,29,0.4517,2,,
+2026-08-31,risco,RONDONOPOLIS,tuberculose,2026,30,0.444,2,,
+2026-08-31,risco,DIAMANTINO,zika,2025,46,0.4406,2,sem_confirmacao,0
+2026-08-31,risco,NOVA GUARITA,chikungunya,2025,37,0.4366,2,sem_confirmacao,0
+2026-08-31,risco,NOVA SANTA HELENA,zika,2025,30,0.4222,2,sem_confirmacao,0
+2026-08-31,risco,TANGARA DA SERRA,tuberculose,2026,30,0.4192,2,,
+2026-08-31,risco,ARAPUTANGA,zika,2025,39,0.416,2,sem_confirmacao,0
+2026-08-31,risco,LUCAS DO RIO VERDE,tuberculose,2026,30,0.4096,2,,
+2026-08-31,risco,SORRISO,tuberculose,2026,30,0.409,2,,
+2026-08-31,risco,SINOP,htlv_htlv_i_ii_v_rus_linfotr_pico_humano_tipo_i_e_ii,2026,19,0.4064,2,sem_confirmacao,0
+2026-08-31,risco,CANARANA,toxoplasmose_toxoplasmose_igg,2026,11,0.3965,2,sem_confirmacao,0
+2026-08-31,risco,NOVO HORIZONTE DO NORTE,zika,2025,51,0.3952,2,sem_confirmacao,0
+2026-08-31,risco,SINOP,hiv,2026,29,0.3946,2,,
+2026-08-31,risco,SINOP,tuberculose,2026,30,0.3941,2,,
+2026-08-31,risco,CACERES,raiva_raiva,2026,26,0.3878,2,sem_confirmacao,0
+2026-08-31,risco,GUARANTA DO NORTE,zika,2025,35,0.3871,2,sem_confirmacao,0
+2026-08-31,risco,SANTA CARMEM,dengue,2026,29,0.3865,2,,
+2026-08-31,risco,CAMPINAPOLIS,sars_cov_2,2026,19,0.3809,2,sem_confirmacao,0
+2026-08-31,risco,GUARANTA DO NORTE,toxoplasmose_toxoplasmose_igg,2026,28,0.3704,2,sem_confirmacao,0
+2026-08-31,risco,GUARANTA DO NORTE,toxoplasmose_citomegalov_rus_igg,2026,30,0.3657,2,,
+2026-08-31,risco,CANARANA,chikungunya,2025,37,0.3577,2,sem_confirmacao,0
+2026-08-31,risco,CACERES,tuberculose,2026,30,0.3533,2,,
+2026-08-31,risco,BARRA DO GARCAS,tuberculose,2026,29,0.35,2,,
+2026-08-31,risco,COLIDER,zika,2026,22,0.3489,2,sem_confirmacao,0
+2026-08-31,risco,CAMPOS DE JULIO,zika,2025,31,0.348,2,sem_confirmacao,0
+2026-08-31,risco,PEIXOTO DE AZEVEDO,tuberculose,2026,30,0.347,2,,
+2026-08-31,risco,CAMPO VERDE,doen_a_de_chagas_chagas,2026,29,0.339,2,,
+2026-08-31,risco,CAMPOS DE JULIO,chikungunya,2025,31,0.3341,2,sem_confirmacao,0
+2026-08-31,risco,DIAMANTINO,tuberculose,2026,29,0.332,2,,
+2026-08-31,risco,NOVA MUTUM,tuberculose,2026,30,0.3319,2,,
+2026-08-31,risco,NOVO MUNDO,chikungunya,2025,34,0.3279,2,sem_confirmacao,0
+2026-08-31,risco,ITANHANGA,chikungunya,2025,33,0.3273,2,sem_confirmacao,0
+2026-08-31,risco,LUCAS DO RIO VERDE,chikungunya,2026,16,0.3237,2,sem_confirmacao,0
+2026-08-31,risco,SORRISO,dengue,2026,30,0.3234,2,,
+2026-08-31,risco,BARRA DO BUGRES,tuberculose,2026,30,0.323,2,,
+2026-08-31,risco,CHAPADA DOS GUIMARAES,tuberculose,2026,30,0.3099,2,,
+2026-08-31,risco,CANARANA,dengue,2026,28,0.3097,2,sem_confirmacao,0
+2026-08-31,risco,NOVA BANDEIRANTES,zika,2025,36,0.3091,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,sarampo_rub_ola_igg,2026,22,0.3066,2,sem_confirmacao,0
+2026-08-31,risco,CACERES,dengue,2026,30,0.3065,2,,
+2026-08-31,risco,POCONE,tuberculose,2026,30,0.3027,2,,
+2026-08-31,risco,NOVA BANDEIRANTES,chikungunya,2025,36,0.302,2,sem_confirmacao,0
+2026-08-31,risco,VERA,chikungunya,2026,6,0.2958,2,sem_confirmacao,0
+2026-08-31,risco,JUARA,dengue,2026,20,0.2952,2,sem_confirmacao,0
+2026-08-31,risco,SORRISO,toxoplasmose_toxoplasmose_igg,2026,14,0.2914,2,sem_confirmacao,0
+2026-08-31,risco,ARIPUANA,dengue,2025,36,0.291,2,sem_confirmacao,0
+2026-08-31,risco,DENISE,chikungunya,2025,41,0.2895,2,sem_confirmacao,0
+2026-08-31,risco,CAMPO VERDE,tuberculose,2026,30,0.2893,2,,
+2026-08-31,risco,GUARANTA DO NORTE,tuberculose,2026,30,0.2837,2,,
+2026-08-31,risco,PEIXOTO DE AZEVEDO,chikungunya,2025,35,0.2836,2,sem_confirmacao,0
+2026-08-31,risco,AGUA BOA,chikungunya,2025,38,0.2793,2,sem_confirmacao,0
+2026-08-31,risco,MATUPA,zika,2026,16,0.275,2,sem_confirmacao,0
+2026-08-31,risco,CONQUISTA D''OESTE,dengue,2026,30,0.2748,2,,
+2026-08-31,risco,PRIMAVERA DO LESTE,zika,2026,28,0.2735,2,sem_confirmacao,0
+2026-08-31,risco,PRIMAVERA DO LESTE,tuberculose,2026,30,0.2699,2,,
+2026-08-31,risco,CAMPOS DE JULIO,dengue,2026,8,0.2679,2,sem_confirmacao,0
+2026-08-31,risco,PARANAITA,dengue,2026,30,0.2673,2,,
+2026-08-31,risco,QUERENCIA,chikungunya,2025,39,0.2665,2,sem_confirmacao,0
+2026-08-31,risco,PONTES E LACERDA,zika,2026,28,0.2636,2,sem_confirmacao,0
+2026-08-31,risco,SINOP,dengue,2026,30,0.2624,2,,
+2026-08-31,risco,SAO JOSE DO RIO CLARO,zika,2026,16,0.2613,2,sem_confirmacao,0
+2026-08-31,risco,JUINA,dengue,2026,30,0.2581,2,,
+2026-08-31,risco,JURUENA,dengue,2026,12,0.2553,2,sem_confirmacao,0
+2026-08-31,risco,PORTO ESPERIDIAO,zika,2026,15,0.2535,2,sem_confirmacao,0
+2026-08-31,risco,FELIZ NATAL,chikungunya,2026,5,0.2533,2,sem_confirmacao,0
+2026-08-31,risco,TERRA NOVA DO NORTE,dengue,2026,12,0.2518,2,sem_confirmacao,0
+2026-08-31,risco,CAMPO VERDE,sarampo_sarampo_igm,2026,17,0.2512,2,sem_confirmacao,0
+2026-08-31,risco,CAMPO VERDE,sarampo_sarampo_igg,2026,17,0.2512,2,sem_confirmacao,0
+2026-08-31,risco,CURITIBA,tuberculose,2026,16,0.2423,2,sem_confirmacao,0
+2026-08-31,risco,VARZEA GRANDE,sarampo_rub_ola_igm,2026,22,0.2393,2,sem_confirmacao,0
+2026-08-31,risco,JUINA,tuberculose,2026,29,0.226,2,,
+2026-08-31,risco,VARZEA GRANDE,doenca_de_chagas_aguda_chagas_igg,2026,22,0.2233,2,sem_confirmacao,0
+2026-08-31,risco,SORRISO,toxoplasmose_toxoplasmose_igm,2026,14,0.2214,2,sem_confirmacao,0
+2026-08-31,risco,SANTO ANTONIO DO LEVERGER,tuberculose,2026,30,0.2147,2,,
+2026-08-31,risco,VARZEA GRANDE,sifilis,2026,23,0.2135,2,sem_confirmacao,0
+2026-08-31,risco,COLIDER,raiva_raiva,2025,21,0.2132,2,sem_confirmacao,0
+2026-08-31,risco,CAMPINAPOLIS,tuberculose,2026,30,0.2094,2,,
+2026-08-31,risco,BARAO DE MELGACO,hansen_ase_hansen_ase,2025,42,0.2087,2,sem_confirmacao,0
+2026-08-31,risco,CAMPO VERDE,meningite,2026,30,0.208,2,,
+2026-08-31,risco,CAMPO VERDE,toxoplasmose_citomegalov_rus_igg,2025,29,0.2077,2,sem_confirmacao,0
+2026-08-31,silencio,COCALINHO,zika,2026,22,0.7891,2,silencio,1
+2026-08-31,silencio,COCALINHO,chikungunya,2026,14,0.7199,2,silencio,1
+2026-08-31,silencio,NOVO SANTO ANTONIO,hepatite_a,2026,21,0.7167,2,silencio,1
+2026-08-31,silencio,TESOURO,meningite,2026,3,0.7015,2,silencio,1
+2026-08-31,silencio,NOVA BRASILANDIA,hepatite_b_hbv,2026,10,0.6969,2,silencio,1
+2026-08-31,silencio,COCALINHO,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2026,2,0.6936,2,silencio,1
+2026-08-31,silencio,COCALINHO,sars_cov_2,2026,19,0.6936,2,silencio,1
+2026-08-31,silencio,JOIA,chikungunya,2025,27,0.6839,2,silencio,1
+2026-08-31,silencio,TABULEIRO DO NORTE,dengue,2025,32,0.6839,2,silencio,1
+2026-08-31,silencio,ITACOATIARA,chikungunya,2025,32,0.6839,2,silencio,1
+2026-08-31,silencio,CAMBORIU,chikungunya,2025,31,0.6839,2,silencio,1
+2026-08-31,silencio,PERITORO,tuberculose,2025,30,0.6839,2,silencio,1
+2026-08-31,silencio,VOTUPORANGA,chikungunya,2025,26,0.6839,2,silencio,1
+2026-08-31,silencio,RECIFE,hepatite_b_hbv,2025,37,0.681,2,silencio,1
+2026-08-31,silencio,LAGES,hepatite_b_hbv,2026,10,0.681,2,silencio,1
+2026-08-31,silencio,LADARIO,toxoplasmose_toxoplasmose_igg,2025,44,0.681,2,silencio,1
+2026-08-31,silencio,CHAPADAO DO CEU,hepatite_b_hbv,2025,44,0.681,2,silencio,1
+2026-08-31,silencio,CHOPINZINHO,tuberculose,2025,26,0.681,2,silencio,1
+2026-08-31,silencio,CEREJEIRAS,hepatite_b_hbv,2025,50,0.681,2,silencio,1
+2026-08-31,silencio,CATANDUVAS,hepatite_b_hbv,2026,21,0.681,2,silencio,1
+2026-08-31,silencio,CEREJEIRAS,dengue,2025,37,0.681,2,silencio,1
+2026-08-31,silencio,TUNTUM,dengue,2025,33,0.681,2,silencio,1
+2026-08-31,silencio,TUCURUI,hepatite_b_hbv,2026,11,0.681,2,silencio,1
+2026-08-31,silencio,JURUAIA,dengue,2025,31,0.681,2,silencio,1
+2026-08-31,silencio,LADARIO,toxoplasmose_citomegalov_rus_igg,2025,45,0.681,2,silencio,1
+2026-08-31,silencio,DEMERVAL LOBAO,toxoplasmose_toxoplasmose_igg,2026,19,0.681,2,silencio,1
+2026-08-31,silencio,JARU,hepatite_b_hbv,2025,46,0.681,2,silencio,1
+2026-08-31,silencio,CODAJAS,hepatite_b_hbv,2025,49,0.681,2,silencio,1
+2026-08-31,silencio,BARRA VELHA,tuberculose,2025,44,0.681,2,silencio,1
+2026-08-31,silencio,MALHADA,hepatite_b_hbv,2025,37,0.681,2,silencio,1
+2026-08-31,silencio,RIO CLARO,hepatite_b_hbv,2026,19,0.681,2,silencio,1
+2026-08-31,silencio,OSASCO,hepatite_b_hbv,2025,46,0.681,2,silencio,1
+2026-08-31,silencio,SAQUAREMA,zika,2025,43,0.681,2,silencio,1
+2026-08-31,silencio,SAO GONCALO DO AMARANTE,hepatite_b_hbv,2026,17,0.681,2,silencio,1
+2026-08-31,silencio,VIDEIRA,tuberculose,2025,42,0.681,2,silencio,1
+2026-08-31,silencio,SAQUAREMA,dengue,2025,43,0.681,2,silencio,1
+2026-08-31,silencio,SERRA NEGRA DO NORTE,tuberculose,2025,29,0.681,2,silencio,1
+2026-08-31,silencio,MONTENEGRO,hepatite_b_hbv,2025,38,0.681,2,silencio,1
+2026-08-31,silencio,TAQUARITINGA,tuberculose,2025,44,0.681,2,silencio,1
+2026-08-31,silencio,DEMERVAL LOBAO,toxoplasmose_citomegalov_rus_igg,2026,17,0.681,2,silencio,1
+2026-08-31,silencio,OURICURI,dengue,2025,32,0.681,2,silencio,1
+2026-08-31,silencio,TAIPAS DO TOCANTINS,citomegalov_rus_citomegalov_rus_igg,2026,2,0.681,2,silencio,1
+2026-08-31,silencio,BARRA DO CORDA,dengue,2025,47,0.681,2,silencio,1
+2026-08-31,silencio,PORTO ESTRELA,toxoplasmose_toxoplasmose_igg,2026,16,0.6709,2,silencio,1
+2026-08-31,silencio,PORTO ESTRELA,toxoplasmose_toxoplasmose_igm,2026,16,0.6709,2,silencio,1
+2026-08-31,silencio,SANTO ANTONIO DO LEVERGER,infec_o_coloniza_o_cultura_para_fungos,2026,9,0.6706,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_citomegalov_rus_igg,2026,5,0.6706,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_toxoplasmose_igg,2026,5,0.6706,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,brucelose_brucelose_igm,2026,10,0.6706,2,silencio,1
+2026-08-31,silencio,CONFRESA,citomegalov_rus_citomegalov_rus_igm,2026,9,0.6615,2,silencio,1
+2026-08-31,silencio,CONFRESA,toxoplasmose_toxoplasmose_igg,2026,2,0.6615,2,silencio,1
+2026-08-31,silencio,CONFRESA,citomegalov_rus_citomegalov_rus_igg,2026,9,0.6615,2,silencio,1
+2026-08-31,silencio,SANTA RITA DO TRIVELATO,doen_a_de_chagas_chagas_igg,2026,16,0.6579,2,silencio,1
+2026-08-31,silencio,SANTA RITA DO TRIVELATO,influenza,2026,10,0.6579,2,silencio,1
+2026-08-31,silencio,SANTA RITA DO TRIVELATO,doen_a_de_chagas_chagas,2026,16,0.6579,2,silencio,1
+2026-08-31,silencio,CHAPADA DOS GUIMARAES,toxoplasmose_citomegalov_rus_igg,2026,24,0.6552,2,silencio,1
+2026-08-31,silencio,CHAPADA DOS GUIMARAES,sarampo_rub_ola_igg,2026,1,0.6552,2,silencio,1
+2026-08-31,silencio,CHAPADA DOS GUIMARAES,sarampo_rub_ola_igm,2026,1,0.6552,2,silencio,1
+2026-08-31,silencio,SAPEZAL,sarampo_rub_ola_igg,2026,1,0.6552,2,silencio,1
+2026-08-31,silencio,COTRIGUACU,doen_a_de_chagas_cr_nica_chagas_igg,2026,29,0.6485,2,silencio,1
+2026-08-31,silencio,COTRIGUACU,doen_a_de_chagas_cr_nica_chagas,2026,29,0.6485,2,silencio,1
+2026-08-31,silencio,VILA RICA,paracoccidioidomicose_paracoccidioidomicose,2026,25,0.6441,2,silencio,1
+2026-08-31,silencio,INDIAVAI,intoxica_o_ex_gena_por_subst_ncias_qu_micas_incluindo_agrot_xicos_gases_t_xicos_,2026,20,0.6435,2,silencio,1
+2026-08-31,silencio,IPIRANGA DO NORTE,brucelose_brucelose_igg,2026,5,0.638,2,silencio,1
+2026-08-31,silencio,IPIRANGA DO NORTE,brucelose_brucelose_igm,2026,5,0.638,2,silencio,1
+2026-08-31,silencio,NOVO SANTO ANTONIO,hepatite_c_hcv,2026,20,0.6331,2,silencio,1
+2026-08-31,silencio,BARAO DE GRAJAU,zika,2026,12,0.6272,2,silencio,1
+2026-08-31,silencio,AUGUSTO CORREA,chikungunya,2025,37,0.6272,2,silencio,1
+2026-08-31,silencio,JAPARATUBA,dengue,2025,35,0.6272,2,silencio,1
+2026-08-31,silencio,LUZ,tuberculose,2026,11,0.6272,2,silencio,1
+2026-08-31,silencio,ASSIS,tuberculose,2025,9,0.6272,2,silencio,1
+2026-08-31,silencio,NOVA CANTU,dengue,2025,36,0.6272,2,silencio,1
+2026-08-31,silencio,SAO GONCALO DO AMARANTE,tuberculose,2026,14,0.6272,2,silencio,1
+2026-08-31,silencio,SAO SEBASTIAO,chikungunya,2025,37,0.6272,2,silencio,1
+2026-08-31,silencio,VICENTE DUTRA,dengue,2026,10,0.6272,2,silencio,1
+2026-08-31,silencio,RIBEIRAO CASCALHEIRA,leishmaniose,2026,11,0.6252,2,silencio,1
+2026-08-31,silencio,RIBEIRAO CASCALHEIRA,hepatite_a,2026,21,0.6252,2,silencio,1
+2026-08-31,silencio,VOTUPORANGA,dengue,2025,29,0.6249,2,silencio,1
+2026-08-31,silencio,JACIARA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,13,0.6222,2,silencio,1
+2026-08-31,silencio,JACIARA,toxoplasmose_toxoplasmose_igg,2026,30,0.6222,2,,
+2026-08-31,silencio,JACIARA,toxoplasmose_toxoplasmose_igm,2026,30,0.6222,2,,
+2026-08-31,silencio,ALTO BOA VISTA,toxoplasmose_toxoplasmose_igg,2026,22,0.6193,2,silencio,1
+2026-08-31,silencio,JOAO LISBOA,dengue,2025,32,0.6177,2,silencio,1
+2026-08-31,silencio,ALTA FLORESTA,infec_o_coloniza_o_cultura_para_fungos,2026,22,0.6145,2,silencio,1
+2026-08-31,silencio,SORRISO,citomegalov_rus_citomegalov_rus_igm,2026,19,0.6145,2,silencio,1
+2026-08-31,silencio,TANGARA DA SERRA,criptococose_cultura_para_fungos,2026,20,0.6145,2,silencio,1
+2026-08-31,silencio,SORRISO,citomegalov_rus_citomegalov_rus_igg,2026,19,0.6145,2,silencio,1
+2026-08-31,silencio,SORRISO,paracoccidioidomicose_paracoccidioidomicose,2026,25,0.6145,2,silencio,1
+2026-08-31,silencio,BARRA DO GARCAS,toxoplasmose_citomegalov_rus_igg,2026,30,0.6145,2,,
+2026-08-31,silencio,PRIMAVERA DO LESTE,toxoplasmose_citomegalov_rus_igg,2026,13,0.6145,2,silencio,1
+2026-08-31,silencio,PLANALTO DA SERRA,toxoplasmose_citomegalov_rus_igg,2026,30,0.6116,2,,
+2026-08-31,silencio,NOVA MUTUM,herpes_simples_citomegalov_rus_igg,2026,2,0.6081,2,silencio,1
+2026-08-31,silencio,NOVA MUTUM,doenca_de_chagas_aguda_chagas_igg,2026,28,0.6081,2,silencio,1
+2026-08-31,silencio,CAMPO NOVO DO PARECIS,toxoplasmose_citomegalov_rus_igg,2026,20,0.6081,2,silencio,1
+2026-08-31,silencio,NOVA MUTUM,doenca_de_chagas_aguda_chagas,2026,28,0.6081,2,silencio,1
+2026-08-31,silencio,NOVA MUTUM,brucelose_brucelose_igm,2026,21,0.6081,2,silencio,1
+2026-08-31,silencio,CAMPO VERDE,criptococose_criptococos_teste_r_pido,2026,26,0.6081,2,silencio,1
+2026-08-31,silencio,CAMPO VERDE,hepatite_a,2026,21,0.6081,2,silencio,1
+2026-08-31,silencio,NOVA MUTUM,herpes_simples_citomegalov_rus_igm,2026,2,0.6081,2,silencio,1
+2026-08-31,silencio,ALTO ALEGRE DO PINDARE,dengue,2025,26,0.6067,2,silencio,1
+2026-08-31,silencio,COLIDER,paracoccidioidomicose_paracoccidioidomicose,2026,10,0.6049,2,silencio,1
+2026-08-31,silencio,ARENAPOLIS,doen_a_de_chagas_cr_nica_chagas,2026,3,0.6022,2,silencio,1
+2026-08-31,silencio,ARENAPOLIS,doen_a_de_chagas_cr_nica_chagas_igg,2026,3,0.6022,2,silencio,1
+2026-08-31,silencio,ARENAPOLIS,hepatite_b_hbv,2026,25,0.6022,2,silencio,1
+2026-08-31,silencio,DENISE,hepatite_b_hbv,2026,20,0.6022,2,silencio,1
+2026-08-31,silencio,RONDONOPOLIS,transtorno_end_crino_fungos,2026,27,0.5973,2,silencio,1
+2026-08-31,silencio,RONDONOPOLIS,transtorno_end_crino_cultura_para_fungos,2026,27,0.5973,2,silencio,1
+2026-08-31,silencio,RONDONOPOLIS,infec_o_coloniza_o_cultura_para_fungos,2026,8,0.5973,2,silencio,1
+2026-08-31,silencio,ALTO TAQUARI,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,30,0.5961,2,,
+2026-08-31,silencio,ARAPUTANGA,hansen_ase_hansen_ase_biologia_molecular,2026,26,0.5943,2,silencio,1
+2026-08-31,silencio,ARAPUTANGA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,9,0.5943,2,silencio,1
+2026-08-31,silencio,ARAPUTANGA,arenav_rus_adenov_rus_ent_ricos_biologia_molecular,2026,25,0.5943,2,silencio,1
+2026-08-31,silencio,ARAPUTANGA,meningite,2026,1,0.5943,2,silencio,1
+2026-08-31,silencio,ARAPUTANGA,leishmaniose,2026,7,0.5943,2,silencio,1
+2026-08-31,silencio,MATUPA,sarampo_rub_ola_igg,2026,1,0.5939,2,silencio,1
+2026-08-31,silencio,PORTO ESTRELA,toxoplasmose_toxoplasmose_avidez_igg,2026,24,0.5937,2,silencio,1
+2026-08-31,silencio,PORTO ESTRELA,influenza,2026,26,0.5937,2,silencio,1
+2026-08-31,silencio,PORTO ESTRELA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,30,0.5937,2,,
+2026-08-31,silencio,POCONE,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,2026,2,0.5933,2,silencio,1
+2026-08-31,silencio,POCONE,febre_maculosa_rickettsioses_febre_maculosa_1a_amostra,2026,3,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_rub_ola_igm,2026,5,0.5933,2,silencio,1
+2026-08-31,silencio,SANTO ANTONIO DO LEVERGER,infec_o_coloniza_o_fungos_teste_de_sensibilidade,2026,9,0.5933,2,silencio,1
+2026-08-31,silencio,SANTO ANTONIO DO LEVERGER,hepatite,2026,8,0.5933,2,silencio,1
+2026-08-31,silencio,POCONE,oropouche,2026,24,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_toxoplasmose_igm,2026,5,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_rub_ola_igg,2026,5,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,rub_ola_citomegalov_rus_igm,2026,5,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,hansen_ase_hansen_ase_biologia_molecular,2026,3,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,brucelose_brucelose_igg,2026,10,0.5933,2,silencio,1
+2026-08-31,silencio,ROSARIO OESTE,brucelose_brucelose,2026,10,0.5933,2,silencio,1
+2026-08-31,silencio,PORTO ALEGRE DO NORTE,leishmaniose,2026,23,0.5929,2,silencio,1
+2026-08-31,silencio,PORTO ALEGRE DO NORTE,hepatite_c_hcv,2026,27,0.5929,2,silencio,1
+2026-08-31,silencio,PORTO ALEGRE DO NORTE,infec_o_coloniza_o_bact_rias_cultura,2026,7,0.5929,2,silencio,1
+2026-08-31,silencio,PORTO ALEGRE DO NORTE,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2026,7,0.5929,2,silencio,1
+2026-08-31,silencio,SINOP,esquistossomose_esquistossomose_sorologia,2026,25,0.5908,2,silencio,1
+2026-08-31,silencio,SINOP,infec_o_coloniza_o_fungos,2026,5,0.5908,2,silencio,1
+2026-08-31,silencio,SINOP,micose_cultura_para_fungos,2026,29,0.5908,2,silencio,1
+2026-08-31,silencio,SINOP,infec_o_coloniza_o_cultura_para_fungos,2026,5,0.5908,2,silencio,1
+2026-08-31,silencio,SINOP,histoplasmose_paracoccidioidomicose,2026,22,0.5908,2,silencio,1
+2026-08-31,silencio,SINOP,herpes_simples_parvov_rus_b19_igg,2026,15,0.5908,2,silencio,1
+2026-08-31,silencio,NOSSA SENHORA DO LIVRAMENTO,toxoplasmose_toxoplasmose_igg,2026,25,0.5885,2,silencio,1
+2026-08-31,silencio,NOSSA SENHORA DO LIVRAMENTO,toxoplasmose_citomegalov_rus_igg,2026,22,0.5885,2,silencio,1
+2026-08-31,silencio,NOSSA SENHORA DO LIVRAMENTO,infec_o_coloniza_o_pesquisa_de_carbapenemases,2026,29,0.5885,2,silencio,1
+2026-08-31,silencio,SAPEZAL,esquistossomose_esquistossomose_sorologia,2026,3,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,doen_a_de_chagas_cr_nica_chagas_igg,2026,9,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,doen_a_de_chagas_cr_nica_chagas,2026,9,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,criptococose_criptococos_teste_r_pido,2026,24,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,sarampo_sarampo_igm,2026,1,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,sarampo_sarampo_igg,2026,1,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,sarampo_rub_ola_igm,2026,1,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2026,26,0.5876,2,silencio,1
+2026-08-31,silencio,SAPEZAL,hansen_ase_hansen_ase,2026,19,0.5876,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,herpes_simples_herpes_v_rus_biologia_molecular,2026,23,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,leishmaniose,2026,23,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,oropouche,2026,20,0.587,2,silencio,1
+2026-08-31,silencio,SAO JOSE DOS QUATRO MARCOS,hansen_ase_hansen_ase_biologia_molecular,2026,6,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,criptococose_criptococos_teste_r_pido,2026,11,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,doen_a_de_chagas_cr_nica_chagas,2026,11,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,doen_a_de_chagas_cr_nica_chagas_igg,2026,11,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,hansen_ase_hansen_ase,2026,6,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,histoplasmose_histoplasmose,2026,9,0.587,2,silencio,1
+2026-08-31,silencio,SAO JOSE DOS QUATRO MARCOS,infec_o_coloniza_o_v_rus_respirat_rios,2026,30,0.587,2,,
+2026-08-31,silencio,DIAMANTINO,herpes_simples_pesquisa_qualitativa_do_dna_do_citomegalov_rus,2026,23,0.587,2,silencio,1
+2026-08-31,silencio,DIAMANTINO,leptospira,2026,16,0.587,2,silencio,1
+2026-08-31,silencio,CANARANA,brucelose_brucelose,2026,11,0.586,2,silencio,1
+2026-08-31,silencio,NOVO SANTO ANTONIO,toxoplasmose_rub_ola_igg,2025,35,0.5858,2,silencio,1
+2026-08-31,silencio,NOVO SANTO ANTONIO,toxoplasmose_toxoplasmose_igg,2025,35,0.5858,2,silencio,1
+2026-08-31,silencio,NOVO SANTO ANTONIO,toxoplasmose_citomegalov_rus_igg,2025,37,0.5858,2,silencio,1
+2026-08-31,silencio,CONFRESA,citomegalov_rus_citomegalov_rus_igg_avidez,2026,9,0.5834,2,silencio,1
+2026-08-31,silencio,CONFRESA,infec_o_coloniza_o_bact_rias_cultura,2026,12,0.5834,2,silencio,1
+2026-08-31,silencio,CONFRESA,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2026,12,0.5834,2,silencio,1
+2026-08-31,silencio,CONFRESA,leishmaniose,2026,23,0.5834,2,silencio,1
+2026-08-31,silencio,CONFRESA,toxoplasmose_toxoplasmose_igm,2026,2,0.5834,2,silencio,1
+2026-08-31,silencio,CONFRESA,febre_amarela,2026,7,0.5834,2,silencio,1
+2026-08-31,silencio,BRASNORTE,infec_o_coloniza_o_fungos,2026,27,0.5831,2,silencio,1
+2026-08-31,silencio,BRASNORTE,toxoplasmose_toxoplasmose_igg,2026,11,0.5831,2,silencio,1
+2026-08-31,silencio,BRASNORTE,sifilis,2026,30,0.5831,2,,
+2026-08-31,silencio,HORTOLANDIA,chikungunya,2025,32,0.583,2,silencio,1
+2026-08-31,silencio,NOVA NAZARE,hepatite_b_hbv,2026,21,0.5821,2,silencio,1
+2026-08-31,silencio,JURUENA,brucelose_histoplasmose,2026,25,0.5815,2,silencio,1
+2026-08-31,silencio,JURUENA,hepatite_c_hcv,2026,11,0.5815,2,silencio,1
+2026-08-31,silencio,JURUENA,histoplasmose_histoplasmose,2026,26,0.5815,2,silencio,1
+2026-08-31,silencio,GAUCHA DO NORTE,raiva_raiva,2026,11,0.5815,2,silencio,1
+2026-08-31,silencio,GAUCHA DO NORTE,hansen_ase_hansen_ase,2026,25,0.5815,2,silencio,1
+2026-08-31,silencio,JACIARA,infec_o_coloniza_o_cultura_para_fungos,2026,4,0.5812,2,silencio,1
+2026-08-31,silencio,SORRISO,criptococose_fungos,2026,21,0.5806,2,silencio,1
+2026-08-31,silencio,AGUA BOA,malaria,2026,25,0.5806,2,silencio,1
+2026-08-31,silencio,AGUA BOA,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2026,27,0.5806,2,silencio,1
+2026-08-31,silencio,AGUA BOA,bacteremia_bact_rias_identifica_o,2026,27,0.5806,2,silencio,1
+2026-08-31,silencio,PRIMAVERA DO LESTE,coqueluche_coqueluche_detec_o_de_bordetella_pertussis,2026,20,0.5806,2,silencio,1
+2026-08-31,silencio,SORRISO,citomegalov_rus_citomegalov_rus_igg_avidez,2026,19,0.5806,2,silencio,1
+2026-08-31,silencio,SORRISO,bacteremia_bact_rias_teste_de_sensibilidade,2026,7,0.5806,2,silencio,1
+2026-08-31,silencio,SORRISO,bacteremia_bact_rias_cultura,2026,7,0.5806,2,silencio,1
+2026-08-31,silencio,PRIMAVERA DO LESTE,toxoplasmose_rub_ola_igg,2026,13,0.5806,2,silencio,1
+2026-08-31,silencio,SORRISO,criptococose_cultura_para_fungos,2026,25,0.5806,2,silencio,1
+2026-08-31,silencio,TANGARA DA SERRA,toxoplasmose_sarampo_igg,2026,7,0.5806,2,silencio,1
+2026-08-31,silencio,PRIMAVERA DO LESTE,toxoplasmose_rub_ola_igm,2026,13,0.5806,2,silencio,1
+2026-08-31,silencio,BARRA DO GARCAS,toxoplasmose_citomegalov_rus_igm,2026,30,0.5806,2,,
+2026-08-31,silencio,PRIMAVERA DO LESTE,toxoplasmose_mayaro_biologia_molecular,2026,14,0.5806,2,silencio,1
+2026-08-31,silencio,PRIMAVERA DO LESTE,toxoplasmose_citomegalov_rus_igm,2026,13,0.5806,2,silencio,1
 retrospectivo,risco,ACORIZAL,dengue,2021,40,0.56547439638235,2,sem_confirmacao,0
 retrospectivo,risco,ACORIZAL,dengue,2021,47,0.5677769538723458,2,alerta_lab,1
 retrospectivo,risco,ACORIZAL,dengue,2021,49,0.6934641120402345,2,alerta_lab,1

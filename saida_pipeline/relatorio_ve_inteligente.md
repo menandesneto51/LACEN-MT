@@ -1,7 +1,7 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
 **SE:** 2026-SE30  
-**Gerado em:** 2026-08-31 09:03 Hora Padrão Brasil Central  
+**Gerado em:** 2026-08-31 10:07 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
@@ -153,9 +153,7 @@ Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
 
 | Município | Família CID | N | Fonte |
 |-----------|-------------|---|-------|
-| CUIABA | dengue_arbovirose | 31 | SIH/VW_INTERNACAO |
-| VARZEA GRANDE | dengue_arbovirose | 19 | SIH/VW_INTERNACAO |
-| JUINA | dengue_arbovirose | 16 | SIH/VW_INTERNACAO |
+| CUIABA | dengue_arbovirose | 12 | SIH/VW_INTERNACAO |
 
 _Caveat:_ Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
 
@@ -178,25 +176,25 @@ _Caveat:_ Internações (Sistema de Informações Hospitalares — SIH) restrita
 
 | Município | Status | N |
 |-----------|--------|---|
-| CUIABA | Aprovada | 19036 |
-| VARZEA GRANDE | Aprovada | 12231 |
-| RONDONOPOLIS | Aprovada | 11244 |
-| SINOP | Aprovada | 6489 |
-| CUIABA | Negada | 4929 |
-| LUCAS DO RIO VERDE | Aprovada | 4097 |
-| TANGARA DA SERRA | Aprovada | 4097 |
-| PRIMAVERA DO LESTE | Aprovada | 4079 |
+| CUIABA | Aprovada | 19093 |
+| VARZEA GRANDE | Aprovada | 12276 |
+| RONDONOPOLIS | Aprovada | 11284 |
+| SINOP | Aprovada | 6498 |
+| CUIABA | Negada | 4948 |
+| TANGARA DA SERRA | Aprovada | 4117 |
+| LUCAS DO RIO VERDE | Aprovada | 4101 |
+| PRIMAVERA DO LESTE | Aprovada | 4086 |
 
 **SISREG ambulatorial — pendentes/fila:**
 
 | Município | Status | N |
 |-----------|--------|---|
-| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 58884 |
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 58883 |
 | SINOP | SOLICITAÇÃO / PENDENTE / REGULADOR | 24798 |
-| SINOP | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 21950 |
-| VARZEA GRANDE | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 21087 |
-| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 19416 |
-| CUIABA | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 17554 |
+| SINOP | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 21949 |
+| VARZEA GRANDE | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 21006 |
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 19417 |
+| CUIABA | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 17561 |
 | VARZEA GRANDE | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 12421 |
 | BARRA DO GARCAS | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 10432 |
 

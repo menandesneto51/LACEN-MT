@@ -5,8 +5,8 @@ SIH,True,"cruzamento_sih_sia_top_mun.csv, cruzamento_sih_sia_top_mun.parquet, si
 SIA,True,"cruzamento_sih_sia_top_mun.csv, cruzamento_sih_sia_top_mun.parquet, sia_mun_cid_familia_agg.csv, sia_mun_cid_familia_agg.parquet",Produção ambulatorial correlata (SIA/SIA_APAC),extraído
 SIVEP/SRAG,True,"sivep_malaria.csv, sivep_malaria.parquet, vw_sinan_sindromerespiratoriaagudagrave.csv, vw_sinan_sindromerespiratoriaagudagrave.parquet",SRAG/respiratório — inventário apenas; não seção padrão do Radar,extraído
 SIM,True,"sim.csv, sim.parquet",Óbitos — letalidade contextual,extraído
-CNES,True,"cnes_equipamentos.csv, cnes_equipamentos.parquet, cnes_estabelecimentos.csv, cnes_estabelecimentos.parquet",Capacidade da rede (leitos/equipes),extraído
+CNES,True,"cnes_equipamentos.csv, cnes_equipamentos.parquet, cnes_equipesatencaobasica.csv, cnes_equipesatencaobasica.parquet",Capacidade da rede (leitos/equipes),extraído
 IndicaSUS,True,"indicadores.csv, indicadores.parquet, indicadorespactuacao.csv, indicadorespactuacao.parquet",Pactuação / INDICADORES* no DW + host IndicaSUS (indicasus_*),extraído
 SISREG,True,"sisreg_amb_mun_status_agg.csv, sisreg_amb_mun_status_agg.parquet, sisreg_hosp_mun_status_agg.csv, sisreg_hosp_mun_status_agg.parquet",Regulação — host SISREG_* (sisreg_* no staging; sem view no DW),extraído
 SINASC,True,"vw_sinasc.csv, vw_sinasc.parquet",Nascidos vivos — contexto perinatal,extraído
-POPULACAO,True,"populacao.csv, populacao.parquet",Denominadores municipais,extraído
+POPULACAO,True,"populacao.csv, populacao.parquet, populacao_tcu.csv, populacao_tcu.parquet",Denominadores municipais,extraído

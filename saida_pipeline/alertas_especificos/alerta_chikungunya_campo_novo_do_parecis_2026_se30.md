@@ -1,0 +1,57 @@
+# Alerta específico — chikungunya × CAMPO NOVO DO PARECIS
+
+**Semana epidemiológica:** 2026-SE30
+**Destinatários:** área técnica · Vigilância Epidemiológica (VE) municipal · CIEVS
+
+> **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
+
+## 1. Evidência
+
+- Agravo/alvo: **chikungunya**
+- Município: **CAMPO NOVO DO PARECIS**
+- Exames: 71 · positivos: 0
+- Positividade: 0.0
+- Variação: subiu 3% em relação à semana anterior
+- Probabilidade: alto · Impacto: baixo · Confiança: Derivado
+- Veredito operacional: investigar
+
+## 2. Interpretação de marcadores
+
+- Marcadores nominais indisponíveis nesta remessa ou sem micro GAL para o município — usar painel do laudo (HBsAg / IgM / DNA quando HBV).
+
+## 3. Taxas e local
+
+- CAMPO NOVO DO PARECIS: +0.0 (0.0) · 0,0 positivos por 100 mil habitantes
+
+## 4. Vizinhos (a partir do município do sinal)
+
+- Sem pares vizinhos com o mesmo alvo a partir deste município nesta SE.
+
+## 5. Internações (SIH)
+
+- Sem internações SIH filtradas para este município/sinal.
+
+## 6. Lacunas de vigilância
+
+- GAL×SINAN: gal_sem_sinan — 71.0 exames / 0.0 notificações (chikungunya)
+- GAL×SINAN: gal_sem_sinan — 19.0 exames / 0.0 notificações (dengue)
+- SINAN: Notificação compulsória — vínculo mun×agravo com GAL [presente]
+- GAL: Exames LACEN — demanda e positividade [presente]
+- SIH: Proxy SIH via VW_INTERNACAO — internacoes correlatas (CID×mun) [presente]
+- SIA: Produção ambulatorial correlata (SIA/SIA_APAC) [presente]
+- SIVEP/SRAG: Base respiratória/SRAG listada só como inventário — não entra como seção padrão do Radar salvo sinal explícito. [presente]
+- SIM: Óbitos — letalidade contextual [presente]
+
+## 7. Ações sugeridas
+
+- CIEVS: Priorizar investigação de chikungunya em CAMPO NOVO DO PARECIS: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+- VE municipal: Investigar casos/contatos de chikungunya em CAMPO NOVO DO PARECIS; verificar oportunidade de notificação e busca ativa.
+- Área técnica: Validar critérios clínico-laboratoriais de chikungunya; orientar rede sobre definição de caso.
+- Vizinhos: —
+- LACEN: Apoiar chikungunya: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
+
+## 8. Disclaimer
+
+Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
+
+_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_

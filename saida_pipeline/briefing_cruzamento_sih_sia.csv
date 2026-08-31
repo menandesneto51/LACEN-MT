@@ -1,4 +1,2 @@
 ﻿fonte,municipio,cid_familia,n,caveat
-SIH/VW_INTERNACAO,CUIABA,dengue_arbovirose,31,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
-SIH/VW_INTERNACAO,VARZEA GRANDE,dengue_arbovirose,19,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
-SIH/VW_INTERNACAO,JUINA,dengue_arbovirose,16,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,CUIABA,dengue_arbovirose,12,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.

@@ -1,18 +1,18 @@
-<!DOCTYPE html><html lang='pt-BR'><head><meta charset='utf-8'/><title>alerta_dengue_cuiaba_2026_se30</title></head><body><pre style='font-family:Segoe UI,Arial,sans-serif;white-space:pre-wrap'># Alerta específico — dengue × CUIABA
+# Alerta específico — chikungunya × CUIABA
 
 **Semana epidemiológica:** 2026-SE30
 **Destinatários:** área técnica · Vigilância Epidemiológica (VE) municipal · CIEVS
 
-&gt; **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
+> **Aviso:** este documento é sinal para investigação. **Não declara surto nem epidemia automaticamente.**
 
 ## 1. Evidência
 
-- Agravo/alvo: **dengue**
+- Agravo/alvo: **chikungunya**
 - Município: **CUIABA**
-- Exames: 99 · positivos: 0
+- Exames: 17 · positivos: 0
 - Positividade: 0.0
-- Variação: subiu 162% em relação à semana anterior
-- Probabilidade: alto · Impacto: alto · Confiança: Derivado
+- Variação: subiu 3% em relação à semana anterior
+- Probabilidade: alto · Impacto: baixo · Confiança: Derivado
 - Veredito operacional: investigar
 
 ## 2. Interpretação de marcadores
@@ -57,15 +57,14 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Priorizar investigação de dengue em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
-- VE municipal: Investigar casos/contatos de dengue em CUIABA; verificar oportunidade de notificação e busca ativa.
-- Área técnica: Validar critérios clínico-laboratoriais de dengue; orientar rede sobre definição de caso.
-- Vizinhos: Alerta coordenado aos municípios vizinhos com sinal de dengue.
-- LACEN: Apoiar dengue: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
+- CIEVS: Priorizar investigação de chikungunya em CUIABA: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+- VE municipal: Investigar casos/contatos de chikungunya em CUIABA; verificar oportunidade de notificação e busca ativa.
+- Área técnica: Validar critérios clínico-laboratoriais de chikungunya; orientar rede sobre definição de caso.
+- Vizinhos: —
+- LACEN: Apoiar chikungunya: priorizar TAT/confirmação se fila impactar a VE deste agravo; comunicar resultados críticos à VE/CIEVS.
 
 ## 8. Disclaimer
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
 _Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_
-</pre></body></html>

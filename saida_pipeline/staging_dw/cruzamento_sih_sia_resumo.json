@@ -3,79 +3,79 @@
   "top_mun": [
     {
       "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "CANARANA",
+      "municipio": "TANGARA DA SERRA",
       "cid_familia": "dengue_arbovirose",
-      "n": 42
+      "n": 15
     },
     {
       "fonte": "SIH/VW_INTERNACAO",
       "municipio": "DIAMANTINO",
       "cid_familia": "dengue_arbovirose",
-      "n": 39
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "TANGARA DA SERRA",
-      "cid_familia": "dengue_arbovirose",
-      "n": 35
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "CUIABA",
-      "cid_familia": "dengue_arbovirose",
-      "n": 31
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "NOVA XAVANTINA",
-      "cid_familia": "dengue_arbovirose",
-      "n": 23
+      "n": 15
     },
     {
       "fonte": "SIH/VW_INTERNACAO",
       "municipio": "TABAPORA",
       "cid_familia": "dengue_arbovirose",
-      "n": 22
+      "n": 13
     },
     {
       "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "VARZEA GRANDE",
+      "municipio": "CUIABA",
       "cid_familia": "dengue_arbovirose",
-      "n": 19
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "BARRA DO GARCAS",
-      "cid_familia": "dengue_arbovirose",
-      "n": 19
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "CONFRESA",
-      "cid_familia": "dengue_arbovirose",
-      "n": 18
-    },
-    {
-      "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "JUARA",
-      "cid_familia": "dengue_arbovirose",
-      "n": 17
+      "n": 12
     },
     {
       "fonte": "SIH/VW_INTERNACAO",
       "municipio": "PONTES E LACERDA",
       "cid_familia": "dengue_arbovirose",
-      "n": 17
+      "n": 11
     },
     {
       "fonte": "SIH/VW_INTERNACAO",
-      "municipio": "JUINA",
+      "municipio": "CANARANA",
       "cid_familia": "dengue_arbovirose",
-      "n": 16
+      "n": 8
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "NOVA XAVANTINA",
+      "cid_familia": "dengue_arbovirose",
+      "n": 7
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "JUARA",
+      "cid_familia": "dengue_arbovirose",
+      "n": 7
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "COLNIZA",
+      "cid_familia": "dengue_arbovirose",
+      "n": 5
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "BARRA DO GARCAS",
+      "cid_familia": "dengue_arbovirose",
+      "n": 5
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "CONFRESA",
+      "cid_familia": "dengue_arbovirose",
+      "n": 5
+    },
+    {
+      "fonte": "SIH/VW_INTERNACAO",
+      "municipio": "NOVO SAO JOAQUIM",
+      "cid_familia": "dengue_arbovirose",
+      "n": 4
     }
   ],
-  "sih_rows": 395,
-  "sia_rows": 692,
+  "sih_rows": 136,
+  "sia_rows": 207,
   "familias": [
     "dengue_arbovirose"
   ]
