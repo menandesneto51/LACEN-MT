@@ -816,8 +816,8 @@ def _recomendacoes_por_destinatario(
                 "media",
                 "15 dias",
                 "multiprio",
-                f"Acompanhar fila de investigação da SE {se} ({focos}); "
-                "sem declaração automática de surto.",
+                f"Acompanhar investigação epidemiológica da SE {se} ({focos}); "
+                "sem declaração automática de surto/epidemia.",
                 f"Top localidades SE {se}",
             ),
             (
@@ -825,8 +825,8 @@ def _recomendacoes_por_destinatario(
                 "media",
                 "7 dias",
                 "multiprio",
-                "Manter sala de situação com Top 10 + comparação SE-1/SE-2; "
-                "linguagem de investigação (Guia MS).",
+                "Manter sala de situação com sinais de atenção + comparação "
+                "semana anterior; linguagem de investigação (Guia MS).",
                 f"Briefing SE {se}",
             ),
         ]
@@ -862,8 +862,8 @@ def _recomendacoes_por_destinatario(
                 "15 dias",
                 (
                     f"Monitorar sinal de {c.target} em {c.municipio} na SE {se}; "
-                    "apoiar CRS/VE municipal na investigação conforme Guia MS"
-                    f"{guia_hint} — sem declarar surto automaticamente."
+                    "apoiar VE municipal/regional na investigação conforme Guia MS"
+                    f"{guia_hint} — sem declarar surto/epidemia automaticamente."
                 ),
             ),
             (
@@ -871,16 +871,17 @@ def _recomendacoes_por_destinatario(
                 "7 dias",
                 (
                     f"Incluir {c.municipio}×{c.target} na sala de situação; "
-                    "confrontar Observado × esperado (série SE-1/SE-2/mediana 4 SE); "
-                    "manter linguagem «investigar / sinal lab», não «há surto»."
+                    "confrontar com semanas anteriores e mediana recente; "
+                    "avaliar possível surto/epidemia/emergência — "
+                    "linguagem «investigar», não «há surto»."
                 ),
             ),
             (
                 area_tec,
                 "7 dias",
                 (
-                    f"Programa {fam}: estratificar marcadores/definição de caso em "
-                    f"{c.municipio}; orientar rede sobre fluxo de notificação e "
+                    f"Programa {fam}: estratificar definição de caso em "
+                    f"{c.municipio}; orientar rede sobre notificação e "
                     f"conduta técnica do agravo {c.target}."
                 ),
             ),
@@ -889,7 +890,7 @@ def _recomendacoes_por_destinatario(
                 "7 dias",
                 (
                     f"VE municipal de {c.municipio}: abrir/atualizar investigação de "
-                    f"{c.target}; cruzar GAL×SINAN; aplicar definição de caso MS; "
+                    f"{c.target}; cruzar exame × notificação; aplicar definição de caso MS; "
                     + (
                         c.o_que_investigar[0]
                         if c.o_que_investigar
@@ -908,7 +909,7 @@ def _recomendacoes_por_destinatario(
                     "Municípios próximos",
                     "7 dias",
                     (
-                        f"Alerta de co-positividade / risco de dispersão ({c.target}): "
+                        f"Possível cluster / risco de dispersão ({c.target}): "
                         f"{pares}. Reforçar vigilância ativa e comunicação entre VE "
                         "municipais; não interpretar par vizinho como surto intermunicipal "
                         "automático."
@@ -1583,14 +1584,14 @@ def _telegram_alerta_agravo(c: CasoEspecial, se_iso: str) -> str:
     flag = " · acima mediana 4SE" if comp.get("acima_mediana_4se") else ""
     return "\n".join(
         [
-            f"<b>Alerta VE · {html.escape(c.severidade.upper())}</b>",
+            f"<b>Sinal CIEVS · {html.escape(c.severidade.upper())}</b>",
             html.escape(f"{c.municipio} × {c.target} · SE {se_iso}"),
             html.escape(
-                f"{c.exames} ex. / +{c.positivos} ({c.positividade}) [Observado]"
+                f"{c.exames} exames / +{c.positivos} ({c.positividade})"
             ),
-            html.escape(f"Vs SE-1: {delta}{flag}"),
+            html.escape(f"Vs semana anterior: {delta}{flag}"),
             html.escape(
-                "Investigar (Guia MS) — NÃO declarar surto automaticamente."
+                "Investigar (Guia MS) — NÃO declarar surto/epidemia automaticamente."
             ),
         ]
     )
@@ -1598,7 +1599,7 @@ def _telegram_alerta_agravo(c: CasoEspecial, se_iso: str) -> str:
 
 def _telegram_resumo(p: ParecerVE) -> str:
     lines = [
-        "<b>Parecer VE (Guia MS)</b>",
+        "<b>Radar LACEN · CIEVS</b>",
         f"SE {html.escape(p.se_iso)}",
         "",
     ]
@@ -1615,8 +1616,12 @@ def _telegram_resumo(p: ParecerVE) -> str:
     top = p.top_notificacoes[:3] or p.top_solicitados[:3]
     if top:
         lines.append("")
-        fonte = "SINAN" if p.fonte_notificacoes == "SINAN" else "proxy exames"
-        lines.append(f"<i>Top ({html.escape(fonte)})</i>")
+        fonte = (
+            "notificação"
+            if p.fonte_notificacoes == "SINAN"
+            else "laboratório (proxy)"
+        )
+        lines.append(f"<i>Demanda/positividade ({html.escape(fonte)})</i>")
         for x in top:
             val = (
                 x.get("notificacoes")
@@ -1647,11 +1652,12 @@ def talvez_reescrever_resumo_llm(parecer: ParecerVE) -> ParecerVE:
                     {
                         "role": "system",
                         "content": (
-                            "Você é analista CIEVS/LACEN-MT. Reescreva o resumo "
-                            "em tom institucional (PT-BR). NÃO invente números. "
+                            "Você é analista CIEVS (sala de situação). Reescreva o "
+                            "resumo em tom institucional (PT-BR) focado em sinais de "
+                            "possível surto/epidemia/emergência. NÃO invente números. "
                             "NÃO declare surto; use linguagem de investigação "
-                            "conforme Guia de Vigilância MS. Mencione comparação "
-                            "com semanas anteriores se houver."
+                            "conforme Guia de Vigilância MS. Laboratório (GAL) é "
+                            "apenas uma fonte — priorize vigilância epidemiológica."
                         ),
                     },
                     {
