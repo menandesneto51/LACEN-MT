@@ -2246,6 +2246,7 @@ def computar_briefing_epi(
             gal_sinan=gal_sinan,
             cruzamento_sih_sia=sih_sia,
             top=12,
+            outdir=outdir,
         )
         if cartoes:
             fontes.append("cartões de risco evento (CIEVS)")

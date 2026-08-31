@@ -174,6 +174,16 @@ def run_ml_pipeline(outdir: Path | str = "saida_pipeline") -> dict[str, Path]:
     except Exception as exc:
         _log(f"[ML][AVISO] Indicadores emergência: {exc}")
     try:
+        from ml.canal_endemico_bortman import run_canal_endemico
+        _log("[ML] Canal endêmico Bortman...")
+        bt = run_canal_endemico(outdir)
+        _log(
+            f"[ML] Bortman SE {bt.get('ano')}-SE{int(bt.get('se') or 0):02d}: "
+            f"{bt.get('n_combinacoes')} combinações | zonas={bt.get('zona_counts')}"
+        )
+    except Exception as exc:
+        _log(f"[ML][AVISO] Canal endêmico Bortman pulado: {exc}")
+    try:
         from gerar_confirmacao_emergencia import build_confirmacao_emergencia
         _log("[ML] Confirmação semanal de emergência...")
         build_confirmacao_emergencia(outdir=outdir)

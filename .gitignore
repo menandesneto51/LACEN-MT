@@ -173,3 +173,7 @@ saida_pipeline/*
 !saida_pipeline/positividade_por_marcador_resumo.md
 !saida_pipeline/alertas_especificos/
 !saida_pipeline/alertas_especificos/**
+!saida_pipeline/canal_endemico_classificacao.csv
+!saida_pipeline/canal_endemico.xlsx
+!saida_pipeline/canal_endemico_limites.csv
+!saida_pipeline/canal_endemico_metadados.csv

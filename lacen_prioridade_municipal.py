@@ -717,6 +717,75 @@ def gerar_modelo_pendencias(
     path = outdir / PENDENCIAS_MD
     dedup = (marcadores_payload or {}).get("deduplicacao_paciente") or {}
     n_micro = (marcadores_payload or {}).get("n_registros_micro", 0)
+
+    bortman_status = "Stub"
+    bortman_nota = (
+        f"Histórico semanal disponível ≈ {weekly_n_se if weekly_n_se is not None else 'n/d'} "
+        "células; canal completo exige ≥3 anos da mesma SE no baseline (método Bortman). "
+        "Stub: razão vs mediana das últimas SE disponíveis quando a série for curta."
+    )
+    bortman_section = [
+        "## Canal endêmico Bortman (stub)",
+        "",
+        "Quando a série semanal por município×agravo tiver pelo menos 3 anos da mesma "
+        "semana epidemiológica no baseline (excluindo o ano atual), calcular P25/P50/P75 "
+        "e classificar zonas sucesso / seguranca / alerta / epidemia. "
+        "**Nesta remessa:** não calcular falso canal — apenas registrar pendência.",
+        "",
+    ]
+    canal_csv = outdir / "canal_endemico_classificacao.csv"
+    if canal_csv.exists():
+        try:
+            import csv as _csv
+
+            with canal_csv.open(encoding="utf-8-sig", newline="") as f:
+                rows = list(_csv.DictReader(f))
+            n_tot = len(rows)
+            n_ok = sum(
+                1
+                for r in rows
+                if str(r.get("zona") or "").casefold() not in {"", "sem_dado"}
+            )
+            n_risco = sum(
+                1
+                for r in rows
+                if str(r.get("zona") or "").casefold() in {"alerta", "epidemia"}
+            )
+            if n_ok > 0:
+                bortman_status = "Implementado"
+                bortman_nota = (
+                    f"Módulo `ml/canal_endemico_bortman.py` → "
+                    f"`canal_endemico.xlsx` + `canal_endemico_classificacao.csv` "
+                    f"({n_tot} combinações SE atual; {n_ok} classificadas; "
+                    f"{n_risco} em alerta/epidemia). "
+                    "Série preferencial: positivos laboratoriais; NA não vira zero; "
+                    "<3 anos baseline → sem_dado. Radar reforça score se zona alerta/epidemia."
+                )
+                bortman_section = [
+                    "## Canal endêmico Bortman (implementado)",
+                    "",
+                    "Método Bortman (P25/P50/P75) sobre os últimos 5 anos excl. ano atual, "
+                    "mesma SE. Zonas: sucesso / seguranca / alerta / epidemia / sem_dado. "
+                    "Saídas: `canal_endemico.xlsx` (Classificacao, Limites, Metadados) e "
+                    "`canal_endemico_classificacao.csv` para join no Radar.",
+                    "",
+                ]
+            else:
+                bortman_status = "Parcial"
+                bortman_nota = (
+                    f"Arquivo gerado ({n_tot} linhas), mas todas em sem_dado "
+                    "(série ainda curta por município×agravo×SE)."
+                )
+                bortman_section = [
+                    "## Canal endêmico Bortman (parcial)",
+                    "",
+                    "Módulo presente; classificação ainda limitada por histórico insuficiente "
+                    "em várias combinações (<3 anos baseline com observação).",
+                    "",
+                ]
+        except OSError:
+            pass
+
     lines = [
         "# Modelo definitivo — pendências (Radar LACEN / CIEVS)",
         "",
@@ -731,10 +800,7 @@ def gerar_modelo_pendencias(
         "Inventário de fontes no staging + flag de SE parcial no briefing; "
         "coeficiente formal 0–1 por base ainda depende de calendário de carga DW. |",
         f"| Canal endêmico Bortman (razão vs mediana 5 anos) | "
-        f"{'Stub' if (weekly_n_se or 0) < 100 else 'Parcial'} | "
-        f"Histórico semanal disponível ≈ {weekly_n_se if weekly_n_se is not None else 'n/d'} "
-        "células; canal completo exige ≥5 anos da mesma SE. Stub: razão vs mediana das "
-        "últimas SE disponíveis quando a série for curta. |",
+        f"{bortman_status} | {bortman_nota} |",
         f"| Positividade nominal por marcador/metodologia | Implementado | "
         f"GAL micro ({n_micro} registros) → `positividade_por_marcador.csv`. |",
         f"| População IBGE 2026 para taxas | Parcial | "
@@ -749,13 +815,7 @@ def gerar_modelo_pendencias(
         "| Alertas específicos por sinal | Implementado | "
         "`alertas_especificos/alerta_*.md` (+ html). |",
         "",
-        "## Canal endêmico Bortman (stub)",
-        "",
-        "Quando a série semanal por município×agravo tiver pelo menos 5 anos da mesma "
-        "semana epidemiológica, calcular: razão = valor_atual / mediana_histórica_5anos. "
-        "Faixas clássicas (Bortman): sucesso / alerta / epidemia conforme percentis. "
-        "**Nesta remessa:** não calcular falso canal — apenas registrar pendência.",
-        "",
+        *bortman_section,
         "## Completude semanal (orientação)",
         "",
         "Para cada base (GAL, SINAN, SIH, SIM, IndicaSUS, SISREG): "

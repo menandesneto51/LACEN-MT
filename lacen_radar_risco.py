@@ -161,6 +161,7 @@ def montar_cartao_risco(
     gaps: dict[tuple[str, str], dict[str, Any]],
     atraso_se: int | None = None,
     ml_banda: str | None = None,
+    bortman: dict[tuple[str, str], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     tgt = str(cand.get("target") or "")
     mun = _norm_mun(cand.get("municipio"))
@@ -171,6 +172,7 @@ def montar_cartao_risco(
     score_i = 0.0
     regras: list[str] = []
     tipo = str(cand.get("tipo_sinal") or "Observado")
+    zona_bortman = ""
 
     delta = cand.get("delta_pct")
     dlt = float(delta) if delta is not None else None
@@ -254,6 +256,25 @@ def montar_cartao_risco(
         score_p += 0.8
         tipo = "Predito" if tipo == "Observado" else tipo
         regras.append(f"ML banda {ml_banda}")
+
+    # Canal endêmico Bortman (P25/P50/P75) — reforça evidência se alerta/epidemia
+    binfo = (bortman or {}).get((tgt, mun)) if bortman else None
+    if binfo:
+        zona = str(binfo.get("zona") or "").casefold()
+        zona_bortman = zona
+        if zona == "epidemia":
+            score_p += 1.5
+            score_i += 0.5
+            tipo = "Derivado" if tipo == "Observado" else tipo
+            razao = binfo.get("razao_vs_p50")
+            extra = f" (razão vs P50={razao})" if razao not in (None, "") else ""
+            regras.append(f"canal endêmico Bortman: zona epidemia{extra}")
+        elif zona == "alerta":
+            score_p += 1.0
+            tipo = "Derivado" if tipo == "Observado" else tipo
+            razao = binfo.get("razao_vs_p50")
+            extra = f" (razão vs P50={razao})" if razao not in (None, "") else ""
+            regras.append(f"canal endêmico Bortman: zona alerta{extra}")
 
     if cand.get("baixa_amostra"):
         score_p = max(0.0, score_p - 0.6)
@@ -381,6 +402,7 @@ def montar_cartao_risco(
         "positividade": posi,
         "delta_pct": dlt,
         "internacoes_sih": intern if intern else "",
+        "zona_bortman": zona_bortman,
         "acao_cievs": acoes.get("CIEVS", ""),
         "acao_ve_mun": acoes.get("VE municipal", ""),
         "acao_area_tecnica": acoes.get("área técnica", ""),
@@ -401,6 +423,8 @@ def gerar_cartoes_risco(
     cruzamento_sih_sia: dict[str, Any] | None = None,
     atraso_se: int | None = None,
     top: int = 12,
+    outdir: Path | str | None = None,
+    bortman: dict[tuple[str, str], dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """Gera cartões ranqueados (agravo × município) a partir do briefing."""
     sol = list(solicitados or [])
@@ -409,6 +433,14 @@ def gerar_cartoes_risco(
     clusters = _cluster_index(vizinhos)
     sih = _sih_index(cruzamento_sih_sia)
     gaps = _gal_sinan_index(gal_sinan)
+    bortman_idx = bortman
+    if bortman_idx is None and outdir is not None:
+        try:
+            from ml.canal_endemico_bortman import carregar_indice_bortman
+
+            bortman_idx = carregar_indice_bortman(outdir, se_iso=se_iso)
+        except Exception:  # noqa: BLE001
+            bortman_idx = {}
 
     candidatos: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
@@ -502,6 +534,7 @@ def gerar_cartoes_risco(
             sih=sih,
             gaps=gaps,
             atraso_se=atraso_se,
+            bortman=bortman_idx,
         )
         for c in candidatos
     ]
@@ -559,6 +592,7 @@ def persistir_cartoes_risco(
         "taxa_notif_100k",
         "frase_taxa_positivos",
         "internacoes_sih",
+        "zona_bortman",
         "acao_cievs",
         "acao_ve_mun",
         "acao_area_tecnica",
