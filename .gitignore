@@ -158,6 +158,8 @@ saida_pipeline/*
 !saida_pipeline/relatorio_ve_acoes.csv
 !saida_pipeline/relatorio_ve_inteligente_meta.json
 !saida_pipeline/relatorio_cievs_ultimo.html
+!saida_pipeline/alerta_estrategico_secretario_ultimo.md
+!saida_pipeline/alerta_estrategico_secretario_ultimo.html
 !conhecimento_ve/
 !conhecimento_ve/**/*.md
 !conhecimento_ve/**/*.txt

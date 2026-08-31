@@ -3973,6 +3973,381 @@ Modelo: lacen_relatorio_cievs.py · lacen_briefing_epi.py · lacen_agente_ve.py
 </body></html>"""
 
 
+def coletar_prioridades_secretario(
+    rel: RelatorioCIEVS, *, max_n: int = 5
+) -> list[dict[str, str]]:
+    """
+    Prioridades territoriais para o Secretário encaminhar aos gestores.
+    Fonte principal: canal endêmico (alerta/epidemia estatística).
+    Complementa com Juína/VE se ainda for sinal e não estiver no canal.
+    """
+    out: list[dict[str, str]] = []
+    seen: set[str] = set()
+
+    def _add(
+        mun: str,
+        agravo: str,
+        acao: str,
+        *,
+        zona: str = "",
+        origem: str = "canal",
+    ) -> None:
+        if len(out) >= max_n:
+            return
+        mun_pt = (mun or "").strip() or "—"
+        if mun_pt.isupper() or "_" in mun_pt:
+            mun_pt = _mun_titulo(mun_pt)
+        agr_raw = (agravo or "").strip()
+        if "_" in agr_raw or agr_raw == agr_raw.casefold():
+            agr_pt = _nome_agravo_pt(agr_raw)
+        else:
+            agr_pt = agr_raw or "—"
+        key = f"{mun_pt.casefold()}|{agr_pt.casefold()}"
+        if key in seen or not mun_pt or mun_pt == "—":
+            return
+        seen.add(key)
+        out.append(
+            {
+                "municipio": mun_pt,
+                "agravo": agr_pt,
+                "acao": acao.strip(),
+                "zona": zona,
+                "origem": origem,
+            }
+        )
+
+    canal = list(rel.canal_endemico or [])
+    canal_sorted = sorted(
+        canal,
+        key=lambda r: (
+            0 if str(r.get("zona") or "").casefold() == "epidemia" else 1,
+            str(r.get("municipio_pt") or ""),
+        ),
+    )
+    for c in canal_sorted:
+        zona = str(c.get("zona") or "").casefold()
+        if zona not in {"epidemia", "alerta"}:
+            continue
+        mun = str(c.get("municipio_pt") or c.get("municipio") or "")
+        agr = str(c.get("agravo_pt") or c.get("agravo") or "")
+        pos = c.get("casos") or "—"
+        lim = c.get("limite_superior") or "—"
+        if zona == "epidemia":
+            acao = (
+                f"investigar ({pos} exames positivos acima do limite histórico "
+                f"{lim} no marcador de alerta); não declarar epidemia automaticamente"
+            )
+            zona_lbl = "zona epidêmica (estatística)"
+        else:
+            acao = (
+                f"reforçar monitoramento e cruzar com notificação "
+                f"({pos} exames positivos; limite histórico {lim})"
+            )
+            zona_lbl = "zona de alerta (estatística)"
+        _add(mun, agr, acao, zona=zona_lbl, origem="canal")
+
+    for c in rel.ve_casos or []:
+        mun_raw = str(c.get("municipio") or "")
+        agr_raw = str(c.get("agravo") or c.get("target") or "")
+        mun_u = mun_raw.upper()
+        if "JUINA" not in mun_u and "JUÍNA" not in mun_u:
+            continue
+        mun_pt = _mun_titulo(mun_raw)
+        agr_pt = _nome_agravo_pt(agr_raw)
+        key = f"{mun_pt.casefold()}|{agr_pt.casefold()}"
+        if key in seen:
+            continue
+        exames = c.get("exames") or "—"
+        pos = c.get("positivos") or "—"
+        _add(
+            mun_pt,
+            agr_pt,
+            f"abrir/atualizar investigação ({exames} exames / +{pos} positivos); "
+            f"cruzar lab × notificação — não declarar surto automaticamente",
+            zona="sinal laboratorial",
+            origem="ve",
+        )
+
+    for x in (rel.briefing_mais_solicitados or [])[:3]:
+        tgt = str(x.get("target") or "")
+        if "dengue" not in tgt.casefold():
+            continue
+        delta = _parse_delta_pct(x.get("delta_pct"))
+        if delta is None or delta < 50:
+            continue
+        n_se = x.get("n_se", x.get("exames", "—"))
+        var = _fmt_variacao_pt(x.get("delta_pct"), x.get("tendencia"))
+        _add(
+            "Estado (demanda)",
+            "dengue",
+            f"acompanhar pressão assistencial ({n_se} exames; {var}); "
+            f"baixa confirmação laboratorial — reforçar notificação e busca ativa",
+            zona="demanda elevada",
+            origem="demanda",
+        )
+        break
+
+    return out[:max_n]
+
+
+def _situacao_secretario(rel: RelatorioCIEVS, prioridades: list[dict[str, str]]) -> str:
+    """2–3 frases do que importa nesta semana (linguagem de gestão)."""
+    partes: list[str] = []
+    hbv = [
+        p
+        for p in prioridades
+        if "hepatite" in (p.get("agravo") or "").casefold()
+        and p.get("origem") == "canal"
+    ]
+    if hbv:
+        muns = ", ".join(dict.fromkeys(p["municipio"] for p in hbv))
+        partes.append(
+            f"Sinais de hepatite B acima do histórico (marcador de alerta) em {muns}."
+        )
+    dengue = next(
+        (p for p in prioridades if "dengue" in (p.get("agravo") or "").casefold()),
+        None,
+    )
+    if dengue:
+        partes.append(
+            "Demanda de exames de dengue elevada no estado, com baixa confirmação "
+            "laboratorial — pressão sobre a rede e a vigilância municipal."
+        )
+    if not partes:
+        leitura = (rel.leitura_situacional or "acompanhamento rotineiro").replace(
+            "_", " "
+        )
+        partes.append(
+            f"Leitura situacional da semana: {leitura}. "
+            f"Priorizar os municípios listados abaixo."
+        )
+    partes.append(
+        "Este alerta orienta investigação e gestão local; "
+        "não constitui declaração automática de surto ou epidemia."
+    )
+    return " ".join(partes)
+
+
+def _se_secretario_legivel(se: str) -> str:
+    """2026-SE30 → SE 30/2026."""
+    m = re.search(r"(20\d{2})\s*[-_]?SE?(\d{1,2})", str(se or ""), re.I)
+    if m:
+        return f"SE {int(m.group(2))}/{m.group(1)}"
+    return _tg_se_legivel(se) if se else "—"
+
+
+def to_secretario_subject(rel: RelatorioCIEVS) -> str:
+    se = _se_secretario_legivel(rel.semana_epidemiologica)
+    return (
+        f"Radar LACEN — Alerta estratégico {se} "
+        f"(encaminhar aos gestores)"
+    )
+
+
+def to_secretario_plain(rel: RelatorioCIEVS) -> str:
+    """Texto curto para e-mail / MD — 1 página, linguagem de gestão."""
+    prioridades = coletar_prioridades_secretario(rel, max_n=5)
+    situacao = _situacao_secretario(rel, prioridades)
+    se = _se_secretario_legivel(rel.semana_epidemiologica)
+    leitura = (rel.leitura_situacional or "—").replace("_", " ")
+    lines: list[str] = [
+        "Radar LACEN · SES-MT / CIEVS",
+        f"Alerta estratégico — {se}",
+        f"Gerado em: {rel.gerado_em or '—'}",
+        f"Leitura situacional: {leitura}",
+        "",
+        "SITUAÇÃO",
+        situacao,
+        "",
+        "PRIORIDADES PARA OS MUNICÍPIOS",
+    ]
+    if prioridades:
+        for i, p in enumerate(prioridades, 1):
+            lines.append(
+                f"{i}. {p['municipio']} — {p['agravo']} — {p['acao']}"
+            )
+    else:
+        lines.append("(Nenhuma prioridade territorial acima do histórico nesta SE.)")
+
+    lines.extend(
+        [
+            "",
+            "PEDIDO AOS GESTORES MUNICIPAIS",
+            "1. Abrir ou atualizar a investigação no município citado.",
+            "2. Cruzar exame laboratorial × notificação (SINAN).",
+            "3. Reforçar busca ativa e aplicar a definição de caso do Ministério da Saúde.",
+            "4. Retornar status ao CIEVS / VE regional em até 7 dias.",
+            "",
+            "LEITURA CORRETA",
+            "Sinal laboratorial orienta investigação — não declara surto automaticamente. "
+            "IgG/sorologia refletem soroprevalência e não contam como epidemia aguda. "
+            "Zonas do canal endêmico são estatísticas (comparação histórica), não declaração formal.",
+            "",
+            f"Painel: {DASHBOARD_URL}",
+            "Detalhamento técnico disponível no alerta CIEVS / Radar LACEN.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def to_secretario_html(rel: RelatorioCIEVS) -> str:
+    """HTML institucional limpo, 1 coluna, imprimível/encaminhável."""
+    prioridades = coletar_prioridades_secretario(rel, max_n=5)
+    situacao = _situacao_secretario(rel, prioridades)
+    se = _se_secretario_legivel(rel.semana_epidemiologica)
+    leitura = html.escape((rel.leitura_situacional or "—").replace("_", " "))
+    gerado = html.escape(rel.gerado_em or "—")
+
+    if prioridades:
+        lis = "".join(
+            (
+                "<li style='margin:0 0 10px 0;line-height:1.45'>"
+                f"<b>{html.escape(p['municipio'])}</b> — "
+                f"{html.escape(p['agravo'])} — "
+                f"{html.escape(p['acao'])}"
+                "</li>"
+            )
+            for p in prioridades
+        )
+        lista_html = f"<ol style='margin:8px 0 0 1.2em;padding:0'>{lis}</ol>"
+    else:
+        lista_html = (
+            "<p style='margin:8px 0 0 0;color:#555'>"
+            "Nenhuma prioridade territorial acima do histórico nesta SE."
+            "</p>"
+        )
+
+    checklist = """
+<ol style="margin:8px 0 0 1.2em;padding:0;line-height:1.5">
+<li>Abrir ou atualizar a investigação no município citado.</li>
+<li>Cruzar exame laboratorial × notificação (SINAN).</li>
+<li>Reforçar busca ativa e aplicar a definição de caso do Ministério da Saúde.</li>
+<li>Retornar status ao CIEVS / VE regional em até 7 dias.</li>
+</ol>
+"""
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(to_secretario_subject(rel))}</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f6f8;color:#1a1a1a;
+font-family:Georgia,'Times New Roman',serif">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+style="background:#f4f6f8;padding:24px 12px">
+<tr><td align="center">
+<table role="presentation" width="640" cellspacing="0" cellpadding="0"
+style="max-width:640px;width:100%;background:#ffffff;border:1px solid #d8dee6">
+<tr><td style="padding:28px 32px 8px 32px;border-bottom:3px solid #0b3d5c">
+<div style="font-size:13px;letter-spacing:0.04em;text-transform:uppercase;
+color:#0b3d5c;font-family:Arial,Helvetica,sans-serif">Radar LACEN · SES-MT / CIEVS</div>
+<h1 style="margin:8px 0 4px 0;font-size:22px;font-weight:normal;color:#0b3d5c;
+font-family:Arial,Helvetica,sans-serif">Alerta estratégico</h1>
+<p style="margin:0;font-size:14px;color:#444;font-family:Arial,Helvetica,sans-serif">
+{html.escape(se)} · Leitura situacional: <b>{leitura}</b><br>
+<span style="color:#777">Gerado em: {gerado}</span>
+</p>
+</td></tr>
+<tr><td style="padding:20px 32px 8px 32px">
+<h2 style="margin:0 0 8px 0;font-size:15px;font-family:Arial,Helvetica,sans-serif;
+color:#0b3d5c;text-transform:uppercase;letter-spacing:0.03em">Situação</h2>
+<p style="margin:0;font-size:15px;line-height:1.55">{html.escape(situacao)}</p>
+</td></tr>
+<tr><td style="padding:16px 32px 8px 32px">
+<h2 style="margin:0 0 4px 0;font-size:15px;font-family:Arial,Helvetica,sans-serif;
+color:#0b3d5c;text-transform:uppercase;letter-spacing:0.03em">
+Prioridades para os municípios</h2>
+{lista_html}
+</td></tr>
+<tr><td style="padding:16px 32px 8px 32px">
+<h2 style="margin:0 0 4px 0;font-size:15px;font-family:Arial,Helvetica,sans-serif;
+color:#0b3d5c;text-transform:uppercase;letter-spacing:0.03em">
+Pedido aos gestores municipais</h2>
+{checklist}
+</td></tr>
+<tr><td style="padding:16px 32px 8px 32px">
+<h2 style="margin:0 0 8px 0;font-size:15px;font-family:Arial,Helvetica,sans-serif;
+color:#0b3d5c;text-transform:uppercase;letter-spacing:0.03em">Leitura correta</h2>
+<p style="margin:0;font-size:13px;line-height:1.5;color:#444">
+Sinal laboratorial orienta investigação — não declara surto automaticamente.
+IgG/sorologia refletem soroprevalência e não contam como epidemia aguda.
+Zonas do canal endêmico são estatísticas (comparação histórica), não declaração formal.
+</p>
+</td></tr>
+<tr><td style="padding:20px 32px 28px 32px;border-top:1px solid #e5e9ef;
+font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#666;line-height:1.5">
+<a href="{html.escape(DASHBOARD_URL)}" style="color:#0b3d5c">Painel Radar LACEN</a>
+<br>Detalhamento técnico disponível no alerta CIEVS / Radar LACEN.
+</td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+
+
+def to_secretario_telegram(rel: RelatorioCIEVS, *, max_chars: int = 3500) -> str:
+    """Uma mensagem Telegram HTML — alerta estratégico (não o CIEVS técnico)."""
+    prioridades = coletar_prioridades_secretario(rel, max_n=5)
+    situacao = _situacao_secretario(rel, prioridades)
+    se = _se_secretario_legivel(rel.semana_epidemiologica)
+    leitura = (rel.leitura_situacional or "—").replace("_", " ")
+
+    lines: list[str] = [
+        "<b>Radar LACEN — Alerta estratégico</b>",
+        f"{html.escape(se)} · SES-MT / CIEVS · <b>{html.escape(leitura)}</b>",
+        html.escape(rel.gerado_em or ""),
+        "",
+        "<b>Situação</b>",
+        html.escape(_tg_clip(situacao, 420)),
+        "",
+        "<b>Prioridades para os municípios</b>",
+    ]
+    if prioridades:
+        for i, p in enumerate(prioridades, 1):
+            lines.append(
+                html.escape(
+                    _tg_clip(
+                        f"{i}. {p['municipio']} — {p['agravo']} — {p['acao']}",
+                        220,
+                    )
+                )
+            )
+    else:
+        lines.append(html.escape("(Sem prioridade territorial acima do histórico.)"))
+
+    lines.extend(
+        [
+            "",
+            "<b>Pedido aos gestores</b>",
+            html.escape(
+                "1) Investigar  2) Cruzar lab × SINAN  "
+                "3) Busca ativa / definição MS  4) Retorno ao CIEVS em 7 dias"
+            ),
+            "",
+            "<i>"
+            + html.escape(
+                "Não declara surto automaticamente. "
+                "Canal = zona estatística; IgG ≠ epidemia aguda."
+            )
+            + "</i>",
+            f'<a href="{html.escape(DASHBOARD_URL)}">Painel Radar LACEN</a>',
+        ]
+    )
+    text = "\n".join(lines).strip()
+    if len(text) > max_chars:
+        text = text[: max_chars - 1] + "…"
+    return text
+
+
+def format_email_secretario(rel: RelatorioCIEVS) -> tuple[str, str, str]:
+    """Retorna (assunto, corpo_texto, corpo_html) do alerta estratégico."""
+    return (
+        to_secretario_subject(rel),
+        to_secretario_plain(rel),
+        to_secretario_html(rel),
+    )
+
+
 def format_email(rel: RelatorioCIEVS) -> tuple[str, str, str]:
     """Retorna (assunto, corpo_texto, corpo_html)."""
     return to_email_subject(rel), to_email_plain(rel), to_email_html(rel)
