@@ -17,13 +17,14 @@
 
 ## 2. Interpretação de marcadores
 
-- IgM (Enzimaimunoensaio): 23 positivos / 173 exames — IgM: sugere infecção recente — sinal para investigação.
-- IgM (Enzimaimunoensaio): 1 positivos / 2 exames — IgM: janela de infecção recente — sinal laboratorial ativo.
-- HBV_DNA (PCR em Tempo Real): 35 positivos / 61 exames — HBV-DNA (molecular): presença/ausência do vírus — confirmatorio de replicação quando detectável.
-- nao_mapeado (Cultura): 13 positivos / 59 exames — Marcador sem mapeamento seguro — revisar laudo nominal.
-- molecular (PCR em Tempo Real): 7 positivos / 50 exames — Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência.
-- molecular (RT-PCR em tempo real): 2 positivos / 5 exames — Ensaio molecular: detecta presença/ausência do agente — usar como confirmação laboratorial, não como incidência.
-- Caveat: IgG / anti-HBs / soroprevalência **não** elevam alerta agudo.
+- IgM (Enzimaimunoensaio): 18 positivos / 96 exames — IgM dengue: sugere infecção recente — sinal para investigação.
+- IgM (Enzimaimunoensaio): 5 positivos / 75 exames — IgM chikungunya: infecção recente — sinal ativo.
+- cultura_TB (Cultura): 3 positivos / 18 exames — Cultura para micobactérias: padrão-ouro confirmatório.
+- IgM (Imunoensaio de Micropartículas por Quimioluminescência): 1 positivos / 1 exames — CMV IgM: possível infecção recente — contextualizar.
+- BAAR (Coloração de Ziehl-Neelsen): 0 positivos / 5 exames — BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
+- IgM (Enzimaimunoensaio): 0 positivos / 2 exames — IgM genérica: janela de infecção recente — sinal laboratorial ativo.
+- IgM (Enzimaimunoensaio): 0 positivos / 1 exames — IgM zika: sugere infecção recente.
+- HBV_DNA (PCR em Tempo Real): 35 positivos / 61 exames — HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
 
 ## 3. Taxas e local
 
@@ -53,7 +54,7 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Priorizar investigação de hepatite_b_hbv em SORRISO: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+- CIEVS: Canal endêmico acima do limite histórico em hepatite_b_hbv em SORRISO: priorizar investigação (não declarar epidemia automaticamente).
 - VE municipal: Investigar casos/contatos de hepatite_b_hbv em SORRISO; verificar oportunidade de notificação e busca ativa.
 - Área técnica: Validar critérios clínico-laboratoriais de hepatite_b_hbv; orientar rede sobre definição de caso.
 - Vizinhos: —
@@ -63,4 +64,4 @@
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 10:19 Hora Padrão Brasil Central_

@@ -7,6 +7,9 @@ Classifica exames do espelho GAL micro (Exame + Metodologia + resultados)
 para evitar alertas falsos de IgG/soroprevalência e destacar sinais
 agudos/ativos (ex.: HBsAg, IgM anti-HBc, HBV-DNA).
 
+Fonte mestra editável: conhecimento_ve/regras_agravo_gal.csv
+(regenerar com scripts/gerar_regras_agravo_gal.py). Fallback: regras hardcoded.
+
 Uso:
   from lacen_agente_marcadores import classificar_exame, agregar_positividade_marcadores
   python lacen_agente_marcadores.py
@@ -16,12 +19,15 @@ from __future__ import annotations
 import csv
 import re
 from dataclasses import asdict, dataclass, field
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Sequence
 
 ROOT = Path(__file__).resolve().parent
 OUTDIR_DEFAULT = ROOT / "saida_pipeline"
 STAGE = OUTDIR_DEFAULT / "staging_dw"
+CONHECIMENTO = ROOT / "conhecimento_ve"
+REGRAS_CSV = CONHECIMENTO / "regras_agravo_gal.csv"
 
 POS_MARCADORES_CSV = "positividade_por_marcador.csv"
 POS_MARCADORES_RESUMO = "positividade_por_marcador_resumo.md"
@@ -60,6 +66,10 @@ class ClassificacaoMarcador:
     nota_pt: str
     resultado_bruto: str = ""
     resultado_binario: str = "indeterminado"  # positivo | negativo | indeterminado
+    conta_alerta_agudo: bool = False
+    conta_bortman: bool = False
+    conta_positividade_agregada: bool = False
+    fonte_regra: str = ""
 
 
 @dataclass
@@ -75,6 +85,165 @@ class AgregadoMarcador:
     positividade: float | None = None
     alerta_agudo: bool = False
     nota_pt: str = ""
+    conta_alerta_agudo: bool = False
+    conta_bortman: bool = False
+    conta_positividade_agregada: bool = False
+
+
+@dataclass
+class RegraAgravo:
+    agravo_gal: str
+    familia: str
+    padrao_exame: str
+    metodologia: str
+    marcador: str
+    classe: str
+    conta_alerta_agudo: bool
+    conta_bortman: bool
+    conta_positividade_agregada: bool
+    n_minimo: int
+    nota_pt: str
+    fonte: str
+    _rx_exame: re.Pattern[str] | None = field(default=None, repr=False)
+    _rx_met: re.Pattern[str] | None = field(default=None, repr=False)
+
+
+def _as_bool(v: object, default: bool = False) -> bool:
+    s = str(v or "").strip().casefold()
+    if s in {"1", "true", "sim", "yes", "y", "t"}:
+        return True
+    if s in {"0", "false", "nao", "não", "no", "n", "f"}:
+        return False
+    return default
+
+
+def _compile_rx(pat: str) -> re.Pattern[str] | None:
+    p = str(pat or "").strip()
+    if not p:
+        return None
+    try:
+        return re.compile(p, re.IGNORECASE)
+    except re.error:
+        return re.compile(re.escape(p), re.IGNORECASE)
+
+
+@lru_cache(maxsize=1)
+def carregar_regras_agravo(path: str | None = None) -> tuple[RegraAgravo, ...]:
+    """
+    Carrega regras_agravo_gal.csv (fonte mestra). Retorna tupla vazia se ausente.
+    """
+    p = Path(path) if path else REGRAS_CSV
+    if not p.exists():
+        return tuple()
+    out: list[RegraAgravo] = []
+    with p.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            pad = str(row.get("padrao_exame") or "").strip()
+            if not pad:
+                continue
+            regra = RegraAgravo(
+                agravo_gal=str(row.get("agravo_gal") or "").strip(),
+                familia=str(row.get("familia") or "").strip(),
+                padrao_exame=pad,
+                metodologia=str(row.get("metodologia") or "").strip(),
+                marcador=str(row.get("marcador") or "").strip() or "nao_mapeado",
+                classe=str(row.get("classe") or CLASSE_INDET).strip() or CLASSE_INDET,
+                conta_alerta_agudo=_as_bool(row.get("conta_alerta_agudo")),
+                conta_bortman=_as_bool(row.get("conta_bortman")),
+                conta_positividade_agregada=_as_bool(
+                    row.get("conta_positividade_agregada")
+                ),
+                n_minimo=int(float(row.get("n_minimo") or 3) or 3),
+                nota_pt=str(row.get("nota_pt") or "").strip(),
+                fonte=str(row.get("fonte") or "").strip(),
+            )
+            regra._rx_exame = _compile_rx(regra.padrao_exame)
+            regra._rx_met = _compile_rx(regra.metodologia) if regra.metodologia else None
+            out.append(regra)
+
+    # Mais específicas primeiro (padrão mais longo; genéricos ".*" por último)
+    out.sort(
+        key=lambda r: (
+            0 if r.padrao_exame == ".*" else 1,
+            len(r.padrao_exame),
+            1 if r.metodologia else 0,
+        ),
+        reverse=True,
+    )
+    return tuple(out)
+
+
+def _match_regra(
+    exame_cf: str, met_cf: str, familia: str, regras: Sequence[RegraAgravo]
+) -> RegraAgravo | None:
+    for r in regras:
+        if r.familia and r.familia not in ("outros", "Genérico", familia):
+            # família da regra diferente e não genérica → exige overlap no exame/agravo
+            if r.familia != familia and r.familia.casefold() not in exame_cf:
+                # ainda permite se o padrão do exame bater (ex.: hbsag sem fam)
+                pass
+        if r._rx_exame is None:
+            continue
+        if not r._rx_exame.search(exame_cf):
+            continue
+        if r._rx_met is not None and met_cf and not r._rx_met.search(met_cf):
+            # metodologia exigida e não bate
+            if r.metodologia:
+                continue
+        elif r._rx_met is not None and not met_cf:
+            # regra exige metodologia — se exame já é bem específico, aceita
+            if r.padrao_exame in (".*", r"\bigg\b", r"\bigm\b"):
+                continue
+        return r
+    return None
+
+
+def flags_da_classe(classe: str) -> tuple[bool, bool, bool]:
+    """conta_alerta, conta_bortman, conta_positividade_agregada a partir da classe."""
+    if classe == CLASSE_NAO_AGUDO:
+        return False, False, False
+    if classe == CLASSE_SINAL_ATIVO:
+        return True, True, True
+    if classe == CLASSE_MOLECULAR:
+        return True, True, True
+    return False, False, False
+
+
+def filtrar_linhas_marcador(
+    linhas: Sequence[dict[str, Any]],
+    *,
+    uso: str = "alerta",
+) -> list[dict[str, Any]]:
+    """
+    Filtra agregados conforme uso:
+      alerta → conta_alerta_agudo
+      bortman → conta_bortman
+      agregada → conta_positividade_agregada
+    """
+    key = {
+        "alerta": "conta_alerta_agudo",
+        "radar": "conta_alerta_agudo",
+        "bortman": "conta_bortman",
+        "agregada": "conta_positividade_agregada",
+        "positividade": "conta_positividade_agregada",
+    }.get(uso.casefold(), "conta_alerta_agudo")
+    out: list[dict[str, Any]] = []
+    for row in linhas:
+        flag = row.get(key)
+        if flag is None:
+            # legado: usa alerta_agudo / classe
+            if key == "conta_alerta_agudo":
+                flag = row.get("alerta_agudo") or row.get("classe") in (
+                    CLASSE_SINAL_ATIVO,
+                    CLASSE_MOLECULAR,
+                )
+            elif key == "conta_bortman":
+                flag = row.get("classe") in (CLASSE_SINAL_ATIVO, CLASSE_MOLECULAR)
+            else:
+                flag = row.get("classe") != CLASSE_NAO_AGUDO
+        if _as_bool(flag, default=bool(flag)):
+            out.append(dict(row))
+    return out
 
 
 def _norm(text: object) -> str:
@@ -158,20 +327,14 @@ def _eh_molecular(metodologia: str, exame: str) -> bool:
     )
 
 
-def classificar_exame(
+def _classificar_exame_hardcoded(
     exame: str,
     *,
     metodologia: str = "",
     agravo: str = "",
     campos_resultado: Sequence[str] | None = None,
 ) -> ClassificacaoMarcador:
-    """
-    Classifica um ensaio GAL em família/marcador/classe de alerta.
-
-    HBV: anti-HBs / IgG / contato passado ≠ aguda;
-    HBsAg, IgM anti-HBc, HBV-DNA = sinal agudo/ativo.
-    Molecular: presença/ausência confirmatória.
-    """
+    """Fallback interno quando a planilha de regras não cobre o ensaio."""
     ex = _norm(exame)
     met = _norm(metodologia)
     fam = _familia_de_exame(ex, agravo)
@@ -207,7 +370,6 @@ def classificar_exame(
                 "sinal laboratorial ativo para a VE."
             )
         elif "anti hbc" in ex_cf or "anti-hbc" in ex_cf:
-            # Total / sem IgM explícito
             marcador = "anti_HBc_total"
             classe = CLASSE_NAO_AGUDO
             alerta = False
@@ -242,7 +404,6 @@ def classificar_exame(
             alerta = False
             nota = "Anti-HBe: fase da infecção — interpretar no painel completo."
 
-    # --- Molecular genérico ---
     elif _eh_molecular(met, ex):
         marcador = "molecular"
         classe = CLASSE_MOLECULAR
@@ -252,7 +413,6 @@ def classificar_exame(
             "usar como confirmação laboratorial, não como incidência."
         )
 
-    # --- Dengue / arbovirose ---
     elif fam in ("dengue", "chikungunya", "zika", "arbovirose_outra"):
         if "igg" in ex_cf and "igm" not in ex_cf:
             marcador = "IgG"
@@ -279,7 +439,6 @@ def classificar_exame(
             classe = CLASSE_INDET
             nota = f"Arbovirose ({fam}): revisar método no laudo."
 
-    # --- IgG genérico ---
     elif "igg" in ex_cf and "igm" not in ex_cf:
         marcador = "IgG"
         classe = CLASSE_NAO_AGUDO
@@ -292,16 +451,98 @@ def classificar_exame(
         alerta = True
         nota = "IgM: janela de infecção recente — sinal laboratorial ativo."
 
+    ca, cb, cp = flags_da_classe(classe)
+    # Molecular: alerta só se positivo (presença)
+    if classe == CLASSE_MOLECULAR:
+        alerta = res == "positivo"
+        ca = alerta
+    alerta_final = bool(alerta and res == "positivo") if classe != CLASSE_NAO_AGUDO else False
+    if classe == CLASSE_NAO_AGUDO:
+        alerta_final = False
+        ca = False
+    elif classe == CLASSE_SINAL_ATIVO:
+        alerta_final = res == "positivo"
+        ca = True
     return ClassificacaoMarcador(
         exame=ex,
         metodologia=met,
         familia=fam,
         marcador=marcador,
         classe=classe,
-        alerta_agudo=bool(alerta and res == "positivo"),
+        alerta_agudo=alerta_final,
         nota_pt=nota,
         resultado_bruto=bruto,
         resultado_binario=res,
+        conta_alerta_agudo=ca and (res == "positivo" if classe == CLASSE_MOLECULAR else True),
+        conta_bortman=cb,
+        conta_positividade_agregada=cp,
+        fonte_regra="hardcoded",
+    )
+
+
+def classificar_exame(
+    exame: str,
+    *,
+    metodologia: str = "",
+    agravo: str = "",
+    campos_resultado: Sequence[str] | None = None,
+) -> ClassificacaoMarcador:
+    """
+    Classifica um ensaio GAL em família/marcador/classe de alerta.
+
+    Prioridade: planilha ``regras_agravo_gal.csv``; fallback hardcoded.
+    HBV: anti-HBs / IgG / contato passado ≠ aguda;
+    HBsAg, IgM anti-HBc, HBV-DNA = sinal agudo/ativo.
+    Molecular: presença/ausência confirmatória.
+    """
+    ex = _norm(exame)
+    met = _norm(metodologia)
+    fam = _familia_de_exame(ex, agravo)
+    ex_cf = _cf(ex)
+    met_cf = _cf(met)
+    campos = list(campos_resultado or [])
+    res = _resultado_binario(campos)
+    bruto = " | ".join(_norm(c) for c in campos if _norm(c))[:240]
+
+    regras = carregar_regras_agravo()
+    if regras:
+        matched = _match_regra(ex_cf, met_cf, fam, regras)
+        if matched is not None:
+            classe = matched.classe or CLASSE_INDET
+            fam_out = matched.familia or fam
+            ca = matched.conta_alerta_agudo
+            cb = matched.conta_bortman
+            cp = matched.conta_positividade_agregada
+            # Molecular: conta no alerta só se detectável
+            if classe == CLASSE_MOLECULAR:
+                alerta = res == "positivo" and ca
+            elif classe == CLASSE_NAO_AGUDO:
+                alerta = False
+                ca = False
+            else:
+                alerta = bool(ca and res == "positivo")
+            return ClassificacaoMarcador(
+                exame=ex,
+                metodologia=met,
+                familia=fam_out,
+                marcador=matched.marcador,
+                classe=classe,
+                alerta_agudo=alerta,
+                nota_pt=matched.nota_pt
+                or "Classificado pela planilha regras_agravo_gal.",
+                resultado_bruto=bruto,
+                resultado_binario=res,
+                conta_alerta_agudo=ca,
+                conta_bortman=cb,
+                conta_positividade_agregada=cp,
+                fonte_regra=matched.fonte or "regras_agravo_gal.csv",
+            )
+
+    return _classificar_exame_hardcoded(
+        exame,
+        metodologia=metodologia,
+        agravo=agravo,
+        campos_resultado=campos_resultado,
     )
 
 
@@ -391,8 +632,12 @@ def agregar_positividade_marcadores(
                 marcador=clf.marcador,
                 classe=clf.classe,
                 metodologia=clf.metodologia or met,
-                alerta_agudo=clf.classe in (CLASSE_SINAL_ATIVO, CLASSE_MOLECULAR),
+                alerta_agudo=clf.conta_alerta_agudo
+                or clf.classe in (CLASSE_SINAL_ATIVO, CLASSE_MOLECULAR),
                 nota_pt=clf.nota_pt,
+                conta_alerta_agudo=clf.conta_alerta_agudo,
+                conta_bortman=clf.conta_bortman,
+                conta_positividade_agregada=clf.conta_positividade_agregada,
             )
             buckets[key] = agg
         agg.n_exames += 1
@@ -410,6 +655,7 @@ def agregar_positividade_marcadores(
                     "classe": clf.classe,
                     "resultado": clf.resultado_binario,
                     "nota": clf.nota_pt,
+                    "fonte_regra": clf.fonte_regra,
                 }
             )
 
@@ -421,17 +667,23 @@ def agregar_positividade_marcadores(
 
     linhas.sort(
         key=lambda x: (
-            0 if x["classe"] == CLASSE_SINAL_ATIVO else 1,
+            0 if x.get("conta_alerta_agudo") or x["classe"] == CLASSE_SINAL_ATIVO else 1,
             -(x["n_positivos"] or 0),
             -(x["n_exames"] or 0),
         )
     )
+    n_regras = len(carregar_regras_agravo())
+    linhas_alerta = filtrar_linhas_marcador(linhas, uso="alerta")
     linhas = linhas[: max(1, top)]
 
     return {
         "linhas": linhas,
+        "linhas_alerta": filtrar_linhas_marcador(linhas, uso="alerta"),
+        "linhas_bortman": filtrar_linhas_marcador(linhas, uso="bortman"),
         "exemplos_hbv": exemplos,
         "n_registros_micro": n_sem_id,
+        "n_regras_carregadas": n_regras,
+        "n_linhas_alerta": len(linhas_alerta),
         "deduplicacao_paciente": {
             "possivel": tem_id_paciente,
             "motivo": (
@@ -441,9 +693,11 @@ def agregar_positividade_marcadores(
             ),
         },
         "caveat": (
-            "Positividade por marcador é agregada do GAL micro; "
-            "IgG/anti-HBs não geram alerta agudo. Não declara surto."
+            "Positividade por marcador (regras_agravo_gal): "
+            "IgG/anti-HBs não entram em alerta agudo nem Bortman. "
+            "Não declara surto."
         ),
+        "fonte_regras": str(REGRAS_CSV) if REGRAS_CSV.exists() else "hardcoded",
     }
 
 
@@ -496,6 +750,9 @@ def persistir_positividade_marcadores(
         "n_negativos",
         "positividade",
         "alerta_agudo",
+        "conta_alerta_agudo",
+        "conta_bortman",
+        "conta_positividade_agregada",
         "nota_pt",
     ]
     with path.open("w", encoding="utf-8-sig", newline="") as f:
@@ -514,6 +771,9 @@ def persistir_positividade_marcadores(
         str(payload.get("caveat") or ""),
         "",
         f"Registros micro lidos: {payload.get('n_registros_micro', 0)}",
+        f"Regras carregadas: {payload.get('n_regras_carregadas', 0)} "
+        f"(fonte: {payload.get('fonte_regras', '—')})",
+        f"Linhas com conta_alerta_agudo: {payload.get('n_linhas_alerta', 0)}",
         f"Deduplicação paciente: {payload.get('deduplicacao_paciente', {}).get('motivo', '—')}",
         "",
         "## Exemplos HBV",

@@ -314,6 +314,11 @@ def _sheet_metadados(
         ("regra_alerta", "P50 <= casos < P75"),
         ("regra_epidemia", "casos >= P75"),
         ("n_combinacoes_classificadas", str(n_classif)),
+        (
+            "filtro_marcadores",
+            "Radar usa conta_bortman/conta_alerta_agudo de conhecimento_ve/regras_agravo_gal.csv; "
+            "IgG/anti-HBs não elevam cartão epidemia",
+        ),
     ]
     for z, n in sorted(zona_counts.items()):
         rows.append((f"zona_count_{z}", str(n)))

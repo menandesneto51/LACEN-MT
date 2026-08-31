@@ -258,8 +258,10 @@ def montar_cartao_risco(
         regras.append(f"ML banda {ml_banda}")
 
     # Canal endêmico Bortman (P25/P50/P75) — reforça evidência se alerta/epidemia
+    # Se o candidato é só IgG/soroprevalência, não eleva para "epidemia" via Bortman.
     binfo = (bortman or {}).get((tgt, mun)) if bortman else None
-    if binfo:
+    so_igg = bool(cand.get("caveat_igg")) or bool(cand.get("somente_nao_agudo"))
+    if binfo and not so_igg:
         zona = str(binfo.get("zona") or "").casefold()
         zona_bortman = zona
         if zona == "epidemia":
@@ -275,6 +277,11 @@ def montar_cartao_risco(
             razao = binfo.get("razao_vs_p50")
             extra = f" (razão vs P50={razao})" if razao not in (None, "") else ""
             regras.append(f"canal endêmico Bortman: zona alerta{extra}")
+    elif binfo and so_igg:
+        zona_bortman = str(binfo.get("zona") or "")
+        regras.append(
+            "Bortman ignorado para score: marcador não agudo (regras_agravo_gal)"
+        )
 
     if cand.get("baixa_amostra"):
         score_p = max(0.0, score_p - 0.6)

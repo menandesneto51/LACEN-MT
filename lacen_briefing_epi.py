@@ -2212,11 +2212,20 @@ def computar_briefing_epi(
         marcadores_payload = agregar_positividade_marcadores(
             outdir, mun_filtro=muns_sinal[:12] or None, top=100
         )
-        marcadores_linhas = list(marcadores_payload.get("linhas") or [])
+        # Radar / alertas: só marcadores com conta_alerta_agudo (anti-ruído IgG)
+        from lacen_agente_marcadores import filtrar_linhas_marcador
+
+        todas = list(marcadores_payload.get("linhas") or [])
+        marcadores_linhas = list(
+            marcadores_payload.get("linhas_alerta")
+            or filtrar_linhas_marcador(todas, uso="alerta")
+        )
+        # Mantém amostra de não-agudos no payload completo; Radar usa filtrado
+        marcadores_payload["linhas_radar"] = marcadores_linhas
         persistir_positividade_marcadores(marcadores_payload, outdir)
         nota_marcadores = str(marcadores_payload.get("caveat") or "")
-        if marcadores_linhas:
-            fontes.append("GAL micro — positividade por marcador/metodologia")
+        if todas:
+            fontes.append("GAL micro — positividade por marcador/metodologia (regras_agravo_gal)")
     except Exception:  # noqa: BLE001
         nota_marcadores = (
             "Marcadores nominais indisponíveis nesta remessa "

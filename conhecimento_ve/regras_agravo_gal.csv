@@ -1,0 +1,33 @@
+﻿agravo_gal,familia,padrao_exame,metodologia,marcador,classe,conta_alerta_agudo,conta_bortman,conta_positividade_agregada,n_minimo,nota_pt,fonte
+Hepatite B,hepatite_b,anti[\s\-]?hbs,,anti_HBs,nao_agudo_soroprevalencia,false,false,false,3,Anti-HBs: imunidade vacinal ou contato passado — não infecção aguda.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,(anti[\s\-]?hbc.*igm|igm.*anti[\s\-]?hbc|anti[\s\-]?hbc\s*[-–]?\s*igm),,anti_HBc_IgM,sinal_agudo_ou_ativo,true,true,true,3,Anti-HBc IgM: marcador de infecção aguda (ou reativação) — sinal para a VE.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,anti[\s\-]?hbc,,anti_HBc_total,nao_agudo_soroprevalencia,false,false,false,3,Anti-HBc total: contato passado/crônico — não basta sozinho para alerta agudo.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,hbsag|hbs[\s\-]?ag,,HBsAg,sinal_agudo_ou_ativo,true,true,true,3,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação.",Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,(dna[\s\-]?hbv|hbv[\s\-]?dna|pesquisa quantitativa do dna hbv),,HBV_DNA,molecular_presenca_ausencia,true,true,true,3,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,hbeag,,HBeAg,sinal_agudo_ou_ativo,true,false,true,3,HBeAg: marcador de replicação — contextualizar com DNA e clínica.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Hepatite B,hepatite_b,anti[\s\-]?hbe,,anti_HBe,indeterminado,false,false,false,3,Anti-HBe: fase da infecção — interpretar no painel completo.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Dengue,dengue,dengue.*ns1|ns1.*dengue|\bns1\b,,NS1,sinal_agudo_ou_ativo,true,true,true,3,NS1: compatível com infecção recente/aguda (fase virêmica).,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Dengue,dengue,dengue.*igm|\bigm\b.*dengue,,IgM,sinal_agudo_ou_ativo,true,true,true,3,IgM dengue: sugere infecção recente — sinal para investigação.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Dengue,dengue,dengue.*igg|\bigg\b.*dengue,,IgG,nao_agudo_soroprevalencia,false,false,false,3,IgG dengue isolada: soroprevalência / infecção passada — não alerta agudo.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Dengue,dengue,(pesquisa de arbov[ií]rus|zdc|rt[\s\-]?pcr.*dengue|dengue.*pcr),pcr|molecular|rt,PCR_arbovirose,molecular_presenca_ausencia,true,true,true,3,PCR/arbovírus: presença/ausência confirmatória do vírus.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Chikungunya,chikungunya,chikung.*igm,,IgM,sinal_agudo_ou_ativo,true,true,true,3,IgM chikungunya: infecção recente — sinal ativo.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Chikungunya,chikungunya,chikung.*igg,,IgG,nao_agudo_soroprevalencia,false,false,false,3,IgG chikungunya: exposição pretérita — não alerta agudo isolado.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Chikungunya,chikungunya,chikung.*(pcr|molecular|rt[\s\-]?pcr),,PCR_arbovirose,molecular_presenca_ausencia,true,true,true,3,RT-PCR chikungunya: presença/ausência na fase aguda.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Zika,zika,zika.*igm,,IgM,sinal_agudo_ou_ativo,true,true,true,3,IgM zika: sugere infecção recente.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Zika,zika,zika.*igg,,IgG,nao_agudo_soroprevalencia,false,false,false,3,IgG zika: soroprevalência — não alerta agudo isolado.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Tuberculose,tuberculose,(teste r[aá]pido molecular|trm[\s\-]?tb|genexpert),,TRM_TB,molecular_presenca_ausencia,true,true,true,3,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Tuberculose,tuberculose,baciloscopia|baar,,BAAR,sinal_agudo_ou_ativo,true,true,true,3,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Tuberculose,tuberculose,tuberculose.*cultura|cultura.*micobact,,cultura_TB,sinal_agudo_ou_ativo,true,true,true,3,Cultura para micobactérias: padrão-ouro confirmatório.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+COVID-19,covid19,(covid|sars[\s\-]?cov|coronav).*(pcr|rt[\s\-]?pcr|molecular),,PCR_covid,molecular_presenca_ausencia,true,true,true,3,RT-PCR COVID: presença/ausência do agente.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+COVID-19,covid19,(covid|sars[\s\-]?cov).*(ant[ií]geno|tr[\s\-]?ag),,antigeno,sinal_agudo_ou_ativo,true,true,true,3,Antígeno COVID: sinal agudo em sintomáticos.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+COVID-19,covid19,(covid|sars[\s\-]?cov).*igg,,IgG,nao_agudo_soroprevalencia,false,false,false,3,IgG COVID: soroprevalência/inquérito — não alerta agudo operacional.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Meningite,meningite,meningit.*(molecular|pcr|cultura|l[ií]quor|lcr),,PCR_cultura_LCR,molecular_presenca_ausencia,true,true,true,3,PCR/cultura de LCR: confirmação etiológica — casos esporádicos a investigar se cluster.,Guia MS / LACEN / Positividade_Por_Agravo_GAL
+Toxoplasmose,toxoplasmose,toxoplasmose.*igg|toxo.*igg,,IgG,nao_agudo_soroprevalencia,false,false,false,3,Toxo IgG: contato passado — não alerta agudo isolado (usar IgM/avididade).,LACEN / marcadores_ensaio.md
+Toxoplasmose,toxoplasmose,toxoplasmose.*igm|toxo.*igm,,IgM,sinal_agudo_ou_ativo,true,true,true,3,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.,LACEN / marcadores_ensaio.md
+CMV,cmv,(citomegalov[ií]rus|cmv).*igg,,IgG,nao_agudo_soroprevalencia,false,false,false,3,CMV IgG: soroprevalência — não alerta agudo isolado.,LACEN / marcadores_ensaio.md
+CMV,cmv,(citomegalov[ií]rus|cmv).*igm,,IgM,sinal_agudo_ou_ativo,true,false,true,3,CMV IgM: possível infecção recente — contextualizar.,LACEN / marcadores_ensaio.md
+Oropouche,arbovirose_outra,oropouche,molecular|pcr|biologia,molecular,molecular_presenca_ausencia,true,true,true,3,Molecular Oropouche: presença/ausência do agente.,GAL micro / LACEN
+Mayaro,arbovirose_outra,mayaro,molecular|pcr|biologia,molecular,molecular_presenca_ausencia,true,true,true,3,Molecular Mayaro: presença/ausência do agente.,GAL micro / LACEN
+Genérico,outros,.*,(pcr|rt[\s\-]?pcr|biologia molecular|molecular|genexpert|naat|carga viral),molecular,molecular_presenca_ausencia,true,true,true,5,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.,marcadores_ensaio.md
+Genérico,outros,\bigg\b,,IgG,nao_agudo_soroprevalencia,false,false,false,3,IgG/sorologia genérica: soroprevalência — não tratar como epidemia aguda.,marcadores_ensaio.md
+Genérico,outros,\bigm\b,,IgM,sinal_agudo_ou_ativo,true,true,true,3,IgM genérica: janela de infecção recente — sinal laboratorial ativo.,marcadores_ensaio.md

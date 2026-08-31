@@ -1,6 +1,6 @@
 # Modelo definitivo — pendências (Radar LACEN / CIEVS)
 
-Atualizado: 2026-08-31 10:07 Hora Padrão Brasil Central
+Atualizado: 2026-08-31 10:19 Hora Padrão Brasil Central
 
 Este arquivo lista campos do modelo desejado: **implementado** com os dados atuais ou **stub** (placeholder) até haver histórico/coluna adequada.
 

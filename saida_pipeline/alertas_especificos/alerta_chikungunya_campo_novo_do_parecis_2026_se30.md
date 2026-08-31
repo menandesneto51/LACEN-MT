@@ -44,7 +44,7 @@
 
 ## 7. Ações sugeridas
 
-- CIEVS: Priorizar investigação de chikungunya em CAMPO NOVO DO PARECIS: cruzar lab × notificação, avaliar definição de caso e comunicação com VE municipal.
+- CIEVS: Canal endêmico acima do limite histórico em chikungunya em CAMPO NOVO DO PARECIS: priorizar investigação (não declarar epidemia automaticamente).
 - VE municipal: Investigar casos/contatos de chikungunya em CAMPO NOVO DO PARECIS; verificar oportunidade de notificação e busca ativa.
 - Área técnica: Validar critérios clínico-laboratoriais de chikungunya; orientar rede sobre definição de caso.
 - Vizinhos: —
@@ -54,4 +54,4 @@
 
 Radar LACEN / CIEVS — sinal operacional. A declaração de surto, epidemia ou emergência cabe à VE após definição de caso, investigação e critérios do Guia MS.
 
-_Gerado em 2026-08-31 10:07 Hora Padrão Brasil Central_
+_Gerado em 2026-08-31 10:19 Hora Padrão Brasil Central_

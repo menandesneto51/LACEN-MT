@@ -161,6 +161,11 @@ saida_pipeline/*
 !conhecimento_ve/
 !conhecimento_ve/**/*.md
 !conhecimento_ve/**/*.txt
+!conhecimento_ve/**/*.csv
+!conhecimento_ve/**/*.xlsx
+!conhecimento_ve/regras_agravo_gal.csv
+!conhecimento_ve/regras_agravo_gal.xlsx
+!conhecimento_ve/Positividade_Por_Agravo_GAL.xlsx
 !ml/models_store/meta.json
 !ml/models_store/pressao_meta.json
 !ml/models_store/thresholds.csv

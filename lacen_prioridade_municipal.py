@@ -548,9 +548,10 @@ def escrever_alertas_especificos(
             for m in (marcadores or [])
             if _norm_mun(m.get("municipio")) in {mun, "—", ""}
             and (
-                "hepat" in str(m.get("familia") or "")
-                or _slug(tgt) in _slug(str(m.get("familia") or ""))
-                or True
+                m.get("conta_alerta_agudo")
+                or m.get("alerta_agudo")
+                or str(m.get("classe") or "")
+                in ("sinal_agudo_ou_ativo", "molecular_presenca_ausencia")
             )
         ][:8]
         lac_loc = [

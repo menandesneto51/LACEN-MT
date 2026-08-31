@@ -5,6 +5,22 @@ Objetivo: evitar alertas falsos de “surto” a partir de IgG/soroprevalência 
 
 Siglas (1ª ocorrência): GAL (Gerenciador de Ambiente Laboratorial), HBV (vírus da hepatite B), PCR (reação em cadeia da polimerase), DNA (ácido desoxirribonucleico), RNA (ácido ribonucleico), NS1 (antígeno não estrutural 1 da dengue), IgM / IgG (imunoglobulinas M e G).
 
+## Fonte mestra (editável pela área técnica)
+
+A classificação operacional vem da planilha versionada:
+
+| Artefato | Uso |
+|----------|-----|
+| `conhecimento_ve/regras_agravo_gal.csv` | Fonte mestra lida pelo agente (git-diffável) |
+| `conhecimento_ve/regras_agravo_gal.xlsx` | Mesmo conteúdo + abas Agravos_GAL, Catalogo_Exames, Metadados |
+| `conhecimento_ve/Positividade_Por_Agravo_GAL.xlsx` | Modelo conceitual (marcador alerta por agravo, SE30, cascata) |
+| `scripts/gerar_regras_agravo_gal.py` | (Re)gera CSV/XLSX a partir do seed + micro GAL + planilha Positividade |
+
+Colunas anti-ruído: `conta_alerta_agudo`, `conta_bortman`, `conta_positividade_agregada`.  
+IgG / anti-HBs / anti-HBc total → `false` nas três; HBsAg / IgM / NS1 / PCR → `true` conforme regra.
+
+Se o CSV estiver ausente, o agente usa o fallback hardcoded em `lacen_agente_marcadores.py`.
+
 ## Fonte de colunas (GAL micro)
 
 Espelho típico em `saida_pipeline/staging_dw/vw_gal_micro_recent*`:
