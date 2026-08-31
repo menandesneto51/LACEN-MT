@@ -1,201 +1,251 @@
 ﻿municipio,familia,marcador,classe,metodologia,n_exames,n_positivos,n_negativos,positividade,alerta_agudo,conta_alerta_agudo,conta_bortman,conta_positividade_agregada,nota_pt
-CUIABA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,692,78,583,11.8%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-CUIABA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,116,58,37,61.1%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SORRISO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,61,35,23,60.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-LUCAS DO RIO VERDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,63,31,27,53.4%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-VARZEA GRANDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,306,30,264,10.2%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-VARZEA GRANDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,79,30,39,43.5%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-CUIABA,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,445,27,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-CUIABA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,79,27,45,37.5%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+CUIABA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,692,78,583,11.8%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CUIABA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,116,58,37,61.1%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SORRISO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,61,35,23,60.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+LUCAS DO RIO VERDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,63,31,27,53.4%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+VARZEA GRANDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,306,30,264,10.2%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+VARZEA GRANDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,79,30,39,43.5%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+CUIABA,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,445,27,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+CUIABA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,79,27,45,37.5%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 VARZEA GRANDE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,94,24,65,27.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
 JUINA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,30,24,6,80.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
-CAMPINAPOLIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,44,21,17,55.3%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+CAMPINAPOLIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,44,21,17,55.3%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 CUIABA,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,134,20,108,15.6%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-SINOP,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,46,20,26,43.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-GUARANTA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,46,19,21,47.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-JUINA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,45,19,22,46.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SORRISO,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,96,18,66,21.4%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+SINOP,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,46,20,26,43.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+GUARANTA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,46,19,21,47.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+JUINA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,45,19,22,46.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SORRISO,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,96,18,66,21.4%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 PONTES E LACERDA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,47,18,28,39.1%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-VARZEA GRANDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,37,17,16,51.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-VARZEA GRANDE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,900,14,885,1.6%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-RONDONOPOLIS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,628,14,609,2.2%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-RONDONOPOLIS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,32,12,16,42.9%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+VARZEA GRANDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,37,17,16,51.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+RONDONOPOLIS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,628,14,609,2.2%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+RONDONOPOLIS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,32,12,16,42.9%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 BARRA DO BUGRES,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,16,12,3,80.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-CUIABA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,693,11,679,1.6%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-SINOP,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,96,11,84,11.6%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-LUCAS DO RIO VERDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,19,11,8,57.9%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PONTES E LACERDA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,39,10,25,28.6%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-TANGARA DA SERRA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,26,10,12,45.5%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-BARRA DO BUGRES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,20,10,10,50.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-SINOP,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,182,9,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
+SINOP,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,96,11,84,11.6%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+LUCAS DO RIO VERDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,19,11,8,57.9%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PONTES E LACERDA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,39,10,25,28.6%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+TANGARA DA SERRA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,26,10,12,45.5%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+BARRA DO BUGRES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,20,10,10,50.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+SINOP,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,182,9,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
 CUIABA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,69,9,57,13.6%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-TANGARA DA SERRA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,9,36,20.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-PRIMAVERA DO LESTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,23,9,13,40.9%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+TANGARA DA SERRA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,9,36,20.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+PRIMAVERA DO LESTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,23,9,13,40.9%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 VARZEA GRANDE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,65,8,52,13.3%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
 RONDONOPOLIS,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,42,8,34,19.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-CAMPINAPOLIS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,19,8,11,42.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-NOVA MUTUM,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,8,4,66.7%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-VARZEA GRANDE,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,101,7,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-SORRISO,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,50,7,38,15.6%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-ALTO GARCAS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,19,7,11,38.9%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+CUIABA,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,37,8,27,22.9%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+CAMPINAPOLIS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,19,8,11,42.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+NOVA MUTUM,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,8,4,66.7%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+VARZEA GRANDE,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,101,7,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+SORRISO,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,50,7,38,15.6%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+ALTO GARCAS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,19,7,11,38.9%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 TANGARA DA SERRA,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,18,7,11,38.9%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-TERRA NOVA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,7,5,58.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-COLIDER,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,11,7,2,77.8%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CONFRESA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,10,7,3,70.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CACERES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,7,1,87.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-LUCAS DO RIO VERDE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,610,6,604,1.0%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-BARRA DO GARCAS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,6,40,13.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-RONDONOPOLIS,outros,molecular,molecular_presenca_ausencia,PCR em Tempo Real,38,6,31,16.2%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-LUCAS DO RIO VERDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,31,6,24,20.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-PEIXOTO DE AZEVEDO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,26,6,14,30.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PRIMAVERA DO LESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,14,6,7,46.2%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-AGUA BOA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,13,6,6,50.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CAMPO NOVO DO PARECIS,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,280,5,275,1.8%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
+VARZEA GRANDE,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,16,7,9,43.8%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+TERRA NOVA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,7,5,58.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+COLIDER,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,11,7,2,77.8%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CONFRESA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,10,7,3,70.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CACERES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,7,1,87.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+BARRA DO GARCAS,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,6,40,13.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+LUCAS DO RIO VERDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,31,6,24,20.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+PEIXOTO DE AZEVEDO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,26,6,14,30.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PRIMAVERA DO LESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,14,6,7,46.2%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+AGUA BOA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,13,6,6,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CAMPO NOVO DO PARECIS,respiratorio,painel_respiratorio,molecular_presenca_ausencia,RT-PCR em tempo real,158,5,153,3.2%,True,True,True,True,Vírus respiratórios/influenza: presença/ausência — não declarar epidemia só com positividade.
 SORRISO,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,75,5,65,7.1%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-CAMPO NOVO DO PARECIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,29,5,18,21.7%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+CAMPO NOVO DO PARECIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,29,5,18,21.7%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 SINOP,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,29,5,23,17.9%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
+SINOP,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,24,5,17,22.7%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).
 NOVA MUTUM,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,20,5,15,25.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
 CAMPINAPOLIS,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,16,5,10,33.3%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-QUERENCIA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,5,6,45.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-ALTA FLORESTA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,5,1,83.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-TANGARA DA SERRA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,5,1,83.3%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-MIRASSOL D''OESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,5,1,83.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+QUERENCIA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,5,6,45.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+RONDONOPOLIS,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,11,5,5,50.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+ALTA FLORESTA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,5,1,83.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+VARZEA GRANDE,varicela,PCR_VZV,molecular_presenca_ausencia,PCR em Tempo Real,9,5,4,55.6%,True,True,True,True,Varicela/VZV molecular: presença do agente — contextualizar surto institucional.
+TANGARA DA SERRA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,5,1,83.3%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
+MIRASSOL D''OESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,5,1,83.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 ARIPUANA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,5,5,0,100.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
-TANGARA DA SERRA,outros,molecular,molecular_presenca_ausencia,PCR em Tempo Real,142,4,138,2.8%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
+TANGARA DA SERRA,ist,PCR_IST,molecular_presenca_ausencia,PCR em Tempo Real,63,4,59,6.3%,True,True,True,True,Multiplex IST: presença de patógeno — investigar caso a caso (não epidemia agregada).
 CAMPINAPOLIS,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,34,4,28,12.5%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-CAMPO VERDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,27,4,20,16.7%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-TANGARA DA SERRA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,4,6,40.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CUIABA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,10,4,6,40.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-CAMPO VERDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,10,4,3,57.1%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-JUARA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,4,4,50.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-ARIPUANA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,4,3,57.1%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-COLNIZA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,4,1,80.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CANARANA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,4,1,80.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+CAMPO VERDE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,27,4,20,16.7%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+TANGARA DA SERRA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,12,4,6,40.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CUIABA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,10,4,6,40.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
+CAMPO VERDE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,10,4,3,57.1%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+LUCAS DO RIO VERDE,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,9,4,5,44.4%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+JUARA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,4,4,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+ARIPUANA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,4,3,57.1%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+COLNIZA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,4,1,80.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CANARANA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,4,1,80.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 JURUENA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,4,0,100.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
 COLNIZA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,4,0,100.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
-SINOP,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,68,3,65,4.4%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-CACERES,outros,molecular,molecular_presenca_ausencia,PCR em Tempo Real,62,3,59,4.8%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
+PEDRA PRETA,brucelose,IgM_ou_RB,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,4,0,100.0%,True,True,True,True,Brucelose IgM/Rosa Bengala: sinal — confirmar e notificar.
 LUCAS DO RIO VERDE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,54,3,48,5.9%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-MIRASSOL D''OESTE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,39,3,36,7.7%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
 CAMPO VERDE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,29,3,25,10.7%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-ALTA FLORESTA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,20,3,17,15.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+ALTA FLORESTA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,20,3,17,15.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 SORRISO,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,18,3,15,16.7%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-CHAPADA DOS GUIMARAES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,13,3,10,23.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-DIAMANTINO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,3,5,37.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+SINOP,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,16,3,13,18.8%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+CHAPADA DOS GUIMARAES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,13,3,10,23.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+DIAMANTINO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,9,3,5,37.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 LUCAS DO RIO VERDE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,8,3,5,37.5%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-BARRA DO GARCAS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,3,5,37.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+BARRA DO GARCAS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,3,5,37.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 SINOP,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,7,3,4,42.9%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-PARANAITA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,7,3,4,42.9%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PARANAITA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,6,3,1,75.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-VILA RICA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,3,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-VERA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,3,1,75.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PORTO ALEGRE DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,3,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+PARANAITA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,7,3,4,42.9%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PARANAITA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,6,3,1,75.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+SINOP,hiv,HIV,sinal_agudo_ou_ativo,Immunoblot,6,3,3,50.0%,True,True,False,True,HIV (triagem/confirmação): caso a caso — não usar % para epidemia municipal no Radar.
+VILA RICA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,3,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+VERA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,3,1,75.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CAMPO NOVO DO PARECIS,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,3,3,0,100.0%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).
+PORTO ALEGRE DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,3,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 CASTANHEIRA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,3,3,0,100.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
 COTRIGUACU,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,3,3,0,100.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
-FELIZ NATAL,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,3,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SORRISO,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,175,2,173,1.1%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-PRIMAVERA DO LESTE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,64,2,60,3.2%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-CACERES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,37,2,31,6.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-NOVA MUTUM,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,37,2,35,5.4%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
+FELIZ NATAL,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,3,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PRIMAVERA DO LESTE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,64,2,60,3.2%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CACERES,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,37,2,31,6.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CACERES,ist,PCR_IST,molecular_presenca_ausencia,PCR em Tempo Real,32,2,30,6.2%,True,True,True,True,Multiplex IST: presença de patógeno — investigar caso a caso (não epidemia agregada).
 JUINA,hepatite_b,anti_HBc_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,30,2,28,6.7%,True,True,True,True,Anti-HBc IgM: marcador de infecção aguda (ou reativação) — sinal para a VE.
-NOVA MUTUM,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,26,2,22,8.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-CAMPO NOVO DO PARECIS,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,26,2,24,7.7%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
+NOVA MUTUM,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,26,2,22,8.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
 CAMPO NOVO DO PARECIS,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,20,2,18,10.0%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
 PRIMAVERA DO LESTE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,19,2,16,11.1%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-JUARA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,15,2,12,14.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-SANTO ANTONIO DO LEVERGER,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,15,2,12,14.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-SINOP,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,14,2,9,18.2%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-DIAMANTINO,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,14,2,12,14.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
+CUIABA,leishmaniose_visceral,sorologia_LV,sinal_agudo_ou_ativo,Imunocromatografia,16,2,14,12.5%,True,True,True,True,Sorologia/TR LV: sinal laboratorial — cruzar clínica/SINAN (não surto automático).
+JUARA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,15,2,12,14.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+SANTO ANTONIO DO LEVERGER,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,15,2,12,14.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+SINOP,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,14,2,9,18.2%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+DIAMANTINO,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,14,2,12,14.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
 SAPEZAL,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,14,2,11,15.4%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-NOVA MUTUM,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,14,2,12,14.3%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
-CHAPADA DOS GUIMARAES,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,13,2,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-COLIDER,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,11,2,9,18.2%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-GUARANTA DO NORTE,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,9,2,7,22.2%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
+CHAPADA DOS GUIMARAES,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,13,2,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+CAMPO NOVO DO PARECIS,hantavirose,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,12,2,10,16.7%,True,True,True,True,IgM Hantavirose: infecção recente — sinal para a VE.
+COLIDER,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,11,2,9,18.2%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+CUIABA,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,10,2,8,20.0%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).
+GUARANTA DO NORTE,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,9,2,7,22.2%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
 BARRA DO GARCAS,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,8,2,3,40.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-IPIRANGA DO NORTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,8,2,5,28.6%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-BOA VISTA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,7,2,4,33.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
+IPIRANGA DO NORTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,8,2,5,28.6%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+BOA VISTA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,7,2,4,33.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
 GUARANTA DO NORTE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,7,2,5,28.6%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-ARAPUTANGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,2,4,33.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-JURUENA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,2,4,33.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CAMPO NOVO DO PARECIS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PONTES E LACERDA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,3,40.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SANTA TEREZINHA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,1,66.7%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SAO JOSE DO RIO CLARO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PRIMAVERA DO LESTE,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,2,2,50.0%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
-JACIARA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PLANALTO DA SERRA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,4,2,2,50.0%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-COTRIGUACU,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-JUINA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,2,1,66.7%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-CONFRESA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,2,1,66.7%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-ROSARIO OESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,2,1,66.7%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+ARAPUTANGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,2,4,33.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+JURUENA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,6,2,4,33.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SORRISO,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,5,2,3,40.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+CAMPO NOVO DO PARECIS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PONTES E LACERDA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,3,40.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SANTA TEREZINHA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,2,1,66.7%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SAO JOSE DO RIO CLARO,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+JACIARA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOVA MUTUM,varicela,PCR_VZV,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,Varicela/VZV molecular: presença do agente — contextualizar surto institucional.
+COTRIGUACU,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,2,2,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+PRIMAVERA DO LESTE,leptospirose,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,2,1,66.7%,True,True,True,True,Leptospirose IgM: infecção recente possível — confirmar MAT/clínica.
+JUINA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,2,1,66.7%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+CONFRESA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,2,1,66.7%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+ROSARIO OESTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,2,1,66.7%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 DIAMANTINO,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,3,2,1,66.7%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-NAVEGANTES,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,2,2,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-NOVA MARILANDIA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,2,0,100.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-CAMPO NOVO DO PARECIS,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,2,0,100.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-TABAPORA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-CARUTAPERA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-POCONE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-UNIAO DO SUL,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CARLINDA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-ITANHANGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-PEDRA PRETA,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
-PORTO DOS GAUCHOS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
+NAVEGANTES,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,2,2,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+NOVA MARILANDIA,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,2,0,100.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
+CAMPO NOVO DO PARECIS,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,2,0,100.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
+TABAPORA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+CARUTAPERA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+POCONE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,2,0,100.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+UNIAO DO SUL,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOVO PROGRESSO,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,2,2,0,100.0%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).
+COLNIZA,sifilis,sifilis,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,2,0,100.0%,True,True,False,True,Sífilis: reagente exige algoritmo (não-treponêmico/treponêmico) — VE/APS.
+LUCAS DO RIO VERDE,varicela,PCR_VZV,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,Varicela/VZV molecular: presença do agente — contextualizar surto institucional.
+PLANALTO DA SERRA,gastroenterite,PCR_gastro,molecular_presenca_ausencia,RT-PCR em tempo real,2,2,0,100.0%,True,True,True,True,Agente diarréico molecular: presença — investigar surto institucional se cluster.
+CARLINDA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+ITANHANGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CACERES,brucelose,IgM_ou_RB,sinal_agudo_ou_ativo,Coloração de Rosa Bengala,2,2,0,100.0%,True,True,True,True,Brucelose IgM/Rosa Bengala: sinal — confirmar e notificar.
+PORTO DOS GAUCHOS,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,2,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
 IPIRANGA DO NORTE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,2,2,0,100.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-PRIMAVERA DO LESTE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,143,1,142,0.7%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-PONTES E LACERDA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,73,1,72,1.4%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-VARZEA GRANDE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,55,1,54,1.8%,True,True,True,True,IgM zika: sugere infecção recente.
-VARZEA GRANDE,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,51,1,50,2.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar com avididade/clínica.
-CANARANA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,1,42,2.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-CUIABA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,45,1,43,2.3%,True,True,True,True,IgM zika: sugere infecção recente.
+VARZEA GRANDE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,55,1,54,1.8%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
+VARZEA GRANDE,toxoplasmose,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,51,1,50,2.0%,True,True,True,True,Toxo IgM: possível infecção recente — confirmar avididade/clínica.
+CANARANA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,48,1,42,2.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CUIABA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,45,1,43,2.3%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
 VARZEA GRANDE,cmv,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,34,1,33,2.9%,True,True,False,True,CMV IgM: possível infecção recente — contextualizar.
-CAMPO VERDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,32,1,31,3.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-PEDRA PRETA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,30,1,29,3.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-AGUA BOA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,25,1,23,4.2%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-LUCAS DO RIO VERDE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,22,1,21,4.5%,True,True,True,True,IgM zika: sugere infecção recente.
+CAMPO VERDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,32,1,31,3.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+PEDRA PRETA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,30,1,29,3.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+AGUA BOA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,25,1,23,4.2%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+LUCAS DO RIO VERDE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,22,1,21,4.5%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
+MIRASSOL D''OESTE,respiratorio,painel_respiratorio,molecular_presenca_ausencia,RT-PCR em tempo real,21,1,20,4.8%,True,True,True,True,Vírus respiratórios/influenza: presença/ausência — não declarar epidemia só com positividade.
 TANGARA DA SERRA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,21,1,18,5.3%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-CUIABA,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,20,1,19,5.0%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
-JUINA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,20,1,16,5.9%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-JUINA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,19,1,18,5.3%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-PRIMAVERA DO LESTE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,17,1,14,6.7%,True,True,True,True,IgM zika: sugere infecção recente.
+JUINA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,20,1,16,5.9%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+VARZEA GRANDE,micose,sorologia_micose,sinal_agudo_ou_ativo,Imunodifusão Radial Dupla,19,1,18,5.3%,True,True,False,True,Sorologia micose profunda: sinal — investigar casos (não % epidêmica).
+PRIMAVERA DO LESTE,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,17,1,14,6.7%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
 ALTO GARCAS,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,17,1,15,6.2%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-BARRA DO GARCAS,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,16,1,14,6.7%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-QUERENCIA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,15,1,14,6.7%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-CAMPO GRANDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,14,1,13,7.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-BARRA DO BUGRES,outros,molecular,molecular_presenca_ausencia,PCR em Tempo Real,14,1,13,7.1%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-POCONE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,13,1,11,8.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-ARAPUTANGA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,13,1,11,8.3%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-DIAMANTINO,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,12,1,11,8.3%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-GUARANTA DO NORTE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,10,1,7,12.5%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
+CAMPO GRANDE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,14,1,13,7.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+POCONE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,13,1,11,8.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+ARAPUTANGA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,13,1,11,8.3%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+GUARANTA DO NORTE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,10,1,7,12.5%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
 CHAPADA DOS GUIMARAES,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,10,1,9,10.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-GUARANTA DO NORTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,9,1,7,12.5%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-ALTA FLORESTA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,9,1,8,11.1%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-CHAPADA DOS GUIMARAES,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,9,1,7,12.5%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+GUARANTA DO NORTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,9,1,7,12.5%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+ALTA FLORESTA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,9,1,8,11.1%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CHAPADA DOS GUIMARAES,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,9,1,7,12.5%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 POCONE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,9,1,8,11.1%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-MATUPA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,1,7,12.5%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-NOVA XAVANTINA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,1,6,14.3%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-BRASNORTE,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,8,1,7,12.5%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-GAUCHA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,7,1,4,20.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-GOIANIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,7,1,6,14.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-ARAPUTANGA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,6,1,5,16.7%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
+MATUPA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,1,7,12.5%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOVA XAVANTINA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,8,1,6,14.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SINOP,micose,antigeno_criptococo,sinal_agudo_ou_ativo,Imunocromatografia,8,1,7,12.5%,True,True,False,True,Criptococo TR: sinal clínico-laboratorial — não epidemia comunitária típica.
+CUIABA,hepatite_a,anti_HAV_IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,8,1,7,12.5%,True,True,True,True,Anti-HAV IgM: compatível com hepatite A aguda — sinal para a VE.
+GAUCHA DO NORTE,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,7,1,4,20.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CUIABA,hanseniase,PCR_hanseniase,molecular_presenca_ausencia,PCR em Tempo Real,7,1,6,14.3%,True,True,True,True,PCR hanseníase: presença do agente — cruzar com clínica/SINAN.
+GOIANIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,7,1,6,14.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+SORRISO,meningite,PCR_cultura_LCR,molecular_presenca_ausencia,Cultura,6,1,2,33.3%,True,True,True,True,PCR/cultura LCR: confirmação etiológica — investigar se agregação.
 NOVA MUTUM,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,6,1,5,16.7%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
+JUINA,meningite,PCR_cultura_LCR,molecular_presenca_ausencia,Cultura,6,1,2,33.3%,True,True,True,True,PCR/cultura LCR: confirmação etiológica — investigar se agregação.
 GUARANTA DO NORTE,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,6,1,5,16.7%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
+BARRA DO GARCAS,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,6,1,4,20.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
 PRIMAVERA DO LESTE,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,6,1,5,16.7%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
-MARCELANDIA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,4,20.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-PEIXOTO DE AZEVEDO,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,5,1,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
-MIRASSOL D''OESTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,3,25.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
-VILA RICA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,4,20.0%,True,True,True,True,IgM dengue: sugere infecção recente — sinal para investigação.
+MARCELANDIA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,4,20.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+PEIXOTO DE AZEVEDO,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,5,1,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+MIRASSOL D''OESTE,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,3,25.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+VILA RICA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,4,20.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
 ALTA FLORESTA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,5,1,3,25.0%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
-CHAPADA DOS GUIMARAES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,1,4,20.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-CLAUDIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,5,1,4,20.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-NOVA MUTUM,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,5,1,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN e clínica.
+CHAPADA DOS GUIMARAES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,5,1,4,20.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+CLAUDIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,5,1,4,20.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+TANGARA DA SERRA,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,5,1,4,20.0%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).
+NOVA MUTUM,tuberculose,BAAR,sinal_agudo_ou_ativo,Coloração de Ziehl-Neelsen,5,1,0,100.0%,True,True,True,True,BAAR/baciloscopia: bacilífero potencial — cruzar com SINAN.
+CACERES,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,5,1,4,20.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
 PARANAITA,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,5,1,4,20.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
+SINOP,micose,sorologia_micose,sinal_agudo_ou_ativo,Imunodifusão Radial Dupla,5,1,4,20.0%,True,True,False,True,Sorologia micose profunda: sinal — investigar casos (não % epidêmica).
+LUCAS DO RIO VERDE,meningite,PCR_cultura_LCR,molecular_presenca_ausencia,Cultura,4,1,1,50.0%,True,True,True,True,PCR/cultura LCR: confirmação etiológica — investigar se agregação.
+VARZEA GRANDE,ist,PCR_IST,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,Multiplex IST: presença de patógeno — investigar caso a caso (não epidemia agregada).
 CUIABA,cmv,IgM,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,1,3,25.0%,True,True,False,True,CMV IgM: possível infecção recente — contextualizar.
-MARCELANDIA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,1,3,25.0%,True,True,True,True,IgM zika: sugere infecção recente.
-PONTES E LACERDA,outros,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,1,3,25.0%,True,True,True,True,IgM genérica: janela de infecção recente — sinal laboratorial ativo.
+MARCELANDIA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,1,3,25.0%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
 MARCELANDIA,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,1,3,25.0%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
 COLNIZA,hepatite_b,HBeAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,4,1,3,25.0%,True,True,False,True,HBeAg: marcador de replicação — contextualizar com DNA e clínica.
-JUSCIMEIRA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-NOVA SANTA HELENA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,HBV-DNA (molecular): presença/ausência do vírus — confirmatório de replicação.
-SAO FELIX DO ARAGUAIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
-MATUPA,outros,molecular,molecular_presenca_ausencia,RT-PCR em tempo real,4,1,3,25.0%,True,True,True,True,Ensaio molecular genérico: presença/ausência do agente — confirmação laboratorial.
-ACORIZAL,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,3,1,2,33.3%,True,True,True,True,TRM-TB / GeneXpert: confirmação molecular — sinal laboratorial ativo.
+JUSCIMEIRA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOVA SANTA HELENA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+SAO FELIX DO ARAGUAIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,4,1,3,25.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+NOVA MUTUM,leptospirose,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,4,1,3,25.0%,True,True,True,True,Leptospirose IgM: infecção recente possível — confirmar MAT/clínica.
+VARZEA GRANDE,gastroenterite,PCR_gastro,molecular_presenca_ausencia,RT-PCR em tempo real,4,1,3,25.0%,True,True,True,True,Agente diarréico molecular: presença — investigar surto institucional se cluster.
+PARANAITA,micose,sorologia_micose,sinal_agudo_ou_ativo,Imunodifusão Radial Dupla,4,1,3,25.0%,True,True,False,True,Sorologia micose profunda: sinal — investigar casos (não % epidêmica).
+NOVA MUTUM,brucelose,IgM_ou_RB,sinal_agudo_ou_ativo,Coloração de Rosa Bengala,4,1,3,25.0%,True,True,True,True,Brucelose IgM/Rosa Bengala: sinal — confirmar e notificar.
+ACORIZAL,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,3,1,2,33.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+JAURU,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,1,2,33.3%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+MIRASSOL D''OESTE,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,3,1,2,33.3%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+AGUA BOA,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,1,2,33.3%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+SUMARE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,3,1,2,33.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CANARANA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,3,1,2,33.3%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
+JUINA,meningite,microscopia_LCR,sinal_agudo_ou_ativo,Coloração de Gram,3,1,0,100.0%,True,True,False,True,Microscopia/Gram de LCR: sinal laboratorial — investigar com PCR/cultura.
+PARANAITA,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,1,2,33.3%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
+CAMPO VERDE,micose,sorologia_micose,sinal_agudo_ou_ativo,Imunodifusão Radial Dupla,3,1,2,33.3%,True,True,False,True,Sorologia micose profunda: sinal — investigar casos (não % epidêmica).
+BRASNORTE,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,3,1,2,33.3%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+PONTES E LACERDA,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,3,1,2,33.3%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
+BARRA DO GARCAS,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,1,2,33.3%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
+NOVA BANDEIRANTES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,3,1,2,33.3%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+MATUPA,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,3,1,2,33.3%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+BOM JESUS DO ARAGUAIA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,3,1,2,33.3%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
+ARENAPOLIS,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,3,1,2,33.3%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+SAPEZAL,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+JAURU,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+MIRASSOL D''OESTE,hanseniase,PCR_hanseniase,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,PCR hanseníase: presença do agente — cruzar com clínica/SINAN.
+NOBRES,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,1,1,50.0%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
+NOBRES,dengue,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,1,1,50.0%,True,True,True,True,IgM dengue: infecção recente — sinal para investigação.
+SANTA LUZIA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CAMPOS DE JULIO,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+PONTES E LACERDA,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,1,1,50.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
+PONTES E LACERDA,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,2,1,1,50.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+POCONE,hepatite_b,HBsAg,sinal_agudo_ou_ativo,Imunoensaio de Micropartículas por Quimioluminescência,2,1,1,50.0%,True,True,True,True,"HBsAg: infecção ativa (aguda ou crônica) — cruzar com IgM, DNA e notificação."
+JUINA,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,2,1,1,50.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+NOVA MARINGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+ARENAPOLIS,tuberculose,cultura_TB,sinal_agudo_ou_ativo,Cultura,2,1,1,50.0%,True,True,True,True,Cultura para micobactérias: padrão-ouro confirmatório.
+GUIRATINGA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+BARRA DO BUGRES,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,0,100.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOVA OLIMPIA,hepatite_b,HBV_DNA,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,HBV-DNA: presença/ausência do vírus — confirmatório de replicação.
+NOBRES,zika,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,1,1,50.0%,True,True,True,True,IgM zika: infecção recente — sinal para investigação.
+QUERENCIA,hepatite_c,HCV_RNA,molecular_presenca_ausencia,RT-PCR em tempo real,2,1,1,50.0%,True,True,True,True,RNA HCV: presença/ausência do vírus — confirma infecção ativa.
+BARAO DE MELGACO,chikungunya,IgM,sinal_agudo_ou_ativo,Enzimaimunoensaio,2,1,1,50.0%,True,True,True,True,IgM chikungunya: infecção recente — sinal ativo.
+CAMPO VERDE,micose,antigeno_criptococo,sinal_agudo_ou_ativo,Imunocromatografia,2,1,1,50.0%,True,True,False,True,Criptococo TR: sinal clínico-laboratorial — não epidemia comunitária típica.
+AQUIDAUANA,tuberculose,TRM_TB,molecular_presenca_ausencia,PCR em Tempo Real,2,1,1,50.0%,True,True,True,True,TRM-TB: confirmação molecular — sinal laboratorial ativo (MS/PNCT).
+CAMPO VERDE,tuberculose,LF_LAM,sinal_agudo_ou_ativo,Imunocromatografia,2,1,1,50.0%,True,True,True,True,LF-LAM: antígeno urinário — sinal auxiliar em TB (contextualizar).

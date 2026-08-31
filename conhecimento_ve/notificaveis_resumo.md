@@ -114,6 +114,9 @@
 
 - Positividade elevada de **IgG** reflete exposição passada / soroprevalência — **não** tratar como epidemia aguda.
 - Para eventos agudos, privilegiar IgM, PCR, clínica e definição de caso.
+- **Planilha operacional:** `conhecimento_ve/regras_agravo_gal.csv` cobre os ensaios do GAL micro (Exame×Metodologia) com flags `conta_alerta_agudo` / `conta_bortman`. Regenerar: `python scripts/gerar_regras_agravo_gal.py`. Validar: `python scripts/validar_cobertura_regras_gal.py`.
+- Famílias cobertas incluem: hepatites A/B/C/D, dengue/chik/zika/arbovírus emergentes, TB, meningite, hanseníase, raiva, Chagas, toxo/CMV, LV, leptospirose, respiratórios, IST/HIV/sífilis, sarampo/rubéola/varicela/varíola, febre maculosa, brucelose, micoses, gastroenterites moleculares, coqueluche, DCJ.
+- **Não** entram no Radar como epidemia: IgG, anti-HBs, anti-HCV sem RNA, Chagas IgG, TSA/tipagem, culturas bacterianas genéricas, colinesterase.
 
 ---
 

@@ -104,8 +104,12 @@ class RegraAgravo:
     n_minimo: int
     nota_pt: str
     fonte: str
+    exame_gal_exato: str = ""
+    agravo_requisicao: str = ""
+    validacao_ms: str = ""
     _rx_exame: re.Pattern[str] | None = field(default=None, repr=False)
     _rx_met: re.Pattern[str] | None = field(default=None, repr=False)
+    _exato_cf: str = field(default="", repr=False)
 
 
 def _as_bool(v: object, default: bool = False) -> bool:
@@ -131,6 +135,7 @@ def _compile_rx(pat: str) -> re.Pattern[str] | None:
 def carregar_regras_agravo(path: str | None = None) -> tuple[RegraAgravo, ...]:
     """
     Carrega regras_agravo_gal.csv (fonte mestra). Retorna tupla vazia se ausente.
+    Prioridade de match: exame_gal_exato > padrao_exame (regex).
     """
     p = Path(path) if path else REGRAS_CSV
     if not p.exists():
@@ -138,8 +143,9 @@ def carregar_regras_agravo(path: str | None = None) -> tuple[RegraAgravo, ...]:
     out: list[RegraAgravo] = []
     with p.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
+            exato = str(row.get("exame_gal_exato") or "").strip()
             pad = str(row.get("padrao_exame") or "").strip()
-            if not pad:
+            if not exato and not pad:
                 continue
             regra = RegraAgravo(
                 agravo_gal=str(row.get("agravo_gal") or "").strip(),
@@ -156,16 +162,21 @@ def carregar_regras_agravo(path: str | None = None) -> tuple[RegraAgravo, ...]:
                 n_minimo=int(float(row.get("n_minimo") or 3) or 3),
                 nota_pt=str(row.get("nota_pt") or "").strip(),
                 fonte=str(row.get("fonte") or "").strip(),
+                exame_gal_exato=exato,
+                agravo_requisicao=str(row.get("agravo_requisicao") or "").strip(),
+                validacao_ms=str(row.get("validacao_ms") or "").strip(),
             )
-            regra._rx_exame = _compile_rx(regra.padrao_exame)
+            regra._exato_cf = _cf(exato) if exato else ""
+            regra._rx_exame = _compile_rx(regra.padrao_exame) if pad else None
             regra._rx_met = _compile_rx(regra.metodologia) if regra.metodologia else None
             out.append(regra)
 
-    # Mais específicas primeiro (padrão mais longo; genéricos ".*" por último)
+    # Exatas primeiro; depois regex mais longos; genéricos ".*" por último
     out.sort(
         key=lambda r: (
+            2 if r.exame_gal_exato else 0,
             0 if r.padrao_exame == ".*" else 1,
-            len(r.padrao_exame),
+            len(r.padrao_exame or r.exame_gal_exato),
             1 if r.metodologia else 0,
         ),
         reverse=True,
@@ -176,22 +187,21 @@ def carregar_regras_agravo(path: str | None = None) -> tuple[RegraAgravo, ...]:
 def _match_regra(
     exame_cf: str, met_cf: str, familia: str, regras: Sequence[RegraAgravo]
 ) -> RegraAgravo | None:
+    # 1) Match literal do nome do exame GAL
     for r in regras:
-        if r.familia and r.familia not in ("outros", "Genérico", familia):
-            # família da regra diferente e não genérica → exige overlap no exame/agravo
-            if r.familia != familia and r.familia.casefold() not in exame_cf:
-                # ainda permite se o padrão do exame bater (ex.: hbsag sem fam)
-                pass
+        if r._exato_cf and r._exato_cf == exame_cf:
+            return r
+
+    # 2) Regex / padrões
+    for r in regras:
         if r._rx_exame is None:
             continue
         if not r._rx_exame.search(exame_cf):
             continue
         if r._rx_met is not None and met_cf and not r._rx_met.search(met_cf):
-            # metodologia exigida e não bate
             if r.metodologia:
                 continue
         elif r._rx_met is not None and not met_cf:
-            # regra exige metodologia — se exame já é bem específico, aceita
             if r.padrao_exame in (".*", r"\bigg\b", r"\bigm\b"):
                 continue
         return r

@@ -11,13 +11,18 @@ A classificação operacional vem da planilha versionada:
 
 | Artefato | Uso |
 |----------|-----|
-| `conhecimento_ve/regras_agravo_gal.csv` | Fonte mestra lida pelo agente (git-diffável) |
-| `conhecimento_ve/regras_agravo_gal.xlsx` | Mesmo conteúdo + abas Agravos_GAL, Catalogo_Exames, Metadados |
+| `conhecimento_ve/regras_agravo_gal.csv` | Fonte mestra lida pelo agente (git-diffável) — **1 linha por ensaio GAL** (`exame_gal_exato`) |
+| `conhecimento_ve/regras_agravo_gal.xlsx` | Mesmo conteúdo + abas Agravos_GAL, Catalogo_Exames, Cobertura, Metadados |
 | `conhecimento_ve/Positividade_Por_Agravo_GAL.xlsx` | Modelo conceitual (marcador alerta por agravo, SE30, cascata) |
-| `scripts/gerar_regras_agravo_gal.py` | (Re)gera CSV/XLSX a partir do seed + micro GAL + planilha Positividade |
+| `scripts/gerar_regras_agravo_gal.py` | (Re)gera CSV/XLSX a partir do micro GAL + classificação MS |
+| `scripts/validar_cobertura_regras_gal.py` | Assert 100% cobertura + casos-ouro MS |
+| `saida_pipeline/cobertura_regras_gal.csv` | Relatório exame → classe / flags |
 
-Colunas anti-ruído: `conta_alerta_agudo`, `conta_bortman`, `conta_positividade_agregada`.  
-IgG / anti-HBs / anti-HBc total → `false` nas três; HBsAg / IgM / NS1 / PCR → `true` conforme regra.
+Colunas anti-ruído: `conta_alerta_agudo`, `conta_bortman`, `conta_positividade_agregada`, `validacao_ms`.  
+Match no agente: **`exame_gal_exato`** (literal) → regex `padrao_exame` → fallback hardcoded.
+
+**O que NÃO gera alerta epidêmico:** IgG isolada, anti-HBs, anti-HAV IgG, anti-HCV sem RNA, Chagas IgG, TSA/tipagem/ID bacteriana genérica, micológico de rotina, colinesterase.  
+**O que gera sinal:** IgM aguda, NS1, HBsAg, anti-HBc IgM, BAAR/TRM-TB/cultura TB, PCR detectável, raiva+, varíola+, sarampo IgM/PCR.
 
 Se o CSV estiver ausente, o agente usa o fallback hardcoded em `lacen_agente_marcadores.py`.
 

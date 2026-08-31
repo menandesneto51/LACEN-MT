@@ -176,6 +176,8 @@ saida_pipeline/*
 !saida_pipeline/modelo_definitivo_pendencias.md
 !saida_pipeline/positividade_por_marcador.csv
 !saida_pipeline/positividade_por_marcador_resumo.md
+!saida_pipeline/cobertura_regras_gal.csv
+!saida_pipeline/catalogo_gal_exame_met_agravo.csv
 !saida_pipeline/alertas_especificos/
 !saida_pipeline/alertas_especificos/**
 !saida_pipeline/canal_endemico_classificacao.csv

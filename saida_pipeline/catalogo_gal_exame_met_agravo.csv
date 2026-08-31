@@ -1,0 +1,486 @@
+﻿Exame,Metodologia,Agravo_Requisicao,n_registros
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,TUBERCULOSE,3025
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,DENGUE,1248
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1058
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1055
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1035
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1033
+Vírus Respiratórios,RT-PCR em tempo real ,COVID-19,927
+"Tuberculose, Baciloscopia",Coloração de Ziehl-Neelsen,TUBERCULOSE,873
+"Hepatite B, Pesquisa quantitativa do DNA HBV",PCR em Tempo Real,HEPATITES VIRAIS,808
+"Dengue, IgM",Enzimaimunoensaio,DENGUE,639
+"Tuberculose, Cultura",Cultura,TUBERCULOSE,589
+Vírus Respiratórios,RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,568
+"Chikungunya, IgG",Enzimaimunoensaio,DENGUE,498
+"Chikungunya, IgM",Enzimaimunoensaio,DENGUE,480
+Hanseníase,Coloração de Ziehl-Neelsen,HANSENÍASE,264
+"Zika,IgG",Enzimaimunoensaio,DENGUE,234
+"Zika,IgM",Enzimaimunoensaio,DENGUE,215
+Raiva,SFIMT ( Simplified Fluorescence Inhibition Microtest),RAIVA,200
+"Hepatite C, Pesquisa quantitativa do RNA HCV",RT-PCR em tempo real ,HEPATITES VIRAIS,162
+Pesquisa de Multipatógenos IST,PCR em Tempo Real,DOENÇAS SEXUALMENTE TRANSMITIDAS,139
+Tuberculose,Enzimaimunoensaio,TUBERCULOSE,131
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,CHIKUNGUNYA,106
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,CHIKUNGUNYA,105
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,CHIKUNGUNYA,101
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,CHIKUNGUNYA,101
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,DOENÇA DE CHAGAS,100
+"Chagas, IgG",Enzimaimunoensaio,DOENÇA DE CHAGAS,100
+"Chikungunya, IgG",Enzimaimunoensaio,CHIKUNGUNYA,100
+"Chikungunya, IgM",Enzimaimunoensaio,CHIKUNGUNYA,99
+"Hepatite C, Anti HCV",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,94
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,CHIKUNGUNYA,89
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,88
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,88
+"Hanseníase, Teste de Sensibilidade Genotípico",Hibridação com sonda em linha (LPA),HANSENÍASE,81
+"Hepatite B, Anti HBc - IgM",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Hepatite B, HBsAg",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Hepatite B, HBeAg",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Hepatite B, Anti HBe",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Hepatite B, Anti HBs",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Hepatite B, Anti HBc Total",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,79
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,MENINGITE,77
+Meningite,Cultura,MENINGITE,75
+Fungos,Micológico Direto,TUBERCULOSE,74
+"Tuberculose, Teste de Sensibilidade",Teste de Sensibilidade,TUBERCULOSE,69
+"Tuberculose, LF-LAM",Imunocromatografia,TUBERCULOSE,67
+Cultura para Fungos,Cultura para Fungos,TUBERCULOSE,66
+"Dengue, IgM",Enzimaimunoensaio,CHIKUNGUNYA,62
+"Leishmaniose Visceral Humana, Teste Rápido",Imunocromatografia,LEISHMANIOSE VISCERAL,44
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,41
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,40
+"Meningite, Microscopia",Coloração de Gram,MENINGITE,39
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,39
+"Hantavírus, IgM",Enzimaimunoensaio,HANTAVIROSE,39
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,39
+"Hantavírus, IgG",Enzimaimunoensaio,HANTAVIROSE,38
+"Zika,IgM",Enzimaimunoensaio,CHIKUNGUNYA,34
+"Vírus, Biologia Molecular",Sequenciamento,DENGUE,32
+Vírus Respiratórios,RT-PCR em tempo real ,DENGUE,25
+Colinesterase Plasmática,Teste Fotométrico Cinético,RAIVA,23
+"Zika,IgG",Enzimaimunoensaio,CHIKUNGUNYA,23
+Paracoccidioidomicose,Imunodifusão Radial Dupla,PARACOCCIDIOIDOMICOSE,23
+Colinesterase Plasmática,Teste Fotométrico Cinético,"INTOXICAÇÃO EXÓGENA (por substâncias químicas, incluindo agrotóxicos, gases tóxicos e metais pesados)",21
+"Bactérias, Cultura",Cultura,TUBERCULOSE,21
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,COVID-19,21
+"Leptospirose,  IgM",Enzimaimunoensaio,LEPTOSPIROSE,20
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,COVID-19,20
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,COVID-19,20
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,COVID-19,20
+"Hanseníase, Biologia Molecular",PCR em Tempo Real,HANSENÍASE,19
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,COVID-19,15
+Varíola,PCR em Tempo Real,VARÍOLA,14
+"Criptococos, Teste Rápido",Imunocromatografia,CRIPTOCOCOSE,14
+Fungos,Micológico Direto,ESPOROTRICOSE HUMANA,13
+Vírus Respiratórios,RT-PCR em tempo real ,MENINGITE,13
+Histoplasmose,Imunodifusão Radial Dupla,HISTOPLASMOSE,13
+"Varicela Zoster, Biologia Molecular",PCR em Tempo Real,VARÍOLA,13
+Varíola,PCR em Tempo Real,VARICELA / HERPES-ZOSTER,13
+"Varicela Zoster, Biologia Molecular",PCR em Tempo Real,VARICELA / HERPES-ZOSTER,12
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,HERPES SIMPLES,11
+"Hantavírus, IgM",Enzimaimunoensaio,LEPTOSPIROSE,11
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,DOENCA DE CHAGAS AGUDA,11
+"Chagas, IgG",Enzimaimunoensaio,DOENCA DE CHAGAS AGUDA,11
+"Hantavírus, IgG",Enzimaimunoensaio,LEPTOSPIROSE,11
+"Fungos, Teste de Sensibilidade",Teste de Sensibilidade,TUBERCULOSE,10
+Fungos,Micológico Direto,MICOSE,9
+"Brucelose, IgM",Enzimaimunoensaio,BRUCELOSE,9
+Brucelose,Coloração de Rosa Bengala,BRUCELOSE,9
+"Brucelose, IgG",Enzimaimunoensaio,BRUCELOSE,9
+Histoplasmose,Imunodifusão Radial Dupla,TOXOPLASMOSE,9
+Cultura para Fungos,Cultura para Fungos,MENINGITE,9
+"Toxoplasmose, Avidez IgG",Enzimaimunoensaio,TOXOPLASMOSE,8
+Paracoccidioidomicose,Imunodifusão Radial Dupla,TOXOPLASMOSE,8
+"Hantavírus, IgM",Enzimaimunoensaio,DENGUE,8
+"Leptospirose,  IgM",Enzimaimunoensaio,HANTAVIROSE,8
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,TOXOPLASMOSE,8
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,MENINGITE,7
+Fungos,Micológico Direto,MENINGITE,7
+Cultura para Fungos,Cultura para Fungos,ESPOROTRICOSE HUMANA,7
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,MENINGITE,7
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,MENINGITE,6
+"Criptococos, Teste Rápido",Imunocromatografia,MENINGITE,6
+"Sarampo, Biologia Molecular",RT-PCR em tempo real ,SARAMPO,6
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,HANTAVIROSE,6
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,HANTAVIROSE,6
+Sífilis,Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,6
+HIV,Immunoblot,HIV,6
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,ZIKA,6
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,6
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,MENINGITE,6
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,HIV,6
+"HTLV I/II, Vírus Linfotrópico Humano tipo I e II",Imunoensaio de Micropartículas por Quimioluminescência,HTLV,6
+Influenza,RT-PCR em tempo real ,COVID-19,6
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,6
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,MENINGITE,6
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,MENINGITE,6
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,HANTAVIROSE,6
+Cultura para Fungos,Cultura para Fungos,INFECÇÃO/COLONIZAÇÃO,6
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,HANTAVIROSE,6
+"Hantavírus, IgG",Enzimaimunoensaio,DENGUE,6
+"Criptococos, Teste Rápido",Imunocromatografia,TUBERCULOSE,5
+"Norovírus, Biologia Molecular",RT-PCR em tempo real ,ROTAVÍRUS,5
+"Zika,IgM",Enzimaimunoensaio,ZIKA,5
+"Chikungunya, IgM",Enzimaimunoensaio,HANTAVIROSE,5
+Vírus Respiratórios,RT-PCR em tempo real ,CHIKUNGUNYA,5
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,5
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,5
+"Bactérias, Cultura",Cultura,INFECÇÃO/COLONIZAÇÃO,5
+"Fungos, Teste de Sensibilidade",Teste de Sensibilidade,INFECÇÃO/COLONIZAÇÃO,5
+"Chikungunya, IgG",Enzimaimunoensaio,HANTAVIROSE,5
+Pesquisa de Genes de Resistência,PCR – Reação em Cadeia de Polimerase,INFECÇÃO/COLONIZAÇÃO,5
+"Chikungunya, IgM",Enzimaimunoensaio,ZIKA,5
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,COVID-19,5
+"Febre do Nilo Ocidental, IgM",Enzimaimunoensaio,FEBRE DO NILO OCIDENTAL,5
+"Malária, Biologia Molecular",PCR em Tempo Real,MALÁRIA,5
+"Dengue, IgM",Enzimaimunoensaio,LEPTOSPIROSE,5
+"Dengue, IgM",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,5
+"Chikungunya, IgG",Enzimaimunoensaio,ZIKA,5
+Paracoccidioidomicose,Imunodifusão Radial Dupla,TUBERCULOSE,5
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,INFECÇÃO/COLONIZAÇÃO,4
+"Bactérias, Teste de Sensibilidade II",Teste de Sensibilidade,INFECÇÃO/COLONIZAÇÃO,4
+"Criptococos, Teste Rápido",Imunocromatografia,TOXOPLASMOSE,4
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,DENGUE,4
+"Hantavírus, IgG",Enzimaimunoensaio,CHIKUNGUNYA,4
+"Leptospirose,  IgM",Enzimaimunoensaio,DENGUE,4
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,ZIKA,4
+"Dengue, IgM",Enzimaimunoensaio,COVID-19,4
+"Dengue, IgM",Enzimaimunoensaio,HANTAVIROSE,4
+"Hantavírus, IgM",Enzimaimunoensaio,CHIKUNGUNYA,4
+"Dengue, IgM",Enzimaimunoensaio,ZIKA,4
+"Tuberculose, Cultura",Cultura,MICOBACTERIOSES,4
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,HANTAVIROSE,4
+"Bactérias, Cultura",Hemocultura,MENINGITE,4
+"Febre Amarela, Biologia Molecular",RT-PCR em tempo real ,DENGUE,4
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,ZIKA,4
+"Rotavírus, Biologia Molecular",RT-PCR em tempo real ,ROTAVÍRUS,4
+Cultura para Fungos,Cultura para Fungos,MICOSE,4
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,ZIKA,4
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,ZIKA,4
+"Chikungunya, IgG",Enzimaimunoensaio,COVID-19,3
+"Chagas, IgG",Enzimaimunoensaio,DOENÇA DE CHAGAS CRÔNICA,3
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,INFECÇÃO/COLONIZAÇÃO,3
+"Vírus, Biologia Molecular",Sequenciamento,CHIKUNGUNYA,3
+"Varicela, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,DENGUE,3
+"Hepatite D, pesquisa quantitativa do RNA HDV",RT-PCR em tempo real ,HEPATITES VIRAIS,3
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,BACTEREMIA,3
+Varíola,PCR em Tempo Real,DENGUE,3
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,VARICELA / HERPES-ZOSTER,3
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,LEPTOSPIROSE,3
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,3
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,HEPATITES VIRAIS,3
+"Hepatite C, Anti HCV",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,3
+"Criptococos, Teste Rápido",Imunocromatografia,HIV,3
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,CITOMEGALOVÍRUS,3
+"Bactérias, Cultura",Hemocultura,INFECÇÃO/COLONIZAÇÃO,3
+"Dengue, IgM",Enzimaimunoensaio,FEBRE AMARELA,3
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,CITOMEGALOVÍRUS,3
+"Esquistossomose, Sorologia",Enzimaimunoensaio,ESQUISTOSSOMOSE,3
+"Chikungunya, IgG",Enzimaimunoensaio,LEPTOSPIROSE,3
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,LEPTOSPIROSE,3
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,3
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,HEPATITES VIRAIS,3
+Leptospirose,Teste de Aglutinação Microscópica (MAT) .,LEPTOSPIROSE,3
+"Leishmaniose Tegumentar Americana, IgG",Enzimaimunoensaio,LEISHMANIOSE TEGUMENTAR AMERICANA,3
+Histoplasmose,Imunodifusão Radial Dupla,TUBERCULOSE,3
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,LEPTOSPIROSE,3
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,3
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,HEPATITES VIRAIS,3
+"Meningite Bacteriana, TSA",Teste de Sensibilidade,MENINGITE,3
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,MENINGOCOCCEMIA,3
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,DOENÇA DE CHAGAS CRÔNICA,3
+"Chikungunya, IgM",Enzimaimunoensaio,LEPTOSPIROSE,3
+"Chikungunya, IgM",Enzimaimunoensaio,COVID-19,3
+Paracoccidioidomicose,Imunodifusão Radial Dupla,HISTOPLASMOSE,3
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,LEPTOSPIROSE,3
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,3
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,HEPATITES VIRAIS,3
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,LEPTOSPIROSE,3
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,INFLUENZA / VÍRUS RESPIRATÓRIOS,3
+Parvovírus B19 - IgM,Enzimaimunoensaio,PARVOVIROSE,3
+Parvovírus B19 - IgG,Enzimaimunoensaio,PARVOVIROSE,3
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,TUBERCULOSE,3
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,PNEUMONIA,2
+Aspergilose,Imunodifusão Radial Dupla,PARACOCCIDIOIDOMICOSE,2
+"Hantavírus, IgM",Enzimaimunoensaio,FEBRE AMARELA,2
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,2
+"Fungos, Teste de Sensibilidade",Teste de Sensibilidade,MICOSE,2
+"Hidatidose, IgG",Immunoblot,HIDATIDOSE,2
+"Meningite, Microscopia",Coloração de Gram,MENINGOCOCCEMIA,2
+Cultura para Fungos,Cultura para Fungos,PARACOCCIDIOIDOMICOSE,2
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,SÍFILIS,2
+"Citomegalovírus, IgG Avidez",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,2
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,SARAMPO,2
+Meningite,Cultura,COVID-19,2
+"Chikungunya, IgG",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,2
+Meningite,Cultura,MENINGOCOCCEMIA,2
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,TUBERCULOSE,2
+Histoplasmose,Imunodifusão Radial Dupla,PARACOCCIDIOIDOMICOSE,2
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,2
+"Dengue, IgM",Enzimaimunoensaio,MENINGITE,2
+Pesquisa Qualitativa do DNA do Citomegalovírus,Nested PCR,CITOMEGALOVÍRUS,2
+"Chikungunya, IgM",Enzimaimunoensaio,MENINGITE,2
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,SARAMPO,2
+"Rubéola, IgG",Enzimaimunoensaio,SARAMPO,2
+"Rubéola, IgG",Enzimaimunoensaio,DENGUE,2
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,SARAMPO,2
+Hanseníase,Coloração de Ziehl Gabbet,HANSENÍASE,2
+Pesquisa de Genes de Resistência,PCR – Reação em Cadeia de Polimerase,BACTEREMIA,2
+Pesquisa de Carbapenemases,Testes Fenotípicos,INFECÇÃO/COLONIZAÇÃO,2
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,TUBERCULOSE,2
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,SARAMPO,2
+Fungos,Micológico Direto,HIV,2
+Fungos,Micológico Direto,INFECÇÃO/COLONIZAÇÃO,2
+"Sarampo, IgM",Enzimaimunoensaio,SARAMPO,2
+"Sarampo, IgG",Enzimaimunoensaio,SARAMPO,2
+Fungos,Micológico Direto,PARACOCCIDIOIDOMICOSE,2
+Bordetella,PCR em Tempo Real,COQUELUCHE,2
+"Bactérias, Identificação",Identificação,BACTEREMIA,2
+"Chikungunya, IgM",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,2
+"Bactérias, Cultura",Cultura,HIV,2
+Cultura para Fungos,Cultura para Fungos,CRIPTOCOCOSE,2
+"Chagas, IgG",Enzimaimunoensaio,TUBERCULOSE,2
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,TUBERCULOSE,2
+"Rubéola, IgM",Enzimaimunoensaio,SARAMPO,2
+"Rubéola, IgM",Enzimaimunoensaio,DENGUE,2
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,HIV,2
+"Zika,IgG",Enzimaimunoensaio,ZIKA,2
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,HIV,2
+"Zika,IgM",Enzimaimunoensaio,COVID-19,2
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,MICOBACTERIOSES,2
+"Febre Amarela, IgM",Enzimaimunoensaio,FEBRE AMARELA,2
+"Zika,IgM",Enzimaimunoensaio,FEBRE AMARELA,2
+"Tuberculose, Cultura",Cultura,MENINGITE,2
+Varíola,PCR em Tempo Real,TOXOPLASMOSE,2
+Varíola,PCR em Tempo Real,SARAMPO,2
+Aspergilose,Imunodifusão Radial Dupla,MENINGITE,2
+"Zika,IgG",Enzimaimunoensaio,COVID-19,2
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,SARAMPO,2
+Vírus Respiratórios,RT-PCR em tempo real ,LEPTOSPIROSE,2
+Vírus Respiratórios,RT-PCR em tempo real ,INFECÇÃO/COLONIZAÇÃO,2
+"Zika,IgG",Enzimaimunoensaio,HANTAVIROSE,2
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,MENINGITE,2
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,LEISHMANIOSE TEGUMENTAR AMERICANA,2
+Aspergilose,Imunodifusão Radial Dupla,TUBERCULOSE,2
+"Adenovírus Entéricos, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,DENGUE,2
+"Citomegalovírus, IgG Avidez",Imunoensaio de Micropartículas por Quimioluminescência,CITOMEGALOVÍRUS,2
+"Varicela Zoster, Biologia Molecular",PCR em Tempo Real,TOXOPLASMOSE,2
+"Zika,IgM",Enzimaimunoensaio,HANTAVIROSE,2
+Vírus Respiratórios,RT-PCR em tempo real ,ARENAVÍRUS,2
+"Hepatite D, Anti HDV Total",Imunoensaio por Quimioluminescência,HEPATITES VIRAIS,1
+"Hepatite C, Anti HCV",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Hepatite B, HBsAg",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Hepatite B, HBsAg",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Chikungunya, IgG",Enzimaimunoensaio,TUBERCULOSE,1
+"Chikungunya, IgG",Enzimaimunoensaio,MENINGITE,1
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,TUBERCULOSE,1
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,HIV,1
+"Citomegalovírus, IgM",Imunoensaio de Micropartículas por Quimioluminescência,DOENCA DE CHAGAS AGUDA,1
+"Citomegalovírus, IgG Avidez",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,TUBERCULOSE,1
+"Hepatite B, HBsAg",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Hepatite B, HBeAg",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Hepatite B, HBeAg",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+Histoplasmose,Imunodifusão Radial Dupla,MENINGITE,1
+Histoplasmose,Imunodifusão Radial Dupla,LEISHMANIOSE VISCERAL,1
+Histoplasmose,Imunodifusão Radial Dupla,HIV,1
+Histoplasmose,Imunodifusão Radial Dupla,CRIPTOCOCOSE,1
+Histoplasmose,Imunodifusão Radial Dupla,BRUCELOSE,1
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,VARÍOLA,1
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,TUBERCULOSE,1
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,SÍNDROME DE GUILLAIN-BARRÉ,1
+"Herpes Vírus, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,PARVOVIROSE,1
+"Dengue, IgM",Enzimaimunoensaio,FEBRE MACULOSA / RICKETTSIOSES,1
+"Leptospirose,  IgM",Enzimaimunoensaio,FEBRE AMARELA,1
+"Zika,IgM",Enzimaimunoensaio,TUBERCULOSE,1
+"Zika,IgM",Enzimaimunoensaio,MENINGITE,1
+Leptospirose,Teste de Aglutinação Microscópica (MAT) .,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+Leptospirose,Teste de Aglutinação Microscópica (MAT) .,HANTAVIROSE,1
+"Leishmaniose Visceral Humana, Total",Enzimaimunoensaio,LEISHMANIOSE VISCERAL,1
+"Leishmaniose Visceral Humana, Teste Rápido",Imunocromatografia,HEPATITES VIRAIS,1
+"Leishmaniose Visceral Humana, Teste Rápido",Imunocromatografia,FEBRE MACULOSA / RICKETTSIOSES,1
+"Leishmaniose Visceral Humana, Teste Rápido",Imunocromatografia,DENGUE,1
+"Zika,IgM",Enzimaimunoensaio,LEPTOSPIROSE,1
+"Zika,IgM",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+"Bactérias, Cultura",Cultura,COVID-19,1
+"Bactérias, Cultura",Cultura,BACTEREMIA,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,TRANSTORNO ENDÓCRINO,1
+"Bactérias, Cultura",Cultura,PNEUMONIA,1
+"Bactérias, Cultura",Cultura,MICOSE,1
+"Bactérias, Cultura",Cultura,LEISHMANIOSE TEGUMENTAR AMERICANA,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,FEBRE MACULOSA / RICKETTSIOSES,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,FEBRE AMARELA,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CREUTZFELDT-JAKOB,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CHAGAS,1
+Cultura para Fungos,Cultura para Fungos,TRANSTORNO ENDÓCRINO,1
+"Malária, Biologia Molecular",PCR em Tempo Real,DENGUE,1
+"Leptospirose,  IgM",Enzimaimunoensaio,TUBERCULOSE,1
+"Leptospirose,  IgM",Enzimaimunoensaio,MENINGITE,1
+Cultura para Fungos,Cultura para Fungos,SÍNDROME DE GUILLAIN-BARRÉ,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,SÍNDROME DE GUILLAIN-BARRÉ,1
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,TOXOPLASMOSE,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,FEBRE MACULOSA / RICKETTSIOSES,1
+"Meningite Bacteriana, Biologia Molecular",PCR em Tempo Real,LEPTOSPIROSE,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,FEBRE AMARELA,1
+Meningite,Cultura,TOXOPLASMOSE,1
+"Criptococos, Teste Rápido",Imunocromatografia,LEISHMANIOSE VISCERAL,1
+Meningite,Cultura,LEPTOSPIROSE,1
+"Chagas, IgG",Enzimaimunoensaio,CHIKUNGUNYA,1
+"Coqueluche, Detecção de Bordetella pertussis",PCR em Tempo Real,COQUELUCHE,1
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,1
+"Doença Priônica/ DCJ, Pesquisa da Proteína 14-3-3",Immunoblot,DOENÇA DE CREUTZFELDT-JAKOB,1
+"Dengue, IgM",Enzimaimunoensaio,TUBERCULOSE,1
+"Chikungunya, IgM",Enzimaimunoensaio,TUBERCULOSE,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,ENCEFALITE SAINT LOUIS,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CREUTZFELDT-JAKOB,1
+"Encefalite Saint Louis, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CHAGAS,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,FEBRE AMARELA,1
+"Chikungunya, IgM",Enzimaimunoensaio,FEBRE MACULOSA / RICKETTSIOSES,1
+"Chikungunya, IgM",Enzimaimunoensaio,FEBRE AMARELA,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,ENCEFALITE SAINT LOUIS,1
+"Hepatite B, Anti HBs",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CREUTZFELDT-JAKOB,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,TUBERCULOSE,1
+"Mayaro, Biologia Molecular",RT-PCR em tempo real ,SÍNDROME DE GUILLAIN-BARRÉ,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CHAGAS,1
+"Febre Maculosa, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,FEBRE MACULOSA / RICKETTSIOSES,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,FEBRE MACULOSA / RICKETTSIOSES,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,FEBRE AMARELA,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CREUTZFELDT-JAKOB,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,DOENÇA DE CHAGAS,1
+"Febre Maculosa, 2a amostra",Imunofluorescência Indireta,FEBRE MACULOSA / RICKETTSIOSES,1
+"Norovírus, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1
+"Micobactérias, Identificação",Cultura,MENINGITE,1
+"Meningite, Sorotipagem de Streptococcus Pneumoniae",Tipagem,MENINGITE,1
+"Meningite, Sorotipagem de Neisseria Meningitidis",Tipagem,MENINGITE,1
+"Febre Maculosa, 1a amostra",Imunofluorescência Indireta,FEBRE MACULOSA / RICKETTSIOSES,1
+"Meningite, Microscopia",Coloração de Gram,LEPTOSPIROSE,1
+Parvovírus B19 - IgG,Enzimaimunoensaio,DOENÇA DE CHAGAS,1
+"Febre Amarela, Biologia Molecular",RT-PCR em tempo real ,HEPATITES VIRAIS,1
+Paracoccidioidomicose,Imunodifusão Radial Dupla,MENINGITE,1
+Paracoccidioidomicose,Imunodifusão Radial Dupla,HIV,1
+"Febre Amarela, Biologia Molecular",RT-PCR em tempo real ,FEBRE AMARELA,1
+"Oropouche, IgM",Enzimaimunoensaio,MENINGITE,1
+Esquistossomose,Kato - Katz,ESQUISTOSSOMOSE,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,TUBERCULOSE,1
+"Oropouche, Biologia Molecular",RT-PCR em tempo real ,SÍNDROME DE GUILLAIN-BARRÉ,1
+Fungos,Micológico Direto,CARBÚNCULO OU ANTRAZ,1
+"Filariose, Pesquisa do Antígeno",Imunocromatografia,FILARIOSE,1
+"Filariose, Parasitológico",Gota Espessa,FILARIOSE,1
+"Febre do Nilo Ocidental, IgM",Enzimaimunoensaio,MENINGITE,1
+"Febre do Nilo Ocidental, IgM",Enzimaimunoensaio,CHIKUNGUNYA,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,TUBERCULOSE,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,SÍNDROME DE GUILLAIN-BARRÉ,1
+"Febre do Nilo Ocidental, Biologia Molecular",RT-PCR em tempo real ,FEBRE MACULOSA / RICKETTSIOSES,1
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,DOENÇA MÃO-PÉ-BOCA,1
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,DOENÇA DE CREUTZFELDT-JAKOB,1
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,DOENÇA DE CHAGAS,1
+Pesquisa Qualitativa do DNA do Citomegalovírus,Nested PCR,HERPES SIMPLES,1
+HIV,Immunoblot,HEPATITES VIRAIS,1
+"Fungos, Teste de Sensibilidade",Teste de Sensibilidade,MENINGITE,1
+Parvovírus B19 - IgM,Enzimaimunoensaio,FEBRE PURPÚRICA BRASILEIRA,1
+Parvovírus B19 - IgM,Enzimaimunoensaio,DOENÇA DE CHAGAS,1
+Fungos,Micológico Direto,TRANSTORNO ENDÓCRINO,1
+Parvovírus B19 - IgG,Enzimaimunoensaio,FEBRE PURPÚRICA BRASILEIRA,1
+"Rubéola, IgG",Enzimaimunoensaio,TOXOPLASMOSE,1
+Fungos,Micológico Direto,HERPES SIMPLES,1
+Fungos,Micológico Direto,CRIPTOCOCOSE,1
+"HTLV I/II, Vírus Linfotrópico Humano tipo I e II",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Rotavírus, Biologia Molecular",RT-PCR em tempo real ,DENGUE,1
+Pesquisa de Multipatógenos IST,PCR em Tempo Real,TUBERCULOSE,1
+Pesquisa de Multipatógenos,PCR em Tempo Real,DOENÇAS DIARRÉICAS/GASTROENTERITE,1
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,1
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,MENINGITE,1
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+Pesquisa de Arbovírus (ZDC),RT-PCR em tempo real ,TUBERCULOSE,1
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,HIV,1
+"Citomegalovírus, IgG",Imunoensaio de Micropartículas por Quimioluminescência,DOENCA DE CHAGAS AGUDA,1
+Sífilis,Imunoensaio de Micropartículas por Quimioluminescência,VARICELA / HERPES-ZOSTER,1
+Cultura para Fungos,Cultura para Fungos,MICOBACTERIOSES,1
+Sífilis,Imunoensaio de Micropartículas por Quimioluminescência,MENINGITE,1
+Sífilis,Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Streptococcus, identificação",Identificação,MENINGITE,1
+Cultura para Fungos,Cultura para Fungos,HIV,1
+"Sarampo, IgM",Enzimaimunoensaio,DENGUE,1
+HIV,Imunoensaio de Micropartículas por Quimioluminescência,HEPATITES VIRAIS,1
+"Sarampo, IgG",Enzimaimunoensaio,DENGUE,1
+HIV,Immunoblot,TOXOPLASMOSE,1
+"Borreliose, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,BARTONELOSE,1
+HIV,Immunoblot,SÍFILIS,1
+HIV,Immunoblot,MENINGITE,1
+HIV,Immunoblot,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+"Bactérias, Teste de Sensibilidade",Teste de Sensibilidade,MICOSE,1
+"Hantavírus, IgM",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+"Chikungunya, IgG",Enzimaimunoensaio,FEBRE MACULOSA / RICKETTSIOSES,1
+"Chikungunya, IgG",Enzimaimunoensaio,FEBRE AMARELA,1
+"Hantavírus, IgM",Enzimaimunoensaio,COVID-19,1
+"Hantavírus, IgG",Enzimaimunoensaio,MENINGITE,1
+"Chagas, IgG",Enzimaimunoensaio,TOXOPLASMOSE,1
+"Hantavírus, IgG",Enzimaimunoensaio,LEISHMANIOSE VISCERAL,1
+"Rubéola, IgM",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,1
+"Rubéola, IgM",Enzimaimunoensaio,TOXOPLASMOSE,1
+"Hantavírus, IgG",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+"Hantavírus, IgG",Enzimaimunoensaio,HANSENÍASE,1
+"Rubéola, IgG",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,1
+"Tuberculose, Baciloscopia",Coloração de Ziehl-Neelsen,TRANSTORNO ENDÓCRINO,1
+Tuberculose,Enzimaimunoensaio,HIV,1
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,MENINGITE,1
+"Hantavírus, IgG",Enzimaimunoensaio,FEBRE AMARELA,1
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,DOENCA DE CHAGAS AGUDA,1
+"Hantavírus, IgG",Enzimaimunoensaio,COVID-19,1
+"Toxoplasmose, IgM",Imunoensaio de Micropartículas por Quimioluminescência,CRIPTOCOCOSE,1
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,MENINGITE,1
+"Hepatite B, Anti HBc - IgM",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,DOENCA DE CHAGAS AGUDA,1
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,LEPTOSPIROSE,1
+"Toxoplasmose, IgG",Imunoensaio de Micropartículas por Quimioluminescência,CRIPTOCOCOSE,1
+"Toxoplasmose, Avidez IgG",Imunoensaio de Micropartículas por Quimioluminescência,TOXOPLASMOSE,1
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,MENINGITE,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,LEISHMANIOSE VISCERAL,1
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,FEBRE MACULOSA / RICKETTSIOSES,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,HIV,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,CRIPTOCOCOSE,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,COVID-19,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,CARBÚNCULO OU ANTRAZ,1
+"Tuberculose, LF-LAM",Imunocromatografia,DOENÇAS SEXUALMENTE TRANSMITIDAS,1
+"Hepatite A, Anti HAV - IgM",Imunoensaio de Micropartículas por Quimioluminescência,FEBRE AMARELA,1
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,LEPTOSPIROSE,1
+"Tuberculose, Cultura",Cultura,HIV,1
+"Tuberculose, Cultura",Cultura,CRIPTOCOCOSE,1
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,FEBRE MACULOSA / RICKETTSIOSES,1
+Varíola,PCR em Tempo Real,PARVOVIROSE,1
+"Tuberculose, Teste Rápido Molecular",PCR em Tempo Real,TOXOPLASMOSE,1
+Aspergilose,Imunodifusão Radial Dupla,HISTOPLASMOSE,1
+"Hepatite A, Anti HAV - IgG",Imunoensaio de Micropartículas por Quimioluminescência,FEBRE AMARELA,1
+"Hantavírus, IgM",Enzimaimunoensaio,MENINGITE,1
+"Hantavírus, IgM",Enzimaimunoensaio,LEISHMANIOSE VISCERAL,1
+Vírus Respiratórios,RT-PCR em tempo real ,TUBERCULOSE,1
+Vírus Respiratórios,RT-PCR em tempo real ,SARAMPO,1
+"Hepatite B, HBeAg",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Hepatite B, Anti HBs",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Zika,IgG",Enzimaimunoensaio,TUBERCULOSE,1
+"Zika,IgG",Enzimaimunoensaio,LEPTOSPIROSE,1
+"Zika,IgG",Enzimaimunoensaio,INFLUENZA / VÍRUS RESPIRATÓRIOS,1
+"Hepatite B, Anti HBs",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Hepatite B, Anti HBe",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Hepatite B, Anti HBe",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Hepatite B, Anti HBe",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Hepatite B, Anti HBc Total",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Varicela, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,VARICELA / HERPES-ZOSTER,1
+"Varicela, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,SARAMPO,1
+"Varicela, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,PARVOVIROSE,1
+"Hepatite B, Anti HBc Total",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+"Hepatite B, Anti HBc Total",Imunoensaio de Micropartículas por Quimioluminescência,DENGUE,1
+"Hepatite B, Anti HBc - IgM",Imunoensaio de Micropartículas por Quimioluminescência,SÍFILIS,1
+"Hepatite B, Anti HBc - IgM",Imunoensaio de Micropartículas por Quimioluminescência,HERPES SIMPLES,1
+Chagas,Imunoensaio de Micropartículas por Quimioluminescência,CHIKUNGUNYA,1
+"Brucelose, IgM",Enzimaimunoensaio,FEBRE MACULOSA / RICKETTSIOSES,1
+"Brucelose, IgG",Enzimaimunoensaio,FEBRE MACULOSA / RICKETTSIOSES,1
+Brucelose,Coloração de Rosa Bengala,FEBRE MACULOSA / RICKETTSIOSES,1
+"Borreliose, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,FEBRE MACULOSA / RICKETTSIOSES,1
+"Borreliose, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,DOENÇA DE LYME,1
+"Borreliose, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,BORRELIOSE,1
+"Adenovírus Entéricos, Biologia Molecular",PCR – Reação em Cadeia de Polimerase,ARENAVÍRUS,1
