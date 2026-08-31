@@ -265,12 +265,85 @@ class RelatorioSources:
     banner: str = ""
     dw_ok: bool = False
     dw_enrich: dict[str, Any] = field(default_factory=dict)
+    staging_dw_ok: bool = False
+    etl_fonte: str = ""
+    etl_atraso_se: int | None = None
+    etl_meta: dict[str, Any] = field(default_factory=dict)
 
     def get(self, key: str, limit: int | None = None) -> list[dict[str, str]]:
         rows = self.data.get(key) or []
         if limit is not None:
             return rows[:limit]
         return rows
+
+
+def _read_etl_validacao(outdir: Path) -> dict[str, Any]:
+    """Lê validacao_etl_dw_ultimo.json (última ETL) se existir."""
+    path = Path(outdir) / "validacao_etl_dw_ultimo.json"
+    if not path.is_file():
+        return {}
+    try:
+        import json
+
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def _staging_dw_present(outdir: Path) -> bool:
+    """True se há extrato DW usable em saida_pipeline/staging_dw."""
+    stage = Path(outdir) / "staging_dw"
+    if not stage.is_dir():
+        return False
+    markers = (
+        "extract_meta.json",
+        "vw_gal_weekly_agg.parquet",
+        "vw_gal_weekly_agg.csv",
+        "vw_gal_micro_recent.parquet",
+        "vw_gal_micro_recent.csv",
+        "vw_gal_micro_recent_for_rede.csv",
+    )
+    return any((stage / name).is_file() for name in markers)
+
+
+def _apply_fonte_from_etl_staging(bundle: RelatorioSources, outdir: Path) -> None:
+    """
+    Corrige banner falso 'DW indisponível' quando o pipeline usou DW
+    (validacao_etl / staging_dw) mesmo sem espelhos lacen_* online.
+    """
+    etl = _read_etl_validacao(outdir)
+    staging_ok = _staging_dw_present(outdir)
+    bundle.etl_meta = etl
+    bundle.staging_dw_ok = staging_ok
+    fonte_etl = str(etl.get("fonte_dados") or "").strip()
+    bundle.etl_fonte = fonte_etl
+    atraso = etl.get("atraso_se")
+    try:
+        bundle.etl_atraso_se = int(atraso) if atraso is not None else None
+    except (TypeError, ValueError):
+        bundle.etl_atraso_se = None
+
+    live_dw = bundle.dw_ok or bool(bundle.tabelas_dw) or bool(bundle.dw_enrich)
+    etl_is_dw = fonte_etl.upper().startswith("DW")
+    # Já marcado como DW live — não sobrescrever
+    if live_dw and "DW" in (bundle.fonte_primaria or "").upper():
+        if "indispon" not in (bundle.fonte_primaria or "").casefold():
+            return
+
+    if etl_is_dw or staging_ok:
+        view = fonte_etl.split(":", 1)[-1].strip() if etl_is_dw else "VW_GAL"
+        if not view:
+            view = "VW_GAL"
+        if live_dw:
+            bundle.fonte_primaria = f"DW · {view} (+ arquivo local)"
+        else:
+            bundle.fonte_primaria = f"DW · staging ({view}) + saida_pipeline"
+        bundle.banner = ""
+        if view and f"dbo.{view}" not in bundle.tabelas_dw and view not in bundle.tabelas_dw:
+            bundle.tabelas_dw = list(
+                dict.fromkeys([*(bundle.tabelas_dw or []), f"staging:{view}"])
+            )
 
 
 def _try_connect_dw() -> tuple[Any, Any] | None:
@@ -495,6 +568,9 @@ def load_relatorio_sources(
     else:
         bundle.fonte_primaria = "arquivo local (DW indisponível)"
         bundle.banner = "Fonte: arquivo local (DW indisponível)"
+
+    # Staging / última ETL DW: evita falso "DW indisponível" no Telegram
+    _apply_fonte_from_etl_staging(bundle, outdir)
 
     # dedupe listas mantendo ordem
     bundle.tabelas_dw = list(dict.fromkeys(bundle.tabelas_dw))
@@ -936,6 +1012,7 @@ def _aviso_atraso_bases(
     (a) SE ref ≠ última SE da série porque a mais recente ainda é parcial
     (b) exames na SE com positivos ~0 enquanto SE anterior tinha muitos
     (c) DW max(Data_Liberacao) atrasado > N dias
+    (d) validacao_etl: atraso_se > 0 (SE usada vs esperada)
     """
     reasons: list[str] = []
     if meta.get("usou_completa") and meta.get("se_parcial"):
@@ -970,10 +1047,20 @@ def _aviso_atraso_bases(
             f"(limiar 14d)"
         )
 
+    atraso_se = src.etl_atraso_se
+    if isinstance(atraso_se, int) and atraso_se > 0:
+        se_esp = str((src.etl_meta or {}).get("se_esperada") or "—")
+        se_usada = str((src.etl_meta or {}).get("se_usada") or se_ref)
+        reasons.append(
+            f"SE ref {se_usada} atrasada {atraso_se} SE vs esperada {se_esp}"
+        )
+
     if reasons:
         return "Atenção: " + "; ".join(reasons) + "."
-    if src.banner and "Espelhos lacen_*" not in src.banner:
-        return src.banner
+    # Não reutilizar banner de fonte (ex.: falso DW indisponível) como atraso
+    banner = (src.banner or "").strip()
+    if banner and "indispon" not in banner.casefold() and "Espelhos lacen_*" not in banner:
+        return banner
     return ""
 
 
@@ -1183,6 +1270,29 @@ def _fila_acoes(
     return out
 
 
+def _driver_is_infra_only(raw_driver: str, humanized: str = "") -> bool:
+    """True se drivers são só CNES/infraestrutura (pouco útil p/ VE)."""
+    blob = f"{raw_driver} {humanized}".casefold()
+    if not blob.strip() or blob.strip() in ("—", "-", "fatores de risco (modelo)"):
+        return True
+    infra = bool(
+        re.search(
+            r"cnes_|estabelecimentos\s+cnes|leitos\s+cnes|equipes\s+esf|"
+            r"populacao|popula[cç][aã]o",
+            blob,
+        )
+    )
+    disease = bool(
+        re.search(
+            r"positiv|tests|exame|notif|tat_|backlog|press[aã]o|sil[eê]ncio|"
+            r"risco_composto|semana|incidencia|incid[eê]ncia|agravo|dengue|"
+            r"tubercul|hepatite|mening",
+            blob,
+        )
+    )
+    return infra and not disease
+
+
 def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]]:
     risco = src.get("ml_risco_predito")
     se = _semana_ref(src)
@@ -1230,11 +1340,17 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
 
     seen: set[str] = set()
     out: list[dict[str, str]] = []
+    skipped_infra = 0
     for r in filtered:
         mun = _cell(r, "municipio")
         fam = _cell(r, "familia", "target", "agravo_alvo")
         key = f"{mun}|{fam}"
         if key in seen:
+            continue
+        raw_drv = _cell(r, "drivers", "driver", "motivo")
+        human = _humanize_driver(raw_drv)
+        if _driver_is_infra_only(raw_drv, human):
+            skipped_infra += 1
             continue
         seen.add(key)
         out.append(
@@ -1242,7 +1358,7 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
                 "municipio": mun,
                 "banda": _cell(r, "banda_risco", "faixa_predita", "nivel_risco"),
                 "familia": fam,
-                "driver": _humanize_driver(_cell(r, "drivers", "driver", "motivo")),
+                "driver": human,
                 "prob": _fmt_pct(
                     _num(r.get("prob_alerta_proxima_janela") or r.get("prob")), 0
                 ),
@@ -1251,7 +1367,97 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
         )
         if len(out) >= top_n:
             break
+    # Se só havia drivers CNES, não inventar linhas — seção Predito some no Telegram
     return out
+
+
+def _load_ve_acoes_csv(outdir: Path, max_n: int = 8) -> list[dict[str, str]]:
+    """Lê relatorio_ve_acoes.csv e diversifica por destinatário."""
+    path = Path(outdir) / "relatorio_ve_acoes.csv"
+    rows = _read_csv(path)
+    if not rows:
+        return []
+    sev_rank = {"critica": 0, "crítica": 0, "alta": 1, "media": 2, "média": 2, "baixa": 3}
+
+    def _dest_prio(dest: str) -> int:
+        d = (dest or "").casefold()
+        if d.startswith("cievs"):
+            return 0
+        if d.startswith("ses"):
+            return 1
+        if d.startswith("área") or d.startswith("area"):
+            return 2
+        if d.startswith("munic"):
+            return 3
+        return 5
+
+    ranked = sorted(
+        rows,
+        key=lambda r: (
+            sev_rank.get(str(r.get("severidade") or "").casefold(), 9),
+            _dest_prio(str(r.get("destinatario") or "")),
+            str(r.get("destinatario") or ""),
+        ),
+    )
+    seen_dest: set[str] = set()
+    out: list[dict[str, str]] = []
+    for r in ranked:
+        dest = _cell(r, "destinatario", "area", default="")
+        if not dest or dest == "—":
+            continue
+        dest_key = dest.split("—")[0].split("-")[0].strip().casefold()[:24]
+        # no máximo 1 por família de destinatário (SES / CIEVS / Área / Município…)
+        if dest_key in seen_dest:
+            continue
+        seen_dest.add(dest_key)
+        acao = _cell(r, "recomendacao", "acao")
+        if len(acao) > 160:
+            acao = acao[:159] + "…"
+        out.append(
+            {
+                "area": dest,
+                "acao": acao,
+                "prazo": _cell(r, "prazo", default=""),
+                "agravo": _cell(r, "agravo", "target", default=""),
+                "severidade": _cell(r, "severidade", default=""),
+            }
+        )
+        if len(out) >= max_n:
+            break
+    return out
+
+
+def _juina_hbv_line(ve_casos: list[dict[str, str]], ve_resumo: str = "") -> str:
+    """Uma linha clara: Juína HBV — investigar, não surto."""
+    for c in ve_casos:
+        mun = str(c.get("municipio") or "").upper()
+        tgt = str(c.get("target") or "").casefold()
+        if "JUINA" in mun and "hepatite" in tgt:
+            return (
+                f"Juína HBV: {c.get('exames')} ex. / +{c.get('positivos')} "
+                f"({c.get('positividade')}) — sinal lab; investigar (Guia MS); "
+                f"não declarar surto automático."
+            )
+    try:
+        from lacen_agente_ve import juina_hbv_one_liner
+
+        line = juina_hbv_one_liner(None)
+        if line and "Juína" in line:
+            # Encurtar para Telegram
+            if len(line) > 200:
+                return (
+                    "Juína HBV: sinal lab elevado — investigar marcador "
+                    "agudo×crônico (Guia MS); não declarar surto automático."
+                )
+            return line
+    except Exception:
+        pass
+    if ve_resumo and "JUINA" in ve_resumo.upper() and "hepatite" in ve_resumo.casefold():
+        return (
+            "Juína HBV: sinal lab no Observado — investigar; "
+            "não declarar surto automático (Guia MS)."
+        )
+    return ""
 
 
 def _pressao_predita_top(src: RelatorioSources, top_n: int = 3) -> list[dict[str, str]]:
@@ -1456,6 +1662,11 @@ def montar_relatorio(
         except Exception as exc:  # noqa: BLE001
             ve_resumo = f"Parecer VE indisponível nesta geração ({exc})."
 
+    # Preferir CSV VE diversificado por destinatário (anti copy-paste silêncio)
+    ve_csv = _load_ve_acoes_csv(outdir, max_n=5)
+    if ve_csv:
+        ve_recs = ve_csv
+
     fontes: list[str] = []
     if src.tabelas_dw:
         fontes.extend(src.tabelas_dw)
@@ -1563,145 +1774,179 @@ def _kpi_strip_text(rel: RelatorioCIEVS) -> str:
     )
 
 
+def _tg_clip(text: str, n: int) -> str:
+    t = (text or "").strip()
+    if len(t) <= n:
+        return t
+    return t[: max(0, n - 1)].rstrip() + "…"
+
+
 def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
-    """HTML compacto para Telegram (parse_mode=HTML). ~6 KPIs + tops + link."""
+    """HTML compacto CIEVS (parse_mode=HTML). Anti-truncamento das linhas-chave."""
+    fonte = rel.fonte_primaria or "—"
+    header_fonte = f"Fonte: {fonte}"
+    atraso_short = ""
+    av = rel.aviso_atraso or ""
+    m_atraso = re.search(
+        r"atrasada\s+(\d+)\s+SE\s+vs\s+esperada\s+(\S+)", av, flags=re.I
+    )
+    if m_atraso:
+        se_esp = m_atraso.group(2).rstrip(".,;")
+        atraso_short = f" · atraso {m_atraso.group(1)} SE (esp. {se_esp})"
+
     lines: list[str] = [
         f"<b>{html.escape(_cabecalho(rel))}</b>",
         f"SE {html.escape(rel.semana_epidemiologica)} · "
         f"<b>{html.escape(rel.leitura_situacional)}</b>",
-        html.escape(rel.gerado_em),
+        html.escape(f"{header_fonte}{atraso_short}"),
+        html.escape(rel.gerado_em or ""),
         "",
         "<b>KPIs</b>",
         html.escape(
             f"Pos {rel.kpi_positivos_se} ({rel.kpi_variacao_pct}) · "
-            f"TAT {rel.kpi_tat_p50}/{rel.kpi_tat_p90}d · "
-            f"%≤48h {rel.kpi_pct_48h}"
+            f"Exames {rel.kpi_exames_se} · "
+            f"TAT {rel.kpi_tat_p50}/{rel.kpi_tat_p90}d · %≤48h {rel.kpi_pct_48h}"
         ),
         html.escape(
             f"Pressão máx {rel.kpi_pressao_max} · Silêncios {rel.kpi_silencios} · "
             f"Confirmação {rel.kpi_confirmacao}"
         ),
     ]
-    if rel.aviso_atraso:
-        lines.append(f"<i>{html.escape(rel.aviso_atraso[:160])}</i>")
+    if av and "atrasada" not in atraso_short:
+        extra = av
+        if "atrasada" in av.casefold() and atraso_short:
+            extra = re.sub(
+                r"SE ref [^.]*atrasada \d+ SE vs esperada [^.;]+[.;]?\s*",
+                "",
+                av,
+                flags=re.I,
+            ).strip()
+            extra = re.sub(r"^Atenção:\s*", "Atenção: ", extra).strip()
+            if extra in ("Atenção:", "Atenção:."):
+                extra = ""
+        if extra:
+            lines.append(f"<i>{html.escape(_tg_clip(extra, 180))}</i>")
 
-    lines.extend(["", "<b>A — Lab-epi</b> (top 5)"])
-    for x in rel.top_positivos[:5]:
-        lines.append(
-            html.escape(
-                f"• {x['municipio']}: +{x['positivos']} ({x['positividade']})"
-            )
-        )
-    if not rel.top_positivos:
-        lines.append(html.escape("(sem positivos na janela)"))
-
-    # Bloco E — compacto (top 3 / 2 eixos / 3 riscos)
-    lines.extend(["", "<b>E — Briefing (5 perguntas)</b>"])
-    sol = rel.briefing_mais_solicitados[:3]
+    sol = rel.briefing_mais_solicitados[:5]
     if sol:
-        lines.append("<i>Mais solicitados (Δ SE-1)</i>")
+        lines.extend(["", "<b>Top solicitados</b> <i>(Δ SE-1)</i>"])
         for x in sol:
             lines.append(
                 html.escape(
-                    f"• {x['target']}: n={x.get('n_se', x['exames'])} "
-                    f"Δ={x.get('delta', '—')} ({x.get('delta_pct', '—')}) "
-                    f"{x.get('tendencia', '→')} · +{x['positivos']} "
-                    f"({x['positividade']}) [{x.get('tipo_sinal', 'Observado')}]"
+                    f"• {x['target']}: n={x.get('n_se', x.get('exames', '—'))} "
+                    f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} · "
+                    f"+{x.get('positivos', '—')} ({x.get('positividade', '—')})"
                 )
             )
+
     posi = rel.briefing_maior_positividade[:3]
     if posi:
-        lines.append("<i>Maior positividade (Δ SE-1)</i>")
+        lines.extend(["", "<b>Positividade</b> <i>(top 3)</i>"])
         for x in posi:
-            flag = " · baixa_amostra" if x.get("baixa_amostra") == "sim" else ""
+            flag = " · amostra↓" if x.get("baixa_amostra") == "sim" else ""
             igg = " · IgG" if x.get("caveat_igg") == "sim" else ""
             lines.append(
                 html.escape(
                     f"• {x['target']}: {x['positividade']} "
                     f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} "
-                    f"({x['exames']} ex.){flag}{igg}"
+                    f"({x.get('exames', '—')} ex.){flag}{igg}"
                 )
             )
-    viz = rel.briefing_vizinhos[:2]
-    if viz:
-        lines.append("<i>Vizinhos</i>")
-        for v in viz:
-            lines.append(
-                html.escape(
-                    f"• {v['target']}: {v['par']} ({v['positivos']})"
-                )
-            )
+
+    terr: list[str] = []
+    for v in rel.briefing_vizinhos[:3]:
+        terr.append(
+            f"• Vizinhos {v.get('target', '')}: {v.get('par', '')} "
+            f"({v.get('positivos', '')})"
+        )
     for g in rel.briefing_gal_sinan[:2]:
-        lines.append(
-            html.escape(
-                f"• GAL×SINAN {g.get('municipio')}×{g.get('familia')}: "
-                f"{g.get('flag')}"
-            )
+        terr.append(
+            f"• GAL×SINAN {g.get('municipio')}×{g.get('familia')}: {g.get('flag')}"
         )
-    if rel.briefing_geo_nota:
-        lines.append(
-            html.escape(f"Geo ({rel.briefing_geo_nivel}): {rel.briefing_geo_nota[:100]}")
-        )
-    for r in rel.briefing_risco[:3]:
-        msg = (r.get("mensagem") or "")[:140]
-        lines.append(
-            html.escape(f"• [{r.get('tipo_sinal', 'Observado')}] {msg}")
-        )
-    if rel.briefing_nota_igg:
-        lines.append(f"<i>{html.escape(rel.briefing_nota_igg[:120])}</i>")
+    if terr:
+        lines.extend(["", "<b>Território</b>"])
+        for t in terr:
+            lines.append(html.escape(_tg_clip(t, 120)))
 
-    lines.extend(["", "<b>B — Rede</b> (top 5 pressão)"])
-    for p in rel.top_pressao[:5]:
-        lines.append(
-            html.escape(f"• {p['municipio']}: {p['faixa']} / {p['indice']}")
-        )
-    if not rel.top_pressao:
-        lines.append("(sem pressão alta/crítica)")
+    ve_recs = list(rel.ve_recomendacoes or [])[:3]
+    if ve_recs:
+        lines.extend(["", "<b>Ações prioritárias</b> <i>(VE)</i>"])
+        for i, r in enumerate(ve_recs, 1):
+            area = _tg_clip(str(r.get("area") or "VE"), 40)
+            acao = _tg_clip(str(r.get("acao") or ""), 140)
+            prazo = str(r.get("prazo") or "").strip()
+            suffix = f" · {prazo}" if prazo and prazo != "—" else ""
+            lines.append(f"<b>{i}. {html.escape(area)}</b>")
+            lines.append(html.escape(f"→ {acao}{suffix}"))
+    else:
+        seen_sinal: set[str] = set()
+        acoes_fb: list[dict[str, str]] = []
+        for a in rel.fila_acoes:
+            sig = str(a.get("sinal") or "")
+            if sig in seen_sinal:
+                continue
+            seen_sinal.add(sig)
+            acoes_fb.append(a)
+            if len(acoes_fb) >= 3:
+                break
+        if acoes_fb:
+            lines.extend(["", "<b>Ações prioritárias</b>"])
+            for i, a in enumerate(acoes_fb, 1):
+                lines.append(
+                    f"<b>{i}. {html.escape(a.get('municipio', ''))}</b> "
+                    f"[{html.escape(a.get('sinal', ''))}]"
+                )
+                lines.append(
+                    html.escape(
+                        f"→ {_tg_clip(a.get('acao') or '', 100)} · "
+                        f"{a.get('prazo', '')}"
+                    )
+                )
 
-    lines.extend(["", "<b>C — Ações</b> (top 5)"])
-    for i, a in enumerate(rel.fila_acoes[:5], 1):
-        acao = (a.get("acao") or "")[:80]
-        crs = f" · CRS {a['crs']}" if a.get("crs") and a["crs"] != "—" else ""
-        lines.append(
-            f"<b>{i}. {html.escape(a['municipio'])}</b>"
-            f"{html.escape(crs)} "
-            f"[{html.escape(a['tipo_sinal'])}] "
-            f"{html.escape(a['sinal'])}"
-        )
-        lines.append(html.escape(f"→ {acao} · {a['prazo']}"))
+    juina = _juina_hbv_line(rel.ve_casos, rel.ve_resumo)
+    if juina:
+        lines.extend(["", "<b>Parecer</b>"])
+        lines.append(html.escape(_tg_clip(juina, 220)))
 
-    if rel.preditos_alta:
-        lines.append("<b>Predito</b>")
-        for p in rel.preditos_alta[:3]:
+    pred_ok = [
+        p
+        for p in (rel.preditos_alta or [])
+        if not _driver_is_infra_only(p.get("driver") or "", p.get("driver") or "")
+    ][:2]
+    if pred_ok:
+        lines.extend(["", "<b>Predito</b> <i>(risco agravo)</i>"])
+        for p in pred_ok:
+            fam = p.get("familia") or ""
+            fam_txt = f"/{fam}" if fam and fam != "—" else ""
             lines.append(
                 html.escape(
-                    f"• {p['municipio']} [{p['banda']}] {p['driver'][:70]}"
+                    _tg_clip(
+                        f"• {p.get('municipio')}{fam_txt} [{p.get('banda')}] "
+                        f"{p.get('driver')}",
+                        110,
+                    )
                 )
             )
 
-    if rel.ve_resumo:
-        lines.extend(["", "<b>F — Parecer VE (Guia MS)</b>"])
-        lines.append(html.escape(rel.ve_resumo[:420]))
-        for c in rel.ve_casos[:1]:
-            lines.append(
-                html.escape(
-                    f"Foco: {c.get('municipio')} × {c.get('target')} — "
-                    f"{c.get('exames')} ex. / +{c.get('positivos')} "
-                    f"({c.get('positividade')}) → investigar; não declarar surto automático."
-                )
-            )
+    if rel.top_pressao:
+        top_p = ", ".join(
+            f"{p['municipio']} ({p['faixa']})" for p in rel.top_pressao[:3]
+        )
+        lines.append(html.escape(_tg_clip(f"Rede: {top_p}", 120)))
 
     lines.extend(
         [
             "",
-            f'<a href="{html.escape(rel.dashboard_url)}">Abrir painel LACEN</a>',
-            html.escape(f"Fonte: {rel.fonte_primaria}"),
+            f'<a href="{html.escape(rel.dashboard_url)}">Painel LACEN</a>',
         ]
     )
-    text = "\n".join(lines).strip()
-    if len(text) > max_chars:
-        text = text[: max_chars - 20] + "\n…(truncado)"
-    return text
+
+    text_out = "\n".join(lines).strip()
+    if len(text_out) > max_chars:
+        link = f'\n<a href="{html.escape(rel.dashboard_url)}">Painel LACEN</a>'
+        budget = max_chars - len(link) - 12
+        text_out = text_out[:budget].rstrip() + "\n…(truncado)" + link
+    return text_out
 
 
 def to_email_subject(rel: RelatorioCIEVS) -> str:
