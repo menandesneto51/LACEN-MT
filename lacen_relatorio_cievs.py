@@ -3359,6 +3359,38 @@ def to_email_html(rel: RelatorioCIEVS) -> str:
     ) or "—"
     crs_txt = ", ".join(f"{c['crs']} ({c['n']})" for c in rel.crs_top) or "—"
 
+    # Cabeçalho institucional com logos (data-URI) quando disponíveis
+    logo_uris: list[tuple[str, str]] = []
+    try:
+        from lacen_theme import logo_data_uri as _logo_uri
+
+        for _key, _cap in (
+            ("ses_governo", "SES-MT"),
+            ("cievs_ses", "CIEVS-MT"),
+            ("cievs_rede_ses", "Rede CIEVS"),
+        ):
+            _uri = _logo_uri(_key)
+            if _uri:
+                logo_uris.append((_cap, _uri))
+    except Exception:
+        logo_uris = []
+    if logo_uris:
+        _cells = "".join(
+            "<td align='center' style='padding:4px 8px'>"
+            f"<img src='{uri}' alt='{html.escape(cap)}' "
+            "style='max-height:42px;max-width:140px;display:block;margin:0 auto'/>"
+            f"<div style='font-size:10px;color:#c8d4ef;margin-top:2px'>{html.escape(cap)}</div>"
+            "</td>"
+            for cap, uri in logo_uris
+        )
+        logos_bar_html = (
+            "<tr><td style='background:#0f1f4d;padding:10px 16px'>"
+            "<table role='presentation' width='100%' cellpadding='0' cellspacing='0'>"
+            f"<tr>{_cells}</tr></table></td></tr>"
+        )
+    else:
+        logos_bar_html = ""
+
     return f"""<!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <title>{html.escape(_cabecalho(rel))}</title></head>
@@ -3368,6 +3400,7 @@ font-family:'Segoe UI',Tahoma,Arial,sans-serif;line-height:1.45">
 <tr><td align="center" style="padding:16px">
 <table role="presentation" width="720" cellpadding="0" cellspacing="0"
  style="max-width:720px;background:#ffffff;border:1px solid #d0d7e2">
+{logos_bar_html}
 <tr><td style="background:linear-gradient(135deg,#1B3281,#2a4fa3);color:#fff;padding:18px 22px">
   <div style="font-size:12px;letter-spacing:.08em;opacity:.9">
     SES-MT · LACEN · CIEVS · Vigidesastres</div>
