@@ -32,6 +32,7 @@ from lacen_relatorio_cievs import (  # noqa: E402
     load_relatorio_sources,
     montar_relatorio,
     to_telegram_markdown,
+    to_telegram_messages,
 )
 from enviar_alerta_teste import (  # noqa: E402
     _env,
@@ -115,14 +116,19 @@ def main(argv: list[str] | None = None) -> int:
         sources=sources,
     )
     subject, body, html_body = format_email(rel)
-    tg_text = to_telegram_markdown(rel)
+    tg_messages = to_telegram_messages(rel)
+    tg_text = "\n\n———\n\n".join(tg_messages) if len(tg_messages) > 1 else (
+        tg_messages[0] if tg_messages else to_telegram_markdown(rel)
+    )
 
     print(_mask_secrets(subject))
     print("-" * 60)
     print(body)
     print("-" * 60)
-    print("--- Telegram (HTML) ---")
-    print(tg_text)
+    print(f"--- Telegram (HTML) · {len(tg_messages)} mensagem(ns) ---")
+    for i, msg in enumerate(tg_messages, 1):
+        print(f"--- parte {i}/{len(tg_messages)} ({len(msg)} chars) ---")
+        print(msg)
     print("-" * 60)
 
     # Sempre grava dry-run artifact (allowlisted)
@@ -170,11 +176,18 @@ def main(argv: list[str] | None = None) -> int:
     exit_code = 0
 
     if do_tg:
-        ok, msg = send_telegram(tg_text)
-        print(_mask_secrets(msg))
-        ok_any = ok_any or ok
-        if not ok:
-            exit_code = 1
+        for i, msg in enumerate(tg_messages, 1):
+            ok, msg_status = send_telegram(msg)
+            print(_mask_secrets(f"[Telegram {i}/{len(tg_messages)}] {msg_status}"))
+            ok_any = ok_any or ok
+            if not ok:
+                exit_code = 1
+                break
+            # Pequena pausa entre partes para preservar ordem no chat
+            if i < len(tg_messages):
+                import time
+
+                time.sleep(0.8)
 
     if do_mail:
         ok, msg = send_email_smtp(subject, body, to_addr, html_body=html_body)

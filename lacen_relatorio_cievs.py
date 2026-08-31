@@ -626,6 +626,7 @@ class RelatorioCIEVS:
     briefing_cruzamento: list[dict[str, str]] = field(default_factory=list)
     briefing_cruzamento_sih_sia: list[dict[str, str]] = field(default_factory=list)
     briefing_cruzamento_sih_sia_caveat: str = ""
+    internacoes_por_agravo: list[dict[str, str]] = field(default_factory=list)
     briefing_sinais_rede: dict[str, Any] = field(default_factory=dict)
     briefing_nota_igg: str = ""
     briefing_fontes: list[str] = field(default_factory=list)
@@ -1281,26 +1282,40 @@ def _fila_acoes(
 
 
 def _driver_is_infra_only(raw_driver: str, humanized: str = "") -> bool:
-    """True se drivers são só CNES/infraestrutura (pouco útil p/ VE)."""
-    blob = f"{raw_driver} {humanized}".casefold()
-    if not blob.strip() or blob.strip() in ("—", "-", "fatores de risco (modelo)"):
+    """True se os drivers principais são CNES/infra (pouco útil p/ VE)."""
+    human = (humanized or "").casefold().strip()
+    raw = (raw_driver or "").casefold().strip()
+    blob = f"{raw} {human}".strip()
+    if not blob or blob in ("—", "-", "fatores de risco (modelo)"):
         return True
+    # Avalia sobretudo o texto humanizado (top features) — evita `tests_ma8`
+    # enterrado no raw anular o filtro de CNES.
+    focus = human if human and human not in ("—", "-") else blob
     infra = bool(
         re.search(
             r"cnes_|estabelecimentos\s+cnes|leitos\s+cnes|equipes\s+esf|"
-            r"populacao|popula[cç][aã]o",
-            blob,
+            r"\bcnes\b|populacao|popula[cç][aã]o",
+            focus,
         )
     )
     disease = bool(
         re.search(
-            r"positiv|tests|exame|notif|tat_|backlog|press[aã]o|sil[eê]ncio|"
+            r"positiv|exames?\b|notif|tat_|backlog|press[aã]o|sil[eê]ncio|"
             r"risco_composto|semana|incidencia|incid[eê]ncia|agravo|dengue|"
-            r"tubercul|hepatite|mening",
-            blob,
+            r"tubercul|hepatite|mening|(?<![a-z])tests(?![a-z_])",
+            focus,
         )
     )
-    return infra and not disease
+    if infra and not disease:
+        return True
+    # Top humanizado só CNES/leitos/ESF → infra mesmo com ruído no raw
+    parts = [p.strip() for p in focus.split(";") if p.strip()]
+    if parts and all(
+        re.search(r"cnes|estabelecimento|leitos|equipes\s+esf|popula", p)
+        for p in parts[:2]
+    ):
+        return True
+    return False
 
 
 def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]]:
@@ -1350,7 +1365,6 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
 
     seen: set[str] = set()
     out: list[dict[str, str]] = []
-    skipped_infra = 0
     for r in filtered:
         mun = _cell(r, "municipio")
         fam = _cell(r, "familia", "target", "agravo_alvo")
@@ -1359,16 +1373,18 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
             continue
         raw_drv = _cell(r, "drivers", "driver", "motivo")
         human = _humanize_driver(raw_drv)
+        # Não expor CNES/infra como “drivers”; texto plano no alerta.
         if _driver_is_infra_only(raw_drv, human):
-            skipped_infra += 1
-            continue
+            driver_txt = ""
+        else:
+            driver_txt = human if human not in {"—", "-"} else ""
         seen.add(key)
         out.append(
             {
                 "municipio": mun,
                 "banda": _cell(r, "banda_risco", "faixa_predita", "nivel_risco"),
                 "familia": fam,
-                "driver": human,
+                "driver": driver_txt,
                 "prob": _fmt_pct(
                     _num(r.get("prob_alerta_proxima_janela") or r.get("prob")), 0
                 ),
@@ -1377,7 +1393,6 @@ def _preditos_alta(src: RelatorioSources, top_n: int = 5) -> list[dict[str, str]
         )
         if len(out) >= top_n:
             break
-    # Se só havia drivers CNES, não inventar linhas — seção Predito some no Telegram
     return out
 
 
@@ -1506,15 +1521,226 @@ def _parse_delta_pct(raw: Any) -> float | None:
         return None
 
 
-def coletar_recomendacoes_alerta(
-    rel: RelatorioCIEVS, *, max_n: int = 10
+def _nome_agravo_pt(raw: str) -> str:
+    """Rótulo legível do agravo (sem códigos técnicos)."""
+    t = (raw or "").strip()
+    if not t or t in {"—", "-"}:
+        return "agravo"
+    low = t.casefold().replace("-", "_")
+    mapping = (
+        (("hepatite_b", "hbv", "hbsag"), "hepatite B"),
+        (("hepatite_c", "hcv"), "hepatite C"),
+        (("hepatite_a",), "hepatite A"),
+        (("hepatite",), "hepatite"),
+        (("tubercul", "tb_"), "tuberculose"),
+        (("dengue",), "dengue"),
+        (("chikung",), "chikungunya"),
+        (("zika",), "zika"),
+        (("arbovir",), "arbovirose"),
+        (("mening",), "meningite"),
+        (("sars", "covid", "cov_2", "cov2"), "COVID-19"),
+        (("respirat", "srag", "influenza"), "síndrome respiratória"),
+        (("malaria", "malária"), "malária"),
+    )
+    for keys, label in mapping:
+        if any(k in low for k in keys):
+            return label
+    return t.replace("_", " ")
+
+
+def _suavizar_texto_alerta(texto: str) -> str:
+    """Remove jargão residual em recomendações/parecer."""
+    t = texto or ""
+    repl = (
+        ("GAL×SINAN", "exame × notificação"),
+        ("GAL x SINAN", "exame × notificação"),
+        ("gal_sem_sinan", "exame sem notificação"),
+        ("sinan_sem_gal", "notificação sem exame"),
+        ("hepatite_b_hbv", "hepatite B"),
+        ("hepatite_c_hcv", "hepatite C"),
+        ("Observado", "dado observado"),
+        ("Predito", "risco previsto"),
+        ("SE-1", "semana anterior"),
+        ("SE-2", "duas semanas atrás"),
+        ("CRS", "regional"),
+        ("VE municipal", "vigilância municipal"),
+        ("Δ%", "variação"),
+        ("TAT", "tempo de liberação"),
+        ("backlog", "fila"),
+    )
+    for a, b in repl:
+        t = t.replace(a, b)
+    t = re.sub(r"\bSE\s*20\d{2}-SE\d{2}\b", "semana de referência", t, flags=re.I)
+    t = re.sub(r"\s*↔\s*", " e ", t)
+    t = re.sub(r"\s{2,}", " ", t)
+    return t.strip()
+
+
+def _mun_titulo(mun: str) -> str:
+    m = (mun or "").strip()
+    if not m:
+        return "—"
+    # Mantém preposições minúsculas em nomes BR
+    parts = m.replace("_", " ").title().split()
+    small = {"De", "Da", "Do", "Das", "Dos", "E"}
+    out = [p.lower() if p in small and i > 0 else p for i, p in enumerate(parts)]
+    s = " ".join(out)
+    fixes = {
+        "Cuiaba": "Cuiabá",
+        "Varzea Grande": "Várzea Grande",
+        "Rondonopolis": "Rondonópolis",
+        "Tangara Da Serra": "Tangará da Serra",
+        "Juina": "Juína",
+        "Caceres": "Cáceres",
+    }
+    return fixes.get(s, s)
+
+
+def _fmt_variacao_pt(delta_pct: Any, tendencia: Any = "") -> str:
+    """Converte Δ%/+161.7% → 'subiu 162% vs semana anterior'."""
+    d = _parse_delta_pct(delta_pct)
+    tend = str(tendencia or "").strip()
+    if d is None:
+        if tend in {"↑", "^", "alta", "up"}:
+            return "em alta vs semana anterior"
+        if tend in {"↓", "v", "baixa", "down"}:
+            return "em baixa vs semana anterior"
+        return "vs semana anterior"
+    abs_d = abs(d)
+    pct = f"{abs_d:.0f}".replace(".", ",") if abs_d >= 10 else f"{abs_d:.1f}".replace(".", ",")
+    if d >= 8:
+        return f"subiu {pct}% vs semana anterior"
+    if d <= -8:
+        return f"caiu {pct}% vs semana anterior"
+    return f"quase estável ({'+' if d >= 0 else ''}{pct}% vs semana anterior)"
+
+
+def _flag_territorio_pt(flag: str) -> str:
+    f = (flag or "").casefold()
+    if "gal_sem_sinan" in f or "exame" in f and "notif" in f:
+        return "exame no laboratório sem notificação"
+    if "sinan_sem_gal" in f:
+        return "notificação sem exame no laboratório"
+    if f and f not in {"—", "-", "gap"}:
+        return flag.replace("_", " ")
+    return "divergência exame × notificação"
+
+
+def _faixa_pressao_pt(faixa: str) -> str:
+    f = (faixa or "").casefold()
+    if "critic" in f or "crít" in f:
+        return "crítica"
+    if "alta" in f or "alto" in f:
+        return "alta"
+    if "moder" in f:
+        return "moderada"
+    return (faixa or "—").replace("_", " ")
+
+
+def carregar_internacoes_alerta(
+    outdir: Path | str = OUTDIR_DEFAULT, *, top_por_familia: int = 5
 ) -> list[dict[str, str]]:
     """
-    Recomendações curtas para sinais prioritários do alerta (não só Juína HBV).
+    Internações por município × agravo (hepatite, tuberculose, dengue).
+    Prefere cruzamento SIH top; completa com agregados semanais do staging.
+    """
+    stage = Path(outdir) / "staging_dw"
+    familias_alvo = ("hepatite", "tuberculose", "dengue_arbovirose", "dengue")
+    labels = {
+        "hepatite": "hepatite",
+        "tuberculose": "tuberculose",
+        "dengue_arbovirose": "dengue",
+        "dengue": "dengue",
+    }
+    agg: dict[tuple[str, str], float] = {}
 
-    Cobre: VE CSV, picos de demanda, positividade, clusters vizinhos,
-    lacunas GAL×SINAN, pressão de rede e fila operacional.
-    Diversifica por tipo/agravo e limita a max_n (Telegram ≤4096).
+    def _acc(mun: str, fam_raw: str, n: float) -> None:
+        mun_u = (mun or "").strip().upper()
+        if not mun_u or mun_u in {"—", "-"}:
+            return
+        low = (fam_raw or "").casefold()
+        fam_key = ""
+        if "hepat" in low:
+            fam_key = "hepatite"
+        elif "tuber" in low:
+            fam_key = "tuberculose"
+        elif "dengue" in low or "arbov" in low:
+            fam_key = "dengue"
+        else:
+            return
+        key = (fam_key, mun_u)
+        agg[key] = agg.get(key, 0.0) + n
+
+    top_csv = stage / "cruzamento_sih_sia_top_mun.csv"
+    for r in _read_csv(top_csv):
+        n = _num(r.get("n"), 0) or 0
+        if n <= 0:
+            continue
+        _acc(
+            _cell(r, "municipio"),
+            _cell(r, "cid_familia", "familia"),
+            n,
+        )
+
+    sih_csv = stage / "sih_mun_cid_familia_agg.csv"
+    # Soma janela recente por mun×família (complementa hepatite/TB pouco presentes no top dengue)
+    for r in _read_csv(sih_csv):
+        fam = _cell(r, "cid_familia", "familia")
+        low = fam.casefold()
+        if not any(x in low for x in ("hepat", "tuber", "dengue", "arbov")):
+            continue
+        n = _num(r.get("n_internacoes"), _num(r.get("n"), 0)) or 0
+        if n <= 0:
+            continue
+        _acc(_cell(r, "municipio"), fam, n)
+
+    # Se cruzamento já trouxe dengue agregada e sih somou de novo, valores podem
+    # duplicar dengue — preferir o máximo por chave (já é soma do sih; top é total).
+    # Re-lê top dengue como autoridade se presente.
+    dengue_from_top: dict[str, float] = {}
+    for r in _read_csv(top_csv):
+        fam = _cell(r, "cid_familia", "familia").casefold()
+        if "dengue" in fam or "arbov" in fam:
+            mun = _cell(r, "municipio").upper()
+            dengue_from_top[mun] = _num(r.get("n"), 0) or 0
+    for mun, n in dengue_from_top.items():
+        agg[("dengue", mun)] = n
+
+    by_fam: dict[str, list[tuple[str, float]]] = {
+        "hepatite": [],
+        "tuberculose": [],
+        "dengue": [],
+    }
+    for (fam, mun), n in agg.items():
+        if fam in by_fam and n > 0:
+            by_fam[fam].append((mun, n))
+
+    out: list[dict[str, str]] = []
+    for fam in ("hepatite", "tuberculose", "dengue"):
+        ranked = sorted(by_fam[fam], key=lambda x: -x[1])[:top_por_familia]
+        for mun, n in ranked:
+            out.append(
+                {
+                    "familia": fam,
+                    "familia_pt": labels.get(fam, fam),
+                    "municipio": _mun_titulo(mun),
+                    "municipio_key": mun,
+                    "n": _fmt_num(n, 0),
+                    "n_raw": str(int(n)),
+                    "fonte": "internações (SIH)",
+                }
+            )
+    return out
+
+
+def coletar_recomendacoes_alerta(
+    rel: RelatorioCIEVS, *, max_n: int = 12
+) -> list[dict[str, str]]:
+    """
+    Recomendações curtas em português claro (top diversificado).
+
+    Cobre: VE, picos de demanda, positividade, vizinhos, exame sem notificação,
+    pressão de rede e fila operacional.
     """
     buckets: dict[str, list[dict[str, str]]] = {
         "ve": [],
@@ -1529,29 +1755,27 @@ def coletar_recomendacoes_alerta(
 
     def _add(tipo: str, dest: str, acao: str, key: str) -> None:
         texto = (acao or "").strip()
-        destinatario = (dest or "VE").strip() or "VE"
+        destinatario = (dest or "vigilância").strip() or "vigilância"
         if not texto or tipo not in buckets:
             return
         k = key.casefold()[:96]
         if k in seen:
             return
         seen.add(k)
-        if len(texto) > 160:
-            texto = texto[:159] + "…"
+        if len(texto) > 150:
+            texto = texto[:149] + "…"
         buckets[tipo].append({"tipo": tipo, "dest": destinatario, "acao": texto})
 
-    # 1) VE / CSV (já vêm com destinatário)
     for r in rel.ve_recomendacoes or []:
-        area = str(r.get("area") or "VE")
-        acao = str(r.get("acao") or "")
+        area = _suavizar_texto_alerta(str(r.get("area") or "vigilância"))
+        acao = _suavizar_texto_alerta(str(r.get("acao") or ""))
         prazo = str(r.get("prazo") or "").strip()
         if prazo and prazo not in {"—", "-"} and prazo not in acao:
-            acao = f"{acao} · {prazo}" if acao else prazo
-        agravo = str(r.get("agravo") or "")
-        _add("ve", area, acao, f"ve|{area[:32]}|{agravo}|{acao[:48]}")
+            acao = f"{acao} · prazo {prazo}" if acao else f"prazo {prazo}"
+        agravo = _nome_agravo_pt(str(r.get("agravo") or ""))
+        _add("ve", area, acao, f"ve|{area[:32]}|{agravo}|{acao[:40]}")
 
-    # 2) Picos de demanda (Δ% relevante ou tendência ↑)
-    for x in (rel.briefing_mais_solicitados or [])[:6]:
+    for x in (rel.briefing_mais_solicitados or [])[:8]:
         tgt = str(x.get("target") or "")
         if not tgt:
             continue
@@ -1563,62 +1787,59 @@ def coletar_recomendacoes_alerta(
         ):
             continue
         n_se = x.get("n_se", x.get("exames", "—"))
+        nome = _nome_agravo_pt(tgt)
+        var = _fmt_variacao_pt(x.get("delta_pct"), tend)
         _add(
             "demanda",
-            "VE municipal / CRS",
-            f"Investigar pico de solicitações de {tgt} "
-            f"(n={n_se}, Δ%={x.get('delta_pct', '—')}).",
+            "vigilância municipal / regional",
+            f"Investigar aumento de pedidos de exame de {nome} "
+            f"({n_se} exames; {var}).",
             f"demanda|{tgt}",
         )
 
-    # 3) Positividade elevada
-    for x in (rel.briefing_maior_positividade or [])[:4]:
+    for x in (rel.briefing_maior_positividade or [])[:6]:
         tgt = str(x.get("target") or "")
         if not tgt:
             continue
         flag = ""
         if str(x.get("baixa_amostra") or "") == "sim":
-            flag = " · amostra baixa"
+            flag = " (poucos exames — interpretar com cautela)"
+        nome = _nome_agravo_pt(tgt)
         _add(
             "positividade",
-            "Área técnica / VE",
-            f"Validar positividade de {tgt} "
-            f"({x.get('positividade')}; {x.get('exames')} ex.){flag}; "
-            f"estratificar marcadores se aplicável.",
+            "área técnica / vigilância",
+            f"Validar positividade alta de {nome} "
+            f"({x.get('positividade')} em {x.get('exames')} exames){flag}.",
             f"pos|{tgt}",
         )
 
-    # 4) Clusters vizinhos
-    for v in (rel.briefing_vizinhos or [])[:4]:
-        tgt = str(v.get("target") or "")
-        par = str(v.get("par") or "")
+    for v in (rel.briefing_vizinhos or [])[:6]:
+        tgt = _nome_agravo_pt(str(v.get("target") or ""))
+        par = str(v.get("par") or "").replace("↔", "e").replace("<->", "e")
         if not par:
             continue
         _add(
             "vizinhos",
-            "CIEVS / VE municipais",
-            f"Reforçar vigilância ativa no cluster {par} ({tgt or 'agravo'}); "
-            f"comunicar entre VE municipais.",
+            "CIEVS / vigilâncias municipais",
+            f"Reforçar vigilância entre municípios vizinhos {par} ({tgt}); "
+            f"alinhar busca ativa e comunicação.",
             f"viz|{tgt}|{par}",
         )
 
-    # 5) Lacunas GAL×SINAN
-    for g in (rel.briefing_gal_sinan or [])[:4]:
+    for g in (rel.briefing_gal_sinan or [])[:6]:
         mun = str(g.get("municipio") or "")
-        fam = str(g.get("familia") or "")
-        flag = str(g.get("flag") or "")
+        fam = _nome_agravo_pt(str(g.get("familia") or g.get("target") or ""))
         if not mun:
             continue
+        gap = _flag_territorio_pt(str(g.get("flag") or ""))
         _add(
             "gal_sinan",
-            "VE municipal",
-            f"Conciliar GAL×SINAN em {mun}×{fam or '—'} ({flag or 'gap'}); "
-            f"checar notificação e fluxo de coleta.",
+            "vigilância municipal",
+            f"Em {mun} ({fam}): {gap} — checar notificação e fluxo de coleta.",
             f"gs|{mun}|{fam}",
         )
 
-    # 6) Pressão de rede (crítica/alta)
-    for p in (rel.top_pressao or [])[:4]:
+    for p in (rel.top_pressao or [])[:6]:
         faixa = str(p.get("faixa") or "").casefold()
         if not any(x in faixa for x in ("critic", "crít", "alta", "alto")):
             continue
@@ -1627,13 +1848,13 @@ def coletar_recomendacoes_alerta(
             continue
         _add(
             "pressao",
-            "LACEN / CRS",
-            f"Aliviar pressão de rede em {mun} ({p.get('faixa')}); "
-            f"revisar TAT, backlog e capacidade local.",
+            "LACEN / regional",
+            f"Aliviar pressão laboratorial em {mun} "
+            f"(faixa {_faixa_pressao_pt(str(p.get('faixa')))}): "
+            f"priorizar liberação de laudos, reduzir fila e reforçar coleta.",
             f"press|{mun}",
         )
 
-    # 7) Fila operacional — 1 por sinal
     seen_sinal: set[str] = set()
     for a in rel.fila_acoes or []:
         sig = str(a.get("sinal") or "")
@@ -1643,15 +1864,14 @@ def coletar_recomendacoes_alerta(
         mun = str(a.get("municipio") or "")
         dest = str(a.get("responsavel") or "").strip()
         if not dest or dest == "—":
-            dest = "VE municipal / CRS"
+            dest = "vigilância municipal / regional"
         acao = str(a.get("acao") or "").strip()
         prazo = str(a.get("prazo") or "").strip()
         if prazo and prazo not in {"—", "-"} and prazo not in acao:
-            acao = f"{acao} · {prazo}" if acao else prazo
+            acao = f"{acao} · prazo {prazo}" if acao else f"prazo {prazo}"
         texto = f"{mun}: {acao}" if mun and acao else (acao or mun)
-        _add("fila", dest, texto, f"fila|{sig}|{mun}")
+        _add("fila", dest, _suavizar_texto_alerta(texto), f"fila|{sig}|{mun}")
 
-    # Round-robin por tipo para cobrir agravos/sinais distintos
     order = (
         "ve",
         "demanda",
@@ -1677,6 +1897,273 @@ def coletar_recomendacoes_alerta(
         if not progressed:
             break
     return out
+
+
+def coletar_acoes_lacen(rel: RelatorioCIEVS, *, max_n: int = 6) -> list[str]:
+    """Ações explícitas da rede LACEN para aliviar pressão (não só texto de VE)."""
+    acoes: list[str] = []
+    seen: set[str] = set()
+
+    def _push(txt: str) -> None:
+        t = (txt or "").strip()
+        if not t:
+            return
+        k = t.casefold()[:80]
+        if k in seen:
+            return
+        seen.add(k)
+        acoes.append(t)
+
+    press = [
+        p
+        for p in (rel.top_pressao or [])
+        if any(
+            x in str(p.get("faixa") or "").casefold()
+            for x in ("critic", "crít", "alta", "alto")
+        )
+    ]
+    if press:
+        muns = ", ".join(_mun_titulo(str(p.get("municipio"))) for p in press[:5])
+        _push(
+            f"Priorizar liberação de laudos (tempo de resposta) e reduzir "
+            f"fila acumulada em: {muns}."
+        )
+        tops = press[:3]
+        det = "; ".join(
+            f"{_mun_titulo(str(p.get('municipio')))} (fila {p.get('backlog', '—')}, "
+            f"rejeição {p.get('rejeicao', '—')})"
+            for p in tops
+        )
+        _push(f"Revisar capacidade local e redistribuir exames se preciso: {det}.")
+
+    # Fluxo de amostras / reforço em municípios prioritários do parecer
+    foco_muns: list[str] = []
+    for c in rel.ve_casos or []:
+        mun = str(c.get("municipio") or "").strip()
+        if mun and mun not in foco_muns:
+            foco_muns.append(mun)
+    for p in press[:3]:
+        mun = str(p.get("municipio") or "").strip()
+        if mun and mun not in foco_muns:
+            foco_muns.append(mun)
+    # TB Cuiabá/VG e Juína HBV se aparecerem em localidades/vizinhos
+    for loc in rel.briefing_localidades or []:
+        mun = str(loc.get("municipio") or "").upper()
+        tgt = str(loc.get("target") or "").casefold()
+        if mun in {"JUINA", "CUIABA", "VARZEA GRANDE"} and (
+            "hepat" in tgt or "tuber" in tgt or "dengue" in tgt
+        ):
+            if mun not in {m.upper() for m in foco_muns}:
+                foco_muns.append(str(loc.get("municipio")))
+    if foco_muns:
+        _push(
+            "Reforçar fluxo de amostras (coleta → transporte → recepção) e "
+            f"apoio técnico aos municípios: "
+            f"{', '.join(_mun_titulo(m) for m in foco_muns[:5])}."
+        )
+
+    gaps = (rel.briefing_gal_sinan or [])[:3]
+    if gaps:
+        muns = ", ".join(
+            f"{_mun_titulo(str(g.get('municipio')))} "
+            f"({_nome_agravo_pt(str(g.get('familia') or ''))})"
+            for g in gaps
+            if g.get("municipio")
+        )
+        if muns:
+            _push(
+                f"Apoiar conciliação exame × notificação e orientar unidades "
+                f"coletoras em: {muns}."
+            )
+
+    sla = (rel.sla_por_familia or [])[:4]
+    for s in sla:
+        fam_raw = str(s.get("familia") or "")
+        fam = _nome_agravo_pt(fam_raw)
+        if fam.casefold() in {"outros", "outro", "agravo"}:
+            continue
+        crise = str(s.get("sla_crise") or "").casefold()
+        pct = str(s.get("pct_48h") or "")
+        try:
+            v = float(str(pct).replace("%", "").replace(",", "."))
+        except ValueError:
+            v = None
+        if crise == "sim" or (v is not None and v < 50):
+            _push(
+                f"Acelerar liberação de exames de {fam} "
+                f"(hoje {pct} em até 48h; meta operacional da rede)."
+            )
+
+    if rel.kpi_tat_p90 and rel.kpi_tat_p90 not in {"—", "-"}:
+        _push(
+            f"Monitorar tempo de liberação (mediana {rel.kpi_tat_p50}d / "
+            f"p90 {rel.kpi_tat_p90}d) e abrir mutirão se a fila continuar alta."
+        )
+
+    if not acoes:
+        _push(
+            "Manter plantão de liberação e triagem de prioridades da rede LACEN "
+            "enquanto a pressão laboratorial estiver elevada."
+        )
+    return acoes[:max_n]
+
+
+def coletar_municipios_prioritarios(
+    rel: RelatorioCIEVS,
+    internacoes: list[dict[str, str]] | None = None,
+    *,
+    max_n: int = 5,
+) -> list[str]:
+    """Linhas legíveis: exames, positivos, internações e vizinhos p/ mun prioritários."""
+    internacoes = internacoes if internacoes is not None else list(
+        getattr(rel, "internacoes_por_agravo", None) or []
+    )
+    intern_idx: dict[tuple[str, str], str] = {}
+    for row in internacoes:
+        fam = str(row.get("familia") or "").casefold()
+        mun = str(row.get("municipio_key") or row.get("municipio") or "").upper()
+        intern_idx[(fam, mun)] = str(row.get("n") or "0")
+
+    def _intern(mun: str, *fams: str) -> str:
+        mun_u = mun.upper()
+        for fam in fams:
+            n = intern_idx.get((fam, mun_u))
+            if n and n not in {"0", "—"}:
+                return n
+        return "0"
+
+    def _loc_stats(mun_keys: set[str], agravo_substr: tuple[str, ...]) -> dict[str, str]:
+        best: dict[str, str] = {"exames": "—", "positivos": "—", "positividade": "—", "target": ""}
+        for loc in rel.briefing_localidades or []:
+            mun = str(loc.get("municipio") or "").upper()
+            tgt = str(loc.get("target") or "").casefold()
+            if mun not in mun_keys:
+                continue
+            if agravo_substr and not any(a in tgt for a in agravo_substr):
+                continue
+            best = {
+                "exames": str(loc.get("exames") or "—"),
+                "positivos": str(loc.get("positivos") or "—"),
+                "positividade": str(loc.get("positividade") or "—"),
+                "target": str(loc.get("target") or ""),
+                "municipio": str(loc.get("municipio") or mun),
+            }
+            break
+        for c in rel.ve_casos or []:
+            mun = str(c.get("municipio") or "").upper()
+            tgt = str(c.get("target") or "").casefold()
+            if mun not in mun_keys:
+                continue
+            if agravo_substr and not any(a in tgt for a in agravo_substr):
+                continue
+            return {
+                "exames": str(c.get("exames") or best["exames"]),
+                "positivos": str(c.get("positivos") or best["positivos"]),
+                "positividade": str(c.get("positividade") or best["positividade"]),
+                "target": str(c.get("target") or best.get("target") or ""),
+                "municipio": str(c.get("municipio") or mun),
+            }
+        for t in rel.top_positivos or []:
+            mun = str(t.get("municipio") or "").upper()
+            fam = str(t.get("familia") or "").casefold()
+            if mun not in mun_keys:
+                continue
+            if agravo_substr and not any(a in fam for a in agravo_substr):
+                continue
+            return {
+                "exames": str(t.get("exames") or best["exames"]),
+                "positivos": str(t.get("positivos") or "—"),
+                "positividade": str(t.get("positividade") or "—"),
+                "target": str(t.get("familia") or ""),
+                "municipio": str(t.get("municipio") or mun),
+            }
+        return best
+
+    def _vizinhos_para(mun_keys: set[str], agravo_substr: tuple[str, ...]) -> str:
+        parts: list[str] = []
+        for v in rel.briefing_vizinhos or []:
+            par = str(v.get("par") or "")
+            tgt = str(v.get("target") or "").casefold()
+            if agravo_substr and not any(a in tgt for a in agravo_substr):
+                continue
+            par_u = par.upper()
+            if not any(m in par_u for m in mun_keys):
+                continue
+            parts.append(
+                _suavizar_texto_alerta(
+                    f"{par} ({v.get('positivos', '')})"
+                ).strip()
+            )
+            if len(parts) >= 2:
+                break
+        return "; ".join(parts) if parts else "—"
+
+    lines: list[str] = []
+
+    # Juína × hepatite B
+    st = _loc_stats({"JUINA"}, ("hepat", "hbv"))
+    if st.get("exames") not in {None, "—", ""} or any(
+        "JUINA" in str(c.get("municipio") or "").upper() for c in (rel.ve_casos or [])
+    ):
+        mun = st.get("municipio") or "JUINA"
+        intern = _intern("JUINA", "hepatite")
+        viz = _vizinhos_para({"JUINA"}, ("hepat", "hbv"))
+        lines.append(
+            f"Juína (hepatite B): {st.get('exames', '—')} exames, "
+            f"{st.get('positivos', '—')} positivos ({st.get('positividade', '—')}); "
+            f"internações: {intern}; vizinhos: {viz}."
+        )
+
+    # Cuiabá / Várzea Grande × tuberculose
+    st_c = _loc_stats({"CUIABA", "CUIABÁ"}, ("tuber",))
+    st_v = _loc_stats({"VARZEA GRANDE", "VÁRZEA GRANDE"}, ("tuber",))
+    if st_c.get("positivos") not in {None, "—", "0", ""} or st_v.get("positivos") not in {
+        None,
+        "—",
+        "0",
+        "",
+    }:
+        viz = _vizinhos_para(
+            {"CUIABA", "CUIABÁ", "VARZEA GRANDE", "VÁRZEA GRANDE"}, ("tuber",)
+        )
+        lines.append(
+            f"Cuiabá (tuberculose): {st_c.get('exames', '—')} exames, "
+            f"{st_c.get('positivos', '—')} positivos; "
+            f"internações: {_intern('CUIABA', 'tuberculose')}. "
+            f"Várzea Grande (tuberculose): {st_v.get('exames', '—')} exames, "
+            f"{st_v.get('positivos', '—')} positivos; "
+            f"internações: {_intern('VARZEA GRANDE', 'tuberculose')}. "
+            f"Vizinhos: {viz}."
+        )
+
+    # Municípios em pressão (lab)
+    for p in (rel.top_pressao or [])[:3]:
+        mun = str(p.get("municipio") or "")
+        if not mun:
+            continue
+        mun_u = mun.upper()
+        st_p = _loc_stats({mun_u}, ())
+        # Preferir dengue/TB se houver localidade
+        for pref in (("dengue",), ("tuber",), ("hepat",)):
+            alt = _loc_stats({mun_u}, pref)
+            if alt.get("exames") not in {None, "—", "", "0"}:
+                st_p = alt
+                break
+        agr = _nome_agravo_pt(str(st_p.get("target") or "rede laboratorial"))
+        intern = _intern(mun_u, "dengue", "tuberculose", "hepatite")
+        viz = _vizinhos_para({mun_u}, ())
+        lines.append(
+            f"{_mun_titulo(mun)} "
+            f"(pressão {_faixa_pressao_pt(str(p.get('faixa')))}): "
+            f"{st_p.get('exames', '—')} exames, {st_p.get('positivos', '—')} positivos"
+            f"{f' ({agr})' if st_p.get('target') else ''}; "
+            f"fila {p.get('backlog', '—')}; internações: {intern}; "
+            f"vizinhos: {viz}."
+        )
+        if len(lines) >= max_n:
+            break
+
+    return lines[:max_n]
 
 
 def _pressao_predita_top(src: RelatorioSources, top_n: int = 3) -> list[dict[str, str]]:
@@ -1949,6 +2436,7 @@ def montar_relatorio(
         briefing_cruzamento_sih_sia_caveat=str(
             (briefing.get("cruzamento_sih_sia") or {}).get("caveat") or ""
         ),
+        internacoes_por_agravo=carregar_internacoes_alerta(outdir, top_por_familia=5),
         briefing_sinais_rede=dict(briefing.get("sinais_rede") or {}),
         briefing_nota_igg=str(briefing.get("nota_igg") or ""),
         briefing_fontes=list(briefing.get("fontes") or []),
@@ -2001,10 +2489,32 @@ def _tg_clip(text: str, n: int) -> str:
     return t[: max(0, n - 1)].rstrip() + "…"
 
 
-def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
-    """HTML compacto CIEVS (parse_mode=HTML). Ícones institucionais + reco multi-sinal."""
+def _tg_se_legivel(se: str) -> str:
+    """2026-SE30 → semana epidemiológica 30/2026."""
+    parsed = _parse_se(se)
+    if not parsed:
+        return se or "—"
+    year, week = parsed
+    return f"semana epidemiológica {week:02d}/{year}"
+
+
+def _tg_variacao_kpi(var_raw: str) -> str:
+    """KPI variação (−1% / +12%) em português."""
+    s = (var_raw or "").strip()
+    d = _parse_delta_pct(s)
+    if d is None:
+        return s or "—"
+    pct = f"{abs(d):.0f}".replace(".", ",")
+    if d > 0.5:
+        return f"subiu {pct}% vs semana anterior"
+    if d < -0.5:
+        return f"caiu {pct}% vs semana anterior"
+    return "quase estável vs semana anterior"
+
+
+def _build_telegram_part1(rel: RelatorioCIEVS) -> list[str]:
+    """Situação: resumo, demanda, positividade, território, internações, municípios."""
     fonte = rel.fonte_primaria or "—"
-    header_fonte = f"Fonte: {fonte}"
     atraso_short = ""
     av = rel.aviso_atraso or ""
     m_atraso = re.search(
@@ -2012,27 +2522,36 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
     )
     if m_atraso:
         se_esp = m_atraso.group(2).rstrip(".,;")
-        atraso_short = f" · atraso {m_atraso.group(1)} SE (esp. {se_esp})"
+        atraso_short = (
+            f" · bases atrasadas {m_atraso.group(1)} semanas "
+            f"(esperada {se_esp})"
+        )
 
+    leitura = (rel.leitura_situacional or "—").replace("_", " ")
     lines: list[str] = [
         f"<b>📡 {html.escape(_cabecalho(rel))}</b>",
-        f"SE {html.escape(rel.semana_epidemiologica)} · "
-        f"<b>{html.escape(rel.leitura_situacional)}</b>",
-        html.escape(f"{header_fonte}{atraso_short}"),
+        f"{html.escape(_tg_se_legivel(rel.semana_epidemiologica))} · "
+        f"<b>{html.escape(leitura)}</b>",
+        html.escape(f"Fonte: {fonte}{atraso_short}"),
         html.escape(rel.gerado_em or ""),
         "",
-        "📡 <b>KPIs</b>",
+        "📊 <b>Resumo</b>",
         html.escape(
-            f"Pos {rel.kpi_positivos_se} ({rel.kpi_variacao_pct}) · "
-            f"Exames {rel.kpi_exames_se} · "
-            f"TAT {rel.kpi_tat_p50}/{rel.kpi_tat_p90}d · %≤48h {rel.kpi_pct_48h}"
+            f"Positivos: {rel.kpi_positivos_se} "
+            f"({_tg_variacao_kpi(rel.kpi_variacao_pct)}) · "
+            f"Exames: {rel.kpi_exames_se}"
         ),
         html.escape(
-            f"Pressão máx {rel.kpi_pressao_max} · Silêncios {rel.kpi_silencios} · "
-            f"Confirmação {rel.kpi_confirmacao}"
+            f"Tempo de liberação: {rel.kpi_tat_p50} / {rel.kpi_tat_p90} dias "
+            f"(mediana / 90%) · liberados em até 48h: {rel.kpi_pct_48h}"
+        ),
+        html.escape(
+            f"Pressão máxima: {rel.kpi_pressao_max} · "
+            f"municípios em silêncio laboratorial: {rel.kpi_silencios} · "
+            f"confirmação de alertas: {rel.kpi_confirmacao}"
         ),
     ]
-    if av and "atrasada" not in atraso_short:
+    if av and "atrasada" not in atraso_short.casefold():
         extra = av
         if "atrasada" in av.casefold() and atraso_short:
             extra = re.sub(
@@ -2047,87 +2566,169 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
         if extra:
             lines.append(f"<i>{html.escape(_tg_clip(extra, 180))}</i>")
 
-    sol = rel.briefing_mais_solicitados[:4]
+    sol = (rel.briefing_mais_solicitados or [])[:5]
     if sol:
-        lines.extend(["", "🧪 <b>Demanda</b> <i>(Δ SE-1)</i>"])
+        lines.extend(["", "🧪 <b>Exames mais pedidos</b> <i>(top 5)</i>"])
         for x in sol:
+            nome = _nome_agravo_pt(str(x.get("target") or ""))
+            n_se = x.get("n_se", x.get("exames", "—"))
+            var = _fmt_variacao_pt(x.get("delta_pct"), x.get("tendencia"))
             lines.append(
                 html.escape(
-                    f"• {x['target']}: n={x.get('n_se', x.get('exames', '—'))} "
-                    f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} · "
-                    f"+{x.get('positivos', '—')} ({x.get('positividade', '—')})"
+                    f"• {nome}: {n_se} exames, {var}; "
+                    f"{x.get('positivos', '—')} positivos "
+                    f"({x.get('positividade', '—')})"
                 )
             )
 
-    posi = rel.briefing_maior_positividade[:3]
+    posi = (rel.briefing_maior_positividade or [])[:5]
     if posi:
-        lines.extend(["", "📈 <b>Positividade</b>"])
+        lines.extend(["", "📈 <b>Maior positividade</b> <i>(top 5)</i>"])
         for x in posi:
-            flag = " · amostra↓" if x.get("baixa_amostra") == "sim" else ""
-            igg = " · IgG" if x.get("caveat_igg") == "sim" else ""
+            nome = _nome_agravo_pt(str(x.get("target") or ""))
+            flag = (
+                " — poucos exames, interpretar com cautela"
+                if x.get("baixa_amostra") == "sim"
+                else ""
+            )
+            var = _fmt_variacao_pt(x.get("delta_pct"), x.get("tendencia"))
             lines.append(
                 html.escape(
-                    f"• {x['target']}: {x['positividade']} "
-                    f"Δ%={x.get('delta_pct', '—')} {x.get('tendencia', '→')} "
-                    f"({x.get('exames', '—')} ex.){flag}{igg}"
+                    f"• {nome}: {x.get('positividade', '—')} "
+                    f"({x.get('exames', '—')} exames; {var}){flag}"
                 )
             )
 
     terr: list[str] = []
-    for v in rel.briefing_vizinhos[:3]:
+    for v in (rel.briefing_vizinhos or [])[:5]:
+        nome = _nome_agravo_pt(str(v.get("target") or ""))
+        par = _suavizar_texto_alerta(str(v.get("par") or ""))
         terr.append(
-            f"• Vizinhos {v.get('target', '')}: {v.get('par', '')} "
-            f"({v.get('positivos', '')})"
+            f"• Vizinhos ({nome}): {par} ({v.get('positivos', '')})"
         )
-    for g in rel.briefing_gal_sinan[:2]:
+    for g in (rel.briefing_gal_sinan or [])[:5]:
+        if len(terr) >= 8:
+            break
+        fam = _nome_agravo_pt(str(g.get("familia") or g.get("target") or ""))
+        gap = _flag_territorio_pt(str(g.get("flag") or ""))
         terr.append(
-            f"• GAL×SINAN {g.get('municipio')}×{g.get('familia')}: {g.get('flag')}"
+            f"• {_mun_titulo(str(g.get('municipio')))} ({fam}): {gap}"
         )
     if terr:
-        lines.extend(["", "🗺️ <b>Território</b>"])
-        for t in terr:
-            lines.append(html.escape(_tg_clip(t, 120)))
+        lines.extend(["", "🗺️ <b>Território e vizinhos</b>"])
+        for t in terr[:8]:
+            lines.append(html.escape(_tg_clip(t, 140)))
 
-    recos = coletar_recomendacoes_alerta(rel, max_n=10)
+    intern = list(rel.internacoes_por_agravo or [])
+    if not intern and rel.briefing_cruzamento_sih_sia:
+        # fallback leve a partir do cruzamento já no relatório
+        for row in rel.briefing_cruzamento_sih_sia[:12]:
+            fam = _nome_agravo_pt(str(row.get("cid_familia") or ""))
+            intern.append(
+                {
+                    "familia": fam,
+                    "familia_pt": fam,
+                    "municipio": str(row.get("municipio") or "—"),
+                    "n": str(row.get("n") or "0"),
+                }
+            )
+    if intern:
+        lines.extend(["", "🏥 <b>Internações por agravo</b> <i>(top 5)</i>"])
+        by_fam: dict[str, list[dict[str, str]]] = {}
+        for row in intern:
+            fam = str(row.get("familia_pt") or row.get("familia") or "agravo")
+            by_fam.setdefault(fam, []).append(row)
+        for fam in ("hepatite", "tuberculose", "dengue"):
+            rows = by_fam.get(fam) or []
+            if not rows:
+                # tenta chave parcial
+                for k, v in by_fam.items():
+                    if fam in k.casefold():
+                        rows = v
+                        break
+            if not rows:
+                continue
+            bits = [
+                f"{r.get('municipio')} ({r.get('n')})"
+                for r in rows[:5]
+            ]
+            lines.append(html.escape(f"• {fam.capitalize()}: " + "; ".join(bits)))
+
+    press = (rel.top_pressao or [])[:5]
+    if press:
+        lines.extend(["", "🏭 <b>Municípios sob pressão laboratorial</b> <i>(top 5)</i>"])
+        for p in press:
+            lines.append(
+                html.escape(
+                    f"• {_mun_titulo(str(p.get('municipio')))}: faixa "
+                    f"{_faixa_pressao_pt(str(p.get('faixa')))}, "
+                    f"fila {p.get('backlog', '—')}, "
+                    f"rejeição {p.get('rejeicao', '—')}"
+                )
+            )
+
+    mun_lines = coletar_municipios_prioritarios(rel, intern, max_n=5)
+    if mun_lines:
+        lines.extend(["", "📍 <b>Municípios prioritários</b>"])
+        for ml in mun_lines:
+            lines.append(html.escape(_tg_clip(f"• {ml}", 220)))
+
+    return lines
+
+
+def _build_telegram_part2(rel: RelatorioCIEVS, *, part_label: bool = True) -> list[str]:
+    """Ações LACEN, recomendações, risco previsto, parecer."""
+    lines: list[str] = []
+    if part_label:
+        lines.extend(
+            [
+                f"<b>📡 {html.escape(get_nome_ferramenta())} — Parte 2</b> "
+                f"<i>(ações e recomendações)</i>",
+                html.escape(_tg_se_legivel(rel.semana_epidemiologica)),
+                "",
+            ]
+        )
+
+    acoes = coletar_acoes_lacen(rel, max_n=6)
+    if acoes:
+        lines.extend(["🔬 <b>Como o LACEN alivia a pressão</b>"])
+        for i, a in enumerate(acoes, 1):
+            lines.append(html.escape(f"{i}. {_tg_clip(a, 180)}"))
+
+    recos = coletar_recomendacoes_alerta(rel, max_n=8)
     if recos:
-        lines.extend(["", "⚠️ <b>Recomendações</b>"])
+        lines.extend(["", "⚠️ <b>Recomendações</b> <i>(top)</i>"])
         for i, r in enumerate(recos, 1):
-            dest = _tg_clip(str(r.get("dest") or "VE"), 36)
-            acao = _tg_clip(str(r.get("acao") or ""), 130)
+            dest = _tg_clip(str(r.get("dest") or "vigilância"), 40)
+            acao = _tg_clip(str(r.get("acao") or ""), 140)
             lines.append(
                 f"<b>{i}. {html.escape(dest)}</b> — {html.escape(acao)}"
             )
 
-    parecer = _parecer_alerta_line(rel.ve_casos, rel.ve_resumo)
-    if parecer:
-        lines.extend(["", "✅ <b>Parecer</b>"])
-        lines.append(html.escape(_tg_clip(parecer, 220)))
-
-    pred_ok = [
-        p
-        for p in (rel.preditos_alta or [])
-        if not _driver_is_infra_only(p.get("driver") or "", p.get("driver") or "")
-    ][:2]
-    if pred_ok:
-        lines.extend(["", "🔮 <b>Predito</b> <i>(risco agravo)</i>"])
-        for p in pred_ok:
-            fam = p.get("familia") or ""
-            fam_txt = f"/{fam}" if fam and fam != "—" else ""
+    preditos = (rel.preditos_alta or [])[:5]
+    if preditos:
+        lines.extend(["", "🔮 <b>Risco previsto</b>"])
+        for p in preditos:
+            fam = _nome_agravo_pt(str(p.get("familia") or ""))
+            banda = str(p.get("banda") or "").strip()
+            banda_pt = banda.lower() if banda else "alto"
+            mun = p.get("municipio") or "—"
             lines.append(
                 html.escape(
-                    _tg_clip(
-                        f"• {p.get('municipio')}{fam_txt} [{p.get('banda')}] "
-                        f"{p.get('driver')}",
-                        110,
-                    )
+                    f"• Risco previsto {banda_pt} em "
+                    f"{_mun_titulo(str(mun))} ({fam})"
                 )
             )
 
-    if rel.top_pressao:
-        top_p = ", ".join(
-            f"{p['municipio']} ({p['faixa']})" for p in rel.top_pressao[:3]
+    parecer = _parecer_alerta_line(rel.ve_casos, rel.ve_resumo)
+    if parecer:
+        parecer_pt = (
+            parecer.replace("HBV", "hepatite B")
+            .replace("ex.", "exames")
+            .replace("sinal lab", "sinal no laboratório")
         )
-        lines.append(html.escape(_tg_clip(f"Rede: {top_p}", 120)))
+        lines.extend(["", "✅ <b>Parecer</b>"])
+        lines.append(html.escape(_tg_clip(parecer_pt, 240)))
 
     lines.extend(
         [
@@ -2135,13 +2736,45 @@ def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
             f'<a href="{html.escape(rel.dashboard_url)}">Painel LACEN</a>',
         ]
     )
+    return lines
 
-    text_out = "\n".join(lines).strip()
-    if len(text_out) > max_chars:
-        link = f'\n<a href="{html.escape(rel.dashboard_url)}">Painel LACEN</a>'
-        budget = max_chars - len(link) - 12
-        text_out = text_out[:budget].rstrip() + "\n…(truncado)" + link
-    return text_out
+
+def to_telegram_messages(
+    rel: RelatorioCIEVS, *, max_chars: int = 3900
+) -> list[str]:
+    """
+    1 ou 2 mensagens HTML para Telegram (limite 4096).
+    Parte 1 = situação; Parte 2 = ações LACEN + recomendações + risco.
+    """
+    link = f'\n<a href="{html.escape(rel.dashboard_url)}">Painel LACEN</a>'
+
+    def _clip_msg(text: str) -> str:
+        t = text.strip()
+        if len(t) <= max_chars:
+            return t
+        budget = max_chars - len(link) - 14
+        return t[:budget].rstrip() + "\n…(truncado)" + link
+
+    part1 = "\n".join(_build_telegram_part1(rel)).strip()
+    part2 = "\n".join(_build_telegram_part2(rel, part_label=True)).strip()
+
+    # Cabe na mesma mensagem? Preferir 1 se folgado.
+    combined_lines = (
+        _build_telegram_part1(rel)
+        + [""]
+        + _build_telegram_part2(rel, part_label=False)
+    )
+    combined = "\n".join(combined_lines).strip()
+    if len(combined) <= max_chars:
+        return [_clip_msg(combined)]
+
+    return [_clip_msg(part1), _clip_msg(part2)]
+
+
+def to_telegram_markdown(rel: RelatorioCIEVS, *, max_chars: int = 3900) -> str:
+    """Compat: retorna a 1ª mensagem (ou a única). Use to_telegram_messages."""
+    msgs = to_telegram_messages(rel, max_chars=max_chars)
+    return msgs[0] if msgs else ""
 
 
 def to_email_subject(rel: RelatorioCIEVS) -> str:
@@ -2262,14 +2895,27 @@ def to_email_plain(rel: RelatorioCIEVS) -> str:
             + (", ".join(presentes) if presentes else "(nenhuma extra no staging)")
         )
     if rel.briefing_cruzamento_sih_sia:
-        lines.append("Cruzamento SIH/SIA (VW_INTERNACAO proxy):")
+        lines.append("Cruzamento SIH/SIA (internações correlatas):")
         for row in rel.briefing_cruzamento_sih_sia[:6]:
             lines.append(
-                f"  · {row.get('municipio')} × {row.get('cid_familia')}: "
-                f"n={row.get('n')} [{row.get('fonte', 'SIH')}]"
+                f"  · {row.get('municipio')} × "
+                f"{_nome_agravo_pt(str(row.get('cid_familia') or ''))}: "
+                f"n={row.get('n')} [{row.get('fonte', 'internações')}]"
             )
         if rel.briefing_cruzamento_sih_sia_caveat:
             lines.append(f"  Caveat: {rel.briefing_cruzamento_sih_sia_caveat[:180]}")
+    if rel.internacoes_por_agravo:
+        lines.append("Internações por agravo (top mun):")
+        for row in rel.internacoes_por_agravo[:15]:
+            lines.append(
+                f"  · {row.get('familia_pt') or row.get('familia')}: "
+                f"{row.get('municipio')} n={row.get('n')}"
+            )
+    acoes_l = coletar_acoes_lacen(rel, max_n=6)
+    if acoes_l:
+        lines.append("Ações LACEN (alívio de pressão):")
+        for i, a in enumerate(acoes_l, 1):
+            lines.append(f"  {i}. {a}")
     rede = rel.briefing_sinais_rede or {}
     if rede.get("presente"):
         lines.append("Sinais IndicaSUS / SISREG:")
@@ -2665,21 +3311,23 @@ Sala de situação — mesma SE de referência. Rótulos <b>Observado</b> (lab) 
     ],
     "(inventário vazio)",
 )}
-<p><b>Cruzamento SIH/SIA</b> (proxy <code>VW_INTERNACAO</code>)</p>
+<p><b>Internações por agravo</b> (hospital — top municípios)</p>
 {_html_table(
-    ["Município", "Família CID", "N", "Fonte"],
+    ["Agravo", "Município", "N", "Fonte"],
     [
         "<tr style='border-bottom:1px solid #e6ebf2'>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('familia_pt') or r.get('familia','—'))}</td>"
         f"<td style='padding:6px 8px'>{html.escape(r.get('municipio','—'))}</td>"
-        f"<td style='padding:6px 8px'>{html.escape(r.get('cid_familia','—'))}</td>"
         f"<td style='padding:6px 8px'>{html.escape(str(r.get('n','—')))}</td>"
-        f"<td style='padding:6px 8px'>{html.escape(r.get('fonte','SIH'))}</td>"
+        f"<td style='padding:6px 8px'>{html.escape(r.get('fonte','internações'))}</td>"
         "</tr>"
-        for r in rel.briefing_cruzamento_sih_sia[:10]
+        for r in (rel.internacoes_por_agravo or [])[:15]
     ],
-    "(sem agregados SIH/SIA nesta remessa)",
+    "(sem agregados de internação nesta remessa)",
 )}
 {f"<p style='font-size:12px;color:#5a6a82'><i>{html.escape(rel.briefing_cruzamento_sih_sia_caveat[:280])}</i></p>" if rel.briefing_cruzamento_sih_sia_caveat else ""}
+<p><b>Como o LACEN alivia a pressão</b></p>
+<ul>{"".join(f"<li>{html.escape(a)}</li>" for a in coletar_acoes_lacen(rel, max_n=6)) or "<li>(sem ações específicas nesta remessa)</li>"}</ul>
 <p><b>Sinais IndicaSUS / SISREG</b></p>
 {_html_table(
     ["Fonte", "Município/Tipo", "Status", "N"],
@@ -2792,4 +3440,6 @@ if __name__ == "__main__":
     print("-" * 60)
     print(plain)
     print("-" * 60)
-    print(to_telegram_markdown(rel))
+    for i, msg in enumerate(to_telegram_messages(rel), 1):
+        print(f"--- Telegram parte {i} ---")
+        print(msg)
