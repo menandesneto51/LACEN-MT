@@ -1643,6 +1643,11 @@ MODULOS = [
     "Predição e alertas",
     "Dados e qualidade",
 ]
+# Atalhos da aba Sobre: aplicar nav antes de instanciar o radio (evita
+# StreamlitWidgetAlreadyInstantiatedError ao mutar key do widget no mesmo run).
+_nav_destino = st.session_state.pop("_nav_modulo", None)
+if _nav_destino in MODULOS:
+    st.session_state.modulo_principal = _nav_destino
 modulo = st.radio("Módulo", MODULOS, horizontal=True, label_visibility="collapsed", key="modulo_principal")
 
 
@@ -1685,16 +1690,16 @@ if modulo == "Sobre o sistema":
     st.markdown("### Atalhos")
     a1, a2, a3 = st.columns(3)
     with a1:
-        if st.button("Ir para Visão executiva", use_container_width=True, type="primary"):
-            st.session_state.modulo_principal = "Visão executiva"
+        if st.button("Ir para Visão executiva", use_container_width=True, type="primary", key="nav_sobre_exec"):
+            st.session_state._nav_modulo = "Visão executiva"
             st.rerun()
     with a2:
-        if st.button("Ir para Predição e alertas", use_container_width=True):
-            st.session_state.modulo_principal = "Predição e alertas"
+        if st.button("Ir para Predição e alertas", use_container_width=True, key="nav_sobre_pred"):
+            st.session_state._nav_modulo = "Predição e alertas"
             st.rerun()
     with a3:
-        if st.button("Ir para Dados e qualidade", use_container_width=True):
-            st.session_state.modulo_principal = "Dados e qualidade"
+        if st.button("Ir para Dados e qualidade", use_container_width=True, key="nav_sobre_dados"):
+            st.session_state._nav_modulo = "Dados e qualidade"
             st.rerun()
 
     _painel_url = (
