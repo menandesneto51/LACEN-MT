@@ -31,7 +31,7 @@ from lacen_auth import auth_sidebar_status, require_auth
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
 
-VERSAO_DASHBOARD_LACEN = "v5.5.1-sobre-atalhos"
+VERSAO_DASHBOARD_LACEN = "v5.5.2-exec-kanban-mapa"
 
 # Pasta padrão pública (Cloud / uso normal). Override só em admin ou diagnóstico.
 DATA_DIR = Path("saida_pipeline")
@@ -418,6 +418,101 @@ def show_table(df: pd.DataFrame, title: str, max_rows: int = 500, key: Optional[
         file_name=f"{safe_name}.csv",
         mime="text/csv",
         key=btn_key,
+    )
+
+
+def show_kanban(
+    df: pd.DataFrame,
+    title: str,
+    *,
+    group_col: Optional[str] = None,
+    title_cols: Optional[Sequence[str]] = None,
+    body_cols: Optional[Sequence[str]] = None,
+    max_cards: int = 24,
+    key: Optional[str] = None,
+) -> None:
+    """Kanban simples (colunas Streamlit) + download CSV da tabela completa."""
+    st.markdown(f"#### {title}")
+    if df is None or df.empty:
+        st.info("Sem cards para o filtro atual.")
+        return
+    work = df.head(max_cards).copy()
+    title_cols = list(title_cols or [c for c in ("municipio", "target", "rank") if c in work.columns])
+    body_cols = list(
+        body_cols
+        or [
+            c
+            for c in (
+                "exames",
+                "positivos",
+                "positividade",
+                "score",
+                "flag",
+                "detalhe",
+                "tipo_sinal",
+                "tendencia",
+            )
+            if c in work.columns
+        ]
+    )
+    if group_col and group_col in work.columns:
+        groups = [g for g in work[group_col].astype(str).tolist() if g and g.lower() != "nan"]
+        # preserve order of appearance
+        seen: list[str] = []
+        for g in groups:
+            if g not in seen:
+                seen.append(g)
+        cols = st.columns(min(4, max(1, len(seen))))
+        for i, gname in enumerate(seen[:4]):
+            with cols[i]:
+                st.caption(gname)
+                sub = work[work[group_col].astype(str).eq(gname)]
+                for _, row in sub.iterrows():
+                    head = " · ".join(
+                        str(row[c]) for c in title_cols if c in row.index and pd.notna(row[c]) and str(row[c]) not in {"", "—"}
+                    ) or "—"
+                    bits = [
+                        f"**{c}:** {row[c]}"
+                        for c in body_cols
+                        if c in row.index and pd.notna(row[c]) and str(row[c]).strip() not in {"", "—", "nan"}
+                    ]
+                    st.markdown(
+                        f"<div style='border:1px solid #c5d0da;border-radius:8px;padding:0.55rem 0.7rem;"
+                        f"margin-bottom:0.45rem;background:#f7fafc'>"
+                        f"<div style='font-weight:600;font-size:0.92rem'>{head}</div>"
+                        f"<div style='font-size:0.82rem;line-height:1.35'>{'<br/>'.join(bits)}</div>"
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
+    else:
+        ncols = 3 if len(work) >= 3 else max(1, len(work))
+        cols = st.columns(ncols)
+        for i, (_, row) in enumerate(work.iterrows()):
+            with cols[i % ncols]:
+                head = " · ".join(
+                    str(row[c]) for c in title_cols if c in row.index and pd.notna(row[c]) and str(row[c]) not in {"", "—"}
+                ) or "—"
+                bits = [
+                    f"**{c}:** {row[c]}"
+                    for c in body_cols
+                    if c in row.index and pd.notna(row[c]) and str(row[c]).strip() not in {"", "—", "nan"}
+                ]
+                st.markdown(
+                    f"<div style='border:1px solid #c5d0da;border-radius:8px;padding:0.55rem 0.7rem;"
+                    f"margin-bottom:0.45rem;background:#f7fafc'>"
+                    f"<div style='font-weight:600;font-size:0.92rem'>{head}</div>"
+                    f"<div style='font-size:0.82rem;line-height:1.35'>{'<br/>'.join(bits)}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+    csv = df.to_csv(index=False).encode("utf-8-sig")
+    safe_name = norm_key(title) or "kanban"
+    st.download_button(
+        f"Baixar {title} em CSV",
+        data=csv,
+        file_name=f"{safe_name}.csv",
+        mime="text/csv",
+        key=key or f"dl_kanban_{safe_name}_{len(df)}",
     )
 
 
@@ -1148,6 +1243,7 @@ def make_choropleth(geojson: dict, merged: pd.DataFrame, value_col: str, title: 
         "positivos_periodo", "positividade_periodo", "delta_positividade_pp",
         "delta_tests_abs", "notificacoes_periodo", "projecao_solicitacoes_proximos_dias",
         "janela_alerta_proximos_dias", "percentil_estadual", "codigo_ibge",
+        "score", "exames", "positivos", "rotulo",
     ] if c in plot_df.columns]
     fig = px.choropleth_mapbox(
         plot_df,
@@ -2000,39 +2096,108 @@ elif modulo == "Visão executiva":
                 )
                 # Score prioridade municipal (proposta homologação)
                 score_path = Path(folder) / "score_prioridade_municipal.csv"
+                df_score = pd.DataFrame()
                 if score_path.exists():
                     try:
                         df_score = pd.read_csv(score_path)
-                        if not df_score.empty:
-                            st.markdown(
-                                "**Prioridade municipal (proposta para homologação)**"
-                            )
-                            st.caption(
-                                "score = 3×excesso_lab + 2×positividade_anomala "
-                                "+ 1×lacuna_sinan + 1×internações_graves (0–1)."
-                            )
-                            cols_sc = [
-                                c
-                                for c in [
-                                    "municipio",
-                                    "score",
-                                    "excesso_lab_0_1",
-                                    "positividade_anomala_0_1",
-                                    "lacuna_sinan_0_1",
-                                    "internacoes_graves_0_1",
-                                    "rotulo",
-                                ]
-                                if c in df_score.columns
-                            ]
-                            show_table(
-                                df_score[cols_sc].head(10),
-                                "Score prioridade",
-                                max_rows=10,
-                                key="score_prioridade_mun",
-                            )
                     except Exception:  # noqa: BLE001
-                        pass
+                        df_score = pd.DataFrame()
+                if not df_score.empty:
+                    st.markdown(
+                        "**Prioridade municipal (proposta para homologação)**"
+                    )
+                    st.caption(
+                        "score = 3×excesso_lab + 2×positividade_anomala "
+                        "+ 1×lacuna_sinan + 1×internações_graves (0–1). "
+                        "Municípios sem componentes válidos não entram no ranking."
+                    )
+                    cols_sc = [
+                        c
+                        for c in [
+                            "municipio",
+                            "score",
+                            "excesso_lab_0_1",
+                            "positividade_anomala_0_1",
+                            "lacuna_sinan_0_1",
+                            "internacoes_graves_0_1",
+                            "exames",
+                            "positivos",
+                            "rotulo",
+                        ]
+                        if c in df_score.columns
+                    ]
+                    view_mode_score = st.radio(
+                        "Exibição score",
+                        ["Kanban", "Tabela"],
+                        horizontal=True,
+                        key="score_view_mode",
+                        label_visibility="collapsed",
+                    )
+                    sc_view = (
+                        df_score[cols_sc].sort_values("score", ascending=False)
+                        if "score" in df_score.columns
+                        else df_score[cols_sc]
+                    )
+                    if view_mode_score == "Kanban":
+                        show_kanban(
+                            sc_view.head(12),
+                            "Score prioridade",
+                            title_cols=["municipio", "score"],
+                            body_cols=[c for c in cols_sc if c not in {"municipio", "score"}],
+                            key="score_prioridade_mun_kb",
+                        )
+                    else:
+                        show_table(
+                            sc_view.head(20),
+                            "Score prioridade",
+                            max_rows=20,
+                            key="score_prioridade_mun",
+                        )
+                    if found_geo and "municipio" in df_score.columns and "score" in df_score.columns:
+                        with st.expander("Mapa — score de prioridade municipal", expanded=True):
+                            geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
+                            st.caption(geo_msg)
+                            sc_map = df_score.copy()
+                            sc_map["municipio"] = sc_map["municipio"].map(norm_municipio)
+                            if "codigo_ibge" not in sc_map.columns:
+                                mm_ibge = get_optional(folder, "municipal_master")
+                                if (
+                                    mm_ibge is not None
+                                    and not mm_ibge.empty
+                                    and {"municipio", "codigo_ibge"}.issubset(mm_ibge.columns)
+                                ):
+                                    mmj = mm_ibge[["municipio", "codigo_ibge"]].copy()
+                                    mmj["municipio"] = mmj["municipio"].map(norm_municipio)
+                                    sc_map = sc_map.merge(mmj, on="municipio", how="left")
+                            if geojson is not None and not props_df.empty:
+                                merged_sc = join_shape_with_period(props_df, sc_map)
+                                fig_sc = make_choropleth(
+                                    geojson,
+                                    merged_sc,
+                                    "score",
+                                    f"Score de prioridade municipal — {se_brief}",
+                                )
+                                if fig_sc is not None:
+                                    fig_sc.update_coloraxes(colorbar_title="score")
+                                    safe_plotly(fig_sc, "Mapa score prioridade")
+                                else:
+                                    st.warning(
+                                        "Malha carregada, mas o cruzamento município×score não fechou."
+                                    )
+                                    show_table(
+                                        sc_map[cols_sc].head(20),
+                                        "Score (prévia mapa)",
+                                        key="score_map_prev",
+                                    )
+                            else:
+                                st.info("Malha municipal indisponível para o mapa de score.")
                 pergunta_col = "pergunta" if "pergunta" in df_briefing.columns else None
+                view_mode_brief = st.radio(
+                    "Exibição briefing",
+                    ["Kanban", "Tabela"],
+                    horizontal=True,
+                    key="briefing_view_mode",
+                )
                 if pergunta_col:
                     labels = {
                         "mais_solicitados": "1) Mais solicitados",
@@ -2042,9 +2207,31 @@ elif modulo == "Visão executiva":
                         "risco_dispersao": "5) Risco de dispersão",
                     }
                     for key, title in labels.items():
-                        sub = df_briefing[df_briefing[pergunta_col].astype(str) == key]
+                        sub = df_briefing[df_briefing[pergunta_col].astype(str) == key].copy()
                         if sub.empty:
+                            st.caption(f"{title}: sem registros nesta SE.")
                             continue
+                        if (
+                            key in {"mais_solicitados", "maior_positividade"}
+                            and "municipio" in sub.columns
+                            and "target" in sub.columns
+                        ):
+                            locs = df_briefing[
+                                df_briefing[pergunta_col].astype(str).eq("localidades")
+                            ]
+                            if not locs.empty and {"target", "municipio"}.issubset(locs.columns):
+                                top_loc = (
+                                    locs.sort_values("rank")
+                                    .groupby("target", as_index=False)
+                                    .first()[["target", "municipio"]]
+                                    .rename(columns={"municipio": "municipio_loc"})
+                                )
+                                sub = sub.merge(top_loc, on="target", how="left")
+                                miss = sub["municipio"].astype(str).isin(["—", "", "nan", "None"])
+                                sub.loc[miss, "municipio"] = sub.loc[miss, "municipio_loc"].fillna(
+                                    sub.loc[miss, "municipio"]
+                                )
+                                sub = sub.drop(columns=["municipio_loc"], errors="ignore")
                         st.markdown(f"**{title}**")
                         cols_show = [
                             c
@@ -2061,12 +2248,21 @@ elif modulo == "Visão executiva":
                             ]
                             if c in sub.columns
                         ]
-                        show_table(
-                            sub[cols_show].head(12),
-                            title,
-                            max_rows=12,
-                            key=f"briefing_{key}",
-                        )
+                        if view_mode_brief == "Kanban":
+                            show_kanban(
+                                sub[cols_show].head(12),
+                                title,
+                                title_cols=[c for c in ("rank", "target", "municipio") if c in cols_show],
+                                body_cols=[c for c in cols_show if c not in {"rank", "target", "municipio"}],
+                                key=f"briefing_kb_{key}",
+                            )
+                        else:
+                            show_table(
+                                sub[cols_show].head(12),
+                                title,
+                                max_rows=12,
+                                key=f"briefing_{key}",
+                            )
                 else:
                     show_table(
                         df_briefing.head(40),
@@ -2997,10 +3193,99 @@ elif modulo == "Integração epidemiológica":
                 c2.metric("CNES", "não carregado")
                 c3.metric("Estabelecimentos", "—")
 
+            # Diagnóstico de cobertura SINAN/SIM (lag de carga ≠ ausência de notificação no GAL)
+            sinan_max_y = sinan_max_w = None
+            sim_max_y = sim_max_w = None
+            if not df_sinan_weekly.empty:
+                _swm = df_sinan_weekly.copy()
+                _swm["epi_year"] = to_num(_swm.get("epi_year", pd.Series(dtype=float)))
+                _swm["epi_week"] = to_num(_swm.get("epi_week", pd.Series(dtype=float)))
+                _swm = _swm.dropna(subset=["epi_year", "epi_week"])
+                if not _swm.empty:
+                    sinan_max_y = int(_swm["epi_year"].max())
+                    sinan_max_w = int(
+                        _swm.loc[_swm["epi_year"].eq(sinan_max_y), "epi_week"].max()
+                    )
+            if not df_sim_weekly.empty:
+                _smm = df_sim_weekly.copy()
+                _smm["epi_year"] = to_num(_smm.get("epi_year", pd.Series(dtype=float)))
+                _smm["epi_week"] = to_num(_smm.get("epi_week", pd.Series(dtype=float)))
+                _smm = _smm.dropna(subset=["epi_year", "epi_week"])
+                if not _smm.empty and (_smm["epi_year"].fillna(0) > 1900).any():
+                    sim_max_y = int(_smm["epi_year"].max())
+                    sim_max_w = int(
+                        _smm.loc[_smm["epi_year"].eq(sim_max_y), "epi_week"].max()
+                    )
+
             if float(notif) == 0 and float(obitos) == 0:
-                st.info(
-                    "SINAN/SIM zerados nesta janela epidemiológica (SE selecionada). "
-                    "Amplie o período na barra lateral ou atualize a integração com bases mais recentes."
+                bits = [
+                    f"Janela filtrada: {analysis_year}-SE{week_start:02d}–SE{week_end:02d}."
+                ]
+                if sinan_max_y is not None:
+                    bits.append(
+                        f"Última SE com SINAN agregado: {sinan_max_y}-SE{sinan_max_w:02d}."
+                    )
+                if sim_max_y is not None:
+                    bits.append(
+                        f"Última SE com SIM agregado: {sim_max_y}-SE{sim_max_w:02d}."
+                    )
+                bits.append(
+                    "Isso é lag/cobertura da base SINAN/SIM no `saida_pipeline`, "
+                    "não significa que o GAL não tenha município de notificação. "
+                    "`Municipio_Notificacao_Sinan` no GAL indica o município referido "
+                    "no exame — não substitui a contagem semanal de notificações SINAN."
+                )
+                st.warning(" ".join(bits))
+
+                # Mostra última janela disponível (dados reais, sem inventar)
+                if not df_sinan_weekly.empty and sinan_max_y is not None:
+                    ncol = first_col(df_sinan_weekly, ["notificacoes_sinan", "notificacoes"])
+                    sw_last = df_sinan_weekly.copy()
+                    sw_last["epi_year"] = to_num(sw_last.get("epi_year", pd.Series(dtype=float)))
+                    sw_last["epi_week"] = to_num(sw_last.get("epi_week", pd.Series(dtype=float)))
+                    w0 = max(1, int(sinan_max_w) - 3)
+                    mask_last = (
+                        sw_last["epi_year"].eq(sinan_max_y)
+                        & sw_last["epi_week"].between(w0, int(sinan_max_w))
+                    )
+                    notif_last = float(to_num(sw_last.loc[mask_last, ncol]).fillna(0).sum()) if ncol else 0.0
+                    obitos_last = 0.0
+                    if not df_sim_weekly.empty and sim_max_y is not None:
+                        ocol = first_col(df_sim_weekly, ["obitos_sim", "obitos"])
+                        sm_last = df_sim_weekly.copy()
+                        sm_last["epi_year"] = to_num(sm_last.get("epi_year", pd.Series(dtype=float)))
+                        sm_last["epi_week"] = to_num(sm_last.get("epi_week", pd.Series(dtype=float)))
+                        w0s = max(1, int(sim_max_w) - 3)
+                        mask_s = (
+                            sm_last["epi_year"].eq(sim_max_y)
+                            & sm_last["epi_week"].between(w0s, int(sim_max_w))
+                        )
+                        if ocol:
+                            obitos_last = float(to_num(sm_last.loc[mask_s, ocol]).fillna(0).sum())
+                    st.info(
+                        f"Referência (última janela disponível, não a filtrada): "
+                        f"SINAN {sinan_max_y}-SE{w0:02d}–SE{sinan_max_w:02d} = "
+                        f"{format_int(notif_last)} notificações"
+                        + (
+                            f"; SIM {sim_max_y}-SE{w0s:02d}–SE{sim_max_w:02d} = "
+                            f"{format_int(obitos_last)} óbitos"
+                            if sim_max_y is not None
+                            else ""
+                        )
+                        + ". Amplie/retroceda o slider lateral ou atualize o extract SINAN/SIM."
+                    )
+                else:
+                    st.info(
+                        "SINAN/SIM sem séries utilizáveis nesta pasta. "
+                        "Reconstrua `sinan_weekly_municipio.csv` / `sim_weekly_municipio.csv`."
+                    )
+            elif sinan_max_y is not None and (
+                sinan_max_y < analysis_year
+                or (sinan_max_y == analysis_year and int(sinan_max_w) < int(week_end))
+            ):
+                st.caption(
+                    f"Cobertura SINAN até {sinan_max_y}-SE{sinan_max_w:02d} "
+                    f"(janela filtrada vai até SE{week_end:02d})."
                 )
 
             top_gap = integ[integ["gap_sinan_sem_exame"]].sort_values("notificacoes", ascending=False).head(20)

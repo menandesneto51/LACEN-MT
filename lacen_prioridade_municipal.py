@@ -436,33 +436,50 @@ def vizinhos_a_partir_do_sinal(
 
     vidx = _vizinhos_index(list(vizinhos_rows))
     out: list[dict[str, Any]] = []
-    for viz, dist in vidx.get(ancora, [])[: max_viz * 2]:
-        if (pos_by.get(ancora, 0.0) or 0) <= 0 or (pos_by.get(viz, 0.0) or 0) <= 0:
+    # Prioriza vizinho co-positivo; se não houver, inclui vizinho com demanda (exames>0).
+    # Não inventa valor — só usa exames/positivos observados na SE.
+    candidatos: list[tuple[str, float, str]] = []
+    for viz, dist in vidx.get(ancora, [])[: max(max_viz * 4, 12)]:
+        pos_a = float(pos_by.get(ancora, 0.0) or 0.0)
+        pos_v = float(pos_by.get(viz, 0.0) or 0.0)
+        ex_v = float(ex_by.get(viz, 0.0) or 0.0)
+        if pos_a <= 0 and float(ex_by.get(ancora, 0.0) or 0.0) <= 0:
             continue
+        if pos_v > 0:
+            flag = "ambos_positivos" if pos_a > 0 else "vizinho_positivo"
+        elif ex_v > 0:
+            flag = "vizinho_com_demanda"
+        else:
+            continue
+        candidatos.append((viz, dist, flag))
+    candidatos.sort(
+        key=lambda x: (
+            0 if x[2] == "ambos_positivos" else 1 if x[2] == "vizinho_positivo" else 2,
+            x[1],
+        )
+    )
+    for viz, dist, flag in candidatos[:max_viz]:
+        ex_a = float(ex_by.get(ancora, 0.0) or 0.0)
+        ex_v = float(ex_by.get(viz, 0.0) or 0.0)
+        pos_a = float(pos_by.get(ancora, 0.0) or 0.0)
+        pos_v = float(pos_by.get(viz, 0.0) or 0.0)
         out.append(
             {
                 "target": tgt,
                 "municipio": ancora,
                 "vizinho": viz,
-                "positivos_ancora": pos_by.get(ancora, 0.0),
-                "positivos_vizinho": pos_by.get(viz, 0.0),
-                "exames_ancora": ex_by.get(ancora, 0.0),
-                "exames_vizinho": ex_by.get(viz, 0.0),
-                "positividade_ancora": (
-                    (pos_by.get(ancora, 0) / ex_by[ancora])
-                    if ex_by.get(ancora, 0) > 0
-                    else None
-                ),
-                "positividade_vizinho": (
-                    (pos_by.get(viz, 0) / ex_by[viz]) if ex_by.get(viz, 0) > 0 else None
-                ),
+                "positivos_ancora": pos_a,
+                "positivos_vizinho": pos_v,
+                "exames_ancora": ex_a,
+                "exames_vizinho": ex_v,
+                "positividade_ancora": (pos_a / ex_a) if ex_a > 0 else None,
+                "positividade_vizinho": (pos_v / ex_v) if ex_v > 0 else None,
                 "dist_km": dist,
+                "flag": flag,
                 "origem_analise": "ancora_do_sinal",
                 "tipo_sinal": "Observado",
             }
         )
-        if len(out) >= max_viz:
-            break
     return out
 
 

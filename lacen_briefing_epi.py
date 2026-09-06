@@ -507,6 +507,105 @@ def enriquecer_top_com_delta(
     return out
 
 
+def resumo_serie_historica(
+    weekly: list[dict[str, str]],
+    se: tuple[int, int],
+    target: str,
+    *,
+    municipio: str | None = None,
+    janela_recente: int = 12,
+) -> dict[str, Any]:
+    """
+    Resumo histórico para alerta público (sem comparação SE-1).
+
+    Retorna mediana na mesma SE em anos anteriores, pico recente (janela),
+    valores atuais e posição vs baseline histórico.
+    """
+    import statistics
+
+    y0, w0 = int(se[0]), int(se[1])
+    tgt = str(target or "").strip()
+    mun_f = _norm_mun(municipio) if municipio else ""
+
+    cur = _agg_counts_target_se(weekly, se, tgt, municipio=mun_f or None)
+    exames_atual = float(cur.get("exames") or 0)
+    pos_atual = float(cur.get("positivos") or 0)
+
+    # Mesma SE em anos anteriores (baseline sazonal)
+    exames_mesma_se: list[float] = []
+    pos_mesma_se: list[float] = []
+    anos_usados: list[int] = []
+    for row in weekly:
+        y = _num(row.get("epi_year"))
+        w = _num(row.get("epi_week"))
+        if y is None or w is None or int(w) != w0:
+            continue
+        if int(y) >= y0:
+            continue
+        if str(row.get("target") or "").strip() != tgt:
+            continue
+        mun = _norm_mun(row.get("municipio"))
+        if not mun or mun.startswith("*"):
+            continue
+        if mun_f and mun != mun_f:
+            continue
+        ex = _num(row.get("tests"), 0) or 0
+        if ex <= 0:
+            continue
+        exames_mesma_se.append(float(ex))
+        pos_mesma_se.append(float(_num(row.get("positives"), 0) or 0))
+        if int(y) not in anos_usados:
+            anos_usados.append(int(y))
+
+    mediana_exames_se = (
+        statistics.median(exames_mesma_se) if exames_mesma_se else None
+    )
+    mediana_pos_se = statistics.median(pos_mesma_se) if pos_mesma_se else None
+
+    # Janela recente (últimas N semanas incluindo atual)
+    recente_exames: list[float] = []
+    recente_pos: list[float] = []
+    for i in range(janela_recente):
+        yw = _shift_se(y0, w0, -i)
+        got = _agg_counts_target_se(weekly, yw, tgt, municipio=mun_f or None)
+        ex = float(got.get("exames") or 0)
+        if ex > 0:
+            recente_exames.append(ex)
+            recente_pos.append(float(got.get("positivos") or 0))
+
+    max_exames_recente = max(recente_exames) if recente_exames else None
+    media_exames_recente = (
+        statistics.mean(recente_exames) if recente_exames else None
+    )
+
+    posicao = "sem baseline"
+    if mediana_exames_se is not None and mediana_exames_se > 0:
+        ratio = exames_atual / mediana_exames_se
+        if ratio >= 1.5:
+            posicao = "acima do habitual histórico"
+        elif ratio <= 0.67:
+            posicao = "abaixo do habitual histórico"
+        else:
+            posicao = "dentro do habitual histórico"
+
+    positividade_atual = (
+        (100.0 * pos_atual / exames_atual) if exames_atual > 0 else 0.0
+    )
+
+    return {
+        "exames_atual": exames_atual,
+        "positivos_atual": pos_atual,
+        "positividade_atual": positividade_atual,
+        "mediana_exames_mesma_se": mediana_exames_se,
+        "mediana_positivos_mesma_se": mediana_pos_se,
+        "anos_baseline": sorted(anos_usados),
+        "max_exames_recente": max_exames_recente,
+        "media_exames_recente": media_exames_recente,
+        "posicao_vs_historico": posicao,
+        "n_semanas_recente": len(recente_exames),
+    }
+
+
 def _read_csv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
@@ -700,6 +799,52 @@ def _agg_by_target(se_rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     return rows
 
 
+def _top_municipio_do_target(
+    weekly: list[dict[str, str]] | Sequence[dict[str, Any]],
+    se: tuple[int, int],
+    target: str,
+    *,
+    by: str = "exames",
+) -> dict[str, Any] | None:
+    """Maior município do agravo na SE (exames ou positivos) — sem inventar."""
+    tgt = str(target or "").strip()
+    if not tgt:
+        return None
+    rows = [
+        r
+        for r in _filter_se(list(weekly), se)
+        if str(r.get("target") or "").strip() == tgt
+    ]
+    by_mun: dict[str, dict[str, float]] = {}
+    for r in rows:
+        mun = _norm_mun(r.get("municipio"))
+        if not mun:
+            continue
+        a = by_mun.setdefault(mun, {"exames": 0.0, "positivos": 0.0})
+        a["exames"] += _num(r.get("tests"), 0) or 0
+        a["positivos"] += _num(r.get("positives"), 0) or 0
+    if not by_mun:
+        return None
+    key = "positivos" if by == "positivos" else "exames"
+
+    def _sort_key(item: tuple[str, dict[str, float]]) -> tuple[float, float]:
+        mun_a = item[1]
+        if key == "positivos":
+            return (mun_a["positivos"], mun_a["exames"])
+        return (mun_a["exames"], mun_a["positivos"])
+
+    mun, a = max(by_mun.items(), key=_sort_key)
+    if a["exames"] <= 0 and a["positivos"] <= 0:
+        return None
+    posi = (a["positivos"] / a["exames"]) if a["exames"] > 0 else None
+    return {
+        "municipio": mun,
+        "exames": a["exames"],
+        "positivos": a["positivos"],
+        "positividade": posi,
+    }
+
+
 def mais_solicitados(
     weekly: list[dict[str, str]] | Sequence[dict[str, Any]],
     se: tuple[int, int] | str,
@@ -710,7 +855,15 @@ def mais_solicitados(
         return []
     rows = _filter_se(list(weekly), yw)
     ranked = sorted(_agg_by_target(rows), key=lambda x: x["exames"], reverse=True)
-    return ranked[: max(1, top)]
+    out = ranked[: max(1, top)]
+    for x in out:
+        top_m = _top_municipio_do_target(weekly, yw, str(x.get("target") or ""), by="exames")
+        if top_m:
+            x["municipio"] = top_m["municipio"]
+            x["municipio_exames"] = top_m["exames"]
+            x["municipio_positivos"] = top_m["positivos"]
+            x["municipio_positividade"] = top_m["positividade"]
+    return out
 
 
 def maior_positividade(
@@ -759,6 +912,21 @@ def maior_positividade(
         for x in secondary[:3]:
             if x["target"] not in {o["target"] for o in out}:
                 out.append(x)
+    for x in out:
+        if not x.get("baixa_amostra") and float(x.get("positivos") or 0) <= 0:
+            x["flag_extra"] = "sem_positivos"
+        top_m = _top_municipio_do_target(
+            weekly, yw, str(x.get("target") or ""), by="positivos"
+        )
+        if not top_m or float(top_m.get("positivos") or 0) <= 0:
+            top_m = _top_municipio_do_target(
+                weekly, yw, str(x.get("target") or ""), by="exames"
+            )
+        if top_m:
+            x["municipio"] = top_m["municipio"]
+            x["municipio_exames"] = top_m["exames"]
+            x["municipio_positivos"] = top_m["positivos"]
+            x["municipio_positividade"] = top_m["positividade"]
     return out
 
 
@@ -890,7 +1058,18 @@ def vizinhos_mesma_situacao(
                     "positivos_vizinho": pos_by_mun[viz],
                     "exames_ancora": tests_by_mun.get(mun, 0.0),
                     "exames_vizinho": tests_by_mun.get(viz, 0.0),
+                    "positividade_ancora": (
+                        (pos_by_mun[mun] / tests_by_mun[mun])
+                        if tests_by_mun.get(mun, 0) > 0
+                        else None
+                    ),
+                    "positividade_vizinho": (
+                        (pos_by_mun[viz] / tests_by_mun[viz])
+                        if tests_by_mun.get(viz, 0) > 0
+                        else None
+                    ),
                     "dist_km": dist,
+                    "flag": "ambos_positivos",
                     "tipo_sinal": "Observado",
                 }
             )
@@ -1107,6 +1286,272 @@ def risco_dispersao(
             }
         )
     return lines
+
+
+def cascata_gal_sinan_lag(
+    weekly: list[dict[str, str]] | Sequence[dict[str, Any]],
+    se: tuple[int, int] | str,
+    *,
+    solicitados: Sequence[dict[str, Any]] | None = None,
+    min_exames: float = 15.0,
+    top: int = 5,
+) -> list[dict[str, Any]]:
+    """
+    Exames/positivos lab na SE t vs notificação flat/queda em t-1/t-2 — atraso estrutural.
+    """
+    yw = _parse_se(se) if isinstance(se, str) else se
+    if not yw:
+        return []
+    y0, w0 = yw
+    y1, w1 = _shift_se(y0, w0, -1)
+    y2, w2 = _shift_se(y0, w0, -2)
+
+    def _agg(y: int, w: int) -> dict[tuple[str, str], dict[str, float]]:
+        cells: dict[tuple[str, str], dict[str, float]] = {}
+        for r in weekly:
+            yy = _num(r.get("epi_year"))
+            ww = _num(r.get("epi_week"))
+            if yy is None or ww is None or int(yy) != y or int(ww) != w:
+                continue
+            mun = _norm_mun(r.get("municipio"))
+            fam = _familia_agravo(str(r.get("target") or ""))
+            if not mun or not fam:
+                continue
+            key = (mun, fam)
+            c = cells.setdefault(key, {"exames": 0.0, "positivos": 0.0, "notif": 0.0})
+            c["exames"] += float(_num(r.get("tests") or r.get("exames"), 0) or 0)
+            c["positivos"] += float(_num(r.get("positivos") or r.get("positives"), 0) or 0)
+            c["notif"] += float(
+                _num(r.get("notificacoes") or r.get("notificacoes_ultima_semana"), 0) or 0
+            )
+        return cells
+
+    cur = _agg(y0, w0)
+    lag1 = _agg(y1, w1)
+    lag2 = _agg(y2, w2)
+    top_fams = {
+        _familia_agravo(str(s.get("target") or ""))
+        for s in (solicitados or [])[:8]
+        if s.get("target")
+    }
+    out: list[dict[str, Any]] = []
+    for (mun, fam), c0 in cur.items():
+        if top_fams and fam not in top_fams:
+            continue
+        ex0 = c0["exames"]
+        pos0 = c0["positivos"]
+        if ex0 < min_exames:
+            continue
+        n1 = lag1.get((mun, fam), {}).get("notif", 0.0)
+        n2 = lag2.get((mun, fam), {}).get("notif", 0.0)
+        ex1 = lag1.get((mun, fam), {}).get("exames", 0.0)
+        if ex0 <= ex1 * 1.15 and pos0 <= 0:
+            continue
+        if n1 > 0 and c0["notif"] >= n1 * 0.85:
+            continue
+        if n1 <= 0 and n2 <= 0 and c0["notif"] <= 0:
+            continue
+        out.append(
+            {
+                "regra": "cascata_gal_sinan_lag",
+                "target": fam,
+                "municipio": mun,
+                "mensagem": (
+                    f"{mun} ({fam}): {int(ex0)} exames lab na SE ref. "
+                    f"vs notif={int(c0['notif'])} (SE-1={int(n1)}, SE-2={int(n2)}) — "
+                    f"possível atraso de notificação / subdetecção assistencial."
+                ),
+                "tipo_sinal": "Derivado",
+            }
+        )
+    out.sort(key=lambda x: -len(str(x.get("mensagem") or "")))
+    return out[:top]
+
+
+def sinais_clima_arbovirose(
+    weekly: list[dict[str, str]] | Sequence[dict[str, Any]],
+    se: tuple[int, int] | str,
+    *,
+    solicitados: Sequence[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    """Demanda arbovirose/leptospira + clima anômalo na SE."""
+    yw = _parse_se(se) if isinstance(se, str) else se
+    if not yw:
+        return []
+    y0, w0 = yw
+    sol = list(solicitados or [])
+    targets_clima: list[str] = []
+    for s in sol:
+        tgt = str(s.get("target") or "")
+        tl = tgt.casefold()
+        if _is_dengue(tgt) or "leptospir" in tl or "chikung" in tl:
+            ex = float(s.get("exames") or s.get("n_se") or 0)
+            dlt = _num(s.get("delta_pct"))
+            if ex >= 30 or (dlt is not None and dlt >= 20):
+                targets_clima.append(tgt)
+    if not targets_clima:
+        return []
+
+    clima_by_mun: dict[str, dict[str, float]] = {}
+    for r in weekly:
+        yy = _num(r.get("epi_year"))
+        ww = _num(r.get("epi_week"))
+        if yy is None or ww is None or int(yy) != y0 or int(ww) != w0:
+            continue
+        tgt = str(r.get("target") or "")
+        if tgt not in targets_clima and not _is_dengue(tgt):
+            continue
+        mun = _norm_mun(r.get("municipio"))
+        if not mun:
+            continue
+        precip = _num(r.get("precipitation_sum_mm") or r.get("precipitacao"))
+        ev = _num(r.get("n_eventos_climaticos"))
+        umid = _num(r.get("relative_humidity_2m_min"))
+        c = clima_by_mun.setdefault(mun, {"precip": 0.0, "eventos": 0.0, "umid": 0.0})
+        if precip is not None:
+            c["precip"] = max(c["precip"], precip)
+        if ev is not None:
+            c["eventos"] = max(c["eventos"], ev)
+        if umid is not None:
+            c["umid"] = max(c["umid"], umid)
+
+    if not clima_by_mun:
+        return []
+    hot = sorted(
+        clima_by_mun.items(),
+        key=lambda kv: (kv[1]["eventos"], kv[1]["precip"]),
+        reverse=True,
+    )[:3]
+    muns = ", ".join(m for m, _ in hot[:2])
+    return [
+        {
+            "regra": "clima_arbovirose",
+            "target": ";".join(targets_clima[:2]),
+            "mensagem": (
+                f"Clima favorável + demanda lab ({'; '.join(targets_clima[:2])}) — "
+                f"municípios {muns}: reforçar vigilância arbovirose/zoonoses; "
+                f"não declara surto automaticamente."
+            ),
+            "tipo_sinal": "Derivado",
+        }
+    ]
+
+
+def marcador_shift_sinal(
+    outdir: Path | str,
+    se: tuple[int, int] | str,
+    *,
+    top: int = 3,
+) -> list[dict[str, Any]]:
+    """Shift IgM/agudo vs IgG na positividade por marcador."""
+    outdir = Path(outdir)
+    path = outdir / "positividade_por_marcador.csv"
+    rows = _read_csv(path)
+    if not rows:
+        return []
+    yw = _parse_se(se) if isinstance(se, str) else se
+    if not yw:
+        return []
+    y0, w0 = yw
+    agudo = igg = total = 0.0
+    fam = ""
+    for r in rows:
+        yy = _num(r.get("epi_year") or r.get("ano"))
+        ww = _num(r.get("epi_week") or r.get("semana_epidemiologica"))
+        if yy is None or ww is None or int(yy) != y0 or int(ww) != w0:
+            continue
+        marc = str(r.get("marcador") or r.get("metodologia") or "").casefold()
+        pos = float(_num(r.get("positivos") or r.get("n_positivos"), 0) or 0)
+        if pos <= 0:
+            continue
+        fam = fam or str(r.get("familia") or r.get("target") or "agravo")
+        total += pos
+        if "igg" in marc or "anti-hbs" in marc or "sorolog" in marc:
+            igg += pos
+        elif any(x in marc for x in ("igm", "antigen", "pcr", "hbsag", "ag ")):
+            agudo += pos
+    if total < 3:
+        return []
+    share_igg = igg / total
+    share_agudo = agudo / total
+    if share_igg >= 0.65 and share_agudo < 0.2:
+        return [
+            {
+                "regra": "marcador_shift",
+                "target": fam,
+                "mensagem": (
+                    f"{fam}: perfil de marcadores dominado por IgG/sorologia "
+                    f"({share_igg:.0%} dos positivos) — soroprevalência; "
+                    f"não tratar como epidemia aguda."
+                ),
+                "tipo_sinal": "Observado",
+            }
+        ]
+    if share_agudo >= 0.5 and share_igg < 0.25:
+        return [
+            {
+                "regra": "marcador_shift",
+                "target": fam,
+                "mensagem": (
+                    f"{fam}: aumento relativo de marcadores agudos "
+                    f"({share_agudo:.0%} IgM/Ag/PCR) — investigar infecção recente "
+                    f"antes de classificar dispersão."
+                ),
+                "tipo_sinal": "Observado",
+            }
+        ]
+    return []
+
+
+def multi_agravo_sinal(
+    anomalias: Sequence[dict[str, str]] | None,
+    se: str,
+    *,
+    min_familias: int = 2,
+) -> list[dict[str, Any]]:
+    """Mesmo município com ≥2 métricas/famílias em anomalia."""
+    if not anomalias:
+        return []
+    by_mun: dict[str, set[str]] = {}
+    for r in anomalias:
+        if se and not _se_match_anomalia(r, se):
+            continue
+        mun = _norm_mun(r.get("municipio"))
+        fam = _familia_agravo(str(r.get("target") or ""))
+        if mun and fam:
+            by_mun.setdefault(mun, set()).add(fam)
+    out: list[dict[str, Any]] = []
+    for mun, fams in sorted(by_mun.items(), key=lambda kv: -len(kv[1])):
+        if len(fams) < min_familias:
+            continue
+        out.append(
+            {
+                "regra": "multi_agravo",
+                "target": ";".join(sorted(fams)[:4]),
+                "municipio": mun,
+                "mensagem": (
+                    f"{mun}: {len(fams)} agravos com anomalia ML na SE "
+                    f"({', '.join(sorted(fams)[:3])}) — investigar evento "
+                    f"complexo ou falha de fluxo ampliada."
+                ),
+                "tipo_sinal": "Predito",
+            }
+        )
+        if len(out) >= 3:
+            break
+    return out
+
+
+def _se_match_anomalia(row: dict[str, str], se: str) -> bool:
+    parsed = _parse_se(se)
+    if not parsed:
+        return True
+    y, w = parsed
+    ry = _num(row.get("epi_year"))
+    rw = _num(row.get("epi_week"))
+    if ry is None or rw is None:
+        return False
+    return int(ry) == y and int(rw) == w
 
 
 def gal_sinan_divergencia(
@@ -1888,6 +2333,7 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             "mais_solicitados",
             i,
             target=str(x["target"]),
+            municipio=str(x.get("municipio") or "—"),
             exames=x["exames"],
             positivos=x["positivos"],
             positividade=x.get("positividade"),
@@ -1901,6 +2347,11 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             taxa_notif_100k=x.get("taxa_notif_100k"),
             detalhe=f"mediana_4se={x.get('mediana_4se')}",
             tipo_sinal="Observado",
+            flag=(
+                f"top_mun_exames={x.get('municipio_exames')}"
+                if x.get("municipio")
+                else ""
+            ),
         )
     for i, x in enumerate(briefing.maior_positividade, 1):
         flags = []
@@ -1908,10 +2359,13 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             flags.append("baixa_amostra")
         if x.get("caveat_igg"):
             flags.append("caveat_igg")
+        if x.get("flag_extra"):
+            flags.append(str(x.get("flag_extra")))
         add(
             "maior_positividade",
             i,
             target=str(x["target"]),
+            municipio=str(x.get("municipio") or "—"),
             exames=x["exames"],
             positivos=x["positivos"],
             positividade=x.get("positividade"),
@@ -1944,6 +2398,18 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             tipo_sinal="Observado",
         )
     for i, v in enumerate(briefing.vizinhos, 1):
+        pos_a = v.get("positividade_ancora")
+        pos_v = v.get("positividade_vizinho")
+        if pos_a is None and v.get("exames_ancora"):
+            try:
+                pos_a = float(v.get("positivos_ancora") or 0) / float(v["exames_ancora"])
+            except (TypeError, ValueError, ZeroDivisionError):
+                pos_a = None
+        if pos_v is None and v.get("exames_vizinho"):
+            try:
+                pos_v = float(v.get("positivos_vizinho") or 0) / float(v["exames_vizinho"])
+            except (TypeError, ValueError, ZeroDivisionError):
+                pos_v = None
         add(
             "vizinhos_mesma_situacao",
             i,
@@ -1951,11 +2417,15 @@ def _flatten(briefing: BriefingEpi) -> list[dict[str, str]]:
             municipio=f"{v['municipio']}↔{v['vizinho']}",
             exames=v.get("exames_ancora"),
             positivos=v.get("positivos_ancora"),
+            positividade=pos_a,
             detalhe=(
                 f"vizinho_pos={_fmt_num(v.get('positivos_vizinho'))}; "
+                f"vizinho_exames={_fmt_num(v.get('exames_vizinho'))}; "
+                f"pos_viz={_pct(pos_v) if isinstance(pos_v, (int, float)) else '—'}; "
                 f"dist_km={_fmt_num(v.get('dist_km'), 1)}"
             ),
             tipo_sinal="Observado",
+            flag=str(v.get("flag") or v.get("origem_analise") or ""),
         )
     for i, r in enumerate(briefing.risco, 1):
         add(
@@ -2146,6 +2616,21 @@ def computar_briefing_epi(
         positividade=posi,
         ml_risco=ml if usou_ml else None,
     )
+    risco.extend(cascata_gal_sinan_lag(weekly, yw, solicitados=sol))
+    risco.extend(sinais_clima_arbovirose(weekly, yw, solicitados=sol))
+    risco.extend(marcador_shift_sinal(outdir, yw))
+    anom_path = Path(outdir) / "ml_anomalias.csv"
+    anom_rows = _read_csv(anom_path) if anom_path.exists() else []
+    se_ref = str(pick.get("se_iso") or _fmt_se(*yw))
+    risco.extend(multi_agravo_sinal(anom_rows, se_ref))
+
+    try:
+        from ml.canal_endemico_bortman import detectar_trajetoria_canal
+
+        for tr in detectar_trajetoria_canal(outdir, se_ref, top=5):
+            risco.append(tr)
+    except Exception:  # noqa: BLE001
+        pass
 
     gal_sinan = gal_sinan_divergencia(weekly, yw, top=40)
     if gal_sinan:

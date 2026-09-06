@@ -1,66 +1,70 @@
-Briefing epidemiológico CIEVS — SE 2026-SE30
+Briefing epidemiológico CIEVS — SE 2026-SE36
 Tipo: Observado (lab) · Predito (ML se disponível)
 
 1) Mais solicitados (N + Δ vs SE-1 + taxa/100 mil):
-  1. dengue: 2130 exames · Δ=1316 (+162%) ↑ · +3 (0.1%) · 0,1 positivos por 100 mil habitantes [Observado]
-  2. tuberculose: 222 exames · Δ=-367 (-62%) ↓ · +25 (11.3%) · 0,6 positivos por 100 mil habitantes [Observado]
-  3. hepatite_b_hbv: 155 exames · Δ=-46 (-23%) ↓ · +101 (65.2%) · 2,6 positivos por 100 mil habitantes [Observado]
-  4. chikungunya: 116 exames · Δ=3 (+3%) → · +0 (0.0%) · 0,0 positivos por 100 mil habitantes [Observado]
-  5. sars_cov_2: 39 exames · Δ=-21 (-35%) ↓ · +0 (0.0%) · 0,0 positivos por 100 mil habitantes [Observado]
+  1. tuberculose: 360 exames · Δ=-96 (-21%) ↓ · +5 (1.4%) · 0,1 positivos por 100 mil habitantes [Observado]
+  2. dengue: 154 exames · Δ=-59 (-28%) ↓ · +1 (0.6%) · 0,0 positivos por 100 mil habitantes [Observado]
+  3. hepatite_b_hbv: 110 exames · Δ=-96 (-47%) ↓ · +0 (0.0%) · 0,0 positivos por 100 mil habitantes [Observado]
+  4. papilomavirus_humano_hpv_papiloma_v_rus_biologia_molecular: 54 exames · Δ=54 (—) → · +0 (0.0%) · 0,0 positivos por 100 mil habitantes [Observado]
+  5. sars_cov_2: 37 exames · Δ=-31 (-46%) ↓ · +0 (0.0%) · 0,0 positivos por 100 mil habitantes [Observado]
   Nota taxas: taxas vs SE-1 e YoY (mesma SE do ano anterior)
 2) Maior positividade (Δ vs SE-1):
-  1. hepatite_b_hbv: 65.2% (155 exames) Δ%=+64% ↑ · 2,6 positivos por 100 mil habitantes [Observado]
-  2. tuberculose: 11.3% (222 exames) Δ%=+90% ↑ · 0,6 positivos por 100 mil habitantes [Observado]
-  3. meningite: 3.2% (31 exames) Δ%=-13% ↓ · 0,0 positivos por 100 mil habitantes [Observado]
-  4. dengue: 0.1% (2130 exames) Δ%=-96% ↓ · 0,1 positivos por 100 mil habitantes [Observado]
-  5. chikungunya: 0.0% (116 exames) Δ%=-100% ↓ · 0,0 positivos por 100 mil habitantes [Observado]
+  1. tuberculose: 1.4% (360 exames) Δ%=+111% ↑ · 0,1 positivos por 100 mil habitantes [Observado]
+  2. dengue: 0.6% (154 exames) Δ%=— → · 0,0 positivos por 100 mil habitantes [Observado]
+  3. hepatite_b_hbv: 0.0% (110 exames) Δ%=— → · 0,0 positivos por 100 mil habitantes [Observado]
+  4. papilomavirus_humano_hpv_papiloma_v_rus_biologia_molecular: 0.0% (54 exames) Δ%=— → · 0,0 positivos por 100 mil habitantes [Observado]
+  5. sars_cov_2: 0.0% (37 exames) Δ%=— → · 0,0 positivos por 100 mil habitantes [Observado]
 3) Localidades (top targets):
-  · dengue: VARZEA GRANDE(+3; 0,9 positivos por 100 mil habitantes), LUCAS DO RIO VERDE(+0; 0,0 positivos por 100 mil habitantes), SORRISO(+0; 0,0 positivos por 100 mil habitantes)
-  · tuberculose: CUIABA(+4; 0,6 positivos por 100 mil habitantes), BARRA DO BUGRES(+4; 13,6 positivos por 100 mil habitantes), VARZEA GRANDE(+3; 0,9 positivos por 100 mil habitantes)
-  · hepatite_b_hbv: JUINA(+24; 49,6 positivos por 100 mil habitantes), CUIABA(+21; 3,0 positivos por 100 mil habitantes), SORRISO(+13; 10,4 positivos por 100 mil habitantes)
-  · chikungunya: CAMPO NOVO DO PARECIS(+0; 0,0 positivos por 100 mil habitantes), CUIABA(+0; 0,0 positivos por 100 mil habitantes), SAPEZAL(+0; 0,0 positivos por 100 mil habitantes)
+  · tuberculose: CUIABA(+3; 0,4 positivos por 100 mil habitantes), SINOP(+1; 0,4 positivos por 100 mil habitantes), SORRISO(+1; 0,8 positivos por 100 mil habitantes)
+  · dengue: PONTES E LACERDA(+1; 1,8 positivos por 100 mil habitantes), VARZEA GRANDE(+0; 0,0 positivos por 100 mil habitantes), LUCAS DO RIO VERDE(+0; 0,0 positivos por 100 mil habitantes)
+  · hepatite_b_hbv: JUINA(+0; 0,0 positivos por 100 mil habitantes), ARIPUANA(+0; 0,0 positivos por 100 mil habitantes), CASTANHEIRA(+0; 0,0 positivos por 100 mil habitantes)
+  · papilomavirus_humano_hpv_papiloma_v_rus_biologia_molecular: CACERES(+0; 0,0 positivos por 100 mil habitantes)
 4) Vizinhos na mesma situação:
-  · tuberculose: CUIABA ↔ VARZEA GRANDE (+4/+3)
-  · tuberculose: CUIABA ↔ CHAPADA DOS GUIMARAES (+4/+1)
-  · tuberculose: VARZEA GRANDE ↔ CUIABA (+3/+4)
-  · tuberculose: VARZEA GRANDE ↔ CHAPADA DOS GUIMARAES (+3/+1)
-  · hepatite_b_hbv: JUINA ↔ CASTANHEIRA (+24/+1)
+  · tuberculose: CUIABA ↔ VARZEA GRANDE (+3/+0)
+  · tuberculose: CUIABA ↔ CHAPADA DOS GUIMARAES (+3/+0)
+  · tuberculose: CUIABA ↔ JANGADA (+3/+0)
+  · tuberculose: SORRISO ↔ LUCAS DO RIO VERDE (+1/+0)
+  · tuberculose: VARZEA GRANDE ↔ CUIABA (+0/+3)
 5) Risco de dispersão:
-  · [Observado] dengue: alta demanda (2130 exames) com baixa confirmação laboratorial (0.1% pos.) — atenção territorial; não interpreta como surto confirmado.
-  · [Observado] tuberculose: 3 par(es) de municípios vizinhos com positivos (CUIABA↔VARZEA GRANDE, CUIABA↔CHAPADA DOS GUIMARAES) — risco local/contatos; investigar rede de transmissão e incompletos.
-  · [Observado] hepatite_b_hbv: 5 par(es) vizinhos com positivos — focos territoriais; investigar perfil do exame (marcador agudo vs. crônico) antes de classificar dispersão.
-  · [Observado] toxoplasmose_citomegalov_rus_igg: positividade elevada (91% em 23 exames) reflete soroprevalência/IgG — não tratar como epidemia aguda.
-  · [Predito] Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
+  · [Observado] dengue: alta demanda (154 exames) com baixa confirmação laboratorial (0.6% pos.) — atenção territorial; não interpreta como surto confirmado.
+  · [Predito] Predito: 26 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=13/Crítica=0; dengue: Alta=5/Crítica=0; hepatite_b_hbv: Alta=3/Crítica=0).
+  · [Derivado] Clima favorável + demanda lab (dengue; chikungunya) — municípios BARRA DO GARCAS, CAMPO NOVO DO PARECIS: reforçar vigilância arbovirose/zoonoses; não declara surto automaticamente.
+  · [Predito] VARZEA GRANDE: 9 agravos com anomalia ML na SE (meningite, toxoplasmose_citomegalov_rus_igg, toxoplasmose_citomegalov_rus_igm) — investigar evento complexo ou falha de fluxo ampliada.
+  · [Predito] CUIABA: 6 agravos com anomalia ML na SE (chikungunya, hepatite, infec_o_coloniza_o_bact_rias_teste_de_sensibilidade) — investigar evento complexo ou falha de fluxo ampliada.
 5b) Cartões de risco (evento):
-  · hepatite_b_hbv × CUIABA: prob=alto impacto=alto · investigar [Derivado]
-  · hepatite_b_hbv × JUINA: prob=alto impacto=médio · investigar [Derivado]
-  · hepatite_b_hbv × SORRISO: prob=alto impacto=médio · investigar [Derivado]
-  · dengue × CUIABA: prob=alto impacto=médio · investigar [Derivado]
   · tuberculose × CUIABA: prob=alto impacto=médio · investigar [Derivado]
+  · tuberculose × TANGARA DA SERRA: prob=médio impacto=médio · monitorar [Derivado]
+  · dengue × VARZEA GRANDE: prob=médio impacto=médio · monitorar [Derivado]
+  · tuberculose × VARZEA GRANDE: prob=médio impacto=médio · monitorar [Derivado]
+  · dengue × CUIABA: prob=médio impacto=médio · monitorar [Derivado]
 6) GAL×SINAN (qualquer agravo): 40 gal_sem_sinan · 0 sinan_sem_gal
 7) Geo: nível=bairro_cep — Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_s
 7b) Cruzamento SIH/SIA (proxy VW_INTERNACAO):
-  · CUIABA × dengue_arbovirose: n=12 [SIH/VW_INTERNACAO]
+  · TANGARA DA SERRA × dengue_arbovirose: n=12 [SIH/VW_INTERNACAO]
+  · PONTES E LACERDA × dengue_arbovirose: n=11 [SIH/VW_INTERNACAO]
+  · CUIABA × dengue_arbovirose: n=10 [SIH/VW_INTERNACAO]
+  · VARZEA GRANDE × dengue_arbovirose: n=4 [SIH/VW_INTERNACAO]
+  · TANGARA DA SERRA × tuberculose: n=4 [SIH/VW_INTERNACAO]
+  · COLNIZA × dengue_arbovirose: n=4 [SIH/VW_INTERNACAO]
   Caveat: Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; nã
 7c) Sinais IndicaSUS / SISREG:
   · IndicaSUS ocupação: Complementar Intensivo / Descartado n=10 (2026-03-21)
   · IndicaSUS ocupação: Clínico Isolamento / Descartado n=8 (2026-04-02)
   · IndicaSUS ocupação: Complementar Intensivo / Descartado n=8 (2026-03-28)
   · IndicaSUS ocupação: Complementar Intensivo / Descartado n=8 (2026-03-24)
-  · SISREG hosp: CUIABA [Aprovada] n=19093
-  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12276
-  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11284
-  · SISREG hosp: SINOP [Aprovada] n=6498
-  · SISREG amb pendente: CUIABA n=58883
-  · SISREG amb pendente: SINOP n=24798
-  · SISREG amb pendente: SINOP n=21949
+  · SISREG hosp: CUIABA [Aprovada] n=19262
+  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12299
+  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11444
+  · SISREG hosp: SINOP [Aprovada] n=6580
+  · SISREG amb pendente: CUIABA n=59868
+  · SISREG amb pendente: SINOP n=25326
+  · SISREG amb pendente: VARZEA GRANDE n=21616
   Caveat: IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 8) Score prioridade municipal (proposta para homologação):
-  · SORRISO: score=1.0 (lab=1, pos=1, lacuna=1, SIH=sem dado)
-  · CUIABA: score=0.8914 (lab=1, pos=1, lacuna=1, SIH=0.24)
-  · JUINA: score=0.85 (lab=0.7, pos=1, lacuna=1, SIH=sem dado)
-  · VARZEA GRANDE: score=0.5 (lab=0, pos=1, lacuna=1, SIH=sem dado)
-  · CAMPO NOVO DO PARECIS: score=0.25 (lab=0, pos=sem dado, lacuna=1, SIH=sem dado)
+  · SINOP: score=1.0 (lab=sem dado, pos=1, lacuna=1, SIH=sem dado)
+  · TANGARA DA SERRA: score=0.83 (lab=sem dado, pos=1, lacuna=1, SIH=0.32)
+  · CUIABA: score=0.8 (lab=sem dado, pos=1, lacuna=1, SIH=0.2)
+  · PONTES E LACERDA: score=0.61 (lab=sem dado, pos=sem dado, lacuna=1, SIH=0.22)
+  · VARZEA GRANDE: score=0.5961 (lab=sem dado, pos=0.6522, lacuna=1, SIH=0.08)
 Nota marcadores: Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto.
-Nota: positividade IgG/sorologia elevada ≠ surto agudo.
 Alertas específicos: 8 arquivo(s) em saida_pipeline/alertas_especificos/

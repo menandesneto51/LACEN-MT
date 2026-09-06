@@ -1,2 +1,7 @@
 ﻿fonte,municipio,cid_familia,n,caveat
-SIH/VW_INTERNACAO,CUIABA,dengue_arbovirose,12,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,TANGARA DA SERRA,dengue_arbovirose,12,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,PONTES E LACERDA,dengue_arbovirose,11,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,CUIABA,dengue_arbovirose,10,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,VARZEA GRANDE,dengue_arbovirose,4,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,TANGARA DA SERRA,tuberculose,4,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
+SIH/VW_INTERNACAO,COLNIZA,dengue_arbovirose,4,Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
