@@ -31,7 +31,7 @@ from lacen_auth import auth_sidebar_status, require_auth
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
 
-VERSAO_DASHBOARD_LACEN = "v5.5.2-exec-kanban-mapa"
+VERSAO_DASHBOARD_LACEN = "v5.5.3-choropleth-fix"
 
 # Pasta padrão pública (Cloud / uso normal). Override só em admin ou diagnóstico.
 DATA_DIR = Path("saida_pipeline")
@@ -1216,7 +1216,19 @@ def join_shape_with_period(props_df: pd.DataFrame, period_df: pd.DataFrame) -> p
 def make_choropleth(geojson: dict, merged: pd.DataFrame, value_col: str, title: str):
     if geojson is None or merged is None or merged.empty or value_col not in merged.columns:
         return None
+    if "__id" not in merged.columns:
+        return None
     plot_df = merged.copy()
+    # Plotly no Cloud costuma falhar com dtypes Arrow/String — normaliza para tipos clássicos.
+    for c in plot_df.columns:
+        if c == "__id":
+            plot_df[c] = pd.to_numeric(plot_df[c], errors="coerce")
+            continue
+        if pd.api.types.is_numeric_dtype(plot_df[c]):
+            plot_df[c] = pd.to_numeric(plot_df[c], errors="coerce")
+        else:
+            plot_df[c] = plot_df[c].astype(object).where(plot_df[c].notna(), None)
+            plot_df[c] = plot_df[c].map(lambda x: None if x is None else str(x))
     # Categorical risk bands (object ou pandas StringDtype)
     cat_cols = {"banda_risco", "faixa_risco", "prioridade", "banda_absoluta", "banda_percentil"}
     is_categorical = value_col in cat_cols or not pd.api.types.is_numeric_dtype(plot_df[value_col])
@@ -1245,14 +1257,13 @@ def make_choropleth(geojson: dict, merged: pd.DataFrame, value_col: str, title: 
         "janela_alerta_proximos_dias", "percentil_estadual", "codigo_ibge",
         "score", "exames", "positivos", "rotulo",
     ] if c in plot_df.columns]
-    fig = px.choropleth_mapbox(
-        plot_df,
+    common_kw = dict(
+        data_frame=plot_df,
         geojson=geojson,
         locations="__id",
         featureidkey="properties.__id",
         hover_name="municipio" if "municipio" in plot_df.columns else None,
         hover_data={c: True for c in hover_cols if c != "municipio"},
-        mapbox_style="open-street-map",
         zoom=4.8,
         center={"lat": -12.8, "lon": -56.0},
         opacity=0.72,
@@ -1260,6 +1271,26 @@ def make_choropleth(geojson: dict, merged: pd.DataFrame, value_col: str, title: 
         title=title,
         **color_kw,
     )
+    fig = None
+    # Plotly 6+: choropleth_map; versões antigas: choropleth_mapbox.
+    if hasattr(px, "choropleth_map"):
+        try:
+            fig = px.choropleth_map(**common_kw, map_style="open-street-map")
+        except TypeError:
+            # assinatura intermediária ainda usa mapbox_style
+            try:
+                fig = px.choropleth_map(**common_kw, mapbox_style="open-street-map")
+            except Exception:
+                fig = None
+        except Exception:
+            fig = None
+    if fig is None and hasattr(px, "choropleth_mapbox"):
+        try:
+            fig = px.choropleth_mapbox(**common_kw, mapbox_style="open-street-map")
+        except Exception:
+            fig = None
+    if fig is None:
+        return None
     fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
     return fig
 
@@ -2155,42 +2186,58 @@ elif modulo == "Visão executiva":
                         )
                     if found_geo and "municipio" in df_score.columns and "score" in df_score.columns:
                         with st.expander("Mapa — score de prioridade municipal", expanded=True):
-                            geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
-                            st.caption(geo_msg)
-                            sc_map = df_score.copy()
-                            sc_map["municipio"] = sc_map["municipio"].map(norm_municipio)
-                            if "codigo_ibge" not in sc_map.columns:
-                                mm_ibge = get_optional(folder, "municipal_master")
-                                if (
-                                    mm_ibge is not None
-                                    and not mm_ibge.empty
-                                    and {"municipio", "codigo_ibge"}.issubset(mm_ibge.columns)
-                                ):
-                                    mmj = mm_ibge[["municipio", "codigo_ibge"]].copy()
-                                    mmj["municipio"] = mmj["municipio"].map(norm_municipio)
-                                    sc_map = sc_map.merge(mmj, on="municipio", how="left")
-                            if geojson is not None and not props_df.empty:
-                                merged_sc = join_shape_with_period(props_df, sc_map)
-                                fig_sc = make_choropleth(
-                                    geojson,
-                                    merged_sc,
-                                    "score",
-                                    f"Score de prioridade municipal — {se_brief}",
-                                )
-                                if fig_sc is not None:
-                                    fig_sc.update_coloraxes(colorbar_title="score")
-                                    safe_plotly(fig_sc, "Mapa score prioridade")
+                            try:
+                                geojson, props_df, geo_msg = load_geojson_or_shp(str(found_geo))
+                                st.caption(geo_msg)
+                                sc_map = df_score.copy()
+                                sc_map["municipio"] = sc_map["municipio"].map(norm_municipio)
+                                sc_map["score"] = to_num(sc_map["score"])
+                                if "codigo_ibge" not in sc_map.columns:
+                                    mm_ibge = get_optional(folder, "municipal_master")
+                                    if (
+                                        mm_ibge is not None
+                                        and not mm_ibge.empty
+                                        and {"municipio", "codigo_ibge"}.issubset(mm_ibge.columns)
+                                    ):
+                                        mmj = mm_ibge[["municipio", "codigo_ibge"]].copy()
+                                        mmj["municipio"] = mmj["municipio"].map(norm_municipio)
+                                        sc_map = sc_map.merge(mmj, on="municipio", how="left")
+                                if geojson is not None and not props_df.empty:
+                                    merged_sc = join_shape_with_period(props_df, sc_map)
+                                    fig_sc = make_choropleth(
+                                        geojson,
+                                        merged_sc,
+                                        "score",
+                                        f"Score de prioridade municipal — {se_brief}",
+                                    )
+                                    if fig_sc is not None:
+                                        try:
+                                            fig_sc.update_coloraxes(colorbar_title="score")
+                                        except Exception:
+                                            pass
+                                        safe_plotly(fig_sc, "Mapa score prioridade")
+                                    else:
+                                        st.warning(
+                                            "Malha carregada, mas o cruzamento município×score não fechou "
+                                            "ou o Plotly do Cloud não renderizou o coroplético."
+                                        )
+                                        show_table(
+                                            sc_map[cols_sc].head(20),
+                                            "Score (prévia mapa)",
+                                            key="score_map_prev",
+                                        )
                                 else:
-                                    st.warning(
-                                        "Malha carregada, mas o cruzamento município×score não fechou."
-                                    )
-                                    show_table(
-                                        sc_map[cols_sc].head(20),
-                                        "Score (prévia mapa)",
-                                        key="score_map_prev",
-                                    )
-                            else:
-                                st.info("Malha municipal indisponível para o mapa de score.")
+                                    st.info("Malha municipal indisponível para o mapa de score.")
+                            except Exception as _map_exc:  # noqa: BLE001
+                                st.warning(
+                                    f"Mapa de score indisponível neste ambiente: {_map_exc}. "
+                                    "Os cards/tabela acima seguem válidos."
+                                )
+                                show_table(
+                                    df_score[cols_sc].head(20),
+                                    "Score (fallback sem mapa)",
+                                    key="score_map_fallback",
+                                )
                 pergunta_col = "pergunta" if "pergunta" in df_briefing.columns else None
                 view_mode_brief = st.radio(
                     "Exibição briefing",
