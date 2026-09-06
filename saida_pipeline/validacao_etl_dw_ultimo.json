@@ -1,6 +1,6 @@
 {
-  "ts": "2026-08-31T09:42:08",
-  "hoje": "2026-08-31",
+  "ts": "2026-09-05T23:24:01",
+  "hoje": "2026-09-05",
   "se_esperada": "2026-SE35",
   "passos": [
     "extract_dw_ok",
@@ -113,15 +113,15 @@
     "dbo.POPULACAO_TCU"
   ],
   "micro_gal_path": "saida_pipeline\\staging_dw\\vw_gal_micro_recent_for_rede.csv",
-  "se_usada": "2026-SE30",
-  "atraso_se": 5,
-  "atraso_dias": 36,
-  "se_fonte": "ultima_se_presente_nos_dados",
-  "aviso": "ATRASO: SE usada 2026-SE30 está 5 semanas atrás da esperada 2026-SE35 (2026-08-31). Não tratar como semana corrente sem justificativa (DW/VPN/carga). | CREATE TABLE negado: lacen_ml_risco_predito, lacen_ml_silencio_predito, lacen_ml_backtest_summary, lacen_alerta_historico, lacen_alerta_emergencia_historico, lacen_fila_operacional, lacen_indicadores_rede, lacen_qualidade_dado — DBA deve rodar saida_pipeline/sql/create_lacen_ml_tables.sql",
+  "se_usada": "2026-SE35",
+  "atraso_se": 0,
+  "atraso_dias": 6,
+  "se_fonte": "se_completa_calendario",
+  "aviso": "CREATE TABLE negado: lacen_ml_risco_predito, lacen_ml_silencio_predito, lacen_ml_backtest_summary, lacen_alerta_historico, lacen_alerta_emergencia_historico, lacen_fila_operacional, lacen_indicadores_rede, lacen_qualidade_dado — DBA deve rodar saida_pipeline/sql/create_lacen_ml_tables.sql",
   "mirror_dw_ok": false,
   "mirror_error": "Conectado ao DW, mas sem permissão CREATE TABLE. Peça ao DBA para rodar saida_pipeline/sql/create_lacen_ml_tables.sql e depois reexecute: python -m ml.mirror_dw",
   "mirror_rows": {},
-  "exames_se_usada": 2902,
-  "positivos_se_usada": 169,
-  "municipios_se_usada": 117
+  "exames_se_usada": 1295,
+  "positivos_se_usada": 10,
+  "municipios_se_usada": 106
 }

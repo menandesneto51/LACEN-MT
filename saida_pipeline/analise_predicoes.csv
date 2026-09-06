@@ -1,0 +1,14 @@
+agravo,target,s1_exames,s1_low,s1_high,s1_positividade_pct,s2_exames,s3_exames,risco,metodo
+estadual_volume,statewide_tests,966,73,1859,0.0,985,1005,—,media_historica_6se
+dengue,dengue,196.19,109.07,283.31,0.26,196.19,196.19,baixo,ewma_span4_tail8
+hepatite b hbv,hepatite_b_hbv,130.84,81.09,180.6,0.0,130.84,130.84,baixo,ewma_span4_tail8
+hepatite c hcv,hepatite_c_hcv,26.31,15.86,36.76,0.0,26.31,26.31,baixo,ewma_span4_tail8
+sars cov 2,sars_cov_2,47.88,35.02,60.75,0.0,47.88,47.88,baixo,ewma_span4_tail8
+tuberculose,tuberculose,409.02,272.0,546.04,0.91,409.02,409.02,baixo,ewma_span4_tail8
+bacteremia bact rias cultura,bacteremia_bact_rias_cultura,1.43,0.99,1.86,0.0,1.43,1.43,baixo,ewma_span4_tail8
+bacteremia bact rias teste de sensibilidade,bacteremia_bact_rias_teste_de_sensibilidade,1.02,0.69,1.35,0.0,1.02,1.02,baixo,ewma_span4_tail8
+brucelose brucelose,brucelose_brucelose,2.11,1.25,2.97,0.0,2.11,2.11,baixo,ewma_span4_tail8
+brucelose brucelose igg,brucelose_brucelose_igg,2.07,0.91,3.24,0.0,2.07,2.07,baixo,ewma_span4_tail8
+brucelose brucelose igm,brucelose_brucelose_igm,2.07,0.91,3.24,0.0,2.07,2.07,baixo,ewma_span4_tail8
+caxumba caxumba biologia molecular,caxumba_caxumba_biologia_molecular,1.6,1.11,2.08,0.0,1.6,1.6,baixo,ewma_span4_tail8
+chikungunya,chikungunya,16.94,12.07,21.81,0.0,16.94,16.94,baixo,ewma_span4_tail8

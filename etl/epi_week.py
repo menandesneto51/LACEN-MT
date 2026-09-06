@@ -6,13 +6,48 @@ Convenção do sistema: `datetime.isocalendar()` (segunda–domingo), igual a
 (compatível com SQL Server anterior a 2022; `DATEPART(isoyear,…)` só existe no 2022+).
 A SE de referência operacional é a **última semana completa** relativa a `hoje`
 (a semana corrente ainda em curso não é tratada como “atual” sem banner).
+
+Âncora temporal GAL: a SE do exame é calculada pela **data da solicitação**
+(`Data_Solicitacao*`); coleta/liberação seguem para TAT e frescor do extract.
 """
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
-from typing import Tuple, Union
+from typing import Iterable, Optional, Tuple, Union
 
 DateLike = Union[date, datetime, None]
+
+# Ordem de preferência para âncora da SE no GAL (solicitação primeiro).
+GAL_SE_DATE_CANDIDATES: tuple[str, ...] = (
+    "Data_Solicitacao_dt",
+    "Data_Solicitacao",
+    "Data_da_Solicitacao",
+    "Dt_Solicitacao",
+    "Data_Pedido",
+    "Data_Requisicao",
+    # Fallbacks se a view não expuser solicitação
+    "Data_Coleta_dt",
+    "Data_Coleta",
+    "Data_Liberacao_dt",
+    "Data_Liberacao",
+)
+
+
+def pick_gal_se_date_col(columns: Iterable[str]) -> Optional[str]:
+    """Primeira coluna disponível para calcular SE a partir do GAL."""
+    cols = set(columns)
+    for name in GAL_SE_DATE_CANDIDATES:
+        if name in cols:
+            return name
+    return None
+
+
+def gal_se_date_is_solicitacao(col: str | None) -> bool:
+    """True se a coluna escolhida é de solicitação (não fallback coleta/liberação)."""
+    if not col:
+        return False
+    c = col.casefold()
+    return "solicit" in c or "pedido" in c or "requisic" in c
 
 
 def _as_date(d: DateLike = None) -> date:

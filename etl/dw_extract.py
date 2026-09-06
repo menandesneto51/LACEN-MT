@@ -23,6 +23,8 @@ GAL_SELECT_COLS = [
     "Exame",
     "Metodologia",
     "Status_Exame",
+    "Data_Solicitacao_dt",
+    "Data_Solicitacao",
     "Data_Coleta_dt",
     "Data_Recebimento_dt",
     "Data_Liberacao_dt",
@@ -362,13 +364,23 @@ def extract_vw_gal_weekly_agg(
     """Agrega volume/positivos por SE×município×agravo no próprio DW (leve)."""
     from lacen_dw import read_sql
 
+    from etl.epi_week import gal_se_date_is_solicitacao, pick_gal_se_date_col
+
     schema, view = _safe_ident(schema), _safe_ident(view)
     cols = set(discover_gal_columns(mode, queryable, schema, view))
-    date_col = "Data_Liberacao_dt" if "Data_Liberacao_dt" in cols else (
-        "Data_Liberacao" if "Data_Liberacao" in cols else None
-    )
+    # SE = data da solicitação (não liberação). Janela do agg usa a mesma âncora.
+    date_col = pick_gal_se_date_col(cols)
     if not date_col:
-        raise RuntimeError(f"{schema}.{view} sem coluna de liberação.")
+        raise RuntimeError(
+            f"{schema}.{view} sem coluna de data para SE "
+            "(esperado Data_Solicitacao* / fallback coleta ou liberação)."
+        )
+    if not gal_se_date_is_solicitacao(date_col):
+        _log(
+            f"[DW][AVISO] SE sem Data_Solicitacao na view — usando fallback {date_col}"
+        )
+    else:
+        _log(f"[DW] SE ancorada em {date_col} (solicitação)")
 
     mun_col = next(
         (c for c in (
@@ -457,11 +469,17 @@ def extract_vw_gal_micro_sample(
 
     schema, view = _safe_ident(schema), _safe_ident(view)
     cols = set(discover_gal_columns(mode, queryable, schema, view))
+    from etl.epi_week import pick_gal_se_date_col
+
     want = [c for c in GAL_SELECT_COLS if c in cols]
     if "Data_Liberacao_dt" not in want and "Data_Liberacao" in cols:
         want.append("Data_Liberacao")
+    se_col = pick_gal_se_date_col(cols)
+    if se_col and se_col not in want:
+        want.append(se_col)
     if not want:
         raise RuntimeError("Nenhuma coluna GAL conhecida na view.")
+    # Janela do micro = liberação (TAT/rede/frescor). SE usa solicitação à parte.
     date_col = "Data_Liberacao_dt" if "Data_Liberacao_dt" in cols else "Data_Liberacao"
     col_list = ", ".join(f"[{c}]" for c in want)
     sql = f"""

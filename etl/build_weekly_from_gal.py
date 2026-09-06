@@ -103,13 +103,29 @@ def weekly_from_local_gal(
                 return c
         return None
 
-    date_col = pick("Data_Liberacao_dt", "Data_Liberacao")
+    # SE = data da solicitação (fallback coleta/liberação se ausente)
+    from etl.epi_week import gal_se_date_is_solicitacao, pick_gal_se_date_col
+
+    date_col = pick_gal_se_date_col(cols) or pick(
+        "Data_Solicitacao_dt",
+        "Data_Solicitacao",
+        "Data_Coleta_dt",
+        "Data_Liberacao_dt",
+        "Data_Liberacao",
+    )
     mun_col = pick("Municipio_Residencia_Paciente", "Municipio_Solicitante")
     agravo_col = pick("Agravo_Requisicao", "Agravo_Gal")
     exame_col = pick("Exame")
     r1 = pick("Campo_Resultado_1")
     if not date_col or not mun_col:
         raise ValueError(f"Colunas insuficientes em {gal_path.name}")
+    if not gal_se_date_is_solicitacao(date_col):
+        print(
+            f"[SE][AVISO] weekly local sem solicitação — âncora {date_col}",
+            flush=True,
+        )
+    else:
+        print(f"[SE] weekly local ancorada em {date_col}", flush=True)
 
     usecols = [c for c in (date_col, mun_col, agravo_col, exame_col, r1) if c]
     parts = []

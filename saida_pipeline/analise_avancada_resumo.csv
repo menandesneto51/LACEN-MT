@@ -1,0 +1,24 @@
+metrica,valor
+versao,analise_avancada_v2
+se_analisada,2026-SE35
+se_alerta,2026-SE36
+positividade_estadual_pct,0.7722
+positivos_estadual,10
+validos_estadual,1295
+tendencia_volume,estável
+tendencia_positividade,aumento
+tendencia_internacao,queda
+nowcasting_exames_est,1100
+nowcasting_selo,DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA
+predicao_exames_sem1,966
+predicao_exames_sem2,985
+predicao_exames_sem3,1005
+predicao_positividade_pct_s1,0.0000
+internacoes,6
+internacoes_semana_usada,2026-SE26
+internacoes_mediana4,23.50
+internacoes_por_100k_estado,0.1674
+indicasus_score_mediano,7.0375
+warnings,SIH sem dados na SE analisada; usando 2026-SE26 (última disponível — ressalva de defasagem). | Nowcasting com alta incerteza por completude parcial da SE de alerta.
+fonte_internacao,staging_dw/sih_mun_cid_familia_agg.csv
+fonte_indicasus,staging_dw/indicadores.csv

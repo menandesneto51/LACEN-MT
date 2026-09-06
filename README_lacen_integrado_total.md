@@ -6,7 +6,7 @@ Fluxo oficial na raiz (cópias antigas em `antigos/`).
 1. `lacen_analysis_pipeline_completo_corrigido.py` — LACEN/GAL
 2. `lacen_builder_integrado_total.py` — SINAN + SIM + CNES + clima + população
 3. `lacen_integracao_final_only.py` — risco composto + inteligência territorial
-4. `lacen_dashboard_integrado_total.py` — Streamlit v5.1 (12 abas)
+4. `lacen_dashboard_integrado_total.py` — Streamlit v5.5 (módulos + aba inicial **Sobre o sistema**)
 
 Orquestração: `rodar_lacen_sistema_completo_bases.bat`
 
@@ -21,7 +21,7 @@ Em `saida_pipeline/`, após a integração final (ou `gerar_inteligencia_territo
 python -m streamlit run lacen_dashboard_integrado_total.py
 ```
 
-Abas novas: Visão executiva, Municípios em risco, Municípios silenciosos, Utilização do LACEN, Alertas territoriais.
+Primeira aba: **Sobre o sistema** (explicação, cálculos, KPIs do filtro lateral e atalhos de navegação). Demais módulos: Visão executiva, Vigilância laboratorial, Territórios prioritários, Integração epidemiológica, Predição e alertas, Dados e qualidade.
 
 ## ETL DW + SE real
 A base semanal (`integrated_weekly_surveillance`) e os alertas devem refletir a **semana epidemiológica do calendário** (última SE ISO completa vs `hoje`), não um recorte antigo preso em SE20/SE21.

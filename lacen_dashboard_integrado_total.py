@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Painel Integrado de Vigilância — LACEN MT
-Versão v5.0 — CSV, análises do período, monitoramento 2026 e alertas para próximos dias.
+Versão v5.5 — aba inicial "Sobre o sistema", CSV, análises do período,
+monitoramento e alertas.
 
 Estrutura mantida:
 - Lê os CSVs já existentes em saida_pipeline.
@@ -30,7 +31,7 @@ from lacen_auth import auth_sidebar_status, require_auth
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
 
-VERSAO_DASHBOARD_LACEN = "v5.4-auth-institucional"
+VERSAO_DASHBOARD_LACEN = "v5.5.1-sobre-atalhos"
 
 # Pasta padrão pública (Cloud / uso normal). Override só em admin ou diagnóstico.
 DATA_DIR = Path("saida_pipeline")
@@ -1634,6 +1635,7 @@ default_chart_targets = top_targets_by_volume(
 )
 
 MODULOS = [
+    "Sobre o sistema",
     "Visão executiva",
     "Vigilância laboratorial",
     "Territórios prioritários",
@@ -1645,9 +1647,256 @@ modulo = st.radio("Módulo", MODULOS, horizontal=True, label_visibility="collaps
 
 
 # =============================================================================
+# Módulo: Sobre o sistema (aba inicial)
+# =============================================================================
+if modulo == "Sobre o sistema":
+    st.subheader("Sobre o Radar LACEN — como funciona e como navegar")
+    st.caption(
+        "Guia rápido para gestores, CIEVS e vigilância epidemiológica. "
+        "Este módulo não substitui a análise técnica dos demais painéis."
+    )
+
+    # KPIs do período já filtrado na sidebar
+    st.markdown("### Contexto do período filtrado")
+    st.caption(
+        f"Reflete os filtros da barra lateral: ano **{analysis_year}**, "
+        f"SE **{week_start}–{week_end}**, agravos/municípios selecionados."
+    )
+    if period_df.empty:
+        st.warning("Sem dados no período/filtros selecionados.")
+    else:
+        _ex = float(period_df["tests_periodo"].sum()) if "tests_periodo" in period_df.columns else 0.0
+        _pos = float(period_df["positivos_periodo"].sum()) if "positivos_periodo" in period_df.columns else 0.0
+        _pos_pct = safe_div(_pos, _ex)
+        if "tests_periodo" in period_df.columns:
+            _mun = int(period_df.loc[period_df["tests_periodo"] > 0, "municipio"].nunique())
+        else:
+            _mun = int(period_df["municipio"].nunique()) if "municipio" in period_df.columns else 0
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Exames", f"{_ex:,.0f}".replace(",", "."))
+        k2.metric("Positivos", f"{_pos:,.0f}".replace(",", "."))
+        k3.metric(
+            "Positividade",
+            "—" if _pos_pct is None or (isinstance(_pos_pct, float) and np.isnan(_pos_pct))
+            else f"{100.0 * float(_pos_pct):.1f}%".replace(".", ","),
+        )
+        k4.metric("Municípios com exames", f"{_mun}")
+
+    st.markdown("### Atalhos")
+    a1, a2, a3 = st.columns(3)
+    with a1:
+        if st.button("Ir para Visão executiva", use_container_width=True, type="primary"):
+            st.session_state.modulo_principal = "Visão executiva"
+            st.rerun()
+    with a2:
+        if st.button("Ir para Predição e alertas", use_container_width=True):
+            st.session_state.modulo_principal = "Predição e alertas"
+            st.rerun()
+    with a3:
+        if st.button("Ir para Dados e qualidade", use_container_width=True):
+            st.session_state.modulo_principal = "Dados e qualidade"
+            st.rerun()
+
+    _painel_url = (
+        "https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/"
+    )
+    st.info(
+        f"**Painel Cloud:** [{_painel_url}]({_painel_url})  \n"
+        "O **Alerta Estratégico** (e-mail/Telegram) é o resumo executivo; "
+        "este painel traz o detalhamento completo."
+    )
+
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown("**O que é**")
+        st.write(
+            "Sala de situação laboratorial do LACEN-MT integrada à "
+            "vigilância (CIEVS/SES-MT): exames GAL, positividade, "
+            "risco territorial, silêncio laboratorial e sinais preditivos."
+        )
+    with c2:
+        st.markdown("**Para quem**")
+        st.write(
+            "CIEVS estadual, Regionais, vigilâncias municipais e "
+            "gestão laboratorial. Apoia triagem e investigação — "
+            "não classifica surto automaticamente."
+        )
+    with c3:
+        st.markdown("**Princípio**")
+        st.write(
+            "Anomalia estatística ≠ prioridade epidemiológica ≠ surto. "
+            "Exame ≠ positivo ≠ caso ≠ notificação. Sempre valide "
+            "marcador, definição de caso e contexto local."
+        )
+
+    st.divider()
+    st.markdown("### Como navegar")
+    st.markdown(
+        """
+1. Use a **barra de módulos** no topo para alternar as áreas do painel.
+2. Na **barra lateral**, escolha ano, janela de semanas epidemiológicas,
+   baseline de comparação, agravos e municípios.
+3. Use os **atalhos** acima ou comece pela **Visão executiva**; aprofunde em
+   **Vigilância**, **Territórios**, **Integração**, **Predição** e **Dados**.
+4. O **Alerta Estratégico** (e-mail/Telegram) é um produto separado, mais curto;
+   o painel traz o detalhamento completo.
+        """
+    )
+
+    nav_cols = st.columns(3)
+    with nav_cols[0]:
+        st.info(
+            "**Visão executiva** — KPIs do período, fila operacional "
+            "e prioridades (o quê / onde / o que fazer)."
+        )
+        st.info(
+            "**Vigilância laboratorial** — séries de volume, positividade, "
+            "TAT e demanda por agravo."
+        )
+    with nav_cols[1]:
+        st.info(
+            "**Territórios prioritários** — risco, silêncio, mapas e "
+            "municípios que exigem validação."
+        )
+        st.info(
+            "**Integração epidemiológica** — cruzamentos com SINAN, SIM, "
+            "CNES, clima e vulnerabilidade."
+        )
+    with nav_cols[2]:
+        st.info(
+            "**Predição e alertas** — anomalias ML, forecast, pressão "
+            "da rede e histórico de alertas."
+        )
+        st.info(
+            "**Dados e qualidade** — cobertura, schema, exportações e "
+            "diagnóstico das bases em `saida_pipeline`."
+        )
+
+    st.divider()
+    st.markdown("### Cálculos e regras principais")
+
+    with st.expander("Semana epidemiológica e maturação (alerta × análise)", expanded=True):
+        st.markdown(
+            """
+- **Alerta emitido na SE N** analisa prioritariamente a **SE N−1**
+  (semana madura), para reduzir viés de resultados ainda pendentes.
+- **Completude laboratorial** ≈ exames com resultado final /
+  exames elegíveis da semana.
+- Limiares em validação (não norma institucional):
+  **≥95%** madura · **90–94,9%** com aviso · **&lt;90%** sem positividade/
+  anomalia de resultado consolidada.
+- A **SE corrente** pode aparecer como *dado preliminar*
+  (demanda/pressão operacional), **sem** entrar na análise consolidada
+  de positividade/incidência.
+- A SE de referência epidemiológica é preferencialmente a da **coleta**;
+  liberação posterior **retroalimenta** a SE da coleta.
+            """
+        )
+
+    with st.expander("Positividade"):
+        st.markdown(
+            """
+- Sempre em **percentual**, com numerador/denominador:
+  `positivos / resultados finais válidos` (ex.: `3/389 = 0,8%`).
+- **Não** incluir exames pendentes no denominador.
+- Positividade consolidada só com semana madura e resultado final
+  até a **data de corte**.
+            """
+        )
+
+    with st.expander("Anomalias, robustez e prioridade"):
+        st.markdown(
+            """
+- Anomalias comparam o período atual a uma **referência recente**
+  (baseline do filtro lateral).
+- Separar **volume de exames** de **positividade**.
+- **Robustez amostral** (baixa/moderada/alta) depende do tamanho de *n*
+  e do tipo de métrica.
+- Prioridade epidemiológica orienta ação
+  (**VALIDAR / INVESTIGAR / ACOMPANHAR / ESCALONAR**),
+  sem inferir surto só pelo desvio estatístico.
+            """
+        )
+
+    with st.expander("Tendência, nowcasting e predição"):
+        st.markdown(
+            """
+- **Tendência (4–8 semanas):** classifica volume, positividade e
+  internações em aumento / estável / queda.
+- **Nowcasting:** estimativa preliminar da semana em curso, com
+  intervalo aproximado e selo de incerteza.
+- **Predição 1–3 semanas:** volume/positividade esperados por agravo
+  (quando houver modelo/artefato), sempre com ressalva.
+- Métricas avançadas são **apoio à decisão**, não diagnóstico definitivo.
+            """
+        )
+
+    with st.expander("Linkage (GAL × SINAN × internação × INDICASUS)"):
+        st.markdown(
+            """
+- **GAL × SINAN:** “sem correspondência identificada até a data de corte”
+  **não** significa automaticamente subnotificação; há janela de maturação
+  do pareamento.
+- **VW_INTERNACAO (SIH):** número de internações (e taxa/100 mil quando
+  houver população), com possível **defasagem** em relação à SE analisada.
+- **INDICASUS / indicadores:** contexto territorial auxiliar para
+  priorização — não substitui a interpretação epidemiológica principal.
+            """
+        )
+
+    with st.expander("Filtros da barra lateral"):
+        st.markdown(
+            """
+- **Ano / semanas:** definem o período analisado nos módulos.
+- **Comparar com:** período imediatamente anterior, mesmo período do
+  ano anterior ou média histórica.
+- **Grupo de agravos e municípios:** restringem séries, mapas e filas.
+- Alterar filtros recalcula KPIs e tabelas do módulo ativo.
+            """
+        )
+
+    st.divider()
+    st.markdown("### Glossário rápido")
+    g1, g2 = st.columns(2)
+    with g1:
+        st.markdown(
+            """
+| Termo | Significado |
+|-------|-------------|
+| SE | Semana epidemiológica |
+| GAL | Gestão de Ambiente Laboratorial (exames LACEN) |
+| Positividade | % de resultados finais positivos |
+| Silêncio | Queda abrupta de exames frente ao histórico |
+| Data de corte | Momento em que os dados foram congelados para a emissão |
+            """
+        )
+    with g2:
+        st.markdown(
+            """
+| Termo | Significado |
+|-------|-------------|
+| Anomalia | Desvio estatístico vs referência |
+| Nowcasting | Estimativa da semana ainda incompleta |
+| Forecast | Projeção de demanda/positividade |
+| Linkage | Pareamento entre bases (lab × notificação × SIH) |
+| QA | Checagens de qualidade do alerta/painel |
+            """
+        )
+
+    st.success(
+        "Pronto para começar: selecione **Visão executiva** na barra de módulos "
+        "para a leitura situacional do período filtrado."
+    )
+    st.caption(
+        f"Radar LACEN · {VERSAO_DASHBOARD_LACEN} · documentação operacional do alerta "
+        "também em `docs/alerta_estrategico_especificacao_ve.md`."
+    )
+
+
+# =============================================================================
 # Módulo: Visão executiva
 # =============================================================================
-if modulo == "Visão executiva":
+elif modulo == "Visão executiva":
     st.subheader("Visão executiva — Sala de Situação Laboratorial")
     st.caption(
         "Leitura rápida: **o quê** (volume/positividade), **onde** (municípios prioritários/silêncio) "

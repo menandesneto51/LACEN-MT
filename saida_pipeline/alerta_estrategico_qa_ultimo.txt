@@ -1,0 +1,32 @@
+QA RADAR LACEN — Alerta Estratégico
+
+Encoding: OK
+Recomendações não truncadas: OK
+Singular/plural: OK
+Percentuais: OK
+Municípios/IBGE: OK
+Severidade estatística: OK
+Robustez amostral: OK
+Prioridade epidemiológica: OK
+Volume × positividade separados: OK
+Linkage × notificação: OK
+Silêncio laboratorial: OK
+Confirmação de sinais anteriores: OK
+Redundância: OK
+WEEK_MATURITY: OK
+CURRENT_WEEK_USED_AS_FINAL: OK
+RESULT_PENDING_BIAS: OK
+INCOMPLETE_WEEK_IN_BASELINE: OK
+LOW_MARKER_COMPLETENESS: OK
+HEADER_SE_SEPARATION: OK
+POSITIVITY_PERCENT_FORMAT: OK
+NOWCAST_WITH_UNCERTAINTY: OK
+PREDICTION_WITH_INTERVAL: OK
+LINKAGE_INTERNACAO_PRESENT: OK
+LINKAGE_INDICASUS_PRESENT: OK
+SIGNAL_LINKAGE_CONTEXT: OK
+AGRAVO_FORECAST_PRESENT: OK
+Tamanho executivo: OK
+
+Palavras: 1294
+Sinais no alerta: 10
