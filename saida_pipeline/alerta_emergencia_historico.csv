@@ -262,392 +262,940 @@
 2026,21,,SAO JOSE,False,False,False,,False,,0.0121,baixa,False,MONITORAMENTO,2026-08-30T16:38:20,Observado,indicadores_emergencia
 2026,21,,SAO JOSE DOS CAMPOS,False,False,False,,False,,0.0118,baixa,False,MONITORAMENTO,2026-08-30T16:38:20,Observado,indicadores_emergencia
 2026,21,,VILHENA,False,False,False,,False,,0.0248,baixa,False,MONITORAMENTO,2026-08-30T16:38:20,Observado,indicadores_emergencia
-2026,30,5103437.0,CUIABA,True,False,True,critica,True,75.36,0.9771,critica,True,CRÍTICO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108402.0,VARZEA GRANDE,False,False,True,critica,True,80.77,0.9776,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102504.0,CACERES,False,False,False,critica,True,76.24,0.9337,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108006.0,TANGARA DA SERRA,True,False,True,alta,True,72.37,0.9327,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107925.0,SINOP,False,False,True,alta,True,72.29,0.9482,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102678.0,CAMPO VERDE,True,False,True,alta,True,72.2,0.9208,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102637.0,CAMPO NOVO DO PARECIS,False,False,True,alta,True,71.0,0.9263,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107602.0,RONDONOPOLIS,False,False,False,alta,True,69.34,0.9387,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107941.0,SORRISO,True,False,True,alta,True,68.58,0.9718,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103205.0,COLIDER,False,False,True,alta,True,67.87,0.646,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105507.0,LUCAS DO RIO VERDE,False,False,True,alta,True,67.56,0.9768,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106851.0,PONTES E LACERDA,True,False,True,alta,True,66.72,0.9069,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107065.0,PRIMAVERA DO LESTE,False,False,True,alta,True,66.42,0.9404,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103007.0,CHAPADA DOS GUIMARAES,True,False,False,alta,True,65.46,0.5903,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106257.0,NOVA MUTUM,True,False,True,alta,True,63.53,0.8604,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104203.0,GUARANTA DO NORTE,True,False,False,alta,True,58.67,0.8132,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101258.0,ARAPUTANGA,True,False,False,alta,True,57.93,0.2194,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105200.0,JUINA,True,False,True,alta,True,57.06,0.8845,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106455.0,PARANAITA,False,False,True,moderada,False,52.93,0.6288,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108204.0,TESOURO,True,False,False,moderada,False,52.9,0.047,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104559.0,ITANHANGA,True,False,False,moderada,False,52.21,0.06,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104906.0,JACIARA,True,False,False,moderada,False,51.95,0.2025,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106802.0,PONTAL DO ARAGUAIA,True,False,False,moderada,False,51.64,0.015,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100102.0,ACORIZAL,True,False,False,moderada,False,51.3,0.1409,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103601.0,DIAMANTINO,True,False,False,moderada,False,51.26,0.3098,moderada,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101308.0,ARENAPOLIS,True,False,False,moderada,False,50.78,0.2067,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105622.0,MATUPA,True,False,False,moderada,False,50.32,0.2304,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108501.0,VERA,True,False,False,moderada,False,49.41,0.2588,moderada,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100300.0,ALTO ARAGUAIA,True,False,False,moderada,False,49.37,0.1395,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102603.0,CAMPINAPOLIS,False,False,True,moderada,False,49.29,0.8629,critica,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106265.0,NOVA OLIMPIA,True,False,False,moderada,False,49.09,0.1367,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107354.0,SAO JOSE DO XINGU,True,False,False,moderada,False,48.5,0.1361,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100508.0,ALTO PARAGUAI,True,False,False,moderada,False,48.36,0.0337,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108352.0,UNIAO DO SUL,True,False,False,moderada,False,47.01,0.0429,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,NOVA NAZARE,True,False,False,moderada,False,46.06,0.0434,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105150.0,JUARA,True,False,False,moderada,False,46.05,0.4151,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106190.0,NOVA LACERDA,True,False,False,moderada,False,45.81,0.0228,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107875.0,SAO PEDRO DA CIPA,True,False,False,moderada,False,45.64,0.0254,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106752.0,PLANALTO DA SERRA,True,False,False,moderada,False,45.62,0.1336,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107883.0,SAPEZAL,True,False,False,moderada,False,45.59,0.4359,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100409.0,ALTO GARCAS,True,False,False,moderada,False,45.48,0.4685,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107297.0,SAO JOSE DO POVO,True,False,False,moderada,False,45.27,0.0569,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106372.0,NOVO SANTO ANTONIO,True,False,False,moderada,False,45.17,0.0595,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102793.0,CARLINDA,True,False,False,moderada,False,44.87,0.1167,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104526.0,INDIAVAI,True,False,False,moderada,False,44.71,0.0539,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104609.0,ITAUBA,True,False,False,moderada,False,44.62,0.0369,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106273.0,NOVA SANTA HELENA,True,False,False,moderada,False,43.91,0.1189,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100805.0,APIACAS,True,False,False,moderada,False,43.78,0.1602,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107404.0,SAO JOSE DOS QUATRO MARCOS,True,False,False,moderada,False,43.36,0.1593,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106174.0,NOVA BANDEIRANTES,True,False,False,moderada,False,43.14,0.1675,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102702.0,CANARANA,True,False,False,moderada,False,42.82,0.4802,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108055.0,TAPURAH,True,False,False,moderada,False,42.71,0.2073,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103403.0,COTRIGUACU,True,False,False,moderada,False,42.7,0.1228,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MARCELANDIA,True,False,False,moderada,False,42.59,0.2645,moderada,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102850.0,CASTANHEIRA,True,False,False,moderada,False,42.57,0.1457,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108550.0,VILA BELA DA SANTISSIMA TRINDADE,True,False,False,moderada,False,42.42,0.089,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101704.0,BARRA DO BUGRES,True,False,False,moderada,False,42.11,0.2957,moderada,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103106.0,COCALINHO,True,False,False,moderada,False,41.84,0.1163,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106224.0,NOVA MARILANDIA,True,False,False,moderada,False,41.76,0.2823,moderada,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106281.0,NOVA UBIRATA,True,False,False,moderada,False,41.71,0.2059,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108600.0,VILA RICA,True,False,False,moderada,False,41.31,0.1805,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106422.0,NOVO SAO JOAQUIM,True,False,False,moderada,False,41.18,0.1173,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100607.0,ALTO TAQUARI,True,False,False,moderada,False,41.13,0.064,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107909.0,SERRA NOVA DOURADA,True,False,False,moderada,False,40.45,0.1036,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101407.0,ARIPUANA,True,False,False,moderada,False,40.39,0.3202,moderada,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106182.0,NOVA GUARITA,True,False,False,moderada,False,40.39,0.1155,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107248.0,SANTA CARMEM,True,False,False,moderada,False,39.33,0.1485,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103304.0,COMODORO,True,False,False,moderada,False,37.36,0.186,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104542.0,IPIRANGA DO NORTE,True,False,False,baixa,False,34.97,0.475,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106828.0,PONTE BRANCA,True,False,False,baixa,False,31.47,0.0255,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BOA ESPERANCA DO NORTE,False,False,True,nan,False,,0.5692,alta,True,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GUIA LOPES DA LAGUNA,False,True,False,nan,False,,0.0949,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,INHAMBUPE,False,True,False,nan,False,,0.0216,baixa,False,ALTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106158.0,NOSSA SENHORA DO LIVRAMENTO,False,False,False,alta,True,60.46,0.2047,baixa,False,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100201.0,AGUA BOA,False,False,False,moderada,False,54.91,0.6349,critica,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106703.0,PEIXOTO DE AZEVEDO,False,False,False,moderada,False,52.55,0.3225,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100250.0,ALTA FLORESTA,False,False,False,moderada,False,50.98,0.4762,alta,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101803.0,BARRA DO GARCAS,False,False,False,moderada,False,48.61,0.3476,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107305.0,SAO JOSE DO RIO CLARO,False,False,False,moderada,False,47.36,0.3136,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105234.0,JURUENA,False,False,False,moderada,False,38.52,0.3384,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PACARAIMA,False,False,False,nan,False,,0.3068,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,POXOREO,False,False,False,nan,False,,0.3607,moderada,True,MODERADO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5100359.0,ALTO BOA VISTA,False,False,False,moderada,False,54.74,0.0648,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106778.0,POCONE,False,False,False,moderada,False,53.7,0.2212,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107800.0,SANTO ANTONIO DO LEVERGER,False,False,False,moderada,False,53.02,0.2287,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107008.0,PORTO ESTRELA,False,False,False,moderada,False,51.89,0.0251,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101605.0,BARAO DE MELGACO,False,False,False,moderada,False,51.35,0.1821,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105259.0,JUSCIMEIRA,False,False,False,moderada,False,51.21,0.2302,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107107.0,QUERENCIA,False,False,False,moderada,False,51.12,0.2979,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106000.0,NOBRES,False,False,False,moderada,False,50.86,0.1877,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106216.0,NOVA CANAA DO NORTE,False,False,False,moderada,False,50.73,0.2049,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103700.0,DOM AQUINO,False,False,False,moderada,False,50.2,0.064,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101902.0,BRASNORTE,False,False,False,moderada,False,47.94,0.2996,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107792.0,SANTO ANTONIO DO LESTE,False,False,False,moderada,False,47.84,0.0963,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106877.0,PORTO ALEGRE DO NORTE,False,False,False,moderada,False,47.78,0.2401,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107263.0,SANTO AFONSO,False,False,False,moderada,False,47.56,0.1324,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107701.0,ROSARIO OESTE,False,False,False,moderada,False,47.26,0.1777,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106240.0,NOVA MONTE VERDE,False,False,False,moderada,False,47.25,0.2075,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106299.0,NOVA XAVANTINA,False,False,False,moderada,False,47.01,0.2086,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103452.0,CURVELANDIA,False,False,False,moderada,False,46.92,0.024,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105002.0,JANGADA,False,False,False,moderada,False,46.81,0.0552,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104500.0,GUIRATINGA,False,False,False,moderada,False,46.7,0.1831,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105580.0,LUCIARA,False,False,False,moderada,False,46.56,0.0199,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5104807.0,ITIQUIRA,False,False,False,moderada,False,46.37,0.2985,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107750.0,SALTO DO CEU,False,False,False,moderada,False,46.33,0.1306,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102694.0,CANABRAVA DO NORTE,False,False,False,moderada,False,46.3,0.0853,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106315.0,NOVO MUNDO,False,False,False,moderada,False,45.98,0.033,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5105101.0,JAURU,False,False,False,moderada,False,45.54,0.1223,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107180.0,RIBEIRAO CASCALHEIRA,False,False,False,moderada,False,45.51,0.0419,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106109.0,NORTELANDIA,False,False,False,moderada,False,45.23,0.1351,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108402.0,VALE DE SAO DOMINGOS,False,False,False,moderada,False,44.94,0.0313,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103353.0,CONFRESA,False,False,False,moderada,False,44.51,0.2513,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108105.0,TERRA NOVA DO NORTE,False,False,False,moderada,False,44.11,0.1824,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106232.0,NOVA MARINGA,False,False,False,moderada,False,43.62,0.0399,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107768.0,SANTA RITA DO TRIVELATO,False,False,False,moderada,False,43.06,0.0524,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107776.0,SANTA TEREZINHA,False,False,False,moderada,False,42.61,0.0283,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103254.0,COLNIZA,False,False,False,moderada,False,42.52,0.2269,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103502.0,DENISE,False,False,False,moderada,False,42.38,0.2779,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103056.0,CLAUDIA,False,False,False,moderada,False,41.91,0.0922,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103809.0,FELIZ NATAL,False,False,False,moderada,False,41.72,0.1417,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106653.0,PEDRA PRETA,False,False,False,moderada,False,41.36,0.1994,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5102686.0,CAMPOS DE JULIO,False,False,False,moderada,False,41.07,0.055,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107206.0,RIO BRANCO,False,False,False,moderada,False,41.01,0.1258,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106307.0,NOVO HORIZONTE DO NORTE,False,False,False,moderada,False,40.54,0.1329,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106901.0,PORTO ESPERIDIAO,False,False,False,moderada,False,40.38,0.0714,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106505.0,PARANATINGA,False,False,False,moderada,False,39.51,0.2345,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103908.0,GAUCHA DO NORTE,False,False,False,moderada,False,39.34,0.1298,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106208.0,NOVA BRASILANDIA,False,False,False,moderada,False,39.21,0.0308,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101852.0,BOM JESUS DO ARAGUAIA,False,False,False,moderada,False,39.06,0.0981,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107156.0,RESERVA DO CABACAL,False,False,False,moderada,False,38.31,0.0311,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107958.0,TABAPORA,False,False,False,moderada,False,37.16,0.2776,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5103957.0,GENERAL CARNEIRO,False,False,False,moderada,False,36.77,0.1419,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107198.0,RIBEIRAOZINHO,False,False,False,moderada,False,36.47,0.1181,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5108303.0,TORIXOREU,False,False,False,moderada,False,36.32,0.1059,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101001.0,ARAGUAIANA,False,False,False,moderada,False,35.71,0.0366,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5106893.0,PORTO DOS GAUCHOS,False,False,False,baixa,False,34.35,0.0407,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107859.0,SAO FELIX DO ARAGUAIA,False,False,False,baixa,False,30.14,0.1667,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5107743.0,SANTA CRUZ DO XINGU,False,False,False,baixa,False,27.84,0.078,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ACARA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ACREUNA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ALTA FLORESTA D''OESTE,False,False,False,nan,False,,0.0258,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ALTAMIRA,False,False,False,nan,False,,0.0409,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,AMAMBAI,False,False,False,nan,False,,0.0567,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ANANINDEUA,False,False,False,nan,False,,0.0181,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ANAPOLIS,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ANAPU,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ANDIRA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ANTONIO PRADO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,APARECIDA DE GOIANIA,False,False,False,nan,False,,0.0233,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,APORE,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,AQUIDAUANA,False,False,False,nan,False,,0.0218,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARAGARCAS,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARAGUAINA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,5101209.0,ARAGUAINHA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARAGUARI,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARAPONGAS,False,False,False,nan,False,,0.0391,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARARANGUA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ARARIPINA,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ASSARE,False,False,False,nan,False,,0.0295,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ASSIS BRASIL,False,False,False,nan,False,,0.0806,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BAEPENDI,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BANNACH,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BARREIRAS,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BATATAIS,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BELEM,False,False,False,nan,False,,0.0591,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BEQUIMAO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BETIM,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BOA VISTA,False,False,False,nan,False,,0.1479,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BOM JARDIM,False,False,False,nan,False,,0.0119,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BOMBINHAS,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BONITO,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BRAGANCA PAULISTA,False,False,False,nan,False,,0.0314,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BRASILIA,False,False,False,nan,False,,0.0283,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BREU BRANCO,False,False,False,nan,False,,0.032,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BUJARI,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,BURITICUPU,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CABIXI,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CACHOEIRA DO PIRIA,False,False,False,nan,False,,0.0181,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CACOAL,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAIAPONIA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAMPO GRANDE,False,False,False,nan,False,,0.1827,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAMPOS DOS GOYTACAZES,False,False,False,nan,False,,0.0242,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CANAPOLIS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CANDEIAS DO JAMARI,False,False,False,nan,False,,0.0747,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAPANEMA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAPELA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CARAPICUIBA,False,False,False,nan,False,,0.0817,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAREIRO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CARIACICA,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CARIRIACU,False,False,False,nan,False,,0.0643,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CARMOPOLIS,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CARUTAPERA,False,False,False,nan,False,,0.0932,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CASCAVEL,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CASSILANDIA,False,False,False,nan,False,,0.0226,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CASTILHO,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CAXIAS,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CERES,False,False,False,nan,False,,0.0171,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CHAPADAO DO SUL,False,False,False,nan,False,,0.0176,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CHAPECO,False,False,False,nan,False,,0.018,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,COCALZINHO DE GOIAS,False,False,False,nan,False,,0.0643,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CONCEICAO DO ARAGUAIA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CONCORDIA,False,False,False,nan,False,,0.0218,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CONQUISTA D''OESTE,False,False,False,nan,False,,0.0426,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,COROATA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CORONEL FABRICIANO,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CORUMBA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CORURIPE,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,COSTA RICA,False,False,False,nan,False,,0.0808,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,COXIM,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CRUZEIRO DO SUL,False,False,False,nan,False,,0.1547,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CUJUBIM,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,CURITIBA,False,False,False,nan,False,,0.1365,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,DIANOPOLIS,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,DOIS IRMAOS DO BURITI,False,False,False,nan,False,,0.0226,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,DOURADOS,False,False,False,nan,False,,0.0763,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ELDORADO DOS CARAJAS,False,False,False,nan,False,,0.0193,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ERECHIM,False,False,False,nan,False,,0.0189,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ESPERANTINOPOLIS,False,False,False,nan,False,,0.0289,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ESTREITO,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ESTRELA D''OESTE,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FAZENDA RIO GRANDE,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FERNANDOPOLIS,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FIGUEIROPOLIS D''OESTE,False,False,False,nan,False,,0.0203,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FIRMINOPOLIS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FOZ DO IGUACU,False,False,False,nan,False,,0.0141,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,FRANCISCO MACEDO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GLORIA D''OESTE,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GODOFREDO VIANA,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GOIANESIA,False,False,False,nan,False,,0.0556,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GOIANESIA DO PARA,False,False,False,nan,False,,0.0583,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GOIANIA,False,False,False,nan,False,,0.0967,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GOIANIRA,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GOVERNADOR EUGENIO BARROS,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GRAJAU,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GUAJARA-MIRIM,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GUARAREMA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,GUARULHOS,False,False,False,nan,False,,0.0643,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,IBATE,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,IBITINGA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,INHUMAS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,INOCENCIA,False,False,False,nan,False,,0.023,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,IPAMERI,False,False,False,nan,False,,0.018,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,IPORA,False,False,False,nan,False,,0.0233,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ISRAELANDIA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITABERAI,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITACARE,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAGUARI,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAIPAVA DO GRAJAU,False,False,False,nan,False,,0.0583,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAIPULANDIA,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAITUBA,False,False,False,nan,False,,0.0452,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAPEMA,False,False,False,nan,False,,0.0193,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITAPETINGA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ITUIUTABA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,IVOLANDIA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JABOATAO DOS GUARARAPES,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JACAREACANGA,False,False,False,nan,False,,0.0974,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JARAGUA DO SUL,False,False,False,nan,False,,0.018,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JATAI,False,False,False,nan,False,,0.0258,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JATEI,False,False,False,nan,False,,0.0181,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JI-PARANA,False,False,False,nan,False,,0.0226,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JOAQUIM GOMES,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JOAQUIM PIRES,False,False,False,nan,False,,0.0883,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JOINVILLE,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,JUCURUTU,False,False,False,nan,False,,0.0312,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LAGO DA PEDRA,False,False,False,nan,False,,0.0398,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LAGOA ALEGRE,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LAGOA DA CONFUSAO,False,False,False,nan,False,,0.0604,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LAMBARI D''OESTE,False,False,False,nan,False,,0.0618,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LARANJAL DO JARI,False,False,False,nan,False,,0.0306,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LONDRINA,False,False,False,nan,False,,0.0193,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,LUIS EDUARDO MAGALHAES,False,False,False,nan,False,,0.0306,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MACEIO,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MANAUS,False,False,False,nan,False,,0.1411,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MANCIO LIMA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MARABA,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MARACAJU,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MARINGA,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MATINHA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MATRIZ DE CAMARAGIBE,False,False,False,nan,False,,0.0202,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MAUA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MERCEDES,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MESSIAS,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MINEIROS,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MIRASSOL D''OESTE,False,False,False,nan,False,,0.2865,moderada,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MONTE ALEGRE DE SERGIPE,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MONTES CLAROS,False,False,False,nan,False,,0.0593,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MOZARLANDIA,False,False,False,nan,False,,0.0119,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MUNDO NOVO,False,False,False,nan,False,,0.0594,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,MURICILANDIA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,NATAL,False,False,False,nan,False,,0.0707,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,NAVEGANTES,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,NOVO HAMBURGO,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,NOVO PROGRESSO,False,False,False,nan,False,,0.1846,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,OLIVENCA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,OURO PRETO DO OESTE,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PALMAS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PALMEIRAS DE GOIAS,False,False,False,nan,False,,0.0744,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PALMITAL,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PARAGOMINAS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PARAISO DAS AGUAS,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PARAUAPEBAS,False,False,False,nan,False,,0.0285,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PARECIS,False,False,False,nan,False,,0.0171,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PASSO FUNDO,False,False,False,nan,False,,0.0556,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PAU D''ARCO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PAULICEIA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PAULINO NEVES,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PEDRO DO ROSARIO,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PEDRO GOMES,False,False,False,nan,False,,0.0932,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PETROLINA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PIMENTA BUENO,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PINHEIROS,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PIUM,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PLACIDO DE CASTRO,False,False,False,nan,False,,0.02,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PLANALTO,False,False,False,nan,False,,0.0402,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PONTA GROSSA,False,False,False,nan,False,,0.0209,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PONTA PORA,False,False,False,nan,False,,0.02,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PORTO DE MOZ,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PORTO VELHO,False,False,False,nan,False,,0.0918,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PRESIDENTE DUTRA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PRESIDENTE SARNEY,False,False,False,nan,False,,0.0218,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,PRIMAVERA DE RONDONIA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,QUIRINOPOLIS,False,False,False,nan,False,,0.0287,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,QUITERIANOPOLIS,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,REDENCAO,False,False,False,nan,False,,0.0226,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RETIROLANDIA,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIBAS DO RIO PARDO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIBEIRA DO POMBAL,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIBEIRAO DAS NEVES,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIO BONITO DO IGUACU,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIO BRILHANTE,False,False,False,nan,False,,0.0209,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIO DE JANEIRO,False,False,False,nan,False,,0.0233,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIO LARGO,False,False,False,nan,False,,0.0214,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,RIO VERDE,False,False,False,nan,False,,0.0627,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ROLIM DE MOURA,False,False,False,nan,False,,0.0583,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTA INES,False,False,False,nan,False,,0.0218,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTA LUZIA,False,False,False,nan,False,,0.0176,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTA MARIA,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTA MARIA DAS BARREIRAS,False,False,False,nan,False,,0.0124,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTA RITA DO ARAGUAIA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTANA DO MARANHAO,False,False,False,nan,False,,0.0667,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTANA DO MUNDAU,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTIAGO,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SANTO ANTONIO DO TAUA,False,False,False,nan,False,,0.0193,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO BENTO,False,False,False,nan,False,,0.0181,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO DOMINGOS DO CAPIM,False,False,False,nan,False,,0.0203,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO JOAO BATISTA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO JOAO DE MERITI,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO JOAO DO PARAISO,False,False,False,nan,False,,0.0141,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO LEOPOLDO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO LUIS,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO LUIS DE MONTES BELOS,False,False,False,nan,False,,0.0176,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO LUIS DO QUITUNDE,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO MIGUEL DO ARAGUAIA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO MIGUEL DO GUAMA,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO MIGUEL DO GUAPORE,False,False,False,nan,False,,0.0216,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO MIGUEL DOS CAMPOS,False,False,False,nan,False,,0.0241,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO PAULO,False,False,False,nan,False,,0.0324,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO PEDRO DOS CRENTES,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SAO SIMAO,False,False,False,nan,False,,0.0233,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SARANDI,False,False,False,nan,False,,0.0165,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SEARA,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SENA MADUREIRA,False,False,False,nan,False,,0.1232,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SENADOR CANEDO,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SENHOR DO BONFIM,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SERRA,False,False,False,nan,False,,0.02,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SIDROLANDIA,False,False,False,nan,False,,0.0165,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SOBRADINHO,False,False,False,nan,False,,0.0242,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SONORA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SOROCABA,False,False,False,nan,False,,0.0757,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SUMARE,False,False,False,nan,False,,0.071,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,SUZANO,False,False,False,nan,False,,0.0111,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TABAPUA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TANGARA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TEFE,False,False,False,nan,False,,0.0203,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TEOFILO OTONI,False,False,False,nan,False,,0.0312,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TERESINA,False,False,False,nan,False,,0.019,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TIJUCAS,False,False,False,nan,False,,0.0759,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TRES LAGOAS,False,False,False,nan,False,,0.0842,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TRES RIOS,False,False,False,nan,False,,0.0238,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,TRINDADE,False,False,False,nan,False,,0.0168,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,UBERLANDIA,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,URUACU,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VARJAO,False,False,False,nan,False,,0.0158,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VENDA NOVA DO IMIGRANTE,False,False,False,nan,False,,0.0187,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VICOSA,False,False,False,nan,False,,0.0169,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VILA VELHA,False,False,False,nan,False,,0.0201,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VILHENA,False,False,False,nan,False,,0.0268,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,VITORIA DO MEARIM,False,False,False,nan,False,,0.0204,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
-2026,30,,ZE DOCA,False,False,False,nan,False,,0.0203,baixa,False,MONITORAMENTO,2026-08-31T10:05:45,Observado,indicadores_emergencia
+2026,30,5103437.0,CUIABA,True,False,True,critica,True,75.36,0.8229,critica,True,CRÍTICO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108402.0,VARZEA GRANDE,False,False,True,critica,True,80.77,0.5791,alta,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102504.0,CACERES,False,False,False,critica,True,76.24,0.6116,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108006.0,TANGARA DA SERRA,True,False,True,alta,True,72.37,0.7117,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107925.0,SINOP,False,False,True,alta,True,72.29,0.6606,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102678.0,CAMPO VERDE,True,False,True,alta,True,72.2,0.4102,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102637.0,CAMPO NOVO DO PARECIS,False,False,True,alta,True,71.0,0.5522,alta,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107602.0,RONDONOPOLIS,False,False,False,alta,True,69.34,0.6943,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107941.0,SORRISO,True,False,True,alta,True,68.58,0.4227,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103205.0,COLIDER,False,False,True,alta,True,67.87,0.426,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105507.0,LUCAS DO RIO VERDE,False,False,True,alta,True,67.56,0.5079,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106851.0,PONTES E LACERDA,True,False,True,alta,True,66.72,0.4629,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107065.0,PRIMAVERA DO LESTE,False,False,True,alta,True,66.42,0.4791,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103007.0,CHAPADA DOS GUIMARAES,True,False,False,alta,True,65.46,0.2068,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106257.0,NOVA MUTUM,True,False,True,alta,True,63.53,0.4763,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104203.0,GUARANTA DO NORTE,True,False,False,alta,True,58.67,0.6668,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101258.0,ARAPUTANGA,True,False,False,alta,True,57.93,0.4482,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105200.0,JUINA,True,False,True,alta,True,57.06,0.4651,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106455.0,PARANAITA,False,False,True,moderada,False,52.93,0.2905,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108204.0,TESOURO,True,False,False,moderada,False,52.9,0.0339,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104559.0,ITANHANGA,True,False,False,moderada,False,52.21,0.1362,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104906.0,JACIARA,True,False,False,moderada,False,51.95,0.2803,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106802.0,PONTAL DO ARAGUAIA,True,False,False,moderada,False,51.64,0.1192,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100102.0,ACORIZAL,True,False,False,moderada,False,51.3,0.1791,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103601.0,DIAMANTINO,True,False,False,moderada,False,51.26,0.2113,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101308.0,ARENAPOLIS,True,False,False,moderada,False,50.78,0.3095,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105622.0,MATUPA,True,False,False,moderada,False,50.32,0.7187,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108501.0,VERA,True,False,False,moderada,False,49.41,0.6202,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100300.0,ALTO ARAGUAIA,True,False,False,moderada,False,49.37,0.1607,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102603.0,CAMPINAPOLIS,False,False,True,moderada,False,49.29,0.4393,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106265.0,NOVA OLIMPIA,True,False,False,moderada,False,49.09,0.0736,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107354.0,SAO JOSE DO XINGU,True,False,False,moderada,False,48.5,0.1754,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100508.0,ALTO PARAGUAI,True,False,False,moderada,False,48.36,0.1567,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108352.0,UNIAO DO SUL,True,False,False,moderada,False,47.01,0.1629,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,NOVA NAZARE,True,False,False,moderada,False,46.06,0.0317,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105150.0,JUARA,True,False,False,moderada,False,46.05,0.2721,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106190.0,NOVA LACERDA,True,False,False,moderada,False,45.81,0.0211,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107875.0,SAO PEDRO DA CIPA,True,False,False,moderada,False,45.64,0.1294,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106752.0,PLANALTO DA SERRA,True,False,False,moderada,False,45.62,0.1146,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107883.0,SAPEZAL,True,False,False,moderada,False,45.59,0.3696,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100409.0,ALTO GARCAS,True,False,False,moderada,False,45.48,0.4901,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107297.0,SAO JOSE DO POVO,True,False,False,moderada,False,45.27,0.0179,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106372.0,NOVO SANTO ANTONIO,True,False,False,moderada,False,45.17,0.105,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102793.0,CARLINDA,True,False,False,moderada,False,44.87,0.2476,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104526.0,INDIAVAI,True,False,False,moderada,False,44.71,0.1356,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104609.0,ITAUBA,True,False,False,moderada,False,44.62,0.7736,critica,True,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106273.0,NOVA SANTA HELENA,True,False,False,moderada,False,43.91,0.2649,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100805.0,APIACAS,True,False,False,moderada,False,43.78,0.2104,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107404.0,SAO JOSE DOS QUATRO MARCOS,True,False,False,moderada,False,43.36,0.4321,alta,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106174.0,NOVA BANDEIRANTES,True,False,False,moderada,False,43.14,0.03,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102702.0,CANARANA,True,False,False,moderada,False,42.82,0.3126,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108055.0,TAPURAH,True,False,False,moderada,False,42.71,0.2782,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103403.0,COTRIGUACU,True,False,False,moderada,False,42.7,0.2005,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MARCELANDIA,True,False,False,moderada,False,42.59,0.2426,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102850.0,CASTANHEIRA,True,False,False,moderada,False,42.57,0.1733,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108550.0,VILA BELA DA SANTISSIMA TRINDADE,True,False,False,moderada,False,42.42,0.1402,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101704.0,BARRA DO BUGRES,True,False,False,moderada,False,42.11,0.2815,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103106.0,COCALINHO,True,False,False,moderada,False,41.84,0.1628,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106224.0,NOVA MARILANDIA,True,False,False,moderada,False,41.76,0.0286,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106281.0,NOVA UBIRATA,True,False,False,moderada,False,41.71,0.2526,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108600.0,VILA RICA,True,False,False,moderada,False,41.31,0.2568,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106422.0,NOVO SAO JOAQUIM,True,False,False,moderada,False,41.18,0.1497,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100607.0,ALTO TAQUARI,True,False,False,moderada,False,41.13,0.1676,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107909.0,SERRA NOVA DOURADA,True,False,False,moderada,False,40.45,0.1533,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101407.0,ARIPUANA,True,False,False,moderada,False,40.39,0.3434,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106182.0,NOVA GUARITA,True,False,False,moderada,False,40.39,0.2824,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107248.0,SANTA CARMEM,True,False,False,moderada,False,39.33,0.1452,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103304.0,COMODORO,True,False,False,moderada,False,37.36,0.2313,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104542.0,IPIRANGA DO NORTE,True,False,False,baixa,False,34.97,0.2565,moderada,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106828.0,PONTE BRANCA,True,False,False,baixa,False,31.47,0.0275,baixa,False,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BOA ESPERANCA DO NORTE,False,False,True,,False,,,,,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GUIA LOPES DA LAGUNA,False,True,False,,False,,,,,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,INHAMBUPE,False,True,False,,False,,,,,ALTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106158.0,NOSSA SENHORA DO LIVRAMENTO,False,False,False,alta,True,60.46,0.3768,moderada,False,MODERADO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100201.0,AGUA BOA,False,False,False,moderada,False,54.91,0.3044,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100359.0,ALTO BOA VISTA,False,False,False,moderada,False,54.74,0.0966,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106778.0,POCONE,False,False,False,moderada,False,53.7,0.4017,alta,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107800.0,SANTO ANTONIO DO LEVERGER,False,False,False,moderada,False,53.02,0.2749,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106703.0,PEIXOTO DE AZEVEDO,False,False,False,moderada,False,52.55,0.4778,alta,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107008.0,PORTO ESTRELA,False,False,False,moderada,False,51.89,0.0243,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101605.0,BARAO DE MELGACO,False,False,False,moderada,False,51.35,0.1416,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105259.0,JUSCIMEIRA,False,False,False,moderada,False,51.21,0.2983,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107107.0,QUERENCIA,False,False,False,moderada,False,51.12,0.2541,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5100250.0,ALTA FLORESTA,False,False,False,moderada,False,50.98,0.5146,alta,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106000.0,NOBRES,False,False,False,moderada,False,50.86,0.1671,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106216.0,NOVA CANAA DO NORTE,False,False,False,moderada,False,50.73,0.1812,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103700.0,DOM AQUINO,False,False,False,moderada,False,50.2,0.2918,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101803.0,BARRA DO GARCAS,False,False,False,moderada,False,48.61,0.2825,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101902.0,BRASNORTE,False,False,False,moderada,False,47.94,0.1951,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107792.0,SANTO ANTONIO DO LESTE,False,False,False,moderada,False,47.84,0.0263,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106877.0,PORTO ALEGRE DO NORTE,False,False,False,moderada,False,47.78,0.0361,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107263.0,SANTO AFONSO,False,False,False,moderada,False,47.56,0.0181,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107305.0,SAO JOSE DO RIO CLARO,False,False,False,moderada,False,47.36,0.0481,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107701.0,ROSARIO OESTE,False,False,False,moderada,False,47.26,0.2435,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106240.0,NOVA MONTE VERDE,False,False,False,moderada,False,47.25,0.1371,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106299.0,NOVA XAVANTINA,False,False,False,moderada,False,47.01,0.1883,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103452.0,CURVELANDIA,False,False,False,moderada,False,46.92,0.151,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105002.0,JANGADA,False,False,False,moderada,False,46.81,0.1732,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104500.0,GUIRATINGA,False,False,False,moderada,False,46.7,0.0336,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105580.0,LUCIARA,False,False,False,moderada,False,46.56,0.0194,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5104807.0,ITIQUIRA,False,False,False,moderada,False,46.37,0.2352,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107750.0,SALTO DO CEU,False,False,False,moderada,False,46.33,0.1352,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102694.0,CANABRAVA DO NORTE,False,False,False,moderada,False,46.3,0.0215,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106315.0,NOVO MUNDO,False,False,False,moderada,False,45.98,0.1388,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105101.0,JAURU,False,False,False,moderada,False,45.54,0.0336,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107180.0,RIBEIRAO CASCALHEIRA,False,False,False,moderada,False,45.51,0.142,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106109.0,NORTELANDIA,False,False,False,moderada,False,45.23,0.0356,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108402.0,VALE DE SAO DOMINGOS,False,False,False,moderada,False,44.94,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103353.0,CONFRESA,False,False,False,moderada,False,44.51,0.1458,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108105.0,TERRA NOVA DO NORTE,False,False,False,moderada,False,44.11,0.4297,alta,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106232.0,NOVA MARINGA,False,False,False,moderada,False,43.62,0.1319,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107768.0,SANTA RITA DO TRIVELATO,False,False,False,moderada,False,43.06,0.0269,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107776.0,SANTA TEREZINHA,False,False,False,moderada,False,42.61,0.1815,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103254.0,COLNIZA,False,False,False,moderada,False,42.52,0.2823,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103502.0,DENISE,False,False,False,moderada,False,42.38,0.1788,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103056.0,CLAUDIA,False,False,False,moderada,False,41.91,0.0426,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103809.0,FELIZ NATAL,False,False,False,moderada,False,41.72,0.1783,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106653.0,PEDRA PRETA,False,False,False,moderada,False,41.36,0.1924,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5102686.0,CAMPOS DE JULIO,False,False,False,moderada,False,41.07,0.2058,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107206.0,RIO BRANCO,False,False,False,moderada,False,41.01,0.2918,moderada,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106307.0,NOVO HORIZONTE DO NORTE,False,False,False,moderada,False,40.54,0.1317,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106901.0,PORTO ESPERIDIAO,False,False,False,moderada,False,40.38,0.039,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106505.0,PARANATINGA,False,False,False,moderada,False,39.51,0.1747,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103908.0,GAUCHA DO NORTE,False,False,False,moderada,False,39.34,0.1596,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106208.0,NOVA BRASILANDIA,False,False,False,moderada,False,39.21,0.1894,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101852.0,BOM JESUS DO ARAGUAIA,False,False,False,moderada,False,39.06,0.0255,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5105234.0,JURUENA,False,False,False,moderada,False,38.52,0.1669,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107156.0,RESERVA DO CABACAL,False,False,False,moderada,False,38.31,0.0544,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107958.0,TABAPORA,False,False,False,moderada,False,37.16,0.1922,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5103957.0,GENERAL CARNEIRO,False,False,False,moderada,False,36.77,0.1387,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107198.0,RIBEIRAOZINHO,False,False,False,moderada,False,36.47,0.1253,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5108303.0,TORIXOREU,False,False,False,moderada,False,36.32,0.0956,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101001.0,ARAGUAIANA,False,False,False,moderada,False,35.71,0.1085,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5106893.0,PORTO DOS GAUCHOS,False,False,False,baixa,False,34.35,0.0956,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107859.0,SAO FELIX DO ARAGUAIA,False,False,False,baixa,False,30.14,0.1645,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5107743.0,SANTA CRUZ DO XINGU,False,False,False,baixa,False,27.84,0.1175,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ACARA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ACREUNA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ALTA FLORESTA D''OESTE,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ALTAMIRA,False,False,False,,False,,0.0256,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,AMAMBAI,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ANANINDEUA,False,False,False,,False,,0.0684,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ANAPOLIS,False,False,False,,False,,0.0222,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ANAPU,False,False,False,,False,,0.0189,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ANDIRA,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ANTONIO PRADO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,APARECIDA DE GOIANIA,False,False,False,,False,,0.1076,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,APORE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,AQUIDAUANA,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARAGARCAS,False,False,False,,False,,0.094,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARAGUAINA,False,False,False,,False,,0.0197,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,5101209.0,ARAGUAINHA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARAGUARI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARAPONGAS,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARARANGUA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ARARIPINA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ASSARE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ASSIS BRASIL,False,False,False,,False,,0.0162,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BAEPENDI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BANNACH,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BARREIRAS,False,False,False,,False,,0.0202,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BATATAIS,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BELEM,False,False,False,,False,,0.1267,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BEQUIMAO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BETIM,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BOA VISTA,False,False,False,,False,,0.115,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BOM JARDIM,False,False,False,,False,,0.0207,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BOMBINHAS,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BONITO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BRAGANCA PAULISTA,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BRASILIA,False,False,False,,False,,0.0901,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BREU BRANCO,False,False,False,,False,,0.0733,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BUJARI,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,BURITICUPU,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CABIXI,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CACHOEIRA DO PIRIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CACOAL,False,False,False,,False,,0.1845,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAIAPONIA,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAMPO GRANDE,False,False,False,,False,,0.1198,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAMPOS DOS GOYTACAZES,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CANAPOLIS,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CANDEIAS DO JAMARI,False,False,False,,False,,0.1271,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAPANEMA,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAPELA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CARAPICUIBA,False,False,False,,False,,0.1031,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAREIRO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CARIACICA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CARIRIACU,False,False,False,,False,,0.1171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CARMOPOLIS,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CARUTAPERA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CASCAVEL,False,False,False,,False,,0.0858,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CASSILANDIA,False,False,False,,False,,0.0189,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CASTILHO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CAXIAS,False,False,False,,False,,0.0259,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CERES,False,False,False,,False,,0.0182,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CHAPADAO DO SUL,False,False,False,,False,,0.0166,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CHAPECO,False,False,False,,False,,0.0983,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,COCALZINHO DE GOIAS,False,False,False,,False,,0.0897,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CONCEICAO DO ARAGUAIA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CONCORDIA,False,False,False,,False,,0.0218,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CONQUISTA D''OESTE,False,False,False,,False,,0.1122,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,COROATA,False,False,False,,False,,0.0733,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CORONEL FABRICIANO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CORUMBA,False,False,False,,False,,0.0879,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CORURIPE,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,COSTA RICA,False,False,False,,False,,0.0892,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,COXIM,False,False,False,,False,,0.0199,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CRUZEIRO DO SUL,False,False,False,,False,,0.2145,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CUJUBIM,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,CURITIBA,False,False,False,,False,,0.1175,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,DIANOPOLIS,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,DOIS IRMAOS DO BURITI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,DOURADOS,False,False,False,,False,,0.0999,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ELDORADO DOS CARAJAS,False,False,False,,False,,0.0246,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ERECHIM,False,False,False,,False,,0.0733,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ESPERANTINOPOLIS,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ESTREITO,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ESTRELA D''OESTE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FAZENDA RIO GRANDE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FERNANDOPOLIS,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FIGUEIROPOLIS D''OESTE,False,False,False,,False,,0.0174,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FIRMINOPOLIS,False,False,False,,False,,0.0189,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FOZ DO IGUACU,False,False,False,,False,,0.0222,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,FRANCISCO MACEDO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GLORIA D''OESTE,False,False,False,,False,,0.0244,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GODOFREDO VIANA,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GOIANESIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GOIANESIA DO PARA,False,False,False,,False,,0.0684,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GOIANIA,False,False,False,,False,,0.0937,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GOIANIRA,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GOVERNADOR EUGENIO BARROS,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GRAJAU,False,False,False,,False,,0.0834,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GUAJARA-MIRIM,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GUARAREMA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,GUARULHOS,False,False,False,,False,,0.1144,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,IBATE,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,IBITINGA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,INHUMAS,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,INOCENCIA,False,False,False,,False,,0.0213,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,IPAMERI,False,False,False,,False,,0.0203,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,IPORA,False,False,False,,False,,0.0217,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ISRAELANDIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITABERAI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITACARE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAGUARI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAIPAVA DO GRAJAU,False,False,False,,False,,0.094,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAIPULANDIA,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAITUBA,False,False,False,,False,,0.1494,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAPEMA,False,False,False,,False,,0.1014,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITAPETINGA,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ITUIUTABA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,IVOLANDIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JABOATAO DOS GUARARAPES,False,False,False,,False,,0.0202,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JACAREACANGA,False,False,False,,False,,0.0946,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JARAGUA DO SUL,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JATAI,False,False,False,,False,,0.0253,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JATEI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JI-PARANA,False,False,False,,False,,0.1423,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JOAQUIM GOMES,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JOAQUIM PIRES,False,False,False,,False,,0.0684,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JOINVILLE,False,False,False,,False,,0.1156,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,JUCURUTU,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LAGO DA PEDRA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LAGOA ALEGRE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LAGOA DA CONFUSAO,False,False,False,,False,,0.0228,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LAMBARI D''OESTE,False,False,False,,False,,0.115,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LARANJAL DO JARI,False,False,False,,False,,0.0207,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LONDRINA,False,False,False,,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,LUIS EDUARDO MAGALHAES,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MACEIO,False,False,False,,False,,0.0247,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MANAUS,False,False,False,,False,,0.1175,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MANCIO LIMA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MARABA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MARACAJU,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MARINGA,False,False,False,,False,,0.0983,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MATINHA,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MATRIZ DE CAMARAGIBE,False,False,False,,False,,0.0166,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MAUA,False,False,False,,False,,0.0176,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MERCEDES,False,False,False,,False,,0.0197,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MESSIAS,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MINEIROS,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MIRASSOL D''OESTE,False,False,False,,False,,0.1769,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MONTE ALEGRE DE SERGIPE,False,False,False,,False,,0.0189,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MONTES CLAROS,False,False,False,,False,,0.1124,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MOZARLANDIA,False,False,False,,False,,0.0179,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MUNDO NOVO,False,False,False,,False,,0.0879,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,MURICILANDIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,NATAL,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,NAVEGANTES,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,NOVO HAMBURGO,False,False,False,,False,,0.0167,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,NOVO PROGRESSO,False,False,False,,False,,0.1249,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,OLIVENCA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,OURO PRETO DO OESTE,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PACARAIMA,False,False,False,,False,,0.1188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PALMAS,False,False,False,,False,,0.0198,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PALMEIRAS DE GOIAS,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PALMITAL,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PARAGOMINAS,False,False,False,,False,,0.0251,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PARAISO DAS AGUAS,False,False,False,,False,,0.0192,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PARAUAPEBAS,False,False,False,,False,,0.0283,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PARECIS,False,False,False,,False,,0.0213,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PASSO FUNDO,False,False,False,,False,,0.022,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PAU D''ARCO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PAULICEIA,False,False,False,,False,,0.0733,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PAULINO NEVES,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PEDRO DO ROSARIO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PEDRO GOMES,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PETROLINA,False,False,False,,False,,0.0886,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PIMENTA BUENO,False,False,False,,False,,0.0189,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PINHEIROS,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PIUM,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PLACIDO DE CASTRO,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PLANALTO,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PONTA GROSSA,False,False,False,,False,,0.0733,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PONTA PORA,False,False,False,,False,,0.0199,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PORTO DE MOZ,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PORTO VELHO,False,False,False,,False,,0.1114,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,POXOREO,False,False,False,,False,,0.0353,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PRESIDENTE DUTRA,False,False,False,,False,,0.0213,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PRESIDENTE SARNEY,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,PRIMAVERA DE RONDONIA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,QUIRINOPOLIS,False,False,False,,False,,0.0901,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,QUITERIANOPOLIS,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,REDENCAO,False,False,False,,False,,0.023,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RETIROLANDIA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIBAS DO RIO PARDO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIBEIRA DO POMBAL,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIBEIRAO DAS NEVES,False,False,False,,False,,0.0192,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIO BONITO DO IGUACU,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIO BRILHANTE,False,False,False,,False,,0.0222,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIO DE JANEIRO,False,False,False,,False,,0.0953,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIO LARGO,False,False,False,,False,,0.0286,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,RIO VERDE,False,False,False,,False,,0.0879,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ROLIM DE MOURA,False,False,False,,False,,0.107,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTA INES,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTA LUZIA,False,False,False,,False,,0.0299,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTA MARIA,False,False,False,,False,,0.115,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTA MARIA DAS BARREIRAS,False,False,False,,False,,0.0222,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTA RITA DO ARAGUAIA,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTANA DO MARANHAO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTANA DO MUNDAU,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTIAGO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SANTO ANTONIO DO TAUA,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO BENTO,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO DOMINGOS DO CAPIM,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO JOAO BATISTA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO JOAO DE MERITI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO JOAO DO PARAISO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO LEOPOLDO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO LUIS,False,False,False,,False,,0.0684,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO LUIS DE MONTES BELOS,False,False,False,,False,,0.0897,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO LUIS DO QUITUNDE,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO MIGUEL DO ARAGUAIA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO MIGUEL DO GUAMA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO MIGUEL DO GUAPORE,False,False,False,,False,,0.023,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO MIGUEL DOS CAMPOS,False,False,False,,False,,0.0159,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO PAULO,False,False,False,,False,,0.1327,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO PEDRO DOS CRENTES,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SAO SIMAO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SARANDI,False,False,False,,False,,0.0258,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SEARA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SENA MADUREIRA,False,False,False,,False,,0.1035,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SENADOR CANEDO,False,False,False,,False,,0.0347,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SENHOR DO BONFIM,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SERRA,False,False,False,,False,,0.0197,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SIDROLANDIA,False,False,False,,False,,0.0834,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SOBRADINHO,False,False,False,,False,,0.0684,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SONORA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SOROCABA,False,False,False,,False,,0.0879,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SUMARE,False,False,False,,False,,0.0996,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,SUZANO,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TABAPUA,False,False,False,,False,,0.0192,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TANGARA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TEFE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TEOFILO OTONI,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TERESINA,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TIJUCAS,False,False,False,,False,,0.069,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TRES LAGOAS,False,False,False,,False,,0.0834,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TRES RIOS,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,TRINDADE,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,UBERLANDIA,False,False,False,,False,,0.0222,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,URUACU,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VARJAO,False,False,False,,False,,0.015,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VENDA NOVA DO IMIGRANTE,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VICOSA,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VILA VELHA,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VILHENA,False,False,False,,False,,0.115,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,VITORIA DO MEARIM,False,False,False,,False,,,,,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,30,,ZE DOCA,False,False,False,,False,,0.075,baixa,False,MONITORAMENTO,2026-09-01T08:32:02,Observado,indicadores_emergencia
+2026,36,,GODOFREDO VIANA,False,False,False,,False,,0.019,baixa,False,MONITORAMENTO,2026-09-01T09:28:16,Observado,indicadores_emergencia
+2026,36,5103437.0,CUIABA,True,False,True,critica,True,75.36,0.8089,critica,True,CRÍTICO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108402.0,VARZEA GRANDE,False,False,True,critica,True,80.77,0.9468,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102504.0,CACERES,False,False,True,critica,True,76.24,0.9424,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108006.0,TANGARA DA SERRA,True,False,True,alta,True,72.37,0.9479,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107925.0,SINOP,False,False,True,alta,True,72.29,0.9611,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102678.0,CAMPO VERDE,True,False,False,alta,True,72.2,0.9091,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102637.0,CAMPO NOVO DO PARECIS,False,False,False,alta,True,71.0,0.8544,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107602.0,RONDONOPOLIS,False,False,True,alta,True,69.34,0.924,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107941.0,SORRISO,True,False,True,alta,True,68.58,0.9476,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103205.0,COLIDER,False,False,False,alta,True,67.87,0.5613,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105507.0,LUCAS DO RIO VERDE,False,False,True,alta,True,67.56,0.9486,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106851.0,PONTES E LACERDA,True,False,False,alta,True,66.72,0.6872,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107065.0,PRIMAVERA DO LESTE,False,False,False,alta,True,66.42,0.6737,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103007.0,CHAPADA DOS GUIMARAES,True,False,False,alta,True,65.46,0.7933,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106257.0,NOVA MUTUM,True,False,False,alta,True,63.53,0.4163,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104203.0,GUARANTA DO NORTE,True,False,False,alta,True,58.67,0.8561,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101258.0,ARAPUTANGA,True,False,False,alta,True,57.93,0.4559,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105200.0,JUINA,True,False,True,alta,True,57.06,0.9198,critica,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108204.0,TESOURO,True,False,False,moderada,False,52.9,0.038,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104559.0,ITANHANGA,True,False,False,moderada,False,52.21,0.035,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104906.0,JACIARA,True,False,False,moderada,False,51.95,0.3014,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106802.0,PONTAL DO ARAGUAIA,True,False,False,moderada,False,51.64,0.1137,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100102.0,ACORIZAL,True,True,False,moderada,False,51.3,0.2169,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103601.0,DIAMANTINO,True,False,False,moderada,False,51.26,0.2494,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101308.0,ARENAPOLIS,True,False,False,moderada,False,50.78,0.3302,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105622.0,MATUPA,True,False,False,moderada,False,50.32,0.2656,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108501.0,VERA,True,False,False,moderada,False,49.41,0.2177,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100300.0,ALTO ARAGUAIA,True,False,False,moderada,False,49.37,0.0495,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106265.0,NOVA OLIMPIA,True,False,False,moderada,False,49.09,0.1953,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107354.0,SAO JOSE DO XINGU,True,False,False,moderada,False,48.5,0.1332,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100508.0,ALTO PARAGUAI,True,False,False,moderada,False,48.36,0.0381,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108352.0,UNIAO DO SUL,True,False,False,moderada,False,47.01,0.1842,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105580.0,LUCIARA,False,True,False,moderada,False,46.56,0.1505,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,NOVA NAZARE,True,False,False,moderada,False,46.06,0.0348,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105150.0,JUARA,True,False,False,moderada,False,46.05,0.2378,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106190.0,NOVA LACERDA,True,False,False,moderada,False,45.81,0.1678,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107875.0,SAO PEDRO DA CIPA,True,False,False,moderada,False,45.64,0.0387,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106752.0,PLANALTO DA SERRA,True,False,False,moderada,False,45.62,0.1101,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107883.0,SAPEZAL,True,False,False,moderada,False,45.59,0.3408,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100409.0,ALTO GARCAS,True,False,False,moderada,False,45.48,0.2786,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107297.0,SAO JOSE DO POVO,True,False,False,moderada,False,45.27,0.2138,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106372.0,NOVO SANTO ANTONIO,True,False,False,moderada,False,45.17,0.139,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102793.0,CARLINDA,True,False,False,moderada,False,44.87,0.1145,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104526.0,INDIAVAI,True,False,False,moderada,False,44.71,0.1309,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104609.0,ITAUBA,True,False,False,moderada,False,44.62,0.1395,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106273.0,NOVA SANTA HELENA,True,False,False,moderada,False,43.91,0.2633,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100805.0,APIACAS,True,False,False,moderada,False,43.78,0.3271,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107404.0,SAO JOSE DOS QUATRO MARCOS,True,False,False,moderada,False,43.36,0.2771,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106174.0,NOVA BANDEIRANTES,True,False,False,moderada,False,43.14,0.1697,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102702.0,CANARANA,True,False,False,moderada,False,42.82,0.3081,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108055.0,TAPURAH,True,False,False,moderada,False,42.71,0.2328,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103403.0,COTRIGUACU,True,False,False,moderada,False,42.7,0.198,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MARCELANDIA,True,True,False,moderada,False,42.59,0.3162,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102850.0,CASTANHEIRA,True,False,False,moderada,False,42.57,0.2861,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108550.0,VILA BELA DA SANTISSIMA TRINDADE,True,False,False,moderada,False,42.42,0.1349,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101704.0,BARRA DO BUGRES,True,False,False,moderada,False,42.11,0.2778,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103106.0,COCALINHO,True,False,False,moderada,False,41.84,0.1074,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106224.0,NOVA MARILANDIA,True,True,False,moderada,False,41.76,0.2066,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106281.0,NOVA UBIRATA,True,False,False,moderada,False,41.71,0.4996,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108600.0,VILA RICA,True,False,False,moderada,False,41.31,0.2803,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106422.0,NOVO SAO JOAQUIM,True,False,False,moderada,False,41.18,0.1306,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100607.0,ALTO TAQUARI,True,False,False,moderada,False,41.13,0.0482,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107909.0,SERRA NOVA DOURADA,True,False,False,moderada,False,40.45,0.1698,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101407.0,ARIPUANA,True,False,False,moderada,False,40.39,0.4958,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106182.0,NOVA GUARITA,True,False,False,moderada,False,40.39,0.0777,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103908.0,GAUCHA DO NORTE,False,True,False,moderada,False,39.34,0.3298,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107248.0,SANTA CARMEM,True,False,False,moderada,False,39.33,0.1571,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105234.0,JURUENA,False,True,False,moderada,False,38.52,0.3504,moderada,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107156.0,RESERVA DO CABACAL,False,True,False,moderada,False,38.31,0.1258,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103304.0,COMODORO,True,False,False,moderada,False,37.36,0.2527,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104542.0,IPIRANGA DO NORTE,True,False,False,baixa,False,34.97,0.2137,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106828.0,PONTE BRANCA,True,False,False,baixa,False,31.47,0.0959,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107743.0,SANTA CRUZ DO XINGU,False,True,False,baixa,False,27.84,0.216,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ALTAMIRA,False,True,False,,False,,0.1505,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BOCA DO ACRE,False,True,False,,False,,0.1123,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CASTILHO,False,True,False,,False,,0.0188,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ERMO,False,True,False,,False,,0.0265,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GLORIA D''OESTE,False,True,False,,False,,0.3202,moderada,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ITAPECURU MIRIM,False,True,False,,False,,0.1143,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ITAPEMA,False,True,False,,False,,0.1844,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,NOVO PROGRESSO,False,True,False,,False,,0.1513,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PARNARAMA,False,True,False,,False,,0.0306,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,RIO DE JANEIRO,False,True,False,,False,,0.4008,alta,True,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SANTANA DO MARANHAO,False,True,False,,False,,0.0694,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO FELIX DO XINGU,False,True,False,,False,,0.0594,baixa,False,ALTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106158.0,NOSSA SENHORA DO LIVRAMENTO,False,False,False,alta,True,60.46,0.2509,moderada,False,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100201.0,AGUA BOA,False,False,False,moderada,False,54.91,0.3691,moderada,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106455.0,PARANAITA,False,False,False,moderada,False,52.93,0.3914,moderada,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100250.0,ALTA FLORESTA,False,False,False,moderada,False,50.98,0.4383,alta,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102603.0,CAMPINAPOLIS,False,False,False,moderada,False,49.29,0.3972,moderada,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101803.0,BARRA DO GARCAS,False,False,False,moderada,False,48.61,0.4003,alta,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103353.0,CONFRESA,False,False,False,moderada,False,44.51,0.3974,moderada,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103254.0,COLNIZA,False,False,False,moderada,False,42.52,0.4188,alta,True,MODERADO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5100359.0,ALTO BOA VISTA,False,False,False,moderada,False,54.74,0.1313,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106778.0,POCONE,False,False,False,moderada,False,53.7,0.338,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107800.0,SANTO ANTONIO DO LEVERGER,False,False,False,moderada,False,53.02,0.2768,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106703.0,PEIXOTO DE AZEVEDO,False,False,False,moderada,False,52.55,0.2991,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107008.0,PORTO ESTRELA,False,False,False,moderada,False,51.89,0.1281,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101605.0,BARAO DE MELGACO,False,False,False,moderada,False,51.35,0.1634,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105259.0,JUSCIMEIRA,False,False,False,moderada,False,51.21,0.1617,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107107.0,QUERENCIA,False,False,False,moderada,False,51.12,0.2514,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106000.0,NOBRES,False,False,False,moderada,False,50.86,0.3043,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106216.0,NOVA CANAA DO NORTE,False,False,False,moderada,False,50.73,0.0639,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103700.0,DOM AQUINO,False,False,False,moderada,False,50.2,0.0387,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101902.0,BRASNORTE,False,False,False,moderada,False,47.94,0.243,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107792.0,SANTO ANTONIO DO LESTE,False,False,False,moderada,False,47.84,0.1585,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106877.0,PORTO ALEGRE DO NORTE,False,False,False,moderada,False,47.78,0.1791,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107263.0,SANTO AFONSO,False,False,False,moderada,False,47.56,0.1352,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107305.0,SAO JOSE DO RIO CLARO,False,False,False,moderada,False,47.36,0.1823,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107701.0,ROSARIO OESTE,False,False,False,moderada,False,47.26,0.2852,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106240.0,NOVA MONTE VERDE,False,False,False,moderada,False,47.25,0.1239,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106299.0,NOVA XAVANTINA,False,False,False,moderada,False,47.01,0.249,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103452.0,CURVELANDIA,False,False,False,moderada,False,46.92,0.0638,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105002.0,JANGADA,False,False,False,moderada,False,46.81,0.2926,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104500.0,GUIRATINGA,False,False,False,moderada,False,46.7,0.2028,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5104807.0,ITIQUIRA,False,False,False,moderada,False,46.37,0.1731,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107750.0,SALTO DO CEU,False,False,False,moderada,False,46.33,0.1444,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102694.0,CANABRAVA DO NORTE,False,False,False,moderada,False,46.3,0.0411,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106315.0,NOVO MUNDO,False,False,False,moderada,False,45.98,0.159,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5105101.0,JAURU,False,False,False,moderada,False,45.54,0.1482,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107180.0,RIBEIRAO CASCALHEIRA,False,False,False,moderada,False,45.51,0.1683,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106109.0,NORTELANDIA,False,False,False,moderada,False,45.23,0.15,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108402.0,VALE DE SAO DOMINGOS,False,False,False,moderada,False,44.94,0.1433,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108105.0,TERRA NOVA DO NORTE,False,False,False,moderada,False,44.11,0.2682,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106232.0,NOVA MARINGA,False,False,False,moderada,False,43.62,0.0445,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107768.0,SANTA RITA DO TRIVELATO,False,False,False,moderada,False,43.06,0.1434,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107776.0,SANTA TEREZINHA,False,False,False,moderada,False,42.61,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103502.0,DENISE,False,False,False,moderada,False,42.38,0.0585,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103056.0,CLAUDIA,False,False,False,moderada,False,41.91,0.1947,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103809.0,FELIZ NATAL,False,False,False,moderada,False,41.72,0.0673,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106653.0,PEDRA PRETA,False,False,False,moderada,False,41.36,0.2206,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5102686.0,CAMPOS DE JULIO,False,False,False,moderada,False,41.07,0.1824,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107206.0,RIO BRANCO,False,False,False,moderada,False,41.01,0.1751,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106307.0,NOVO HORIZONTE DO NORTE,False,False,False,moderada,False,40.54,0.1991,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106901.0,PORTO ESPERIDIAO,False,False,False,moderada,False,40.38,0.0945,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106505.0,PARANATINGA,False,False,False,moderada,False,39.51,0.2353,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106208.0,NOVA BRASILANDIA,False,False,False,moderada,False,39.21,0.1731,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101852.0,BOM JESUS DO ARAGUAIA,False,False,False,moderada,False,39.06,0.1244,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107958.0,TABAPORA,False,False,False,moderada,False,37.16,0.1661,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5103957.0,GENERAL CARNEIRO,False,False,False,moderada,False,36.77,0.0682,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107198.0,RIBEIRAOZINHO,False,False,False,moderada,False,36.47,0.1854,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5108303.0,TORIXOREU,False,False,False,moderada,False,36.32,0.0232,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5101001.0,ARAGUAIANA,False,False,False,moderada,False,35.71,0.0225,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5106893.0,PORTO DOS GAUCHOS,False,False,False,baixa,False,34.35,0.1685,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,5107859.0,SAO FELIX DO ARAGUAIA,False,False,False,baixa,False,30.14,0.1798,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ACARA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,AGUAI,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ANANINDEUA,False,False,False,,False,,0.0643,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ANAPOLIS,False,False,False,,False,,0.0312,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ANTONIO PRADO,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,APARECIDA DE GOIANIA,False,False,False,,False,,0.0279,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,APORE,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ARARANGUA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ARIQUEMES,False,False,False,,False,,0.028,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ASSIS CHATEAUBRIAND,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BALSAMO,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BARAO DE ANTONINA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BARRA DO PIRAI,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BARRA MANSA,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BARRO,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BELEM,False,False,False,,False,,0.0391,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BEQUIMAO,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BIGUACU,False,False,False,,False,,0.0628,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BLUMENAU,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BOA ESPERANCA DO NORTE,False,False,False,,False,,0.1301,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BOA VISTA,False,False,False,,False,,0.1013,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BRASILIA,False,False,False,,False,,0.3175,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,BUJARI,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAIAPONIA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAMPINAS,False,False,False,,False,,0.0263,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAMPO FORMOSO,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAMPO GRANDE,False,False,False,,False,,0.2857,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAMPO NOVO DE RONDONIA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAPIXABA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAREIRO,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CARIRIACU,False,False,False,,False,,0.0628,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CASCAVEL,False,False,False,,False,,0.095,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CAXIAS,False,False,False,,False,,0.0255,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CENTENARIO DO SUL,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CERES,False,False,False,,False,,0.1111,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CHAPADAO DO SUL,False,False,False,,False,,0.0371,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,COLATINA,False,False,False,,False,,0.0287,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CONQUISTA D''OESTE,False,False,False,,False,,0.0628,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CORUMBA,False,False,False,,False,,0.1015,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CRICIUMA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CRUZEIRO DO SUL,False,False,False,,False,,0.101,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CUMARU DO NORTE,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,CURITIBA,False,False,False,,False,,0.0263,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,DAVINOPOLIS,False,False,False,,False,,0.1281,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,DOIS VIZINHOS,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,DOURADOS,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,DRACENA,False,False,False,,False,,0.0263,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FAXINAL DO SOTURNO,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FERNANDOPOLIS,False,False,False,,False,,0.023,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FIGUEIROPOLIS D''OESTE,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FIRMINOPOLIS,False,False,False,,False,,0.0276,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FLORIANOPOLIS,False,False,False,,False,,0.0251,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FORTALEZA,False,False,False,,False,,0.0255,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,FRANCA,False,False,False,,False,,0.0285,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GOIANESIA DO PARA,False,False,False,,False,,0.0583,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GOIANIA,False,False,False,,False,,0.1195,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GRAJAU,False,False,False,,False,,0.0268,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GUANAMBI,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GUAPO,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GUARAREMA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,GUARULHOS,False,False,False,,False,,0.0268,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,HUMAITA,False,False,False,,False,,0.0268,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,HUMBERTO DE CAMPOS,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,INDEPENDENCIA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,IPUACU,False,False,False,,False,,0.0188,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,ITACARE,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,JARU,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,JATAI,False,False,False,,False,,0.0306,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,JATEI,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,JOAO DOURADO,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,JOINVILLE,False,False,False,,False,,0.0643,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,LAGOA DA CONFUSAO,False,False,False,,False,,0.068,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,LAGUNA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,LAMBARI D''OESTE,False,False,False,,False,,0.113,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MACEIO,False,False,False,,False,,0.1111,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MANAUS,False,False,False,,False,,0.0255,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MANCIO LIMA,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MARIBONDO,False,False,False,,False,,0.025,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MERCEDES,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MESSIAS,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MINEIROS,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MIRANTE DA SERRA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MIRASSOL D''OESTE,False,False,False,,False,,0.1232,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,MONTEZUMA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,NAVEGANTES,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,NAVIRAI,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,OLINDA,False,False,False,,False,,0.0171,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,OSASCO,False,False,False,,False,,0.0157,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,OURO PRETO DO OESTE,False,False,False,,False,,0.025,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PACARAIMA,False,False,False,,False,,0.0454,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PALMAS,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PARA DE MINAS,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PARAISO DAS AGUAS,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PARAUAPEBAS,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PAULINO NEVES,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PAULO AFONSO,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PENAPOLIS,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PETROLINA,False,False,False,,False,,0.1138,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PIRACICABA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PLANALTO,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PONTA PORA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PONTAL,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PORTO GRANDE,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,PORTO VELHO,False,False,False,,False,,0.2088,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,POXOREO,False,False,False,,False,,0.145,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,RIBEIRAO DAS NEVES,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,RIO VERDE,False,False,False,,False,,0.1015,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,RUROPOLIS,False,False,False,,False,,0.0255,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SALINOPOLIS,False,False,False,,False,,0.025,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SANTA ISABEL DO PARA,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO BENTO,False,False,False,,False,,0.0187,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO GABRIEL DO OESTE,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO JOSE DO RIO PRETO,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO MATEUS DO MARANHAO,False,False,False,,False,,0.0287,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO MIGUEL DOS CAMPOS,False,False,False,,False,,0.0617,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO PAULO,False,False,False,,False,,0.0154,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO PEDRO DA AGUA BRANCA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAO SEBASTIAO DO PARAISO,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SAPUCAIA DO SUL,False,False,False,,False,,0.025,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SENADOR CANEDO,False,False,False,,False,,0.0298,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SIDROLANDIA,False,False,False,,False,,0.1138,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SOLEDADE DE MINAS,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SONORA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,SUMARE,False,False,False,,False,,0.0251,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TABAPUA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TABATINGA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TEFE,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TEIXEIRA,False,False,False,,False,,0.0252,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TERESINA,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TOLEDO,False,False,False,,False,,0.3449,moderada,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TOME-ACU,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TRES LAGOAS,False,False,False,,False,,0.095,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TRINDADE,False,False,False,,False,,0.0251,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,TURILANDIA,False,False,False,,False,,0.0628,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,UBERLANDIA,False,False,False,,False,,0.0326,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,URUCUIA,False,False,False,,False,,0.0238,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,URUPA,False,False,False,,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,VARGEAO,False,False,False,,False,,0.0486,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,VERA CRUZ DO OESTE,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,VIAMAO,False,False,False,,False,,0.0139,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,36,,VILHENA,False,False,False,,False,,0.028,baixa,False,MONITORAMENTO,2026-09-08T07:47:28,Observado,indicadores_emergencia
+2026,37,5103437.0,CUIABA,True,False,False,critica,True,75.36,0.9177,critica,True,CRÍTICO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108402.0,VARZEA GRANDE,False,False,False,critica,True,80.77,0.9609,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102504.0,CACERES,False,False,False,critica,True,76.24,0.9251,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108006.0,TANGARA DA SERRA,True,False,False,alta,True,72.37,0.9412,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107925.0,SINOP,False,False,False,alta,True,72.29,0.9541,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102678.0,CAMPO VERDE,True,True,False,alta,True,72.2,0.8958,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102637.0,CAMPO NOVO DO PARECIS,False,False,False,alta,True,71.0,0.7644,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107602.0,RONDONOPOLIS,False,False,False,alta,True,69.34,0.9264,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107941.0,SORRISO,True,False,False,alta,True,68.58,0.9425,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103205.0,COLIDER,False,False,False,alta,True,67.87,0.3952,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105507.0,LUCAS DO RIO VERDE,False,True,False,alta,True,67.56,0.9439,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106851.0,PONTES E LACERDA,True,False,False,alta,True,66.72,0.5454,alta,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107065.0,PRIMAVERA DO LESTE,False,False,False,alta,True,66.42,0.6276,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103007.0,CHAPADA DOS GUIMARAES,True,False,False,alta,True,65.46,0.7141,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106257.0,NOVA MUTUM,True,False,False,alta,True,63.53,0.5344,alta,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106158.0,NOSSA SENHORA DO LIVRAMENTO,False,False,False,alta,True,60.46,0.3353,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104203.0,GUARANTA DO NORTE,True,False,False,alta,True,58.67,0.7819,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101258.0,ARAPUTANGA,True,False,False,alta,True,57.93,0.3531,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105200.0,JUINA,True,True,False,alta,True,57.06,0.9117,critica,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108204.0,TESOURO,True,False,False,moderada,False,52.9,0.0378,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104559.0,ITANHANGA,True,False,False,moderada,False,52.21,0.0336,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104906.0,JACIARA,True,False,False,moderada,False,51.95,0.2155,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106802.0,PONTAL DO ARAGUAIA,True,False,False,moderada,False,51.64,0.0809,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100102.0,ACORIZAL,True,False,False,moderada,False,51.3,0.1642,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103601.0,DIAMANTINO,True,False,False,moderada,False,51.26,0.3153,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101308.0,ARENAPOLIS,True,False,False,moderada,False,50.78,0.2769,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105622.0,MATUPA,True,False,False,moderada,False,50.32,0.2273,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108501.0,VERA,True,False,False,moderada,False,49.41,0.1659,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100300.0,ALTO ARAGUAIA,True,False,False,moderada,False,49.37,0.0932,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102603.0,CAMPINAPOLIS,False,True,False,moderada,False,49.29,0.3966,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106265.0,NOVA OLIMPIA,True,False,False,moderada,False,49.09,0.2194,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107354.0,SAO JOSE DO XINGU,True,False,False,moderada,False,48.5,0.1155,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100508.0,ALTO PARAGUAI,True,False,False,moderada,False,48.36,0.0423,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108352.0,UNIAO DO SUL,True,False,False,moderada,False,47.01,0.2252,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105580.0,LUCIARA,False,True,False,moderada,False,46.56,0.1411,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,NOVA NAZARE,True,False,False,moderada,False,46.06,0.0276,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105150.0,JUARA,True,False,False,moderada,False,46.05,0.2765,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106190.0,NOVA LACERDA,True,False,False,moderada,False,45.81,0.1461,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107875.0,SAO PEDRO DA CIPA,True,False,False,moderada,False,45.64,0.0261,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106752.0,PLANALTO DA SERRA,True,False,False,moderada,False,45.62,0.1181,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107883.0,SAPEZAL,True,False,False,moderada,False,45.59,0.2884,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100409.0,ALTO GARCAS,True,False,False,moderada,False,45.48,0.2472,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107297.0,SAO JOSE DO POVO,True,False,False,moderada,False,45.27,0.2728,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106372.0,NOVO SANTO ANTONIO,True,False,False,moderada,False,45.17,0.1843,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102793.0,CARLINDA,True,False,False,moderada,False,44.87,0.102,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104526.0,INDIAVAI,True,False,False,moderada,False,44.71,0.0895,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104609.0,ITAUBA,True,False,False,moderada,False,44.62,0.0383,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108105.0,TERRA NOVA DO NORTE,False,True,False,moderada,False,44.11,0.2219,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106273.0,NOVA SANTA HELENA,True,False,False,moderada,False,43.91,0.1618,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100805.0,APIACAS,True,False,False,moderada,False,43.78,0.2892,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107404.0,SAO JOSE DOS QUATRO MARCOS,True,False,False,moderada,False,43.36,0.2332,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106174.0,NOVA BANDEIRANTES,True,False,False,moderada,False,43.14,0.2368,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102702.0,CANARANA,True,False,False,moderada,False,42.82,0.4605,alta,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108055.0,TAPURAH,True,False,False,moderada,False,42.71,0.1947,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103403.0,COTRIGUACU,True,False,False,moderada,False,42.7,0.2051,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MARCELANDIA,True,True,False,moderada,False,42.59,0.2614,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102850.0,CASTANHEIRA,True,True,False,moderada,False,42.57,0.2598,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103254.0,COLNIZA,False,True,False,moderada,False,42.52,0.3495,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108550.0,VILA BELA DA SANTISSIMA TRINDADE,True,False,False,moderada,False,42.42,0.1342,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101704.0,BARRA DO BUGRES,True,False,False,moderada,False,42.11,0.2931,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103106.0,COCALINHO,True,False,False,moderada,False,41.84,0.1089,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106224.0,NOVA MARILANDIA,True,True,False,moderada,False,41.76,0.1711,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106281.0,NOVA UBIRATA,True,False,False,moderada,False,41.71,0.3877,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108600.0,VILA RICA,True,False,False,moderada,False,41.31,0.2206,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106422.0,NOVO SAO JOAQUIM,True,False,False,moderada,False,41.18,0.1378,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100607.0,ALTO TAQUARI,True,False,False,moderada,False,41.13,0.0752,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107909.0,SERRA NOVA DOURADA,True,False,False,moderada,False,40.45,0.1319,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101407.0,ARIPUANA,True,True,False,moderada,False,40.39,0.4591,alta,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106182.0,NOVA GUARITA,True,False,False,moderada,False,40.39,0.0334,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103908.0,GAUCHA DO NORTE,False,True,False,moderada,False,39.34,0.3271,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107248.0,SANTA CARMEM,True,False,False,moderada,False,39.33,0.1303,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105234.0,JURUENA,False,True,False,moderada,False,38.52,0.3584,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107156.0,RESERVA DO CABACAL,False,True,False,moderada,False,38.31,0.1141,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103304.0,COMODORO,True,False,False,moderada,False,37.36,0.2677,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104542.0,IPIRANGA DO NORTE,True,False,False,baixa,False,34.97,0.1818,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106828.0,PONTE BRANCA,True,False,False,baixa,False,31.47,0.0878,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107743.0,SANTA CRUZ DO XINGU,False,True,False,baixa,False,27.84,0.2146,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ALTAMIRA,False,True,False,nan,False,,0.1574,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BOCA DO ACRE,False,True,False,nan,False,,0.1201,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CASTILHO,False,True,False,nan,False,,0.0175,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ERMO,False,True,False,nan,False,,0.0293,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GLORIA D''OESTE,False,True,False,nan,False,,0.2572,moderada,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ITAPECURU MIRIM,False,True,False,nan,False,,0.1201,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,NOVO PROGRESSO,False,True,False,nan,False,,0.1456,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PARNARAMA,False,True,False,nan,False,,0.0318,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,RIO DE JANEIRO,False,True,False,nan,False,,0.336,moderada,True,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO FELIX DO XINGU,False,True,False,nan,False,,0.0607,baixa,False,ALTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100201.0,AGUA BOA,False,False,False,moderada,False,54.91,0.3652,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106778.0,POCONE,False,False,False,moderada,False,53.7,0.3194,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106455.0,PARANAITA,False,False,False,moderada,False,52.93,0.3245,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100250.0,ALTA FLORESTA,False,False,False,moderada,False,50.98,0.4565,alta,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106000.0,NOBRES,False,False,False,moderada,False,50.86,0.3508,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101803.0,BARRA DO GARCAS,False,False,False,moderada,False,48.61,0.5266,alta,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105002.0,JANGADA,False,False,False,moderada,False,46.81,0.3201,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103353.0,CONFRESA,False,False,False,moderada,False,44.51,0.4655,alta,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TOLEDO,False,False,False,nan,False,,0.3261,moderada,True,MODERADO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5100359.0,ALTO BOA VISTA,False,False,False,moderada,False,54.74,0.1589,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107800.0,SANTO ANTONIO DO LEVERGER,False,False,False,moderada,False,53.02,0.2668,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106703.0,PEIXOTO DE AZEVEDO,False,False,False,moderada,False,52.55,0.2508,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107008.0,PORTO ESTRELA,False,False,False,moderada,False,51.89,0.1421,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101605.0,BARAO DE MELGACO,False,False,False,moderada,False,51.35,0.1869,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105259.0,JUSCIMEIRA,False,False,False,moderada,False,51.21,0.1908,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107107.0,QUERENCIA,False,False,False,moderada,False,51.12,0.2241,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106216.0,NOVA CANAA DO NORTE,False,False,False,moderada,False,50.73,0.0678,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103700.0,DOM AQUINO,False,False,False,moderada,False,50.2,0.054,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101902.0,BRASNORTE,False,False,False,moderada,False,47.94,0.2074,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107792.0,SANTO ANTONIO DO LESTE,False,False,False,moderada,False,47.84,0.1544,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106877.0,PORTO ALEGRE DO NORTE,False,False,False,moderada,False,47.78,0.1659,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107263.0,SANTO AFONSO,False,False,False,moderada,False,47.56,0.1436,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107305.0,SAO JOSE DO RIO CLARO,False,False,False,moderada,False,47.36,0.1867,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107701.0,ROSARIO OESTE,False,False,False,moderada,False,47.26,0.2591,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106240.0,NOVA MONTE VERDE,False,False,False,moderada,False,47.25,0.1335,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106299.0,NOVA XAVANTINA,False,False,False,moderada,False,47.01,0.2254,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103452.0,CURVELANDIA,False,False,False,moderada,False,46.92,0.0276,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104500.0,GUIRATINGA,False,False,False,moderada,False,46.7,0.2282,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5104807.0,ITIQUIRA,False,False,False,moderada,False,46.37,0.179,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107750.0,SALTO DO CEU,False,False,False,moderada,False,46.33,0.1499,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102694.0,CANABRAVA DO NORTE,False,False,False,moderada,False,46.3,0.0372,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106315.0,NOVO MUNDO,False,False,False,moderada,False,45.98,0.1491,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5105101.0,JAURU,False,False,False,moderada,False,45.54,0.1632,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107180.0,RIBEIRAO CASCALHEIRA,False,False,False,moderada,False,45.51,0.2289,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106109.0,NORTELANDIA,False,False,False,moderada,False,45.23,0.1586,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108402.0,VALE DE SAO DOMINGOS,False,False,False,moderada,False,44.94,0.1286,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106232.0,NOVA MARINGA,False,False,False,moderada,False,43.62,0.0412,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107768.0,SANTA RITA DO TRIVELATO,False,False,False,moderada,False,43.06,0.1256,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107776.0,SANTA TEREZINHA,False,False,False,moderada,False,42.61,0.0237,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103502.0,DENISE,False,False,False,moderada,False,42.38,0.045,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103056.0,CLAUDIA,False,False,False,moderada,False,41.91,0.2243,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103809.0,FELIZ NATAL,False,False,False,moderada,False,41.72,0.0649,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106653.0,PEDRA PRETA,False,False,False,moderada,False,41.36,0.1993,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5102686.0,CAMPOS DE JULIO,False,False,False,moderada,False,41.07,0.1729,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107206.0,RIO BRANCO,False,False,False,moderada,False,41.01,0.076,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106307.0,NOVO HORIZONTE DO NORTE,False,False,False,moderada,False,40.54,0.1736,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106901.0,PORTO ESPERIDIAO,False,False,False,moderada,False,40.38,0.0853,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106505.0,PARANATINGA,False,False,False,moderada,False,39.51,0.2668,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106208.0,NOVA BRASILANDIA,False,False,False,moderada,False,39.21,0.1364,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101852.0,BOM JESUS DO ARAGUAIA,False,False,False,moderada,False,39.06,0.1155,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107958.0,TABAPORA,False,False,False,moderada,False,37.16,0.1752,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5103957.0,GENERAL CARNEIRO,False,False,False,moderada,False,36.77,0.0754,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107198.0,RIBEIRAOZINHO,False,False,False,moderada,False,36.47,0.1239,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5108303.0,TORIXOREU,False,False,False,moderada,False,36.32,0.0246,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5101001.0,ARAGUAIANA,False,False,False,moderada,False,35.71,0.0188,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5106893.0,PORTO DOS GAUCHOS,False,False,False,baixa,False,34.35,0.1925,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,5107859.0,SAO FELIX DO ARAGUAIA,False,False,False,baixa,False,30.14,0.1909,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,AGUAI,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ANANINDEUA,False,False,False,nan,False,,0.0549,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ANAPOLIS,False,False,False,nan,False,,0.0288,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ANTONIO PRADO,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,APARECIDA DE GOIANIA,False,False,False,nan,False,,0.0338,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ARIQUEMES,False,False,False,nan,False,,0.0266,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ASSIS CHATEAUBRIAND,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BALSAMO,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BARAO DE ANTONINA,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BARRA DO PIRAI,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BARRA MANSA,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BARRO,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BELEM,False,False,False,nan,False,,0.0376,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BLUMENAU,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BOA ESPERANCA DO NORTE,False,False,False,nan,False,,0.1669,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BOA VISTA,False,False,False,nan,False,,0.114,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,BRASILIA,False,False,False,nan,False,,0.2692,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAIAPONIA,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAMPINAS,False,False,False,nan,False,,0.0293,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAMPO FORMOSO,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAMPO GRANDE,False,False,False,nan,False,,0.2787,moderada,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAPIXABA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAREIRO,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CARIRIACU,False,False,False,nan,False,,0.0647,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CASCAVEL,False,False,False,nan,False,,0.1064,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CAXIAS,False,False,False,nan,False,,0.0262,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CENTENARIO DO SUL,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CERES,False,False,False,nan,False,,0.1094,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CHAPADAO DO SUL,False,False,False,nan,False,,0.0382,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,COLATINA,False,False,False,nan,False,,0.0381,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CORUMBA,False,False,False,nan,False,,0.0946,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CRICIUMA,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CRUZEIRO DO SUL,False,False,False,nan,False,,0.1124,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CUMARU DO NORTE,False,False,False,nan,False,,0.024,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,CURITIBA,False,False,False,nan,False,,0.0293,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,DAVINOPOLIS,False,False,False,nan,False,,0.1235,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,DOIS VIZINHOS,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,DOURADOS,False,False,False,nan,False,,0.0236,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,DRACENA,False,False,False,nan,False,,0.0293,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FAXINAL DO SOTURNO,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FERNANDOPOLIS,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FIGUEIROPOLIS D''OESTE,False,False,False,nan,False,,0.0155,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FIRMINOPOLIS,False,False,False,nan,False,,0.025,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FLORIANOPOLIS,False,False,False,nan,False,,0.0267,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FORTALEZA,False,False,False,nan,False,,0.0262,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,FRANCA,False,False,False,nan,False,,0.0266,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GOIANESIA DO PARA,False,False,False,nan,False,,0.0537,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GOIANIA,False,False,False,nan,False,,0.1127,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GRAJAU,False,False,False,nan,False,,0.0283,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GUAPO,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,GUARULHOS,False,False,False,nan,False,,0.0283,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,HUMAITA,False,False,False,nan,False,,0.0283,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,HUMBERTO DE CAMPOS,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,INDEPENDENCIA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,IPUACU,False,False,False,nan,False,,0.0175,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,ITACARE,False,False,False,nan,False,,0.013,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,JARU,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,JATAI,False,False,False,nan,False,,0.0288,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,JATEI,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,JOAO DOURADO,False,False,False,nan,False,,0.0254,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,JOINVILLE,False,False,False,nan,False,,0.0521,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,LAGUNA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,LAMBARI D''OESTE,False,False,False,nan,False,,0.1155,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MACEIO,False,False,False,nan,False,,0.1077,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MANAUS,False,False,False,nan,False,,0.0262,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MANCIO LIMA,False,False,False,nan,False,,0.0135,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MARIBONDO,False,False,False,nan,False,,0.0226,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MERCEDES,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MINEIROS,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MIRANTE DA SERRA,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MIRASSOL D''OESTE,False,False,False,nan,False,,0.1561,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,MONTEZUMA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,NAVEGANTES,False,False,False,nan,False,,0.013,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,NAVIRAI,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,OLINDA,False,False,False,nan,False,,0.0156,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,OSASCO,False,False,False,nan,False,,0.0152,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,OURO PRETO DO OESTE,False,False,False,nan,False,,0.0229,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PACARAIMA,False,False,False,nan,False,,0.0756,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PARA DE MINAS,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PARAISO DAS AGUAS,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PARAUAPEBAS,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PAULO AFONSO,False,False,False,nan,False,,0.0236,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PENAPOLIS,False,False,False,nan,False,,0.024,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PETROLINA,False,False,False,nan,False,,0.1099,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PIRACICABA,False,False,False,nan,False,,0.0236,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PLANALTO,False,False,False,nan,False,,0.0152,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PONTA PORA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PORTO GRANDE,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,PORTO VELHO,False,False,False,nan,False,,0.2225,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,POXOREO,False,False,False,nan,False,,0.2391,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,RIBEIRAO DAS NEVES,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,RIO VERDE,False,False,False,nan,False,,0.0993,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,RUROPOLIS,False,False,False,nan,False,,0.0262,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SALINOPOLIS,False,False,False,nan,False,,0.0234,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SANTA ISABEL DO PARA,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO GABRIEL DO OESTE,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO MATEUS DO MARANHAO,False,False,False,nan,False,,0.0267,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO PAULO,False,False,False,nan,False,,0.0155,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO PEDRO DA AGUA BRANCA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAO SEBASTIAO DO PARAISO,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SAPUCAIA DO SUL,False,False,False,nan,False,,0.0234,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SENADOR CANEDO,False,False,False,nan,False,,0.0267,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SIDROLANDIA,False,False,False,nan,False,,0.108,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SOLEDADE DE MINAS,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SONORA,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,SUMARE,False,False,False,nan,False,,0.0262,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TABATINGA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TEIXEIRA,False,False,False,nan,False,,0.0231,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TOME-ACU,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TRES LAGOAS,False,False,False,nan,False,,0.0974,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,TRINDADE,False,False,False,nan,False,,0.0272,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,UBERLANDIA,False,False,False,nan,False,,0.0514,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,URUCUIA,False,False,False,nan,False,,0.0245,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,URUPA,False,False,False,nan,False,,0.0227,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,VARGEAO,False,False,False,nan,False,,0.0515,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,VERA CRUZ DO OESTE,False,False,False,nan,False,,0.0132,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia
+2026,37,,VILHENA,False,False,False,nan,False,,0.035,baixa,False,MONITORAMENTO,2026-09-08T07:53:17,Observado,indicadores_emergencia

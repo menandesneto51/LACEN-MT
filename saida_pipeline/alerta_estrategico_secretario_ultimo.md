@@ -2,7 +2,7 @@ RADAR LACEN · SES-MT / CIEVS-MT
 
 ALERTA ESTRATÉGICO — SE 36/2026
 Semana analisada: SE 35/2026
-Atualização / data de corte: 05/09/2026 às 23h51 (Hora de Mato Grosso)
+Atualização / data de corte: 08/09/2026 às 07h55 (Hora de Mato Grosso)
 Completude da semana analisada: 97,0%
 Exames elegíveis: 1295 · Liberados: 1295 · Pendentes: 0
 
@@ -14,16 +14,16 @@ RESULTADOS POSITIVOS: 10
 MUNICÍPIOS COM EXAMES: 106
 TEMPO MEDIANO DE LIBERAÇÃO: 10,6 dia
 LIBERAÇÕES EM ATÉ 48 H: 36%
-SILÊNCIO LABORATORIAL: 20 municípios
+SILÊNCIO LABORATORIAL: 25 municípios
 CONFIRMAÇÃO DE SINAIS ANTERIORES: 152 de 281 (54%)
 
 ANÁLISE ESTATÍSTICA AVANÇADA (COM RESSALVA DE INCERTEZA)
 Positividade estadual da semana analisada: 0,8% (10/1295).
 Tendências (4–8 semanas): volume=estável; positividade=aumento; internações=queda.
-Nowcasting da semana em curso (preliminar): 1100 exames (IC95% aprox. 41–2159) — DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA.
+Nowcasting da semana em curso (preliminar): 1155 exames (IC95% aprox. 96–2214) — DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA.
 Predição de exames (1–3 semanas): S+1 966 [73–1859], S+2 985 [92–1878], S+3 1005 [112–1898].
 Positividade esperada (S+1, mediana de agravos): 0,0%.
-Predição por agravo (S+1): dengue: 196 exames (IC 109–283; pos. 0,3%; risco baixo); hepatite b hbv: 131 exames (IC 81–181; pos. 0,0%; risco baixo); hepatite c hcv: 26 exames (IC 16–37; pos. 0,0%; risco baixo); sars cov 2: 48 exames (IC 35–61; pos. 0,0%; risco baixo).
+Predição por agravo (S+1): dengue: 204 exames (IC 118–290; pos. 0,2%; risco baixo); hepatite b hbv: 131 exames (IC 81–181; pos. 0,0%; risco baixo); hepatite c hcv: 28 exames (IC 17–38; pos. 0,0%; risco baixo); sars cov 2: 37 exames (IC 21–53; pos. 0,0%; risco baixo).
 Linkage VW_INTERNACAO: 6 internações (semana ref. 2026-SE26; mediana 4 SE: 23,5; 0,2/100 mil).
 Contexto INDICASUS (proxy VS): 7,0%.
 Aviso metodológico: SIH sem dados na SE analisada; usando 2026-SE26 (última disponível — ressalva de defasagem).
@@ -32,10 +32,10 @@ Aviso metodológico: Nowcasting com alta incerteza por completude parcial da SE 
 SINAIS PRELIMINARES DA SEMANA EM CURSO
 DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA
 SE: SE 36/2026
-Exames recebidos (série): 1037
-Resultados liberados: 1037
-Pendentes (estim.): 258
-Completude estimada: 94,3%
+Exames recebidos (série): 1097
+Resultados liberados: 1097
+Pendentes (estim.): 198
+Completude estimada: 95,0%
 Não incorporados à análise consolidada de positividade/incidência/anomalia de resultado.
 
 SÍNTESE EXECUTIVA
@@ -111,7 +111,7 @@ Ressalva: Internações referem-se a 2026-SE26 (lag SIH).
 Interpretação: Sinal estatístico com amostra pequena (1/3). Validar marcador e contexto antes de priorização operacional.
 Ação: VALIDAR
 
-Outros 4 sinais disponíveis no Painel Radar LACEN.
+Outros 6 sinais disponíveis no Painel Radar LACEN.
 
 DESTAQUE TERRITORIAL — Juína
 
@@ -133,7 +133,12 @@ Não assume subnotificação automaticamente — requer validação nominal.
 LACUNAS LABORATÓRIO × VIGILÂNCIA
 
 Cuiabá · tuberculose
-101 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
+104 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
+Não assume subnotificação automaticamente — requer validação nominal.
+Ação: INVESTIGAR LINKAGE
+
+Várzea Grande · dengue
+50 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
 Não assume subnotificação automaticamente — requer validação nominal.
 Ação: INVESTIGAR LINKAGE
 
@@ -144,11 +149,6 @@ Ação: INVESTIGAR LINKAGE
 
 Tangará da Serra · tuberculose
 43 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
-Não assume subnotificação automaticamente — requer validação nominal.
-Ação: INVESTIGAR LINKAGE
-
-Várzea Grande · dengue
-42 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
 Não assume subnotificação automaticamente — requer validação nominal.
 Ação: INVESTIGAR LINKAGE
 
@@ -170,7 +170,7 @@ Municípios:
 - Devolver resultado da investigação ao CIEVS/Regional.
 - Informar hipótese explicativa (rastreio, fluxo, caso ou outra).
 - Atualizar notificação no SINAN quando cabível.
-- Linkage: Cuiabá · tuberculose — investigar linkage; Juína · hepatite B — investigar linkage; Várzea Grande · tuberculose — investigar linkage; Tangará da Serra · tuberculose — investigar linkage.
+- Linkage: Cuiabá · tuberculose — investigar linkage; Várzea Grande · dengue — investigar linkage; Juína · hepatite B — investigar linkage; Várzea Grande · tuberculose — investigar linkage.
 
 PEDIDO AOS MUNICÍPIOS
 1. Validar o sinal junto à vigilância local.

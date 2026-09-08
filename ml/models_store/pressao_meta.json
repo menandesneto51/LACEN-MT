@@ -3,78 +3,78 @@
   "modelo_versao": "pressao_v1",
   "label": "y_pressao_alta = próxima SE com indice_pressao_proxy≥55 OU tests_pct_estadual≥0,75 OU (tests≥1,5·MA8 e tests≥5). Proxy = 100×(0,40·volume_norm + 0,25·backlog_norm + 0,20·tat_p90_norm + 0,15·rejeicao_norm); volume varia por semana; TAT/backlog/rejeição vêm da rede GAL (estrutural).",
   "status": "ok",
-  "n_rows": 13064,
-  "n_train": 10464,
-  "n_test": 2600,
+  "n_rows": 11646,
+  "n_train": 9451,
+  "n_test": 2195,
   "n_train_weeks": 83,
   "n_test_weeks": 21,
-  "auc_test": 0.9035889455823685,
+  "auc_test": 0.8811705304305336,
   "threshold": 0.3,
-  "f1_at_threshold": 0.7022160664819944,
+  "f1_at_threshold": 0.6492890995260663,
   "precision_at_20": 0.95,
   "precision_at_50": 0.94,
-  "pos_rate_train": 0.28363914373088683,
-  "pos_rate_test": 0.26461538461538464,
+  "pos_rate_train": 0.2918209713257856,
+  "pos_rate_test": 0.25740318906605925,
   "importance": [
     {
       "feature": "tests_ma4",
-      "importance": 0.57194
-    },
-    {
-      "feature": "tests_ma8",
-      "importance": 0.14915
+      "importance": 0.51606
     },
     {
       "feature": "tests_pct_estadual",
-      "importance": 0.10639
-    },
-    {
-      "feature": "indice_pressao_proxy",
-      "importance": 0.04083
+      "importance": 0.24117
     },
     {
       "feature": "confianca_dado",
-      "importance": 0.03914
+      "importance": 0.0557
     },
     {
       "feature": "cnes_estabelecimentos",
-      "importance": 0.03555
+      "importance": 0.05449
     },
     {
-      "feature": "tests_lag1",
-      "importance": 0.01351
+      "feature": "tests_ma8",
+      "importance": 0.04981
     },
     {
-      "feature": "cnes_leitos_total",
-      "importance": 0.01299
+      "feature": "indice_pressao_proxy",
+      "importance": 0.01995
     },
     {
       "feature": "cnes_equipes_esf",
-      "importance": 0.00772
+      "importance": 0.01829
     },
     {
-      "feature": "tests_trend",
-      "importance": 0.00576
+      "feature": "cnes_leitos_total",
+      "importance": 0.01355
+    },
+    {
+      "feature": "tests_lag1",
+      "importance": 0.01073
     },
     {
       "feature": "volume_norm",
-      "importance": 0.00455
+      "importance": 0.0063
     },
     {
-      "feature": "tat_mediano_dias",
-      "importance": 0.00376
+      "feature": "tests_trend",
+      "importance": 0.00512
     },
     {
       "feature": "tests",
-      "importance": 0.00238
-    },
-    {
-      "feature": "pct_liberado_48h",
-      "importance": 0.00213
+      "importance": 0.00267
     },
     {
       "feature": "tat_p90_dias",
-      "importance": 0.00134
+      "importance": 0.00234
+    },
+    {
+      "feature": "n_eventos_climaticos",
+      "importance": 0.00147
+    },
+    {
+      "feature": "pct_liberado_7d",
+      "importance": 0.00084
     }
   ],
   "features": [
@@ -109,53 +109,53 @@
   "familia_models": {
     "arbovirose": {
       "status": "ok",
-      "auc_test": 0.879867736699132,
-      "threshold": 0.39999999999999997,
-      "f1_at_threshold": 0.6900000000000001,
-      "n_train": 6250,
-      "n_test": 1086,
+      "auc_test": 0.8157099536592137,
+      "threshold": 0.44999999999999996,
+      "f1_at_threshold": 0.6306818181818181,
+      "n_train": 5320,
+      "n_test": 671,
       "cut_frac_train": 0.8,
-      "precision_at_20": 0.85
+      "precision_at_20": 0.95
     },
     "respiratorio": {
       "status": "ok",
-      "auc_test": 0.905421190473263,
-      "threshold": 0.3,
-      "f1_at_threshold": 0.7582089552238805,
-      "n_train": 1692,
-      "n_test": 654,
+      "auc_test": 0.9184510784620193,
+      "threshold": 0.35,
+      "f1_at_threshold": 0.7647058823529412,
+      "n_train": 1643,
+      "n_test": 597,
       "cut_frac_train": 0.8,
       "precision_at_20": 0.95
     },
     "tuberculose": {
       "status": "ok",
-      "auc_test": 0.8934516163562406,
-      "threshold": 0.35,
-      "f1_at_threshold": 0.6956521739130433,
-      "n_train": 4657,
-      "n_test": 1426,
+      "auc_test": 0.8624744900867622,
+      "threshold": 0.25,
+      "f1_at_threshold": 0.6327944572748267,
+      "n_train": 4141,
+      "n_test": 1376,
       "cut_frac_train": 0.8,
       "precision_at_20": 1.0
     },
     "hepatite": {
       "status": "ok",
-      "auc_test": 0.8682295703091363,
-      "threshold": 0.3,
-      "f1_at_threshold": 0.6567901234567902,
-      "n_train": 2574,
-      "n_test": 721,
+      "auc_test": 0.8748808843148466,
+      "threshold": 0.35,
+      "f1_at_threshold": 0.6705882352941176,
+      "n_train": 2486,
+      "n_test": 654,
       "cut_frac_train": 0.8,
-      "precision_at_20": 0.95
+      "precision_at_20": 0.85
     },
     "outros": {
       "status": "ok",
-      "auc_test": 0.8544295602222431,
-      "threshold": 0.35,
-      "f1_at_threshold": 0.6781609195402298,
-      "n_train": 2220,
-      "n_test": 682,
+      "auc_test": 0.7360384440400364,
+      "threshold": 0.39999999999999997,
+      "f1_at_threshold": 0.49158249158249157,
+      "n_train": 2071,
+      "n_test": 605,
       "cut_frac_train": 0.8,
-      "precision_at_20": 0.95
+      "precision_at_20": 1.0
     }
   }
 }

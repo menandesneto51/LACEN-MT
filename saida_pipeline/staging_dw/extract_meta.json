@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-05T23:24:02",
+  "ts": "2026-09-08T07:29:06",
   "objects": [
     {
       "TABLE_SCHEMA": "dbo",
@@ -333,23 +333,6 @@
     "cnes_equipamentos": "cnes_equipamentos.parquet",
     "cnes_equipesatencaobasica": "cnes_equipesatencaobasica.parquet",
     "populacao_tcu": "populacao_tcu.parquet",
-    "indicasus_inventory": "indicasus_inventory.csv",
-    "indicasus_indicador": "indicasus_indicador.parquet",
-    "indicasus_indicador_csv": "indicasus_indicador.csv",
-    "indicasus_municipio_regiao": "indicasus_municipio_regiao.parquet",
-    "indicasus_municipio_regiao_csv": "indicasus_municipio_regiao.csv",
-    "indicasus_tema": "indicasus_tema.parquet",
-    "indicasus_tema_csv": "indicasus_tema.csv",
-    "indicasus_periodicidade": "indicasus_periodicidade.parquet",
-    "indicasus_periodicidade_csv": "indicasus_periodicidade.csv",
-    "indicasus_importacao_calculado": "indicasus_importacao_calculado.parquet",
-    "indicasus_importacao_calculado_csv": "indicasus_importacao_calculado.csv",
-    "indicasus_entrada_dados": "indicasus_entrada_dados.parquet",
-    "indicasus_entrada_dados_csv": "indicasus_entrada_dados.csv",
-    "indicasus_historico_ocupacao_sample": "indicasus_historico_ocupacao_sample.parquet",
-    "indicasus_historico_ocupacao_sample_csv": "indicasus_historico_ocupacao_sample.csv",
-    "indicasus_ocupacao_agg": "indicasus_ocupacao_agg.parquet",
-    "indicasus_ocupacao_agg_csv": "indicasus_ocupacao_agg.csv",
     "sisreg_inventory": "sisreg_inventory.csv",
     "sisreg_samu_fila": "sisreg_samu_fila.parquet",
     "sisreg_samu_fila_csv": "sisreg_samu_fila.csv",
@@ -362,11 +345,11 @@
   },
   "error": null,
   "gal_view": "VW_GAL",
-  "weekly_rows": 28842,
-  "se_max_dw": "2026-SE36",
-  "exames_proxy": 78945,
-  "positivos_proxy": 2055,
-  "micro_rows": 1198,
+  "weekly_rows": 28700,
+  "se_max_dw": "2026-SE37",
+  "exames_proxy": 78296,
+  "positivos_proxy": 1903,
+  "micro_rows": 1185,
   "sih_sia_columns": {
     "VW_INTERNACAO": [
       "AnoCompetencia",
@@ -673,18 +656,12 @@
     ]
   },
   "sih_sia_aggregates": {
-    "sih_mun_cid": 116,
+    "sih_mun_cid": 107,
     "sia_mun_cid": 207
   },
   "cruzamento_sih_sia": {
     "caveat": "Cruzamento SIH/SIA é correlato por CID×município (proxy VW_INTERNACAO / SIA); não atribui causalidade nem confirma surto. SISREG permanece em host separado.",
     "top_mun": [
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "DIAMANTINO",
-        "cid_familia": "dengue_arbovirose",
-        "n": 13
-      },
       {
         "fonte": "SIH/VW_INTERNACAO",
         "municipio": "TABAPORA",
@@ -693,7 +670,7 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "TANGARA DA SERRA",
+        "municipio": "DIAMANTINO",
         "cid_familia": "dengue_arbovirose",
         "n": 12
       },
@@ -711,6 +688,12 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "TANGARA DA SERRA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 10
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
         "municipio": "CANARANA",
         "cid_familia": "dengue_arbovirose",
         "n": 8
@@ -719,19 +702,7 @@
         "fonte": "SIH/VW_INTERNACAO",
         "municipio": "JUARA",
         "cid_familia": "dengue_arbovirose",
-        "n": 6
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "BARRA DO GARCAS",
-        "cid_familia": "dengue_arbovirose",
         "n": 5
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "NOVO SAO JOAQUIM",
-        "cid_familia": "dengue_arbovirose",
-        "n": 4
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
@@ -747,12 +718,24 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "COLNIZA",
+        "municipio": "CACERES",
+        "cid_familia": "dengue_arbovirose",
+        "n": 4
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "CONFRESA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 4
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "BARRA DO GARCAS",
         "cid_familia": "dengue_arbovirose",
         "n": 4
       }
     ],
-    "sih_rows": 116,
+    "sih_rows": 107,
     "sia_rows": 207,
     "familias": [
       "dengue_arbovirose",
@@ -916,20 +899,11 @@
     "failures": []
   },
   "external": {
-    "indicasus_ok": true,
+    "indicasus_ok": false,
     "sisreg_ok": true,
-    "indicasus_objects": 356,
+    "indicasus_objects": null,
     "sisreg_objects": 15,
-    "indicasus_extracted": [
-      "indicasus_indicador",
-      "indicasus_municipio_regiao",
-      "indicasus_tema",
-      "indicasus_periodicidade",
-      "indicasus_importacao_calculado",
-      "indicasus_entrada_dados",
-      "indicasus_historico_ocupacao_sample",
-      "indicasus_ocupacao_agg"
-    ],
+    "indicasus_extracted": [],
     "sisreg_extracted": [
       "sisreg_samu_fila",
       "sisreg_amb_mun_status_agg",
