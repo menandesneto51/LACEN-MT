@@ -3,7 +3,6 @@ AGUAI,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitora
 ALTO BOA VISTA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 ANAPOLIS,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 ANTONIO PRADO,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
-ARIQUEMES,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 ASSIS CHATEAUBRIAND,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 BALSAMO,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 BARAO DE ANTONINA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
@@ -18,6 +17,7 @@ CAMPINAS,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monit
 CAMPO FORMOSO,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 CAMPOS DE JULIO,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 CAPIXABA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
+CARLINDA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 CASCAVEL,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 CAXIAS,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 CENTENARIO DO SUL,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
@@ -77,7 +77,6 @@ TEIXEIRA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monit
 TESOURO,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 TOME-ACU,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 TRES LAGOAS,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
-TRINDADE,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 URUCUIA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 URUPA,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 VALE DE SAO DOMINGOS,1,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
@@ -104,6 +103,7 @@ PARNARAMA,3,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — moni
 RESERVA DO CABACAL,3,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 DAVINOPOLIS,4,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 PORTO ESPERIDIAO,4,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
+SANTA TEREZINHA,4,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 SANTO ANTONIO DO LESTE,4,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 ALTAMIRA,5,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 NOVO PROGRESSO,5,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
@@ -112,6 +112,7 @@ SAO FELIX DO XINGU,5,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária
 SANTA CRUZ DO XINGU,6,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 VARGEAO,7,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
 SAO JOSE DO POVO,12,0,0.0,1,,0.0,0.694,boa,False,False,Cobertura intermediária — monitorar
+ARIQUEMES,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 CANABRAVA DO NORTE,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 CURVELANDIA,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 HUMAITA,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
@@ -119,116 +120,117 @@ MINEIROS,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monit
 PARAUAPEBAS,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 PLANALTO DA SERRA,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 PONTA PORA,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-SANTA CARMEM,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 SAO FELIX DO ARAGUAIA,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
+TRINDADE,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 VILA BELA DA SANTISSIMA TRINDADE,2,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 DOURADOS,3,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 ITANHANGA,3,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 VERA,3,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 BELEM,4,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-NOVA BANDEIRANTES,4,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 NOVA MARINGA,4,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 PORTO ALEGRE DO NORTE,4,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 SALINOPOLIS,4,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-NOVA SANTA HELENA,5,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-NOVO HORIZONTE DO NORTE,5,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-PORTO DOS GAUCHOS,5,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
+NOVA SANTA HELENA,6,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 ITIQUIRA,7,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 LUCIARA,7,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 MACEIO,7,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-NOVA MARILANDIA,7,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-NOVO MUNDO,8,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
+NOVA MARILANDIA,8,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 UNIAO DO SUL,9,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 SANTO AFONSO,10,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 APIACAS,14,1,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 BRASILIA,14,1,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
-GAUCHA DO NORTE,14,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 TOLEDO,14,1,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 RIO DE JANEIRO,19,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 GLORIA D''OESTE,32,0,0.0,2,,0.0,0.738,boa,False,False,Cobertura intermediária — monitorar
 APARECIDA DE GOIANIA,3,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
-NOVA GUARITA,3,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 ALTO PARAGUAI,4,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 NOVA LACERDA,4,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 JUSCIMEIRA,5,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
-SAO JOSE DO RIO CLARO,5,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+NOVA BANDEIRANTES,6,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+PORTO DOS GAUCHOS,6,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+SAO JOSE DO RIO CLARO,6,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 VILHENA,7,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 ACORIZAL,8,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 FELIZ NATAL,8,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 TABAPORA,10,1,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 VILA RICA,10,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
-NOVA UBIRATA,11,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
-COTRIGUACU,12,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+NOVO HORIZONTE DO NORTE,13,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+NOVO MUNDO,14,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 PARANATINGA,14,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 QUERENCIA,14,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+GAUCHA DO NORTE,15,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 ARENAPOLIS,20,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
-PARANAITA,20,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
+SANTA CARMEM,22,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 CASTANHEIRA,24,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 MARCELANDIA,27,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 JURUENA,30,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 ARIPUANA,31,0,0.0,3,,0.0,0.781,boa,False,False,Cobertura intermediária — monitorar
 ALTO ARAGUAIA,4,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 DOM AQUINO,4,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
+NOVA GUARITA,4,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 ALTO TAQUARI,5,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 BRASNORTE,5,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 DENISE,8,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 SAO JOSE DOS QUATRO MARCOS,8,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
-NORTELANDIA,10,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 PORTO VELHO,11,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
-NOBRES,13,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 NOVA OLIMPIA,13,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 JANGADA,15,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 TAPURAH,15,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
+COTRIGUACU,16,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
+NOVA UBIRATA,17,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 PEDRA PRETA,28,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 JACIARA,36,0,0.0,4,,0.0,0.825,alta,False,False,Boa cobertura recente de exames/notificações
 POXOREO,5,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-PACARAIMA,7,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 UBERLANDIA,7,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
+PACARAIMA,8,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 GENERAL CARNEIRO,9,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-BARAO DE MELGACO,10,1,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 IPIRANGA DO NORTE,11,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
+NORTELANDIA,11,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 ROSARIO OESTE,13,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-SAPEZAL,13,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-COMODORO,15,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
+NOBRES,14,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 GUIRATINGA,15,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-ALTO GARCAS,21,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 ARAPUTANGA,21,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 CLAUDIA,21,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
+PARANAITA,22,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 PEIXOTO DE AZEVEDO,23,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 SANTO ANTONIO DO LEVERGER,30,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 COLNIZA,31,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 NOSSA SENHORA DO LIVRAMENTO,31,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
 DIAMANTINO,32,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-COLIDER,34,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-NOVA XAVANTINA,37,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-GUARANTA DO NORTE,210,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
-RIO BRANCO,13,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+GUARANTA DO NORTE,238,0,0.0,5,,0.0,0.869,alta,False,False,Boa cobertura recente de exames/notificações
+BARAO DE MELGACO,12,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+COMODORO,16,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
 BARRA DO BUGRES,17,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-BOA ESPERANCA DO NORTE,18,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+SAPEZAL,20,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
 CAMPO GRANDE,24,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
 CONFRESA,26,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-CANARANA,28,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-MIRASSOL D''OESTE,31,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-AGUA BOA,36,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-ALTA FLORESTA,51,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-BARRA DO GARCAS,56,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-MATUPA,57,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-PRIMAVERA DO LESTE,73,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-CAMPO VERDE,167,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+ALTO GARCAS,28,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+COLIDER,38,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+NOVA XAVANTINA,51,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
+ALTA FLORESTA,55,1,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
 JUINA,209,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-TANGARA DA SERRA,247,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-RONDONOPOLIS,271,0,0.0,6,,0.0,0.912,alta,False,False,Boa cobertura recente de exames/notificações
-JUARA,15,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-CAMPINAPOLIS,32,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-NOVA MUTUM,39,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-PONTES E LACERDA,49,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-TERRA NOVA DO NORTE,56,4,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-CHAPADA DOS GUIMARAES,76,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-CAMPO NOVO DO PARECIS,106,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-CACERES,271,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-SORRISO,272,2,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-SINOP,398,7,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
-LUCAS DO RIO VERDE,519,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+RIO BRANCO,15,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+BOA ESPERANCA DO NORTE,20,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+CANARANA,29,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+MIRASSOL D''OESTE,32,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+AGUA BOA,40,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+TERRA NOVA DO NORTE,60,4,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+BARRA DO GARCAS,61,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+MATUPA,64,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+PRIMAVERA DO LESTE,81,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+CAMPO NOVO DO PARECIS,118,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+CAMPO VERDE,176,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+TANGARA DA SERRA,260,1,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+RONDONOPOLIS,276,0,0.0,7,,0.0,0.956,alta,False,False,Boa cobertura recente de exames/notificações
+JUARA,17,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
 POCONE,30,2,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
-VARZEA GRANDE,900,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
-CUIABA,1373,11,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+CAMPINAPOLIS,35,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+NOVA MUTUM,51,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+PONTES E LACERDA,52,1,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+CHAPADA DOS GUIMARAES,78,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+CACERES,291,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+SORRISO,303,2,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+SINOP,432,7,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+LUCAS DO RIO VERDE,555,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+VARZEA GRANDE,971,0,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações
+CUIABA,1449,11,0.0,8,,0.0,1.0,alta,False,False,Boa cobertura recente de exames/notificações

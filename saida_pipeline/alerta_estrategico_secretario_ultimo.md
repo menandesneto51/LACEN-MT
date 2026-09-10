@@ -2,45 +2,44 @@ RADAR LACEN · SES-MT / CIEVS-MT
 
 ALERTA ESTRATÉGICO — SE 36/2026
 Semana analisada: SE 35/2026
-Atualização / data de corte: 08/09/2026 às 07h55 (Hora de Mato Grosso)
+Atualização / data de corte: 10/09/2026 às 11h57 (Hora de Mato Grosso)
 Completude da semana analisada: 97,0%
-Exames elegíveis: 1295 · Liberados: 1295 · Pendentes: 0
+Exames elegíveis: 1328 · Liberados: 1328 · Pendentes: 0
 
 Situação: rede sob pressão
 
 INDICADORES (semana analisada)
-EXAMES: 1295
+EXAMES: 1328
 RESULTADOS POSITIVOS: 10
-MUNICÍPIOS COM EXAMES: 106
+MUNICÍPIOS COM EXAMES: 108
 TEMPO MEDIANO DE LIBERAÇÃO: 10,6 dia
 LIBERAÇÕES EM ATÉ 48 H: 36%
-SILÊNCIO LABORATORIAL: 25 municípios
-CONFIRMAÇÃO DE SINAIS ANTERIORES: 152 de 281 (54%)
+SILÊNCIO LABORATORIAL: 23 municípios
+CONFIRMAÇÃO DE SINAIS ANTERIORES: 161 de 320 (50%)
 
 ANÁLISE ESTATÍSTICA AVANÇADA (COM RESSALVA DE INCERTEZA)
-Positividade estadual da semana analisada: 0,8% (10/1295).
-Tendências (4–8 semanas): volume=estável; positividade=aumento; internações=queda.
-Nowcasting da semana em curso (preliminar): 1155 exames (IC95% aprox. 96–2214) — DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA.
-Predição de exames (1–3 semanas): S+1 966 [73–1859], S+2 985 [92–1878], S+3 1005 [112–1898].
+Positividade estadual da semana analisada: 0,8% (10/1328).
+Tendências (4–8 semanas): volume=aumento; positividade=aumento; internações=queda.
+Nowcasting da semana em curso (preliminar): 1253 exames (IC95% aprox. 188–2318) — DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA.
+Predição de exames (1–3 semanas): S+1 975 [68–1882], S+2 994 [87–1901], S+3 1014 [107–1921].
 Positividade esperada (S+1, mediana de agravos): 0,0%.
-Predição por agravo (S+1): dengue: 204 exames (IC 118–290; pos. 0,2%; risco baixo); hepatite b hbv: 131 exames (IC 81–181; pos. 0,0%; risco baixo); hepatite c hcv: 28 exames (IC 17–38; pos. 0,0%; risco baixo); sars cov 2: 37 exames (IC 21–53; pos. 0,0%; risco baixo).
-Linkage VW_INTERNACAO: 6 internações (semana ref. 2026-SE26; mediana 4 SE: 23,5; 0,2/100 mil).
+Predição por agravo (S+1): dengue: 155 exames (IC 60–250; pos. 0,1%; risco baixo); hepatite b hbv: 94 exames (IC 37–151; pos. 0,0%; risco baixo); hepatite c hcv: 20 exames (IC 8–31; pos. 0,0%; risco baixo); sars cov 2: 43 exames (IC 30–56; pos. 0,0%; risco baixo).
+Linkage VW_INTERNACAO: 3 internações (semana ref. 2026-SE31; mediana 4 SE: 11; 0,1/100 mil).
 Contexto INDICASUS (proxy VS): 7,0%.
-Aviso metodológico: SIH sem dados na SE analisada; usando 2026-SE26 (última disponível — ressalva de defasagem).
-Aviso metodológico: Nowcasting com alta incerteza por completude parcial da SE de alerta.
+Aviso metodológico: SIH sem dados na SE analisada; usando 2026-SE31 (última disponível — ressalva de defasagem).
 
 SINAIS PRELIMINARES DA SEMANA EM CURSO
 DADO PRELIMINAR — SEMANA NÃO CONSOLIDADA
 SE: SE 36/2026
-Exames recebidos (série): 1097
-Resultados liberados: 1097
-Pendentes (estim.): 198
-Completude estimada: 95,0%
+Exames recebidos (série): 1215
+Resultados liberados: 1215
+Pendentes (estim.): 0
+Completude estimada: 97,0%
 Não incorporados à análise consolidada de positividade/incidência/anomalia de resultado.
 
 SÍNTESE EXECUTIVA
 
-A semana analisada (SE 35/2026) apresenta dispersão territorial de sinais laboratoriais, com predominância de anomalias relacionadas a aumento do volume de exames, positividade, discrepâncias entre registros laboratoriais e notificações. Não foi identificada evidência laboratorial suficiente para caracterizar aumento disseminado da positividade nos principais agravos destacados. Os sinais de maior prioridade concentram-se em tuberculose, hepatite B, raiva raiva, hepatite (marcador a estratificar) (Jaciara, Nova Xavantina, Guarantã do Norte, Cuiabá), exigindo validação junto às vigilâncias municipais e Regionais.
+A semana analisada (SE 35/2026) apresenta dispersão territorial de sinais laboratoriais, com predominância de anomalias relacionadas a aumento do volume de exames, positividade, discrepâncias entre registros laboratoriais e notificações. Não foi identificada evidência laboratorial suficiente para caracterizar aumento disseminado da positividade nos principais agravos destacados. Os sinais de maior prioridade concentram-se em tuberculose, raiva raiva, hepatite (marcador a estratificar) (Jaciara, Guarantã do Norte, Cuiabá, Sorriso), exigindo validação junto às vigilâncias municipais e Regionais.
 
 SINAIS PRIORITÁRIOS PARA INVESTIGAÇÃO
 
@@ -54,38 +53,23 @@ Variação relativa: +900%
 Positivos: 0
 Severidade estatística: alta
 Robustez amostral: moderada
-Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE26
-Ressalva: Internações referem-se a 2026-SE26 (lag SIH).
+Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE31
+Ressalva: Internações referem-se a 2026-SE31 (lag SIH).
 Interpretação: Aumento do volume de exames (20 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
 Ação: INVESTIGAR
 
-Nova Xavantina · hepatite B
-ANOMALIA DE VOLUME | PRIORIDADE ALTA
-Atual: 10 exames
-Semana anterior: 0
-Diferença absoluta: +10 exames
-Referência recente: 2,6
-Variação relativa: não calculável com denominador zero
-Positivos: 0
-Severidade estatística: alta
-Robustez amostral: moderada
-Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE26
-Ressalva: Internações referem-se a 2026-SE26 (lag SIH).
-Interpretação: Aumento do volume de exames (10 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: ACOMPANHAR
-
 Guarantã do Norte · raiva raiva
-ANOMALIA DE VOLUME | PRIORIDADE MODERADA
-Atual: 14 exames
+ANOMALIA DE VOLUME | PRIORIDADE ALTA
+Atual: 26 exames
 Semana anterior: 0
-Diferença absoluta: +14 exames
-Referência recente: 6,7
+Diferença absoluta: +26 exames
+Referência recente: 8,4
 Variação relativa: não calculável com denominador zero
 Positivos: 0
 Severidade estatística: alta
 Robustez amostral: moderada
-Interpretação: Aumento do volume de exames (14 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: VALIDAR
+Interpretação: Aumento do volume de exames (26 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
+Ação: INVESTIGAR
 
 Cuiabá · hepatite (marcador a estratificar)
 ANOMALIA DE POSITIVIDADE | PRIORIDADE MODERADA
@@ -106,12 +90,12 @@ Semana anterior: 0/0
 Referência recente: 8,3%
 Severidade estatística: alta
 Robustez amostral: baixa (n=3)
-Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE26
-Ressalva: Internações referem-se a 2026-SE26 (lag SIH).
+Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE31
+Ressalva: Internações referem-se a 2026-SE31 (lag SIH).
 Interpretação: Sinal estatístico com amostra pequena (1/3). Validar marcador e contexto antes de priorização operacional.
 Ação: VALIDAR
 
-Outros 6 sinais disponíveis no Painel Radar LACEN.
+Outros 7 sinais disponíveis no Painel Radar LACEN.
 
 DESTAQUE TERRITORIAL — Juína
 
@@ -133,7 +117,7 @@ Não assume subnotificação automaticamente — requer validação nominal.
 LACUNAS LABORATÓRIO × VIGILÂNCIA
 
 Cuiabá · tuberculose
-104 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
+123 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
 Não assume subnotificação automaticamente — requer validação nominal.
 Ação: INVESTIGAR LINKAGE
 
@@ -143,7 +127,7 @@ Não assume subnotificação automaticamente — requer validação nominal.
 Ação: INVESTIGAR LINKAGE
 
 Várzea Grande · tuberculose
-44 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
+50 exames sem correspondência identificada com notificação no cruzamento disponível (até a data de corte; janela de maturação do linkage aplicável).
 Não assume subnotificação automaticamente — requer validação nominal.
 Ação: INVESTIGAR LINKAGE
 
@@ -159,7 +143,7 @@ CIEVS / VE estadual:
 - Conferir marcador laboratorial antes de classificação de evento.
 - Revisar linkage laboratório × notificação nos municípios citados.
 - Avaliar se o sinal atende a critérios epidemiológicos para investigação de surto (tempo, lugar, pessoa, positividade, vínculo e magnitude).
-- Prioridade alta: Jaciara · tuberculose — investigar; Nova Xavantina · hepatite B — acompanhar.
+- Prioridade alta: Jaciara · tuberculose — investigar; Guarantã do Norte · raiva raiva — investigar.
 
 VE municipal / Regional:
 - Verificar demanda, busca ativa, fluxo de coleta e notificações.
@@ -170,7 +154,7 @@ Municípios:
 - Devolver resultado da investigação ao CIEVS/Regional.
 - Informar hipótese explicativa (rastreio, fluxo, caso ou outra).
 - Atualizar notificação no SINAN quando cabível.
-- Linkage: Cuiabá · tuberculose — investigar linkage; Várzea Grande · dengue — investigar linkage; Juína · hepatite B — investigar linkage; Várzea Grande · tuberculose — investigar linkage.
+- Linkage: Cuiabá · tuberculose — investigar linkage; Várzea Grande · dengue — investigar linkage; Várzea Grande · tuberculose — investigar linkage; Juína · hepatite B — investigar linkage.
 
 PEDIDO AOS MUNICÍPIOS
 1. Validar o sinal junto à vigilância local.

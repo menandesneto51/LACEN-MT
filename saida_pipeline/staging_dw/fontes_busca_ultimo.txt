@@ -1,5 +1,5 @@
 LACEN MT — busca de fontes adicionais (IndicaSUS / SISREG / DW leftovers)
-gerado_em: 2026-09-08T07:41:40
+gerado_em: 2026-09-10T11:47:26
 
 === DW estadual ===
 tcp/connect: ok=True
@@ -8,15 +8,23 @@ sources_extracted (39): VW_GAL, dbo.VW_INTERNACAO, dbo.SIA, dbo.INDICADORES, dbo
 leftovers_attempted: ['VW_SINAN_DENGUE', 'VW_SINAN_TUBERCULOSE', 'VW_SINAN_HEPATITE', 'VW_SINAN_MENINGITE', 'VW_SINAN_SINDROMERESPIRATORIAAGUDAGRAVE', 'VW_SINAN_CHIKUNGUNYA', 'VW_SINAN_NOTIFICACAOINDIVIDUAL', 'VW_SINAN_LEISHMANIOSEVISCERAL', 'VW_SINAN_HANSENIASE', 'VW_SINAN_HANTAVIROSE', 'VW_SINAN_LEISHMANIOSETEGUMENTAR', 'VW_SINAN_SIFILISGESTANTE', 'VW_SINAN_SIFILISCONGENITA', 'VW_SINAN_AIDSADULTO', 'VW_SINAN_AIDSCRIANCA', 'VW_SINAN_ESQUISTOSSOMOSE', 'VW_SINAN_FEBREMACULOSA', 'VW_SINAN_INTOXICACAOEXOGENA', 'VW_SINAN_ANIMAISPECONHENTOS', 'VW_SINAN_ACIDENTETRABALHOGRAVE', 'VW_SINAN_ACIDENTETRABALHOEXPOSICAOMATERIALBIOLOGICO', 'VW_SINAN_DOENCARELACIONADATRABALHOLERDORT', 'VW_SINAN_VIOLENCIADOMESTICASEXUALEOUOUTRAS', 'SIM', 'CNES_ESTABELECIMENTOS', 'CNES_LEITOS', 'VW_SINASC', 'SIVEP_MALARIA', 'POPULACAO', 'POPULACAO_TOTAL', 'CNES_EQUIPAMENTOS', 'CNES_EQUIPESATENCAOBASICA', 'POPULACAO_TCU'] | extracted: 33 | failures: []
 
 === IndicaSUS ===
-connected: False | host=None | db=None | user=None | auth=None
-objects_listed: 0
-  failure: fatal:InterfaceError
+connected: True | host=10.15.0.222 | db=BdSES | user=roneydamaceno | auth=native
+objects_listed: 356
+  extracted: ind.Indicador → indicasus_indicador (1759 rows)
+  extracted: form.V_MunicipioRegiao → indicasus_municipio_regiao (143 rows)
+  extracted: ind.Tema → indicasus_tema (31 rows)
+  extracted: ind.Periodicidade → indicasus_periodicidade (5 rows)
+  extracted: ind.ImportacaoCalculado → indicasus_importacao_calculado (2 rows)
+  extracted: ind.EntradaDados → indicasus_entrada_dados (30000 rows)
+  extracted: form.HistoricoOcupacao → indicasus_historico_ocupacao_sample (20000 rows)
+  extracted: form.HistoricoOcupacao/agg → indicasus_ocupacao_agg (372 rows)
+  failure: ind.MetaIndicadorValor: vazio
 
 === SISREG ===
 connected: True | host=10.15.1.71 | db=SES | user=sisreg_sureg | auth=None
 objects_listed: 15
-  extracted: dbo.VW_SAMU_FILA_HOSPITALAR → sisreg_samu_fila (38429 rows)
-  extracted: dbo.VW_AMBULATORIAL_SOLICITACAO/agg → sisreg_amb_mun_status_agg (28689 rows)
-  extracted: dbo.VW_HOSPITALAR_SINTETICO/agg → sisreg_hosp_mun_status_agg (3280 rows)
+  extracted: dbo.VW_SAMU_FILA_HOSPITALAR → sisreg_samu_fila (38665 rows)
+  extracted: dbo.VW_AMBULATORIAL_SOLICITACAO/agg → sisreg_amb_mun_status_agg (28819 rows)
+  extracted: dbo.VW_HOSPITALAR_SINTETICO/agg → sisreg_hosp_mun_status_agg (3285 rows)
   extracted: dbo.VW_HOSPITALAR_SINTETICO/sample → sisreg_hosp_recent (25000 rows)
 

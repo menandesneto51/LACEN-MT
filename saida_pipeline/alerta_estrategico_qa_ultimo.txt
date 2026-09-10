@@ -28,5 +28,5 @@ SIGNAL_LINKAGE_CONTEXT: OK
 AGRAVO_FORECAST_PRESENT: OK
 Tamanho executivo: OK
 
-Palavras: 1293
-Sinais no alerta: 10
+Palavras: 1189
+Sinais no alerta: 9
