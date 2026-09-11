@@ -1,192 +1,186 @@
-[Radar LACEN] 2026-SE35 — dispersão territorial — LACEN-MT · 2026-09-01 11:57 Hora Padrão Brasil Central
+[Radar LACEN] 2026-SE37 — rede sob pressão — LACEN-MT · 2026-09-11 08:25 Hora Padrão Brasil Central
 ------------------------------------------------------------
 Radar LACEN · CIEVS
-SE de referência: 2026-SE35 (única para KPIs e rankings A–D)
-Gerado em: 2026-09-01 11:57 Hora Padrão Brasil Central
-Leitura situacional: dispersão territorial
-Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE35 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto. POPULACAO no staging com ano(s) 1996 — usar como denominador; confirmar se equivale a IBGE 2026.
+SE de referência: 2026-SE37 (única para KPIs e rankings A–D)
+Gerado em: 2026-09-11 08:25 Hora Padrão Brasil Central
+Leitura situacional: rede sob pressão
+Relatório agregado — rótulos Observado / Derivado / Predito. Sem PII ou microdados nominais. KPIs lab-epi, briefing (Top 10) e top municípios alinhados à SE de referência 2026-SE37 (série integrated_weekly; soma estadual = soma municipal da mesma SE). Bloco F (parecer VE) não declara surto automaticamente — Guia MS. Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto. POPULACAO no staging com ano(s) 1996 — usar como denominador; confirmar se equivale a IBGE 2026.
 
-KPIs: Positivos SE 10 (+100%) · Exames 1.164 · Mun. 101 · TAT p50/p90 1,4/1,6d · %≤48h 100% · Pressão máx 2,8 · Silêncios 27 · Confirmação 54%
+KPIs: Positivos SE 2 (-75%) · Exames 618 · Mun. 57 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 19 · Confirmação 168 de 333 (50%)
 
 Estrutura: 1) solicitações → 2) positividade → 3) fatores LACEN/VE → 4) recomendações
-Aviso: Atenção: SE 2026-SE36 ainda parcial na série lab (211 exames / 1 pos.) — referência = 2026-SE35 (última completa).
 
 — 1 · Análise das solicitações —
 (volume de exames GAL e variação vs SE anterior)
-  • tuberculose: 389 exames (SE ant. 467; caiu 17% vs semana anterior)
-  • dengue: 202 exames (SE ant. 231; caiu 13% vs semana anterior)
-  • hepatite B: 190 exames (SE ant. 125; subiu 52% vs semana anterior)
-  • COVID-19: 68 exames (SE ant. 52; subiu 31% vs semana anterior)
-  • hepatite C: 36 exames (SE ant. 27; subiu 33% vs semana anterior)
-  • meningite: 35 exames (SE ant. 23; subiu 52% vs semana anterior)
-  • síndrome respiratória: 29 exames (SE ant. 66; caiu 56% vs semana anterior)
-  • hepatite: 20 exames (SE ant. 3; subiu 567% vs semana anterior)
-  • Localidades tuberculose: Cuiabá(98), Sinop(32), Barra do Garcas(5), Várzea Grande(57)
-  • Localidades dengue: Lucas do Rio Verde(44), Várzea Grande(43), Campo Verde(40), Sorriso(25)
-  • Localidades hepatite B: Juína(57), Guaranta do Norte(19), Terra Nova do Norte(18), Cuiabá(12)
+  • tuberculose: 245 exames (SE ant. 417; caiu 41% vs semana anterior)
+  • dengue: 133 exames (SE ant. 212; caiu 37% vs semana anterior)
+  • hepatite B: 41 exames (SE ant. 127; caiu 68% vs semana anterior)
+  • COVID-19: 36 exames (SE ant. 50; caiu 28% vs semana anterior)
+  • síndrome respiratória: 24 exames (SE ant. 44; caiu 46% vs semana anterior)
+  • meningite: 22 exames (SE ant. 28; caiu 21% vs semana anterior)
+  • infec o coloniza o bact rias teste de sensibilidade: 16 exames (SE ant. 34; caiu 53% vs semana anterior)
+  • hepatite C: 9 exames (SE ant. 25; caiu 64% vs semana anterior)
+  • Localidades tuberculose: Tangara da Serra(73), Sapezal(5), Cuiabá(35), Várzea Grande(27)
+  • Localidades dengue: Várzea Grande(50), Lucas do Rio Verde(25), Campo Verde(10), Primavera do Leste(9)
+  • Localidades hepatite B: Nova Xavantina(10), Terra Nova do Norte(6), Água Boa(4), Novo Horizonte do Norte(4)
 
 — 2 · Análise da positividade —
 Zona epidêmica (estatística) = acima do P75 no marcador de alerta — priorizar investigação; não declarar epidemia automaticamente.
-  • tuberculose: 0.8% (389 exames; subiu 80% vs semana anterior); 0,1 positivos por 100 mil habitantes
-  • dengue: 0.0% (202 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-  • hepatite B: 0.0% (190 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-  • COVID-19: 0.0% (68 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-  • hepatite C: 0.0% (36 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-  • meningite: 0.0% (35 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-  • hepatite: 25.0% (20 exames; vs semana anterior) — poucos exames, cautela; 0,1 positivos por 100 mil habitantes
-  • síndrome respiratória: 0.0% (29 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
-  • Cuiabá: +2 (1%) · hepatite
-  • Sinop: +2 (4%) · hiv
+  • tuberculose: 0.8% (245 exames; caiu 43% vs semana anterior); 0,1 positivos por 100 mil habitantes
+  • dengue: 0.0% (133 exames; caiu 100% vs semana anterior); 0,0 positivos por 100 mil habitantes
+  • hepatite B: 0.0% (41 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
+  • COVID-19: 0.0% (36 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
+  • síndrome respiratória: 0.0% (24 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
+  • meningite: 0.0% (22 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
+  • infec o coloniza o bact rias teste de sensibilidade: 0.0% (16 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
+  • Tangara da Serra: +1 (1%) · tuberculose
+  • Sapezal: +1 (12%) · tuberculose
   • Canal endêmico: Nesta SE, nenhum município atingiu zona de alerta ou epidemia estatística no marcador de alerta (n≥5). Manter monitoramento; sinais complementares abaixo.
-  • Capacitação VE: dengue: 202 exames (caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
+  • Capacitação VE: dengue: 133 exames (caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
   • Marcadores: Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto.
 
 — 3 · Outros fatores LACEN / VE —
 (notificação, lacunas GAL×SINAN, território, internações, prioridade)
-  • Capacitação/orientação VE: dengue: 202 exames (caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
-  • ML risco municipal (contagem): Baixo=3.302, Moderado=1.326, Alto=883, Crítico=609
-  • Predito: 38 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=17/Crítica=0; dengue: Alta=5/Crítica=0; hepatite_b_hbv: Alta=9/Crítica=0).
-  • Predito: Lucas do Rio Verde × arbovirose — Crítico (66%) — estabelecimentos CNES: 6.740; exames MA8: 57,9
-  • Predito: CUIABA × hepatite: alta_atipica em positividade (atual=0.3333333333333333 vs MA8=0.041666666666666664; severidade alta) — validar fluxo antes do pico.
-  • Predito: RIO DE JANEIRO × tuberculose: alta_atipica em tests (atual=13.0 vs MA8=3.125; severidade alta) — validar fluxo antes do pico.
-  • Predito: SORRISO × hepatite: alta_atipica em positividade (atual=0.3333333333333333 vs MA8=0.08333333333333333; severidade alta) — validar fluxo antes do pico.
-  • Predito: NOVA XAVANTINA × hepatite_b_hbv: alta_atipica em tests (atual=10.0 vs MA8=2.625; severidade alta) — validar fluxo antes do pico.
-  • Derivado: LUCAS DO RIO VERDE: silêncio laboratorial (queda_absoluta) + vizinho/região em banda Alta/Crítica — risco de subnotificação territorial.
-  • Cuiabá (tuberculose): exame no laboratório sem notificação — 98 exames / 0 notif.
-  • Juína (hepatite): exame no laboratório sem notificação — 59 exames / 0 notif.
-  • Várzea Grande (tuberculose): exame no laboratório sem notificação — 57 exames / 0 notif.
+  • Capacitação/orientação VE: dengue: 133 exames (caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
+  • ML risco municipal (contagem): Baixo=3.177, Moderado=1.386, Alto=922, Crítico=616
+  • Predito: 18 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=5/Crítica=0; dengue: Alta=7/Crítica=0; hepatite_b_hbv: Alta=4/Crítica=0).
+  • Predito: Cuiabá × tuberculose — Crítico (42%)
+  • Predito: SAPEZAL × tuberculose: alta_atipica em positividade (atual=0.2 vs MA8=0.025; severidade alta) — validar fluxo antes do pico.
+  • Predito: TANGARA DA SERRA × tuberculose: alta_atipica em positividade (atual=0.0136986301369863 vs MA8=0.0017123287671232876; severidade alta) — validar fluxo antes do pico.
+  • Predito: JUINA × tuberculose: alta_atipica em tests (atual=18.0 vs MA8=5.375; severidade alta) — validar fluxo antes do pico.
+  • Predito: hepatite_b_hbv: previsão SE+2 ≈ 99 exames (atual 41) com pressão/SLA crítica — antecipar reagentes e capacidade LACEN.
+  • Predito: hepatite_c_hcv: previsão SE+2 ≈ 20 exames (atual 9) com pressão/SLA crítica — antecipar reagentes e capacidade LACEN.
+  • Tangara da Serra (tuberculose): exame no laboratório sem notificação — 73 exames / 0 notif.
+  • Várzea Grande (dengue): exame no laboratório sem notificação — 50 exames / 0 notif.
+  • Cuiabá (tuberculose): exame no laboratório sem notificação — 35 exames / 0 notif.
 
 — 4 · Recomendações —
-  1. [CIEVS] Incluir JUINA×hepatite B na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergência — linguagem «… · prazo 7 dias
+  1. [CIEVS] Manter sala de situação com sinais de atenção + comparação semana anterior; linguagem de investigação (Guia MS). · prazo 7 dias
   2. [CIEVS / VE municipal] Investigar pico atípico e validar capacidade laboratorial/vigilância.
-  3. [VE municipal / CIEVS] Priorizar busca ativa em LUCAS DO RIO VERDE: verificar fluxo coleta/envio e sensibilizar VE municipal em 7 dias — antes do zero absoluto.
-  4. [VE estadual / CIEVS / área técnica arbovirose] Alto volume de solicitações de dengue (202 ex.; caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar rede sobre critérios de coleta/envio, definição de caso e notificação; reforçar capacitaç…
-  5. [CIEVS / VE municipal] Investigar possível aumento de hepatite B (190 exames laboratório; subiu 52% vs semana anterior) — confrontar com notificações e busca ativa.
-  6. [VE municipal] Em CUIABA (tuberculose): exame no laboratório sem notificação — investigar lacuna de vigilância (notificação × resultado laboratorial).
-  7. [área técnica / LACEN (apoio)] tuberculose: tempo de liberação crítico (100% ≤48h) — verificar reagentes/capacidade só se houver backlog do agravo.
-  8. [SES-MT] Monitorar sinal de hepatite B em JUINA na semana de referência; apoiar vigilância municipal/regional na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`)… · prazo 15 dias
-  Apoio lab 1. Tuberculose em sinal: priorizar liberação diagnóstica (100% ≤48h) nos municípios sob investigação.
-  Apoio lab 2. Hepatite em sinal: garantir marcadores confirmatórios e reagentes (100% ≤48h) para a investigação.
-  Apoio lab 3. síndrome respiratória: tempo de liberação elevado (100% ≤48h) — alinhar com a investigação do agravo.
-  Parecer: Juína hepatite B: 57 exames / +0 (0.0%) — sinal a investigar (Guia MS); não declarar surto/epidemia automaticamente.
+  3. [LACEN / área técnica] Antecipar reagentes, fila e liberação para hepatite_b_hbv (forecast 99 ex. vs 41 atual) — evitar degradação de TAT no pico.
+  4. [VE estadual / CIEVS / área técnica arbovirose] Alto volume de solicitações de dengue (133 ex.; caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar rede sobre critérios de coleta/envio, definição de caso e notificação; reforçar capacitaç…
+  5. [VE municipal] Em TANGARA DA SERRA (tuberculose): exame no laboratório sem notificação — investigar lacuna de vigilância (notificação × resultado laboratorial).
+  6. [área técnica / LACEN (apoio)] arbovirose: tempo de liberação crítico (23% ≤48h) — verificar reagentes/capacidade só se houver backlog do agravo.
+  7. [SES-MT] Acompanhar investigação epidemiológica da semana de referência (TANGARA DA SERRA×tuberculose, SAPEZAL×tuberculose, CUIABA×tuberculose); sem declaração automática de su… · prazo 15 dias
+  8. [CIEVS / VE municipal] Investigar pico atípico e validar capacidade laboratorial/vigilância.
+  Apoio lab 1. Arbovirose em sinal: checar capacidade de kits/reagentes e tempo de liberação (23% ≤48h) para não atrasar a VE.
+  Apoio lab 2. síndrome respiratória: tempo de liberação elevado (57% ≤48h) — alinhar com a investigação do agravo.
+  Parecer: Juína HBV: sinal laboratorial elevado no dado observado — investigar segundo Guia MS; não declarar surto automaticamente.
 
 — Anexo A · Situação lab-epi [Observado] —
-Observado: positivos estaduais SE35=10 vs SE34=5 (+100%)
+Observado: positivos estaduais SE37=2 vs SE36=8 (-75%)
 1ª detecção/alerta (SE ref.): 0 mun.
 Top positivos:
-  1. CUIABA — +2 · pos=1% · fam=hepatite
-  2. SINOP — +2 · pos=4% · fam=hiv
-  3. SORRISO — +1 · pos=2% · fam=hepatite
-  4. BRASILIA — +1 · pos=8% · fam=hepatite
-  5. APIACAS — +1 · pos=8% · fam=hepatite
+  1. TANGARA DA SERRA — +1 · pos=1% · fam=tuberculose
+  2. SAPEZAL — +1 · pos=12% · fam=tuberculose
 Top divergências GAL×SINAN:
-  1. SORRISO — exame_sem_notif_semana · notif=0 · exames=298
-  2. SINOP — exame_sem_notif_semana · notif=0 · exames=405
-  3. VARZEA GRANDE — exame_sem_notif_semana · notif=0 · exames=884
-  4. CUIABA — exame_sem_notif_semana · notif=0 · exames=1.370
+  1. SANTA CARMEM — exame_sem_notif_semana · notif=0 · exames=22
+  2. CACERES — exame_sem_notif_semana · notif=0 · exames=295
+  3. SORRISO — exame_sem_notif_semana · notif=0 · exames=312
+  4. TANGARA DA SERRA — exame_sem_notif_semana · notif=0 · exames=329
+  5. SINOP — exame_sem_notif_semana · notif=0 · exames=438
 
 — E · Briefing epidemiológico (5 perguntas) [Observado / Predito] —
 1) Mais solicitados (N + Δ vs SE-1 + taxa/100 mil):
-  1. tuberculose — n_se=389 · n_ant=467 · Δ=-78 (-16.7%) ↓ · +3 · pos=0.8% · 0,1 positivos por 100 mil habitantes [Observado]
-  2. dengue — n_se=202 · n_ant=231 · Δ=-29 (-12.6%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  3. hepatite_b_hbv — n_se=190 · n_ant=125 · Δ=65 (+52.0%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  4. sars_cov_2 — n_se=68 · n_ant=52 · Δ=16 (+30.8%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  5. hepatite_c_hcv — n_se=36 · n_ant=27 · Δ=9 (+33.3%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  6. meningite — n_se=35 · n_ant=23 · Δ=12 (+52.2%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  7. influenza — n_se=29 · n_ant=66 · Δ=-37 (-56.1%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  8. hepatite — n_se=20 · n_ant=3 · Δ=17 (+566.7%) ↑ · +5 · pos=25.0% · 0,1 positivos por 100 mil habitantes [Observado]
-  9. hepatite_a — n_se=20 · n_ant=4 · Δ=16 (+400.0%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
-  10. leptospira — n_se=17 · n_ant=10 · Δ=7 (+70.0%) ↑ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  1. tuberculose — n_se=245 · n_ant=417 · Δ=-172 (-41.2%) ↓ · +2 · pos=0.8% · 0,1 positivos por 100 mil habitantes [Observado]
+  2. dengue — n_se=133 · n_ant=212 · Δ=-79 (-37.3%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  3. hepatite_b_hbv — n_se=41 · n_ant=127 · Δ=-86 (-67.7%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  4. sars_cov_2 — n_se=36 · n_ant=50 · Δ=-14 (-28.0%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  5. influenza — n_se=24 · n_ant=44 · Δ=-20 (-45.5%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  6. meningite — n_se=22 · n_ant=28 · Δ=-6 (-21.4%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  7. infec_o_coloniza_o_bact_rias_teste_de_sensibilidade — n_se=16 · n_ant=34 · Δ=-18 (-52.9%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  8. hepatite_c_hcv — n_se=9 · n_ant=25 · Δ=-16 (-64.0%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  9. infec_o_coloniza_o_bact_rias_cultura — n_se=8 · n_ant=18 · Δ=-10 (-55.6%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
+  10. infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia — n_se=8 · n_ant=10 · Δ=-2 (-20.0%) ↓ · +0 · pos=0.0% · 0,0 positivos por 100 mil habitantes [Observado]
 2) Maior positividade (Δ vs SE-1):
-  1. tuberculose — pos=0.8% · Δ%=+80.1% ↑ · med4SE=0.01 · 389 exames [Observado]
-  2. dengue — pos=0.0% · Δ%=— → · med4SE=0.00 · 202 exames [Observado]
-  3. hepatite_b_hbv — pos=0.0% · Δ%=— → · med4SE=0.00 · 190 exames [Observado]
-  4. sars_cov_2 — pos=0.0% · Δ%=— → · med4SE=0.00 · 68 exames [Observado]
-  5. hepatite_c_hcv — pos=0.0% · Δ%=— → · med4SE=0.00 · 36 exames [Observado]
-  6. meningite — pos=0.0% · Δ%=— → · med4SE=0.00 · 35 exames [Observado]
-  7. hepatite — pos=25.0% · Δ%=— → · med4SE=0.00 · 20 exames · baixa_amostra [Observado]
-  8. influenza — pos=0.0% · Δ%=— → · med4SE=0.00 · 29 exames · baixa_amostra [Observado]
-  9. hepatite_a — pos=0.0% · Δ%=— → · med4SE=0.00 · 20 exames · baixa_amostra [Observado]
-  10. leptospira — pos=0.0% · Δ%=— → · med4SE=0.00 · 17 exames · baixa_amostra [Observado]
+  1. tuberculose — pos=0.8% · Δ%=-43.3% ↓ · med4SE=0.01 · 245 exames [Observado]
+  2. dengue — pos=0.0% · Δ%=-100.0% ↓ · med4SE=0.00 · 133 exames [Observado]
+  3. hepatite_b_hbv — pos=0.0% · Δ%=— → · med4SE=0.00 · 41 exames [Observado]
+  4. sars_cov_2 — pos=0.0% · Δ%=— → · med4SE=0.00 · 36 exames [Observado]
+  5. influenza — pos=0.0% · Δ%=— → · med4SE=0.00 · 24 exames · baixa_amostra [Observado]
+  6. meningite — pos=0.0% · Δ%=— → · med4SE=0.00 · 22 exames · baixa_amostra [Observado]
+  7. infec_o_coloniza_o_bact_rias_teste_de_sensibilidade — pos=0.0% · Δ%=— → · med4SE=0.00 · 16 exames · baixa_amostra [Observado]
 3) Localidades:
-  · tuberculose: CUIABA(+1), SINOP(+1), BARRA DO GARCAS(+1), VARZEA GRANDE(+0), JACIARA(+0)
-  · dengue: LUCAS DO RIO VERDE(+0), VARZEA GRANDE(+0), CAMPO VERDE(+0), SORRISO(+0), GUARANTA DO NORTE(+0)
-  · hepatite_b_hbv: JUINA(+0), GUARANTA DO NORTE(+0), TERRA NOVA DO NORTE(+0), CUIABA(+0), NOVA XAVANTINA(+0)
-  · sars_cov_2: VARZEA GRANDE(+0), CUIABA(+0), CAMPO NOVO DO PARECIS(+0), TANGARA DA SERRA(+0), ARIPUANA(+0)
+  · tuberculose: TANGARA DA SERRA(+1), SAPEZAL(+1), CUIABA(+0), VARZEA GRANDE(+0), JUINA(+0)
+  · dengue: VARZEA GRANDE(+0), LUCAS DO RIO VERDE(+0), CAMPO VERDE(+0), PRIMAVERA DO LESTE(+0), SORRISO(+0)
+  · hepatite_b_hbv: NOVA XAVANTINA(+0), TERRA NOVA DO NORTE(+0), AGUA BOA(+0), NOVO HORIZONTE DO NORTE(+0), SINOP(+0)
+  · sars_cov_2: VARZEA GRANDE(+0), PRIMAVERA DO LESTE(+0), CUIABA(+0), POCONE(+0), BELO HORIZONTE(+0)
 4) Vizinhos na mesma situação:
   (nenhum par)
 5) Risco de dispersão:
-  · [Observado] dengue: alta demanda (202 exames) com baixa confirmação laboratorial (0.0% pos.) — atenção territorial; não interpreta como surto confirmado.
-  · [Predito] Predito: 38 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=17/Crítica=0; dengue: Alta=5/Crítica=0; hepatite_b_hbv: Alta=9/Crítica=0).
-  · [Derivado] Clima favorável + demanda lab (dengue; leptospira) — municípios ALTO GARCAS, ARAPUTANGA: reforçar vigilância arbovirose/zoonoses; não declara surto automaticamente.
-  · [Predito] RONDONOPOLIS: 8 agravos com anomalia ML na SE (doen_a_de_chagas_chagas_igg, hepatite, infec_o_coloniza_o_bact_rias_identifica_o) — investigar evento complexo ou falha de fluxo ampliada.
-  · [Predito] JUINA: 5 agravos com anomalia ML na SE (doen_as_diarr_icas_gastroenterite_bact_rias_cultura, doen_as_diarr_icas_gastroenterite_bact_rias_teste_de_sensibilidade, doen_as_diarr_icas_gastroenterite_coprocultura) — investigar evento complexo ou falha de fluxo ampliada.
-  · [Predito] PONTES E LACERDA: 3 agravos com anomalia ML na SE (leishmaniose, sarampo_sarampo_biologia_molecular, tuberculose) — investigar evento complexo ou falha de fluxo ampliada.
+  · [Observado] dengue: alta demanda (133 exames) com baixa confirmação laboratorial (0.0% pos.) — atenção territorial; não interpreta como surto confirmado.
+  · [Predito] Predito: 18 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=5/Crítica=0; dengue: Alta=7/Crítica=0; hepatite_b_hbv: Alta=4/Crítica=0).
+  · [Derivado] Clima favorável + demanda lab (dengue) — municípios ALTO GARCAS, BOA ESPERANCA DO NORTE: reforçar vigilância arbovirose/zoonoses; não declara surto automaticamente.
+  · [Predito] CUIABA: 7 agravos com anomalia ML na SE (chikungunya, dengue, hansen_ase_hansen_ase) — investigar evento complexo ou falha de fluxo ampliada.
+  · [Predito] TANGARA DA SERRA: 6 agravos com anomalia ML na SE (dengue, doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist, hantavirose) — investigar evento complexo ou falha de fluxo ampliada.
+  · [Predito] SINOP: 2 agravos com anomalia ML na SE (infec_o_coloniza_o_bact_rias_cultura, tuberculose) — investigar evento complexo ou falha de fluxo ampliada.
 6) GAL×SINAN (qualquer agravo):
-  · CUIABA × tuberculose: ex=98 notif=0 [gal_sem_sinan]
-  · JUINA × hepatite: ex=59 notif=0 [gal_sem_sinan]
-  · VARZEA GRANDE × tuberculose: ex=57 notif=0 [gal_sem_sinan]
-  · LUCAS DO RIO VERDE × dengue: ex=44 notif=0 [gal_sem_sinan]
-  · VARZEA GRANDE × dengue: ex=43 notif=0 [gal_sem_sinan]
-  · CAMPO VERDE × dengue: ex=40 notif=0 [gal_sem_sinan]
-  · SINOP × tuberculose: ex=32 notif=0 [gal_sem_sinan]
-  · CUIABA × hepatite: ex=28 notif=0 [gal_sem_sinan]
+  · TANGARA DA SERRA × tuberculose: ex=73 notif=0 [gal_sem_sinan]
+  · VARZEA GRANDE × dengue: ex=50 notif=0 [gal_sem_sinan]
+  · CUIABA × tuberculose: ex=35 notif=0 [gal_sem_sinan]
+  · VARZEA GRANDE × tuberculose: ex=27 notif=0 [gal_sem_sinan]
+  · LUCAS DO RIO VERDE × dengue: ex=25 notif=0 [gal_sem_sinan]
+  · VARZEA GRANDE × covid19: ex=19 notif=0 [gal_sem_sinan]
+  · JUINA × tuberculose: ex=18 notif=0 [gal_sem_sinan]
+  · CUIABA × meningite: ex=14 notif=0 [gal_sem_sinan]
 7) Geo (bairro_cep): Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, vw_sinan_dengue.csv).
   · CUIABA / *Não disponível · — n=2926 ibge=
   · VARZEA GRANDE / *Não disponível · — n=1553 ibge=
-  · TANGARA DA SERRA / *Em Branco · — n=747 ibge=
+  · TANGARA DA SERRA / *Em Branco · — n=727 ibge=
   · PEIXOTO DE AZEVEDO / *Não disponível · — n=716 ibge=
-  · CUIABA / PEDRA 90 · — n=586 ibge=
+  · CUIABA / PEDRA 90 · — n=675 ibge=
 Cruzamento DW: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, CNES, IndicaSUS, SISREG, SINASC, POPULACAO
 Cruzamento SIH/SIA (internações correlatas):
-  · CUIABA × dengue: n=11 [SIH/VW_INTERNACAO]
-  · NOVA XAVANTINA × dengue: n=7 [SIH/VW_INTERNACAO]
-  · BARRA DO GARCAS × dengue: n=5 [SIH/VW_INTERNACAO]
+  · CUIABA × dengue: n=13 [SIH/VW_INTERNACAO]
+  · TANGARA DA SERRA × dengue: n=11 [SIH/VW_INTERNACAO]
+  · JUINA × dengue: n=10 [SIH/VW_INTERNACAO]
+  · VARZEA GRANDE × dengue: n=9 [SIH/VW_INTERNACAO]
   Caveat: Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
 Internações por agravo (top mun):
-  · dengue: Cuiabá n=11
-  · dengue: Nova Xavantina n=7
-  · dengue: Barra do Garcas n=5
+  · dengue: Cuiabá n=13
+  · dengue: Tangara da Serra n=11
+  · dengue: Juína n=10
+  · dengue: Várzea Grande n=9
 Apoio laboratorial (só se pertinente ao agravo):
-  1. Tuberculose em sinal: priorizar liberação diagnóstica (100% ≤48h) nos municípios sob investigação.
-  2. Hepatite em sinal: garantir marcadores confirmatórios e reagentes (100% ≤48h) para a investigação.
-  3. síndrome respiratória: tempo de liberação elevado (100% ≤48h) — alinhar com a investigação do agravo.
+  1. Arbovirose em sinal: checar capacidade de kits/reagentes e tempo de liberação (23% ≤48h) para não atrasar a VE.
+  2. síndrome respiratória: tempo de liberação elevado (57% ≤48h) — alinhar com a investigação do agravo.
 Sinais IndicaSUS / SISREG:
   · IndicaSUS: Complementar Intensivo / Descartado n=10
   · IndicaSUS: Clínico Isolamento / Descartado n=8
   · IndicaSUS: Complementar Intensivo / Descartado n=8
-  · SISREG hosp: CUIABA [Aprovada] n=19160
-  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12305
-  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11398
-  · SISREG amb pendente: CUIABA n=59251
-  · SISREG amb pendente: SINOP n=25030
+  · SISREG hosp: CUIABA [Aprovada] n=18889
+  · SISREG hosp: VARZEA GRANDE [Aprovada] n=12145
+  · SISREG hosp: RONDONOPOLIS [Aprovada] n=11331
+  · SISREG amb pendente: CUIABA n=59236
+  · SISREG amb pendente: SINOP n=25129
 Nota: Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto.
 Fontes briefing: integrated_weekly_surveillance.csv, municipio_vizinhos.csv, ml_risco_predito.csv, GAL×SINAN (mun×família, qualquer agravo), vw_sinan_acidentetrabalhoexposicaomaterialbiologico.csv, vw_sinan_acidentetrabalhograve.csv, vw_sinan_chikungunya.csv, DW cruzamento: SINAN, GAL, SIH, SIA, SIVEP/SRAG, SIM, Cruzamento SIH (municípios do sinal), IndicaSUS/SISREG (ocupação + filas), GAL micro — positividade por marcador/metodologia (regras_agravo_gal), Lacunas multi-base (SINAN/IndicaSUS/SISREG/SIM), cartões de risco evento (CIEVS), score prioridade municipal (proposta homologação), alertas específicos (8), populacao (weekly/populacao_municipio)
 
 — F · Parecer VE (IA + Guia MS) —
-SE 2026-SE35 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): tuberculose (389 ex., 0.8%); dengue (202 ex., 0.0%); hepatite_b_hbv (190 ex., 0.0%). Destaque: JUINA × hepatite_b_hbv — 57 exames / +0 (0.0%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Comparação (tuberculose): vs SE-1 ↓ -78 (-17%). Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
-  · JUINA × hepatite_b_hbv: 57 ex. / +0 (0.0%)
-    Veredito: **Veredito preliminar (não substitui VE):** há **sinal laboratorial** relevante de hepatite_b_hbv em JUINA. Os critérios de **surto/epidemia** do Guia de Vigilância MS **não estão automaticamente cumpridos** só com este agregado — recomenda
-  [CIEVS] Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergência — linguagem «…
-  [SES-MT] Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE35; apoiar VE municipal/regional na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`)…
-  [Área técnica — Hepatites virais] Programa hepatite: estratificar definição de caso em JUINA; orientar rede sobre notificação e conduta técnica do agravo hepatite_b_hbv.
-  [Município — JUINA] VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar exame × notificação; aplicar definição de caso MS; Discriminar marcadores: agudo …
+SE 2026-SE37 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): tuberculose (245 ex., 0.8%); dengue (133 ex., 0.0%); hepatite_b_hbv (41 ex., 0.0%). Comparação (tuberculose): vs SE-1 ↓ -172 (-41%). Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
+  [CIEVS] Manter sala de situação com sinais de atenção + comparação semana anterior; linguagem de investigação (Guia MS).
+  [SES-MT] Acompanhar investigação epidemiológica da SE 2026-SE37 (TANGARA DA SERRA×tuberculose, SAPEZAL×tuberculose, CUIABA×tuberculose); sem declaração automática de su…
   Arquivos: relatorio_ve_inteligente.md, relatorio_ve_inteligente.html, relatorio_ve_acoes.csv
 
 — B · Rede [Derivado / Observado] —
-TAT p50=1,4d · p90=1,6d · %≤48h=100%
+TAT p50=10,6d · p90=118,3d · %≤48h=36%
 Pressão alta/crítica:
+  1. VARZEA GRANDE — critica · índice=80,8 · backlog=22.465 · rejeição=11%
+  2. CACERES — critica · índice=76,2 · backlog=4.729 · rejeição=8%
+  3. CUIABA — critica · índice=75,4 · backlog=34.944 · rejeição=6%
+  4. TANGARA DA SERRA — alta · índice=72,4 · backlog=1.100 · rejeição=12%
+  5. SINOP — alta · índice=72,3 · backlog=6.944 · rejeição=4%
 SLA por família:
-  · tuberculose: exames=688 · %≤48h=100% · TAT p90=5,4d · crise=sim
-  · outros: exames=256 · %≤48h=100% · TAT p90=3,4d · crise=sim
-  · hepatite: exames=83 · %≤48h=100% · TAT p90=1,6d · crise=sim
-  · respiratorio: exames=40 · %≤48h=100% · TAT p90=2,4d · crise=sim
+  · arbovirose: exames=295.574 · %≤48h=23% · TAT p90=123,4d · crise=sim
+  · tuberculose: exames=60.114 · %≤48h=78% · TAT p90=105,2d · crise=não
+  · outros: exames=26.712 · %≤48h=46% · TAT p90=146,4d · crise=não
+  · respiratorio: exames=25.913 · %≤48h=57% · TAT p90=178,8d · crise=sim
 Silêncio GAL (vizinho quente):
-  1. LUCAS DO RIO VERDE — queda_absoluta · vizinho=não identificado
-  2. ACORIZAL — queda_absoluta · vizinho=não identificado
-  3. ARIPUANA — queda_absoluta · vizinho=não identificado
-  4. GAUCHA DO NORTE — queda_absoluta · vizinho=não identificado
-  5. SAO JOSE DOS QUATRO MARCOS — queda_absoluta · vizinho=não identificado
+  1. LUCIARA — queda_absoluta · vizinho=SANTA TEREZINHA(moderada), VILA RICA(moderada), PORTO ALEGRE DO NORTE(moderada)
+  2. NOVA SANTA HELENA — queda_absoluta · vizinho=COLIDER(alta), ITAUBA(moderada), NOVA GUARITA(moderada)
+  3. CASTANHEIRA — queda_absoluta · vizinho=JUINA(alta), JURUENA(moderada)
+  4. ARIPUANA — queda_absoluta · vizinho=não identificado
+  5. GAUCHA DO NORTE — queda_abrupta · vizinho=não identificado
 
 — C · Ações —
 Fila operacional:
@@ -201,19 +195,19 @@ Fila operacional:
   9. SAO JOSE DOS QUATRO MARCOS | silencio_laboratorial | CRÍTICO | Priorizar busca ativa: verificar fluxo de coleta/envio e sensibilizar vigilância municipal em 7 dia… | 7 dias [Observado]
   10. CASSILANDIA | alerta_laboratorial | CRÍTICO | Ativar busca ativa de TB e validar fluxo de coleta/envio ao LACEN em até 48h. | 48h [Observado]
 Predito Alta/Crítica:
-  1. LUCAS DO RIO VERDE | Crítico | arbovirose | estabelecimentos CNES: 6.740; exames MA8: 57,9 | prob=66%
-  2. MARCELANDIA | Crítico | hepatite |  | prob=37%
-  3. JACIARA | Crítico | tuberculose |  | prob=26%
-  4. CONFRESA | Crítico | tuberculose |  | prob=22%
-  5. TERRA NOVA DO NORTE | Crítico | hepatite |  | prob=21%
+  1. CUIABA | Crítico | tuberculose |  | prob=42%
+  2. TANGARA DA SERRA | Crítico | tuberculose |  | prob=33%
+  3. VARZEA GRANDE | Crítico | tuberculose |  | prob=21%
+  4. SAPEZAL | Crítico | tuberculose |  | prob=20%
+  5. BARRA DO GARCAS | Crítico | tuberculose |  | prob=17%
 Pressão predita (top):
-  1. CUIABA | critica | 96% | backlog estimado: 34.900; estabelecimentos CNES: 52.500
-  2. SINOP | critica | 96% | backlog estimado: 6.940; estabelecimentos CNES: 17.600
-  3. LUCAS DO RIO VERDE | critica | 95% | backlog estimado: 3.190; estabelecimentos CNES: 6.740
+  1. CUIABA | critica | 97% | estabelecimentos CNES: 52.500; leitos CNES: 62.000
+  2. VARZEA GRANDE | critica | 97% | estabelecimentos CNES: 6.790; leitos CNES: 15.100
+  3. TANGARA DA SERRA | critica | 95% | estabelecimentos CNES: 8.860; leitos CNES: 8.320
 
 — D · Qualidade —
-Observado: 243 mun. com qualidade (rede GAL=79); faixas: boa=175, alta=68
-Observado: confirmação alertas rodada anterior = 54% (152/280); modo=prospectivo_carimbado
+Observado: 240 mun. com qualidade (rede GAL=133); faixas: boa=169, alta=71
+Observado: confirmação alertas rodada anterior = 50% (168/333); modo=prospectivo_carimbado
 Painel: https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/
 
 Fonte primária: DW · staging (VW_GAL) + saida_pipeline
@@ -222,71 +216,69 @@ Modelo: lacen_relatorio_cievs.py
 
 --- Telegram ---
 <b>📡 Radar LACEN · CIEVS</b>
-semana epidemiológica 35/2026 · <b>dispersão territorial</b>
+semana epidemiológica 37/2026 · <b>rede sob pressão</b>
 Fontes: DW · staging (VW_GAL) + saida_pipeline (lab = uma fonte; cruzar com notificação)
-2026-09-01 11:57 Hora Padrão Brasil Central
-KPIs: Positivos SE 10 (+100%) · Exames 1.164 · Mun. 101 · TAT p50/p90 1,4/1,6d · %≤48h 100% · Pressão máx 2,8 · Silêncios 27 · Confirmação 54%
-<i>Atenção: SE 2026-SE36 ainda parcial na série lab (211 exames / 1 pos.) — referência = 2026-SE35 (última completa).</i>
+2026-09-11 08:25 Hora Padrão Brasil Central
+KPIs: Positivos SE 2 (-75%) · Exames 618 · Mun. 57 · TAT p50/p90 10,6/118,3d · %≤48h 36% · Pressão máx 80,8 · Silêncios 19 · Confirmação 168 de 333 (50%)
 
 1️⃣ <b>Análise das solicitações</b> <i>(volume de exames GAL × variação vs SE anterior)</i>
-• tuberculose: 389 exames (SE ant. 467; caiu 17% vs semana anterior)
-• dengue: 202 exames (SE ant. 231; caiu 13% vs semana anterior)
-• hepatite B: 190 exames (SE ant. 125; subiu 52% vs semana anterior)
-• COVID-19: 68 exames (SE ant. 52; subiu 31% vs semana anterior)
-• hepatite C: 36 exames (SE ant. 27; subiu 33% vs semana anterior)
-• meningite: 35 exames (SE ant. 23; subiu 52% vs semana anterior)
-• Localidades tuberculose: Cuiabá(98), Sinop(32), Barra do Garcas(5), Várzea Grande(57)
-• Localidades dengue: Lucas do Rio Verde(44), Várzea Grande(43), Campo Verde(40), Sorriso(25)
-• Localidades hepatite B: Juína(57), Guaranta do Norte(19), Terra Nova do Norte(18), Cuiabá(12)
+• tuberculose: 245 exames (SE ant. 417; caiu 41% vs semana anterior)
+• dengue: 133 exames (SE ant. 212; caiu 37% vs semana anterior)
+• hepatite B: 41 exames (SE ant. 127; caiu 68% vs semana anterior)
+• COVID-19: 36 exames (SE ant. 50; caiu 28% vs semana anterior)
+• síndrome respiratória: 24 exames (SE ant. 44; caiu 46% vs semana anterior)
+• meningite: 22 exames (SE ant. 28; caiu 21% vs semana anterior)
+• Localidades tuberculose: Tangara da Serra(73), Sapezal(5), Cuiabá(35), Várzea Grande(27)
+• Localidades dengue: Várzea Grande(50), Lucas do Rio Verde(25), Campo Verde(10), Primavera do Leste(9)
+• Localidades hepatite B: Nova Xavantina(10), Terra Nova do Norte(6), Água Boa(4), Novo Horizonte do Norte(4)
 
 2️⃣ <b>Análise da positividade</b> <i>(marcador de alerta · canal endêmico)</i>
 Zona epidêmica (estatística) = acima do P75 no marcador de alerta — priorizar investigação; não declarar epidemia automaticamente.
-• tuberculose: 0.8% (389 exames; subiu 80% vs semana anterior); 0,1 positivos por 100 mil habitantes
-• dengue: 0.0% (202 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-• hepatite B: 0.0% (190 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-• COVID-19: 0.0% (68 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-• hepatite C: 0.0% (36 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-• meningite: 0.0% (35 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
-• Cuiabá: +2 (1%) · hepatite
-• Sinop: +2 (4%) · hiv
+• tuberculose: 0.8% (245 exames; caiu 43% vs semana anterior); 0,1 positivos por 100 mil habitantes
+• dengue: 0.0% (133 exames; caiu 100% vs semana anterior); 0,0 positivos por 100 mil habitantes
+• hepatite B: 0.0% (41 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
+• COVID-19: 0.0% (36 exames; vs semana anterior); 0,0 positivos por 100 mil habitantes
+• síndrome respiratória: 0.0% (24 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
+• meningite: 0.0% (22 exames; vs semana anterior) — poucos exames, cautela; 0,0 positivos por 100 mil habitantes
+• Tangara da Serra: +1 (1%) · tuberculose
+• Sapezal: +1 (12%) · tuberculose
 • Canal endêmico: Nesta SE, nenhum município atingiu zona de alerta ou epidemia estatística no marcador de alerta (n≥5). Manter monitoramento; sinais complementares abaixo.
-• Capacitação VE: dengue: 202 exames (caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
+• Capacitação VE: dengue: 133 exames (caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
 • Marcadores: Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto.
 
 3️⃣ <b>Outros fatores LACEN / VE</b> <i>(notificação, lacunas, território, internações)</i>
-• Capacitação/orientação VE: dengue: 202 exames (caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
-• ML risco municipal (contagem): Baixo=3.302, Moderado=1.326, Alto=883, Crítico=609
-• Predito: 38 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=17/Crítica=0; dengue: Alta=5/Crítica=0; hepatite_b_hbv: Alta=9/Crítica=0).
-• Predito: Lucas do Rio Verde × arbovirose — Crítico (66%) — estabelecimentos CNES: 6.740; exames MA8: 57,9
-• Predito: CUIABA × hepatite: alta_atipica em positividade (atual=0.3333333333333333 vs MA8=0.041666666666666664; severidade alta) — validar fluxo antes do pico.
-• Predito: RIO DE JANEIRO × tuberculose: alta_atipica em tests (atual=13.0 vs MA8=3.125; severidade alta) — validar fluxo antes do pico.
-• Predito: SORRISO × hepatite: alta_atipica em positividade (atual=0.3333333333333333 vs MA8=0.08333333333333333; severidade alta) — validar fluxo antes do pico.
-• Predito: NOVA XAVANTINA × hepatite_b_hbv: alta_atipica em tests (atual=10.0 vs MA8=2.625; severidade alta) — validar fluxo antes do pico.
-• D
+• Capacitação/orientação VE: dengue: 133 exames (caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar/capacitar VE; não indica surto confirmado.
+• ML risco municipal (contagem): Baixo=3.177, Moderado=1.386, Alto=922, Crítico=616
+• Predito: 18 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=5/Crítica=0; dengue: Alta=7/Crítica=0; hepatite_b_hbv: Alta=4/Crítica=0).
+• Predito: Cuiabá × tuberculose — Crítico (42%)
+• Predito: SAPEZAL × tuberculose: alta_atipica em positividade (atual=0.2 vs MA8=0.025; severidade alta) — validar fluxo antes do pico.
+• Predito: TANGARA DA SERRA × tuberculose: alta_atipica em positividade (atual=0.0136986301369863 vs MA8=0.0017123287671232876; severidade alta) — validar fluxo antes do pico.
+• Predito: JUINA × tuberculose: alta_atipica em tests (atual=18.0 vs MA8=5.375; severidade alta) — validar fluxo antes do pico.
+• Predito: hepatite_b_hbv: previsão SE+2 ≈ 99 exames (atual 41) com pressão/SLA crítica — antecipar reagentes e capacidade LACEN.
+• Predito: hepatite_c_hcv: previsão SE+2 ≈ 20 exames (atual 9) com pressão/SLA crític
 …(truncado)
 <a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Painel Radar LACEN</a>
 
 ———
 
 <b>📡 Radar LACEN — Parte 2</b> <i>(recomendações)</i>
-semana epidemiológica 35/2026
+semana epidemiológica 37/2026
 
 4️⃣ <b>Recomendações</b> <i>(CIEVS / VE / área técnica / município)</i>
-<b>1. CIEVS</b> — Incluir JUINA×hepatite B na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergênc…
+<b>1. CIEVS</b> — Manter sala de situação com sinais de atenção + comparação semana anterior; linguagem de investigação (Guia MS). · prazo 7 dias
 <b>2. CIEVS / VE municipal</b> — Investigar pico atípico e validar capacidade laboratorial/vigilância.
-<b>3. VE municipal / CIEVS</b> — Priorizar busca ativa em LUCAS DO RIO VERDE: verificar fluxo coleta/envio e sensibilizar VE municipal em 7 dias — antes do zero absoluto.
-<b>4. VE estadual / CIEVS / área técnica arbovi…</b> — Alto volume de solicitações de dengue (202 ex.; caiu 13% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar rede sobr…
-<b>5. CIEVS / VE municipal</b> — Investigar possível aumento de hepatite B (190 exames laboratório; subiu 52% vs semana anterior) — confrontar com notificações e busca ativ…
-<b>6. VE municipal</b> — Em CUIABA (tuberculose): exame no laboratório sem notificação — investigar lacuna de vigilância (notificação × resultado laboratorial).
-<b>7. área técnica / LACEN (apoio)</b> — tuberculose: tempo de liberação crítico (100% ≤48h) — verificar reagentes/capacidade só se houver backlog do agravo.
-<b>8. SES-MT</b> — Monitorar sinal de hepatite B em JUINA na semana de referência; apoiar vigilância municipal/regional na investigação conforme Guia MS (ref.…
+<b>3. LACEN / área técnica</b> — Antecipar reagentes, fila e liberação para hepatite_b_hbv (forecast 99 ex. vs 41 atual) — evitar degradação de TAT no pico.
+<b>4. VE estadual / CIEVS / área técnica arbovi…</b> — Alto volume de solicitações de dengue (133 ex.; caiu 37% vs semana anterior) com baixa confirmação laboratorial (0.0%) — orientar rede sobr…
+<b>5. VE municipal</b> — Em TANGARA DA SERRA (tuberculose): exame no laboratório sem notificação — investigar lacuna de vigilância (notificação × resultado laborato…
+<b>6. área técnica / LACEN (apoio)</b> — arbovirose: tempo de liberação crítico (23% ≤48h) — verificar reagentes/capacidade só se houver backlog do agravo.
+<b>7. SES-MT</b> — Acompanhar investigação epidemiológica da semana de referência (TANGARA DA SERRA×tuberculose, SAPEZAL×tuberculose, CUIABA×tuberculose); sem…
+<b>8. CIEVS / VE municipal</b> — Investigar pico atípico e validar capacidade laboratorial/vigilância.
 
 🔬 <b>Apoio laboratorial</b> <i>(só se pertinente ao agravo)</i>
-1. Tuberculose em sinal: priorizar liberação diagnóstica (100% ≤48h) nos municípios sob investigação.
-2. Hepatite em sinal: garantir marcadores confirmatórios e reagentes (100% ≤48h) para a investigação.
-3. síndrome respiratória: tempo de liberação elevado (100% ≤48h) — alinhar com a investigação do agravo.
+1. Arbovirose em sinal: checar capacidade de kits/reagentes e tempo de liberação (23% ≤48h) para não atrasar a VE.
+2. síndrome respiratória: tempo de liberação elevado (57% ≤48h) — alinhar com a investigação do agravo.
 
 ✅ <b>Parecer</b>
-Juína hepatite B: 57 exames / +0 (0.0%) — sinal a investigar (Guia MS); não declarar surto/epidemia automaticamente.
+Juína hepatite B: sinal a investigaroratorial elevado no Observado — investigar segundo Guia MS; não declarar surto automaticamente.
 
 <a href="https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/">Painel Radar LACEN</a>

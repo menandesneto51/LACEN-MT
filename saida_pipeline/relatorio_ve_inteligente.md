@@ -1,116 +1,105 @@
 # Parecer VE inteligente — LACEN-MT / CIEVS
 
-**SE:** 2026-SE30  
-**Gerado em:** 2026-08-31 10:07 Hora Padrão Brasil Central  
+**SE:** 2026-SE37  
+**Gerado em:** 2026-09-11 08:26 Hora Padrão Brasil Central  
 
 > Parecer baseado em agregados Observados (GAL/LACEN ± SINAN) e trechos curados do Guia/portais MS. Compara SE atual com SE-1/SE-2 e mediana das 4 SE anteriores. Sinal laboratorial ≠ declaração automática de surto. Números não inventados — apenas valores do briefing/pipeline.
 
 ## 1. Resumo executivo
 
-SE 2026-SE30 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): dengue (2130 ex., 0.1%); tuberculose (222 ex., 11.3%); hepatite_b_hbv (155 ex., 65.2%). Destaque: JUINA × hepatite_b_hbv — 46 exames / +24 (52.2%) [Observado]; parecer: investigar segundo Guia MS — **não** declarar surto automaticamente. Comparação (dengue): vs SE-1 ↑ 1316 (+162%); acima da mediana das 4 SE. Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
+SE 2026-SE37 — Top demanda/proxy (proxy exames GAL (SINAN zerado/atrasado)): tuberculose (245 ex., 0.8%); dengue (133 ex., 0.0%); hepatite_b_hbv (41 ex., 0.0%). Comparação (tuberculose): vs SE-1 ↓ -172 (-41%). Parecer VE usa agregados LACEN ± SINAN + critérios do Guia de Vigilância (definição de caso / esperado / investigação).
 
 ## 2. Top 10 — proxy: exames GAL (SINAN indisponível/zerado na SE) [Observado]
 
 | # | Agravo | n_se | n_se_ant | Δ | Δ% | Tend. | Positivos | Positividade | Fonte |
 |---|--------|------|----------|---|----|-------|-----------|--------------|-------|
-| 1 | dengue | 2130 | 814 | 1316 | +161.7% | ↑ | 3 | 0.1% | proxy_exames_GAL |
-| 2 | tuberculose | 222 | 589 | -367 | -62.3% | ↓ | 25 | 11.3% | proxy_exames_GAL |
-| 3 | hepatite_b_hbv | 155 | 201 | -46 | -22.9% | ↓ | 101 | 65.2% | proxy_exames_GAL |
-| 4 | chikungunya | 116 | 113 | 3 | +2.7% | → | 0 | 0.0% | proxy_exames_GAL |
-| 5 | sars_cov_2 | 39 | 60 | -21 | -35.0% | ↓ | 0 | 0.0% | proxy_exames_GAL |
-| 6 | meningite | 31 | 27 | 4 | +14.8% | ↑ | 1 | 3.2% | proxy_exames_GAL |
-| 7 | oropouche | 24 | 3 | 21 | +700.0% | ↑ | 0 | 0.0% | proxy_exames_GAL |
-| 8 | toxoplasmose_citomegalov_rus_igg | 23 | 0 | 23 | — | → | 21 | 91.3% | proxy_exames_GAL |
-| 9 | hepatite_c_hcv | 23 | 33 | -10 | -30.3% | ↓ | 0 | 0.0% | proxy_exames_GAL |
-| 10 | toxoplasmose_citomegalov_rus_igm | 23 | 0 | 23 | — | → | 0 | 0.0% | proxy_exames_GAL |
+| 1 | tuberculose | 245 | 417 | -172 | -41.2% | ↓ | 2 | 0.8% | proxy_exames_GAL |
+| 2 | dengue | 133 | 212 | -79 | -37.3% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 3 | hepatite_b_hbv | 41 | 127 | -86 | -67.7% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 4 | sars_cov_2 | 36 | 50 | -14 | -28.0% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 5 | influenza | 24 | 44 | -20 | -45.5% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 6 | meningite | 22 | 28 | -6 | -21.4% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 7 | infec_o_coloniza_o_bact_rias_teste_de_sensibilidade | 16 | 34 | -18 | -52.9% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 8 | hepatite_c_hcv | 9 | 25 | -16 | -64.0% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 9 | infec_o_coloniza_o_bact_rias_cultura | 8 | 18 | -10 | -55.6% | ↓ | 0 | 0.0% | proxy_exames_GAL |
+| 10 | infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia | 8 | 10 | -2 | -20.0% | ↓ | 0 | 0.0% | proxy_exames_GAL |
 
 ## 3. Top 10 — maior positividade [Observado]
 
 | # | Agravo | Positividade | n_se | n_se_ant | Δ% | Tend. | Mediana 4SE | Exames | Flag |
 |---|--------|--------------|------|----------|----|-------|-------------|--------|------|
-| 1 | hepatite_b_hbv | 65.2% | 65.2% | 39.8% | +63.7% | ↑ | 29.4% | 155 | — |
-| 2 | tuberculose | 11.3% | 11.3% | 5.9% | +89.5% | ↑ | 6.5% | 222 | — |
-| 3 | meningite | 3.2% | 3.2% | 3.7% | -12.9% | ↓ | 1.9% | 31 | — |
-| 4 | dengue | 0.1% | 0.1% | 3.6% | -96.0% | ↓ | 2.0% | 2130 | — |
-| 5 | chikungunya | 0.0% | 0.0% | 0.9% | -100.0% | ↓ | 0.4% | 116 | — |
-| 6 | sars_cov_2 | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 39 | — |
-| 7 | toxoplasmose_citomegalov_rus_igg | 91.3% | 91.3% | 0.0% | — | → | 0.0% | 23 | baixa_amostra, caveat_IgG |
-| 8 | toxoplasmose_toxoplasmose_igg | 57.1% | 57.1% | 0.0% | — | → | 35.6% | 14 | baixa_amostra, caveat_IgG |
-| 9 | toxoplasmose_toxoplasmose_igm | 21.4% | 21.4% | 0.0% | — | → | 20.2% | 14 | baixa_amostra |
-| 10 | oropouche | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 24 | baixa_amostra |
+| 1 | tuberculose | 0.8% | 0.8% | 1.4% | -43.3% | ↓ | 0.6% | 245 | — |
+| 2 | dengue | 0.0% | 0.0% | 0.5% | -100.0% | ↓ | 0.0% | 133 | — |
+| 3 | hepatite_b_hbv | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 41 | — |
+| 4 | sars_cov_2 | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 36 | — |
+| 5 | influenza | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 24 | baixa_amostra |
+| 6 | meningite | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 22 | baixa_amostra |
+| 7 | infec_o_coloniza_o_bact_rias_teste_de_sensibilidade | 0.0% | 0.0% | 0.0% | — | → | 0.0% | 16 | baixa_amostra |
 
 ## 4. Comparação com SE anteriores
 
 | Agravo | Métrica | SE | SE-1 (Δ) | SE-2 (Δ) | Mediana 4 SE | Flag |
 |--------|---------|----|----------|----------|--------------|------|
-| dengue | exames | 2130 | ↑ 1316 (+162%) | ↑ 1598 (+300%) | 404 | acima mediana 4 SE |
-| tuberculose | exames | 222 | ↓ -367 (-62%) | ↓ -148 (-40%) | 480 | posi>mediana |
-| hepatite_b_hbv | exames | 155 | ↓ -46 (-23%) | ↓ -28 (-15%) | 110 | acima mediana 4 SE, posi>mediana |
-| chikungunya | exames | 116 | → 3 (+3%) | ↑ 90 (+346%) | 24 | acima mediana 4 SE |
-| sars_cov_2 | exames | 39 | ↓ -21 (-35%) | ↓ -31 (-44%) | 67 | — |
-| meningite | exames | 31 | ↑ 4 (+15%) | ↑ 13 (+72%) | 14 | acima mediana 4 SE, posi>mediana |
-| oropouche | exames | 24 | ↑ 21 (+700%) | ↑ 23 (+2300%) | 0 | acima mediana 4 SE |
-| toxoplasmose_citomegalov_rus_igg | exames | 23 | → 23 (—) | → 23 (—) | 0 | acima mediana 4 SE |
-| toxoplasmose_toxoplasmose_igg | exames | 14 | → 14 (—) | ↓ -12 (-46%) | 2 | acima mediana 4 SE, posi>mediana |
-| hepatite_c_hcv | exames | 23 | ↓ -10 (-30%) | ↑ 14 (+156%) | 21 | acima mediana 4 SE |
+| tuberculose | exames | 245 | ↓ -172 (-41%) | ↓ -220 (-47%) | 471 | posi>mediana |
+| dengue | exames | 133 | ↓ -79 (-37%) | ↓ -80 (-38%) | 222 | — |
+| hepatite_b_hbv | exames | 41 | ↓ -86 (-68%) | ↓ -168 (-80%) | 130 | — |
+| sars_cov_2 | exames | 36 | ↓ -14 (-28%) | ↓ -32 (-47%) | 51 | — |
+| influenza | exames | 24 | ↓ -20 (-45%) | ↓ -10 (-29%) | 39 | — |
+| meningite | exames | 22 | ↓ -6 (-21%) | ↓ -13 (-37%) | 32 | — |
+| infec_o_coloniza_o_bact_rias_teste_de_sensibilidade | exames | 16 | ↓ -18 (-53%) | ↑ 1 (+7%) | 9 | acima mediana 4 SE |
+| hepatite_c_hcv | exames | 9 | ↓ -16 (-64%) | ↓ -29 (-76%) | 30 | — |
 
 ## 5. Top localidades (agravos prioritários) [Observado]
 
 | Agravo | Município | Positivos | Exames | Positividade |
 |--------|-----------|-----------|--------|--------------|
-| dengue | VARZEA GRANDE | 3 | 409 | 0.7% |
-| dengue | LUCAS DO RIO VERDE | 0 | 712 | 0.0% |
-| dengue | SORRISO | 0 | 194 | 0.0% |
-| dengue | CUIABA | 0 | 99 | 0.0% |
-| dengue | CAMPINAPOLIS | 0 | 98 | 0.0% |
-| tuberculose | CUIABA | 4 | 69 | 5.8% |
-| tuberculose | BARRA DO BUGRES | 4 | 8 | 50.0% |
-| tuberculose | VARZEA GRANDE | 3 | 39 | 7.7% |
-| tuberculose | RONDONOPOLIS | 3 | 10 | 30.0% |
-| tuberculose | NOVA MUTUM | 2 | 5 | 40.0% |
+| tuberculose | TANGARA DA SERRA | 1 | 73 | 1.4% |
+| tuberculose | SAPEZAL | 1 | 5 | 20.0% |
+| tuberculose | CUIABA | 0 | 35 | 0.0% |
+| tuberculose | VARZEA GRANDE | 0 | 27 | 0.0% |
+| tuberculose | JUINA | 0 | 18 | 0.0% |
+| dengue | VARZEA GRANDE | 0 | 50 | 0.0% |
+| dengue | LUCAS DO RIO VERDE | 0 | 25 | 0.0% |
+| dengue | CAMPO VERDE | 0 | 10 | 0.0% |
+| dengue | PRIMAVERA DO LESTE | 0 | 9 | 0.0% |
+| dengue | SORRISO | 0 | 9 | 0.0% |
 
 ## 6. Eixos vizinhos (Top) [Observado]
 
 | Agravo | Par | Positivos | Dist. km |
 |--------|-----|-----------|----------|
-| dengue | VARZEA GRANDE ↔ CUIABA | +3 / +0 | 6.8 |
-| dengue | VARZEA GRANDE ↔ SANTO ANTONIO DO LEVERGER | +3 / +0 | 25.1 |
-| dengue | VARZEA GRANDE ↔ NOSSA SENHORA DO LIVRAMENTO | +3 / +0 | 26.4 |
-| dengue | LUCAS DO RIO VERDE ↔ SORRISO | +0 / +0 | 60.1 |
-| dengue | LUCAS DO RIO VERDE ↔ NOVA UBIRATA | +0 / +0 | 71.5 |
-| dengue | LUCAS DO RIO VERDE ↔ TAPURAH | +0 / +0 | 76.1 |
-| dengue | SORRISO ↔ VERA | +0 / +0 | 51.1 |
-| dengue | SORRISO ↔ IPIRANGA DO NORTE | +0 / +0 | 55.8 |
-| dengue | SORRISO ↔ LUCAS DO RIO VERDE | +0 / +0 | 60.1 |
-| dengue | CUIABA ↔ VARZEA GRANDE | +0 / +3 | 6.8 |
+| tuberculose | TANGARA DA SERRA ↔ BARRA DO BUGRES | +1 / +0 | 60.5 |
+| tuberculose | CUIABA ↔ VARZEA GRANDE | +0 / +0 | 6.8 |
+| tuberculose | VARZEA GRANDE ↔ CUIABA | +0 / +0 | 6.8 |
 
 ## 7. Riscos / dispersão (Top 10)
 
-1. **[Observado]** dengue: alta demanda (2130 exames) com baixa confirmação laboratorial (0.1% pos.) — atenção territorial; não interpreta como surto confirmado.
-2. **[Observado]** tuberculose: 3 par(es) de municípios vizinhos com positivos (CUIABA↔VARZEA GRANDE, CUIABA↔CHAPADA DOS GUIMARAES) — risco local/contatos; investigar rede de transmissão e incompletos.
-3. **[Observado]** hepatite_b_hbv: 5 par(es) vizinhos com positivos — focos territoriais; investigar perfil do exame (marcador agudo vs. crônico) antes de classificar dispersão.
-4. **[Observado]** toxoplasmose_citomegalov_rus_igg: positividade elevada (91% em 23 exames) reflete soroprevalência/IgG — não tratar como epidemia aguda.
-5. **[Predito]** Predito: 51 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (dengue: Alta=27/Crítica=0; tuberculose: Alta=12/Crítica=0; hepatite_b_hbv: Alta=6/Crítica=0).
+1. **[Observado]** dengue: alta demanda (133 exames) com baixa confirmação laboratorial (0.0% pos.) — atenção territorial; não interpreta como surto confirmado.
+2. **[Predito]** Predito: 18 mun. em banda Alta e 0 em Crítica nos agravos mais solicitados (tuberculose: Alta=5/Crítica=0; dengue: Alta=7/Crítica=0; hepatite_b_hbv: Alta=4/Crítica=0).
+3. **[Derivado]** Clima favorável + demanda lab (dengue) — municípios ALTO GARCAS, BOA ESPERANCA DO NORTE: reforçar vigilância arbovirose/zoonoses; não declara surto automaticamente.
+4. **[Predito]** CUIABA: 7 agravos com anomalia ML na SE (chikungunya, dengue, hansen_ase_hansen_ase) — investigar evento complexo ou falha de fluxo ampliada.
+5. **[Predito]** TANGARA DA SERRA: 6 agravos com anomalia ML na SE (dengue, doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist, hantavirose) — investigar evento complexo ou falha de fluxo ampliada.
+6. **[Predito]** SINOP: 2 agravos com anomalia ML na SE (infec_o_coloniza_o_bact_rias_cultura, tuberculose) — investigar evento complexo ou falha de fluxo ampliada.
 
 ## 7b. GAL×SINAN (qualquer agravo — mun×família)
 
 | Município | Família | Exames | Notif. | Flag |
 |-----------|---------|--------|--------|------|
-| LUCAS DO RIO VERDE | dengue | 712 | 0 | gal_sem_sinan |
-| VARZEA GRANDE | dengue | 409 | 0 | gal_sem_sinan |
-| SORRISO | dengue | 194 | 0 | gal_sem_sinan |
-| CUIABA | dengue | 99 | 0 | gal_sem_sinan |
-| CAMPINAPOLIS | dengue | 98 | 0 | gal_sem_sinan |
-| CAMPO VERDE | dengue | 81 | 0 | gal_sem_sinan |
-| CAMPO NOVO DO PARECIS | chikungunya | 71 | 0 | gal_sem_sinan |
-| CUIABA | tuberculose | 69 | 0 | gal_sem_sinan |
-| PARANAITA | dengue | 67 | 0 | gal_sem_sinan |
-| TANGARA DA SERRA | dengue | 66 | 0 | gal_sem_sinan |
-| JUINA | hepatite | 46 | 0 | gal_sem_sinan |
-| BOA ESPERANCA DO NORTE | dengue | 45 | 0 | gal_sem_sinan |
-| VARZEA GRANDE | tuberculose | 39 | 0 | gal_sem_sinan |
-| CUIABA | hepatite | 35 | 0 | gal_sem_sinan |
-| SINOP | dengue | 29 | 0 | gal_sem_sinan |
+| TANGARA DA SERRA | tuberculose | 73 | 0 | gal_sem_sinan |
+| VARZEA GRANDE | dengue | 50 | 0 | gal_sem_sinan |
+| CUIABA | tuberculose | 35 | 0 | gal_sem_sinan |
+| VARZEA GRANDE | tuberculose | 27 | 0 | gal_sem_sinan |
+| LUCAS DO RIO VERDE | dengue | 25 | 0 | gal_sem_sinan |
+| VARZEA GRANDE | covid19 | 19 | 0 | gal_sem_sinan |
+| JUINA | tuberculose | 18 | 0 | gal_sem_sinan |
+| CUIABA | meningite | 14 | 0 | gal_sem_sinan |
+| CACERES | tuberculose | 14 | 0 | gal_sem_sinan |
+| NOVA XAVANTINA | hepatite | 13 | 0 | gal_sem_sinan |
+| CUIABA | srag | 13 | 0 | gal_sem_sinan |
+| CAMPO VERDE | dengue | 10 | 0 | gal_sem_sinan |
+| SANTA CARMEM | infec_o_coloniza_o_bact_rias_teste_de_sensibilidade | 10 | 0 | gal_sem_sinan |
+| PRIMAVERA DO LESTE | dengue | 9 | 0 | gal_sem_sinan |
+| SORRISO | dengue | 9 | 0 | gal_sem_sinan |
 
 ## 7c. Geo hotspots (nível: bairro_cep)
 
@@ -120,16 +109,16 @@ _Hotspots por bairro/CEP a partir de extratos com endereço (vw_sinan_acidentetr
 |-----------|-------|--------|---|------|
 | CUIABA | *Não disponível | — | 2926 |  |
 | VARZEA GRANDE | *Não disponível | — | 1553 |  |
-| TANGARA DA SERRA | *Em Branco | — | 747 |  |
+| TANGARA DA SERRA | *Em Branco | — | 727 |  |
 | PEIXOTO DE AZEVEDO | *Não disponível | — | 716 |  |
-| CUIABA | PEDRA 90 | — | 586 |  |
+| CUIABA | PEDRA 90 | — | 675 |  |
 | SINOP | *Não disponível | — | 582 |  |
 | TANGARA DA SERRA | *Não disponível | — | 536 |  |
-| CUIABA | *Em Branco | — | 530 |  |
+| CUIABA | *Em Branco | — | 513 |  |
 | RONDONOPOLIS | *Não disponível | — | 508 |  |
 | CACERES | *Não disponível | — | 483 |  |
 | PONTES E LACERDA | *Não disponível | — | 400 |  |
-| BARRA DO GARCAS | *Não disponível | — | 387 |  |
+| CUIABA | DOM AQUINO | — | 392 |  |
 
 ## 7d. Cruzamento de bases (DW staging)
 
@@ -153,7 +142,10 @@ Prioridade e valor de cada base: `conhecimento_ve/cruzamento_bases.md`.
 
 | Município | Família CID | N | Fonte |
 |-----------|-------------|---|-------|
-| CUIABA | dengue_arbovirose | 12 | SIH/VW_INTERNACAO |
+| CUIABA | dengue_arbovirose | 13 | SIH/VW_INTERNACAO |
+| TANGARA DA SERRA | dengue_arbovirose | 11 | SIH/VW_INTERNACAO |
+| JUINA | dengue_arbovirose | 10 | SIH/VW_INTERNACAO |
+| VARZEA GRANDE | dengue_arbovirose | 9 | SIH/VW_INTERNACAO |
 
 _Caveat:_ Internações (Sistema de Informações Hospitalares — SIH) restritas aos municípios com sinal de positividade ou pico de demanda. Correlação por família de CID; não confirma surto.
 
@@ -169,78 +161,60 @@ _Caveat:_ Internações (Sistema de Informações Hospitalares — SIH) restrita
 | Complementar Intensivo | Descartado | 2026-03-24 | 8 |
 | Complementar Intensivo | Descartado | 2026-03-23 | 8 |
 | Complementar Intensivo | Descartado | 2026-03-22 | 8 |
-| Clínico Isolamento | Descartado | 2026-03-11 | 8 |
 | Complementar Intensivo | Descartado | 2026-05-13 | 7 |
+| Complementar Intensivo | Descartado | 2026-05-12 | 7 |
 
 **SISREG hospitalar (top mun×status):**
 
 | Município | Status | N |
 |-----------|--------|---|
-| CUIABA | Aprovada | 19093 |
-| VARZEA GRANDE | Aprovada | 12276 |
-| RONDONOPOLIS | Aprovada | 11284 |
-| SINOP | Aprovada | 6498 |
-| CUIABA | Negada | 4948 |
-| TANGARA DA SERRA | Aprovada | 4117 |
-| LUCAS DO RIO VERDE | Aprovada | 4101 |
-| PRIMAVERA DO LESTE | Aprovada | 4086 |
+| CUIABA | Aprovada | 18889 |
+| VARZEA GRANDE | Aprovada | 12145 |
+| RONDONOPOLIS | Aprovada | 11331 |
+| SINOP | Aprovada | 6542 |
+| CUIABA | Negada | 4869 |
+| LUCAS DO RIO VERDE | Aprovada | 4113 |
+| TANGARA DA SERRA | Aprovada | 4083 |
+| PRIMAVERA DO LESTE | Aprovada | 4001 |
 
 **SISREG ambulatorial — pendentes/fila:**
 
 | Município | Status | N |
 |-----------|--------|---|
-| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 58883 |
-| SINOP | SOLICITAÇÃO / PENDENTE / REGULADOR | 24798 |
-| SINOP | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 21949 |
-| VARZEA GRANDE | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 21006 |
-| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 19417 |
-| CUIABA | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 17561 |
-| VARZEA GRANDE | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 12421 |
-| BARRA DO GARCAS | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 10432 |
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 59236 |
+| SINOP | SOLICITAÇÃO / PENDENTE / REGULADOR | 25129 |
+| VARZEA GRANDE | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 21251 |
+| SINOP | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 20918 |
+| CUIABA | SOLICITAÇÃO / PENDENTE / FILA DE ESPERA | 19164 |
+| CUIABA | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 16253 |
+| VARZEA GRANDE | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 10890 |
+| BARRA DO GARCAS | AGENDAMENTO / PENDENTE CONFIRMAÇÃO / EXECUTANTE | 10037 |
 
 _Caveat:_ IndicaSUS/SISREG são sinais de rede/regulação (hosts separados); não confirmam surto nem substituem GAL×SINAN.
 
 ## 8. Casos especiais (sinal lab × critérios Guia MS)
 
-### Caso especial — JUINA × hepatite_b_hbv
-
-**Severidade:** alta  
-**Sinal laboratorial:** [Observado] JUINA — hepatite_b_hbv: 46 exames · +24 positivos (52.2%) na SE de referência. Vs SE-1: ↓ -46 (-23%) · Vs SE-2: ↓ -28 (-15%) · mediana 4 SE (exames): 110 [acima da mediana]. Sinal laboratorial territorial — requer confronto com critérios do Guia de Vigilância MS (investigação; sem declaração automática de surto).
-
-**Critérios de surto/epidemia (Guia MS) a verificar:**
-- Aumento de casos de hepatite B **aguda** (definição de caso MS: clínica + marcadores compatíveis, ex. anti-HBc IgM / perfil agudo) acima do esperado para o município e período.
-- Evidência de cadeia de transmissão ou fonte comum (parenteral, sexual, vertical, procedimentos invasivos, etc.) após investigação.
-- Notificação e classificação no SINAN conforme lista compulsória vigente.
-
-**O que NÃO afirmar com o Observado atual:**
-- NÃO afirmar «há surto de hepatite B em JUINA» apenas com base em positividade de exames GAL (HBsAg/triagem pode incluir infecção crônica e demanda assistencial).
-- NÃO igualar positividade percentual elevada a incidência de casos novos agudos.
-- NÃO declarar epidemia intermunicipal só porque há par vizinho com positivos.
-
-**O que investigar:**
-- Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).
-- Cruzar com notificações SINAN do município e série histórica (SE anteriores).
-- Avaliar se o padrão é recorrente (várias SE) — cluster persistente ≠ surto automático, mas prioriza investigação.
-- Mapear serviços (APS, laboratórios locais, hemodiálise, maternidade) e contatos.
-- Vacinação hepatite B e busca de suscetíveis conforme indicação MS/APS.
-- Articular VE municipal/CRS e, se persistir, CIEVS estadual / sala de situação.
-
-**Veredito preliminar (não substitui VE):** há **sinal laboratorial** relevante de hepatite_b_hbv em JUINA. Os critérios de **surto/epidemia** do Guia de Vigilância MS **não estão automaticamente cumpridos** só com este agregado — recomenda-se **investigação epidemiológica** antes de qualquer declaração formal.
-
+_Nenhum caso especial acima dos limiares nesta SE._
 
 ## 9. Recomendações por destinatário / agravo
 
-### JUINA × hepatite_b_hbv (alta)
-_Evidência:_ SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (-23%) · acima mediana 4 SE
+### SES-MT
+- Acompanhar investigação epidemiológica da SE 2026-SE37 (TANGARA DA SERRA×tuberculose, SAPEZAL×tuberculose, CUIABA×tuberculose); sem declaração automática de surto/epidemia.
 
-- **SES-MT:** Monitorar sinal de hepatite_b_hbv em JUINA na SE 2026-SE30; apoiar VE municipal/regional na investigação conforme Guia MS (ref. local `notificaveis_resumo.md`) — sem declarar surto/epidemia automaticamente.
-- **CIEVS:** Incluir JUINA×hepatite_b_hbv na sala de situação; confrontar com semanas anteriores e mediana recente; avaliar possível surto/epidemia/emergência — linguagem «investigar», não «há surto».
-- **Área técnica — Hepatites virais:** Programa hepatite: estratificar definição de caso em JUINA; orientar rede sobre notificação e conduta técnica do agravo hepatite_b_hbv.
-- **Município — JUINA:** VE municipal de JUINA: abrir/atualizar investigação de hepatite_b_hbv; cruzar exame × notificação; aplicar definição de caso MS; Discriminar marcadores: agudo (anti-HBc IgM / clínica) vs. crônico (HBsAg isolado em seguimento).
+### CIEVS
+- Manter sala de situação com sinais de atenção + comparação semana anterior; linguagem de investigação (Guia MS).
+
+### Área técnica
+
+### Município(s)
+
+### Municípios próximos
 
 
 ## 10. Citações e fontes
 
+- `conhecimento_ve\notificaveis_resumo.md` (score=7)
+  > ## IgG / soroprevalência (caveat transversal)  **Palavras-chave:** IgG, sorologia, soroprevalência, toxoplasmose, citomegalovírus  - Positividade elevada de **IgG** reflete exposição passada / soroprevalência — **não** tratar como epidemia aguda. - Para eventos agudos, privilegia
 - `conhecimento_ve\notificaveis_resumo.md` (score=6)
   > ### Ações por área | Área | Ações | |------|--------| | Vigilância Epidemiológica | Aplicar definição de caso; buscar casos agudos (anti-HBc IgM / clínica); notificação SINAN; investigar contatos e fontes comuns; comparar série histórica municipal. | | LACEN / rede lab | Discrimi
 - `conhecimento_ve\excertos\dengue_ms.html.txt` (score=5)
@@ -251,11 +225,13 @@ _Evidência:_ SE 2026-SE30: 46 ex. / +24 (52.2%) [Observado] · ΔSE-1 ↓ -46 (
   > ## Hepatite B (HBV)  **Palavras-chave:** hepatite B, HBV, HBsAg, anti-HBc IgM, surto hepatite, transmissão parenteral, sexual, vertical
 - `conhecimento_ve\notificaveis_resumo.md` (score=5)
   > ### Definição de caso (orientação MS — simplificada) - Caso suspeito/confirmado de hepatite viral B conforme Guia/protocolos vigentes (marcadores: HBsAg, anti-HBc IgM para **aguda**, carga viral / perfil completo conforme protocolo). - **Importante:** HBsAg positivo em triagem ou
-- `conhecimento_ve\notificaveis_resumo.md` (score=5)
-  > ### Surto / epidemia — critérios de investigação (não declaração automática) - Investigar quando há **aumento acima do esperado** de casos **agudos** (ou de infecções recentes) no mesmo território/período, ou cadeia de transmissão plausível (procedimentos invasivos, dialise, sexu
 
 - URLs oficiais: `conhecimento_ve/fontes.md`
 - Resumo curado: `conhecimento_ve/notificaveis_resumo.md`
+- Cache MS `hepatites_ms`: cache_existente — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hepatites-virais
+- Cache MS `tb_ms`: cache_existente — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/t/tuberculose
+- Cache MS `dengue_ms`: cache_existente — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/dengue
+- Cache MS `meningite_ms`: cache_existente — https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/m/meningite
 
 ---
 *Modelo: lacen_agente_ve.py · lacen_briefing_epi.py*

@@ -2,7 +2,7 @@ RADAR LACEN · SES-MT / CIEVS-MT
 
 ALERTA ESTRATÉGICO — SE 37/2026
 Semana analisada: SE 36/2026
-Atualização / data de corte: 11/09/2026 às 07h29 (Hora de Mato Grosso)
+Atualização / data de corte: 11/09/2026 às 08h25 (Hora de Mato Grosso)
 Completude da semana analisada: 97,0%
 Exames elegíveis: 1231 · Liberados: 1231 · Pendentes: 0
 
