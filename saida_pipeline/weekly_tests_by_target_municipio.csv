@@ -56526,56 +56526,32 @@
 2025,26,tuberculose,PRIMAVERA DO LESTE,3
 2025,26,tuberculose,RONDONOPOLIS,9
 2025,26,tuberculose,VARZEA GRANDE,2
-2025,27,chikungunya,AGUA BOA,1
 2025,27,chikungunya,ARAPUTANGA,2
 2025,27,chikungunya,CACERES,2
 2025,27,chikungunya,CAMPINAPOLIS,4
-2025,27,chikungunya,CAMPO NOVO DO PARECIS,36
+2025,27,chikungunya,CAMPO NOVO DO PARECIS,26
 2025,27,chikungunya,CHAPADA DOS GUIMARAES,2
-2025,27,chikungunya,CUIABA,10
+2025,27,chikungunya,CUIABA,6
 2025,27,chikungunya,NOVA GUARITA,4
-2025,27,chikungunya,NOVA MUTUM,3
-2025,27,chikungunya,NOVO MUNDO,2
-2025,27,chikungunya,PEDRA PRETA,2
-2025,27,chikungunya,PONTES E LACERDA,3
 2025,27,chikungunya,SINOP,7
-2025,27,chikungunya,SORRISO,3
-2025,27,chikungunya,TANGARA DA SERRA,2
-2025,27,chikungunya,VARZEA GRANDE,5
 2025,27,chikungunya,VERA,30
-2025,27,citomegalov_rus_citomegalov_rus_igg,CANARANA,3
-2025,27,citomegalov_rus_citomegalov_rus_igg,CUIABA,1
-2025,27,citomegalov_rus_citomegalov_rus_igg_avidez,CUIABA,2
-2025,27,citomegalov_rus_citomegalov_rus_igm,CANARANA,3
-2025,27,citomegalov_rus_citomegalov_rus_igm,CUIABA,1
 2025,27,coqueluche_bordetella,CANARANA,1
-2025,27,criptococose_criptococos,CUIABA,1
 2025,27,dengue,ACAILANDIA,1
-2025,27,dengue,AGUA BOA,1
-2025,27,dengue,ALTO GARCAS,3
-2025,27,dengue,ARAPUTANGA,10
-2025,27,dengue,CAMPINAPOLIS,4
+2025,27,dengue,ARAPUTANGA,4
 2025,27,dengue,CAMPO NOVO DO PARECIS,1
-2025,27,dengue,CAMPO VERDE,28
+2025,27,dengue,CAMPO VERDE,3
 2025,27,dengue,CHAPADA DOS GUIMARAES,1
-2025,27,dengue,COLIDER,11
+2025,27,dengue,COLIDER,5
 2025,27,dengue,CUIABA,20
-2025,27,dengue,GUARANTA DO NORTE,12
 2025,27,dengue,IPIRANGA DO NORTE,3
 2025,27,dengue,ITAUBA,6
-2025,27,dengue,JACIARA,6
-2025,27,dengue,LUCAS DO RIO VERDE,9
-2025,27,dengue,NOVA GUARITA,50
-2025,27,dengue,PARANAITA,3
-2025,27,dengue,PEIXOTO DE AZEVEDO,1
+2025,27,dengue,LUCAS DO RIO VERDE,6
+2025,27,dengue,NOVA GUARITA,8
 2025,27,dengue,PONTES E LACERDA,6
-2025,27,dengue,PRIMAVERA DO LESTE,51
-2025,27,dengue,RONDONOPOLIS,8
-2025,27,dengue,SINOP,3
-2025,27,dengue,SORRISO,163
-2025,27,dengue,TANGARA DA SERRA,6
+2025,27,dengue,PRIMAVERA DO LESTE,26
+2025,27,dengue,SORRISO,125
+2025,27,dengue,TANGARA DA SERRA,4
 2025,27,dengue,TERRA BOA,3
-2025,27,dengue,VARZEA GRANDE,3
 2025,27,dengue,VERA,17
 2025,27,doen_a_de_chagas_chagas,SORRISO,2
 2025,27,doen_a_de_chagas_chagas_igg,SORRISO,2
@@ -56588,48 +56564,28 @@
 2025,27,hansen_ase_bact_rias_identifica_o,CUIABA,1
 2025,27,hansen_ase_bact_rias_teste_de_sensibilidade,BARAO DE MELGACO,1
 2025,27,hansen_ase_bact_rias_teste_de_sensibilidade,CUIABA,1
-2025,27,hansen_ase_hansen_ase,CUIABA,4
-2025,27,hansen_ase_hansen_ase,VILHENA,1
+2025,27,hansen_ase_hansen_ase,CUIABA,3
 2025,27,hansen_ase_hansen_ase_biologia_molecular,SINOP,3
 2025,27,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,BARAO DE MELGACO,1
 2025,27,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,CUIABA,2
 2025,27,hansen_ase_pesquisa_de_genes_de_resist_ncia,BARAO DE MELGACO,1
 2025,27,hansen_ase_pesquisa_de_genes_de_resist_ncia,CUIABA,1
 2025,27,hepatite_b_hbv,COLIDER,2
-2025,27,hepatite_b_hbv,CUIABA,1
 2025,27,hepatite_b_hbv,GUARANTA DO NORTE,10
-2025,27,hepatite_b_hbv,NOVO SANTO ANTONIO,1
 2025,27,hepatite_b_hbv,PEIXOTO DE AZEVEDO,2
-2025,27,hepatite_b_hbv,PONTES E LACERDA,6
-2025,27,hepatite_b_hbv,SINOP,1
-2025,27,hepatite_b_hbv,TERRA NOVA DO NORTE,1
-2025,27,hepatite_c_hcv,CUIABA,2
 2025,27,hepatite_c_hcv,PORTO ESPERIDIAO,1
-2025,27,histoplasmose_histoplasmose,CUIABA,1
-2025,27,influenza,CACERES,5
 2025,27,influenza,CUIABA,2
-2025,27,influenza,NOVA NAZARE,2
-2025,27,influenza,NOVO HORIZONTE DO NORTE,3
-2025,27,influenza,QUERENCIA,6
 2025,27,influenza,ROSARIO OESTE,1
 2025,27,influenza,TANGARA DA SERRA,3
-2025,27,influenza,TERRA NOVA DO NORTE,1
-2025,27,leishmaniose,CUIABA,1
 2025,27,leishmaniose,NOVO MUNDO,1
 2025,27,leptospira,VARZEA GRANDE,1
-2025,27,meningite,NOVA BRASILANDIA,10
-2025,27,micobacterioses_micobact_rias_identifica_o,PRIMAVERA DO LESTE,2
-2025,27,micobacterioses_micobacteriose_tsa,PRIMAVERA DO LESTE,2
-2025,27,oropouche,CACERES,1
 2025,27,parvovirose_parvov_rus_b19_igg,SINOP,1
 2025,27,parvovirose_parvov_rus_b19_igm,SINOP,1
 2025,27,pneumonia_bact_rias_cultura,CACERES,1
 2025,27,pneumonia_bact_rias_teste_de_sensibilidade,CACERES,1
 2025,27,pneumonia_fungos,CACERES,1
-2025,27,raiva_raiva,PARANAITA,3
-2025,27,sars_cov_2,CUIABA,2
-2025,27,sars_cov_2,PONTES E LACERDA,1
-2025,27,sars_cov_2,VARZEA GRANDE,10
+2025,27,sars_cov_2,CUIABA,1
+2025,27,sars_cov_2,VARZEA GRANDE,8
 2025,27,sars_cov_2,VILA RICA,1
 2025,27,toxoplasmose_citomegalov_rus_igg,CHAPADA DOS GUIMARAES,1
 2025,27,toxoplasmose_citomegalov_rus_igm,CHAPADA DOS GUIMARAES,1
@@ -56637,44 +56593,31 @@
 2025,27,toxoplasmose_rub_ola_igm,CHAPADA DOS GUIMARAES,2
 2025,27,toxoplasmose_toxoplasmose_igg,CHAPADA DOS GUIMARAES,2
 2025,27,toxoplasmose_toxoplasmose_igm,CHAPADA DOS GUIMARAES,2
-2025,27,tuberculose,AGUA BOA,6
 2025,27,tuberculose,ALTA FLORESTA,3
 2025,27,tuberculose,ARENAPOLIS,1
-2025,27,tuberculose,AUGUSTO CORREA,1
 2025,27,tuberculose,BOA VISTA,1
 2025,27,tuberculose,CACERES,1
 2025,27,tuberculose,CARAGUATATUBA,1
-2025,27,tuberculose,CASTANHEIRA,7
+2025,27,tuberculose,CASTANHEIRA,3
 2025,27,tuberculose,COREAU,1
-2025,27,tuberculose,CUIABA,57
-2025,27,tuberculose,DIAMANTINO,3
-2025,27,tuberculose,ESPLANADA,1
+2025,27,tuberculose,CUIABA,31
 2025,27,tuberculose,IMPERATRIZ,1
 2025,27,tuberculose,ITANHANGA,2
 2025,27,tuberculose,ITAPECURU MIRIM,1
-2025,27,tuberculose,JATAI,1
-2025,27,tuberculose,JUINA,1
-2025,27,tuberculose,LUCAS DO RIO VERDE,78
-2025,27,tuberculose,NOVA MUTUM,6
-2025,27,tuberculose,NOVA XAVANTINA,1
-2025,27,tuberculose,PONTES E LACERDA,2
-2025,27,tuberculose,PRIMAVERA DO LESTE,4
+2025,27,tuberculose,LUCAS DO RIO VERDE,62
+2025,27,tuberculose,NOVA MUTUM,5
 2025,27,tuberculose,RIO BRANCO,1
 2025,27,tuberculose,SANTO ANTONIO DO LEVERGER,1
 2025,27,tuberculose,SAO JOSE DO RIO CLARO,1
 2025,27,tuberculose,SAPEZAL,1
-2025,27,tuberculose,SINOP,11
-2025,27,tuberculose,SORRISO,1
+2025,27,tuberculose,SINOP,9
 2025,27,tuberculose,TAPURAH,2
 2025,27,tuberculose,TERESINA,1
 2025,27,tuberculose,TIMON,1
-2025,27,tuberculose,TRES LAGOAS,1
-2025,27,tuberculose,VARZEA GRANDE,15
+2025,27,tuberculose,VARZEA GRANDE,6
 2025,27,zika,CHAPADA DOS GUIMARAES,2
 2025,27,zika,CUIABA,1
 2025,27,zika,NOVA GUARITA,2
-2025,27,zika,TANGARA DA SERRA,2
-2025,27,zika,VARZEA GRANDE,2
 2025,27,zika,VERA,8
 2025,28,brucelose_brucelose,CUIABA,1
 2025,28,brucelose_brucelose,PORTO ESPERIDIAO,1
@@ -64598,6 +64541,7 @@
 2026,11,hepatite_b_hbv,NOVA MUTUM,18
 2026,11,hepatite_b_hbv,NOVA XAVANTINA,8
 2026,11,hepatite_b_hbv,PEIXOTO DE AZEVEDO,3
+2026,11,hepatite_b_hbv,POCONE,1
 2026,11,hepatite_b_hbv,PONTES E LACERDA,1
 2026,11,hepatite_b_hbv,PRIMAVERA DO LESTE,3
 2026,11,hepatite_b_hbv,QUERENCIA,1
@@ -65869,6 +65813,7 @@
 2026,16,hepatite_b_hbv,FELIZ NATAL,1
 2026,16,hepatite_b_hbv,JUARA,1
 2026,16,hepatite_b_hbv,JUINA,21
+2026,16,hepatite_b_hbv,LAGES,1
 2026,16,hepatite_b_hbv,MARCELANDIA,2
 2026,16,hepatite_b_hbv,MATUPA,1
 2026,16,hepatite_b_hbv,MIRASSOL D''OESTE,1
@@ -66253,7 +66198,7 @@
 2026,17,tuberculose,CHAPADA DOS GUIMARAES,2
 2026,17,tuberculose,COLIDER,45
 2026,17,tuberculose,COMODORO,1
-2026,17,tuberculose,CUIABA,105
+2026,17,tuberculose,CUIABA,107
 2026,17,tuberculose,DIAMANTINO,3
 2026,17,tuberculose,JOINVILLE,2
 2026,17,tuberculose,JUARA,1
@@ -68802,6 +68747,7 @@
 2026,26,tuberculose,BARRA DO BUGRES,12
 2026,26,tuberculose,BARRA DO GARCAS,4
 2026,26,tuberculose,BATATAIS,2
+2026,26,tuberculose,BOM JESUS DO ARAGUAIA,2
 2026,26,tuberculose,BONITO,1
 2026,26,tuberculose,BRASILIA,2
 2026,26,tuberculose,BRASNORTE,3
@@ -69710,6 +69656,7 @@
 2026,29,tuberculose,SANTO ANTONIO DO LESTE,1
 2026,29,tuberculose,SANTO ANTONIO DO LEVERGER,2
 2026,29,tuberculose,SAO JOSE DO RIO CLARO,2
+2026,29,tuberculose,SAO PAULO,1
 2026,29,tuberculose,SAO PEDRO DA CIPA,1
 2026,29,tuberculose,SENADOR CANEDO,1
 2026,29,tuberculose,SINOP,42
@@ -70650,6 +70597,7 @@
 2026,34,influenza,NOVA UBIRATA,1
 2026,34,influenza,NOVO HORIZONTE DO NORTE,4
 2026,34,influenza,PONTES E LACERDA,2
+2026,34,influenza,QUERENCIA,2
 2026,34,influenza,VARZEA GRANDE,4
 2026,34,leishmaniose,CACERES,8
 2026,34,leishmaniose,PONTES E LACERDA,2
@@ -70861,7 +70809,7 @@
 2026,35,hepatite_b_hbv,CANARANA,6
 2026,35,hepatite_b_hbv,CASTANHEIRA,7
 2026,35,hepatite_b_hbv,CLAUDIA,1
-2026,35,hepatite_b_hbv,CUIABA,12
+2026,35,hepatite_b_hbv,CUIABA,13
 2026,35,hepatite_b_hbv,GUARANTA DO NORTE,19
 2026,35,hepatite_b_hbv,GUIRATINGA,1
 2026,35,hepatite_b_hbv,ITANHANGA,1
@@ -70964,7 +70912,7 @@
 2026,35,meningite,PARANATINGA,8
 2026,35,meningite,VARZEA GRANDE,10
 2026,35,raiva_raiva,GUARANTA DO NORTE,26
-2026,35,raiva_raiva,MATUPA,2
+2026,35,raiva_raiva,MATUPA,3
 2026,35,raiva_raiva,NOVA GUARITA,1
 2026,35,raiva_raiva,NOVO MUNDO,1
 2026,35,raiva_raiva,TERRA NOVA DO NORTE,4
@@ -71010,7 +70958,7 @@
 2026,35,tuberculose,ARIPUANA,5
 2026,35,tuberculose,BARRA DO GARCAS,5
 2026,35,tuberculose,BRASILIA,1
-2026,35,tuberculose,CACERES,6
+2026,35,tuberculose,CACERES,7
 2026,35,tuberculose,CAIAPONIA,1
 2026,35,tuberculose,CAMPINAPOLIS,3
 2026,35,tuberculose,CAMPO GRANDE,3
@@ -71024,7 +70972,7 @@
 2026,35,tuberculose,COLNIZA,3
 2026,35,tuberculose,COMODORO,5
 2026,35,tuberculose,CONFRESA,1
-2026,35,tuberculose,CUIABA,139
+2026,35,tuberculose,CUIABA,141
 2026,35,tuberculose,DIAMANTINO,2
 2026,35,tuberculose,FAXINAL DO SOTURNO,1
 2026,35,tuberculose,FELIZ NATAL,1
@@ -71082,7 +71030,7 @@
 2026,36,chikungunya,CAMPO NOVO DO PARECIS,2
 2026,36,chikungunya,CHAPADA DOS GUIMARAES,2
 2026,36,chikungunya,CONFRESA,2
-2026,36,chikungunya,CUIABA,5
+2026,36,chikungunya,CUIABA,7
 2026,36,chikungunya,NOVA UBIRATA,8
 2026,36,chikungunya,SAPEZAL,1
 2026,36,chikungunya,VARZEA GRANDE,2
@@ -71104,6 +71052,7 @@
 2026,36,dengue,LUCAS DO RIO VERDE,41
 2026,36,dengue,NOVA UBIRATA,1
 2026,36,dengue,PACARAIMA,1
+2026,36,dengue,PEROLA,3
 2026,36,dengue,POCONE,1
 2026,36,dengue,PONTES E LACERDA,6
 2026,36,dengue,SORRISO,29
@@ -71156,7 +71105,7 @@
 2026,36,hepatite_b_hbv,SANTA CARMEM,1
 2026,36,hepatite_b_hbv,SAPEZAL,1
 2026,36,hepatite_b_hbv,SINOP,2
-2026,36,hepatite_b_hbv,SORRISO,7
+2026,36,hepatite_b_hbv,SORRISO,8
 2026,36,hepatite_b_hbv,TERRA NOVA DO NORTE,2
 2026,36,hepatite_b_hbv,VARZEA GRANDE,3
 2026,36,hepatite_c_hcv,BARRA DO GARCAS,2
@@ -71228,7 +71177,9 @@
 2026,36,micobacterioses_micobacteriose_tsa,PARANAITA,1
 2026,36,micose_paracoccidioidomicose,SINOP,1
 2026,36,papilomavirus_humano_hpv_papiloma_v_rus_biologia_molecular,CACERES,54
+2026,36,rub_ola_rub_ola_igg,GUARANTA DO NORTE,1
 2026,36,rub_ola_rub_ola_igg,JUSCIMEIRA,1
+2026,36,rub_ola_rub_ola_igm,GUARANTA DO NORTE,1
 2026,36,rub_ola_rub_ola_igm,JUSCIMEIRA,1
 2026,36,sarampo_rub_ola_igg,CUIABA,2
 2026,36,sarampo_rub_ola_igm,CUIABA,2
@@ -71300,7 +71251,7 @@
 2026,36,tuberculose,COMODORO,1
 2026,36,tuberculose,CONFRESA,3
 2026,36,tuberculose,CORUMBA,2
-2026,36,tuberculose,CUIABA,123
+2026,36,tuberculose,CUIABA,126
 2026,36,tuberculose,GENERAL CARNEIRO,2
 2026,36,tuberculose,GUARANTA DO NORTE,1
 2026,36,tuberculose,GUIRATINGA,1
@@ -71308,7 +71259,7 @@
 2026,36,tuberculose,JUINA,2
 2026,36,tuberculose,LUCAS DO RIO VERDE,10
 2026,36,tuberculose,NOBRES,9
-2026,36,tuberculose,NOVA BANDEIRANTES,3
+2026,36,tuberculose,NOVA BANDEIRANTES,6
 2026,36,tuberculose,NOVA MARINGA,2
 2026,36,tuberculose,NOVA OLIMPIA,1
 2026,36,tuberculose,PACARAIMA,2
@@ -71328,7 +71279,7 @@
 2026,36,tuberculose,SORRISO,9
 2026,36,tuberculose,TANGARA DA SERRA,43
 2026,36,tuberculose,TAPURAH,1
-2026,36,tuberculose,VARZEA GRANDE,50
+2026,36,tuberculose,VARZEA GRANDE,52
 2026,36,varicela_herpes_zoster_herpes_simplex_1_e_2_biologia_molecular,CUIABA,1
 2026,36,varicela_herpes_zoster_varicela_zoster_biologia_molecular,CUIABA,1
 2026,36,zika,BARRA DO GARCAS,1
@@ -71338,30 +71289,50 @@
 2026,36,zika,CUIABA,6
 2026,37,caxumba_caxumba_biologia_molecular,CHAPADA DOS GUIMARAES,2
 2026,37,chikungunya,ALTO GARCAS,3
+2026,37,chikungunya,CUIABA,1
 2026,37,chikungunya,SAPEZAL,2
+2026,37,chikungunya,VARZEA GRANDE,1
+2026,37,citomegalov_rus_citomegalov_rus_igg,VARZEA GRANDE,1
+2026,37,citomegalov_rus_citomegalov_rus_igg_avidez,VARZEA GRANDE,1
+2026,37,citomegalov_rus_citomegalov_rus_igm,VARZEA GRANDE,1
 2026,37,dengue,ALTO GARCAS,4
 2026,37,dengue,BOA ESPERANCA DO NORTE,2
-2026,37,dengue,CAMPO VERDE,2
+2026,37,dengue,CAMPO VERDE,10
 2026,37,dengue,COLIDER,1
 2026,37,dengue,CUIABA,6
-2026,37,dengue,LUCAS DO RIO VERDE,21
-2026,37,dengue,PRIMAVERA DO LESTE,1
-2026,37,dengue,SORRISO,5
+2026,37,dengue,LUCAS DO RIO VERDE,25
+2026,37,dengue,NOVA MARILANDIA,6
+2026,37,dengue,PRIMAVERA DO LESTE,9
+2026,37,dengue,RONDONOPOLIS,5
+2026,37,dengue,SAO BERNARDO DO CAMPO,5
+2026,37,dengue,SORRISO,9
 2026,37,dengue,TANGARA DA SERRA,1
-2026,37,dengue,VARZEA GRANDE,21
+2026,37,dengue,VARZEA GRANDE,50
 2026,37,doen_a_de_chagas_chagas,CACERES,1
 2026,37,doen_a_de_chagas_chagas_igg,CACERES,1
 2026,37,doen_a_de_chagas_chagas_igg,RONDONOPOLIS,2
+2026,37,doen_a_de_chagas_chagas_igg,SORRISO,1
 2026,37,doen_a_de_chagas_chagas_igm,CACERES,1
+2026,37,doen_a_de_chagas_cr_nica_pesquisa_de_arbov_rus_zdc,COLIDER,1
 2026,37,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,CACERES,2
+2026,37,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,CHORROCHO,1
+2026,37,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,SAPEZAL,1
+2026,37,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,TANGARA DA SERRA,2
 2026,37,esquistossomose_esquistossomose_sorologia,VARZEA GRANDE,2
-2026,37,febre_do_nilo_ocidental_febre_do_nilo_ocidental_igm,VARZEA GRANDE,1
+2026,37,febre_do_nilo_ocidental_encefalite_saint_louis_biologia_molecular,VARZEA GRANDE,1
+2026,37,febre_do_nilo_ocidental_febre_do_nilo_ocidental_biologia_molecular,VARZEA GRANDE,1
+2026,37,febre_do_nilo_ocidental_febre_do_nilo_ocidental_igm,CUIABA,1
+2026,37,febre_do_nilo_ocidental_febre_do_nilo_ocidental_igm,VARZEA GRANDE,2
 2026,37,hansen_ase_hansen_ase,CUIABA,2
+2026,37,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,CUIABA,1
 2026,37,hantavirus,TANGARA DA SERRA,1
 2026,37,hepatite,NOVO HORIZONTE DO NORTE,1
 2026,37,hepatite_a,NOVA XAVANTINA,2
+2026,37,hepatite_a,TERRA NOVA DO NORTE,2
 2026,37,hepatite_b_hbv,AGUA BOA,4
+2026,37,hepatite_b_hbv,CLAUDIA,1
 2026,37,hepatite_b_hbv,CUIABA,1
+2026,37,hepatite_b_hbv,FIGUEIROPOLIS D''OESTE,1
 2026,37,hepatite_b_hbv,GAUCHA DO NORTE,1
 2026,37,hepatite_b_hbv,JUARA,2
 2026,37,hepatite_b_hbv,MIRASSOL D''OESTE,1
@@ -71369,9 +71340,10 @@
 2026,37,hepatite_b_hbv,NOVO HORIZONTE DO NORTE,4
 2026,37,hepatite_b_hbv,PONTES E LACERDA,2
 2026,37,hepatite_b_hbv,PORTO DOS GAUCHOS,1
-2026,37,hepatite_b_hbv,PRIMAVERA DO LESTE,1
-2026,37,hepatite_b_hbv,SINOP,1
+2026,37,hepatite_b_hbv,PRIMAVERA DO LESTE,2
+2026,37,hepatite_b_hbv,SINOP,4
 2026,37,hepatite_b_hbv,TANGARA DA SERRA,1
+2026,37,hepatite_b_hbv,TERRA NOVA DO NORTE,6
 2026,37,hepatite_c_hcv,CACERES,1
 2026,37,hepatite_c_hcv,COMODORO,1
 2026,37,hepatite_c_hcv,CUIABA,1
@@ -71380,64 +71352,91 @@
 2026,37,hepatite_c_hcv,PONTES E LACERDA,1
 2026,37,hepatite_c_hcv,SINOP,1
 2026,37,hepatite_c_hcv,SORRISO,1
+2026,37,hepatite_c_hcv,TERRA NOVA DO NORTE,1
+2026,37,herpes_simples_herpes_v_rus_igg,SORRISO,1
+2026,37,herpes_simples_herpes_v_rus_igm,SORRISO,1
+2026,37,histoplasmose_histoplasmose,CUIABA,1
 2026,37,infec_o_coloniza_o_bact_rias_cultura,SANTA CARMEM,5
 2026,37,infec_o_coloniza_o_bact_rias_cultura,SINOP,3
 2026,37,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,SANTA CARMEM,10
 2026,37,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,SINOP,6
+2026,37,infec_o_coloniza_o_cultura_para_fungos,MARCELANDIA,1
 2026,37,infec_o_coloniza_o_cultura_para_fungos,MATUPA,1
+2026,37,infec_o_coloniza_o_fungos,MARCELANDIA,1
 2026,37,infec_o_coloniza_o_fungos,MATUPA,1
+2026,37,infec_o_coloniza_o_fungos_teste_de_sensibilidade,MARCELANDIA,1
 2026,37,infec_o_coloniza_o_fungos_teste_de_sensibilidade,MATUPA,1
 2026,37,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,SANTA CARMEM,5
 2026,37,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,SINOP,3
 2026,37,infec_o_coloniza_o_v_rus_respirat_rios,CUIABA,1
 2026,37,infec_o_coloniza_o_v_rus_respirat_rios,PRIMAVERA DO LESTE,1
-2026,37,influenza,CUIABA,6
+2026,37,influenza,CUIABA,13
+2026,37,influenza,GUARANTA DO NORTE,1
 2026,37,influenza,LUCAS DO RIO VERDE,1
 2026,37,influenza,MATUPA,1
 2026,37,influenza,NOVO HORIZONTE DO NORTE,3
+2026,37,influenza,SANTO ANTONIO DO LEVERGER,1
 2026,37,influenza,SINOP,1
 2026,37,influenza,SORRISO,2
+2026,37,influenza,TANGARA DA SERRA,1
+2026,37,leishmaniose,LUCAS DO RIO VERDE,1
 2026,37,leptospira,TANGARA DA SERRA,1
+2026,37,meningite,CUIABA,14
 2026,37,meningite,SORRISO,4
 2026,37,meningite,VARZEA GRANDE,4
+2026,37,raiva_raiva,CUIABA,1
 2026,37,sarampo_sarampo_igg,CACERES,1
 2026,37,sarampo_sarampo_igm,CACERES,1
-2026,37,sars_cov_2,CUIABA,4
+2026,37,sars_cov_2,BELO HORIZONTE,1
+2026,37,sars_cov_2,CHAPADA DOS GUIMARAES,1
+2026,37,sars_cov_2,CUIABA,5
 2026,37,sars_cov_2,NOVA GUARITA,1
 2026,37,sars_cov_2,NOVA XAVANTINA,1
 2026,37,sars_cov_2,POCONE,2
-2026,37,sars_cov_2,PRIMAVERA DO LESTE,5
-2026,37,sars_cov_2,VARZEA GRANDE,16
+2026,37,sars_cov_2,PRIMAVERA DO LESTE,6
+2026,37,sars_cov_2,VARZEA GRANDE,19
+2026,37,toxoplasmose_citomegalov_rus_igg,CUIABA,1
 2026,37,toxoplasmose_citomegalov_rus_igg,VARZEA GRANDE,1
+2026,37,toxoplasmose_citomegalov_rus_igm,CUIABA,1
 2026,37,toxoplasmose_citomegalov_rus_igm,VARZEA GRANDE,1
 2026,37,toxoplasmose_epstein_barr_igg,VARZEA GRANDE,1
 2026,37,toxoplasmose_epstein_barr_igm,VARZEA GRANDE,1
 2026,37,toxoplasmose_herpes_v_rus_igg,VARZEA GRANDE,1
 2026,37,toxoplasmose_herpes_v_rus_igm,VARZEA GRANDE,1
 2026,37,toxoplasmose_toxoplasmose_avidez_igg,SORRISO,1
+2026,37,toxoplasmose_toxoplasmose_igg,CUIABA,1
 2026,37,toxoplasmose_toxoplasmose_igg,VARZEA GRANDE,2
+2026,37,toxoplasmose_toxoplasmose_igm,CUIABA,1
 2026,37,toxoplasmose_toxoplasmose_igm,VARZEA GRANDE,2
+2026,37,tuberculose,ALTO PARAGUAI,1
+2026,37,tuberculose,ARAPUTANGA,2
 2026,37,tuberculose,ARIQUEMES,1
 2026,37,tuberculose,BARAO DE MELGACO,2
-2026,37,tuberculose,BARRA DO GARCAS,5
-2026,37,tuberculose,CACERES,11
+2026,37,tuberculose,BARRA DO BUGRES,5
+2026,37,tuberculose,BARRA DO GARCAS,6
+2026,37,tuberculose,CACERES,14
 2026,37,tuberculose,CAMPINAPOLIS,3
 2026,37,tuberculose,CAMPO GRANDE,6
 2026,37,tuberculose,CANARANA,1
-2026,37,tuberculose,CUIABA,21
+2026,37,tuberculose,COLNIZA,1
+2026,37,tuberculose,CUIABA,35
+2026,37,tuberculose,JUINA,18
+2026,37,tuberculose,LAMBARI D''OESTE,4
+2026,37,tuberculose,MARCELANDIA,1
 2026,37,tuberculose,MATUPA,2
 2026,37,tuberculose,NOBRES,1
-2026,37,tuberculose,NOVA MUTUM,5
+2026,37,tuberculose,NOVA MUTUM,7
 2026,37,tuberculose,NOVA UBIRATA,6
 2026,37,tuberculose,NOVO MUNDO,5
+2026,37,tuberculose,POCONE,1
 2026,37,tuberculose,RIO BRANCO,2
 2026,37,tuberculose,RONDONOPOLIS,3
 2026,37,tuberculose,SANTA TEREZINHA,4
 2026,37,tuberculose,SAPEZAL,5
-2026,37,tuberculose,SINOP,4
-2026,37,tuberculose,SORRISO,1
-2026,37,tuberculose,TANGARA DA SERRA,7
-2026,37,tuberculose,VARZEA GRANDE,20
+2026,37,tuberculose,SINOP,7
+2026,37,tuberculose,SORRISO,2
+2026,37,tuberculose,TANGARA DA SERRA,73
+2026,37,tuberculose,VARZEA GRANDE,27
 2026,37,varicela_herpes_zoster_herpes_v_rus_igg,CAMPO VERDE,1
 2026,37,varicela_herpes_zoster_herpes_v_rus_igm,CAMPO VERDE,1
 2026,37,varicela_herpes_zoster_var_ola,CAMPO VERDE,1

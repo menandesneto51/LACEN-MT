@@ -1,291 +1,269 @@
 epi_year,epi_week,municipio,municipio_key,agravo,exames,positivos,positividade_pct,cid_familia,internacoes,internacoes_por_100k,indicasus_score,sih_semana_ref
-2026,35,CUIABA,CUIABA,tuberculose,139,1,0.7194,tuberculose,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,tuberculose,63,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,JUINA,JUINA,hepatite_b_hbv,57,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,dengue,49,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,dengue,43,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,CAMPO VERDE,CAMPO VERDE,dengue,40,0,0.0,dengue_arbovirose,0,0.0,7.035,2026-SE31
-2026,35,SINOP,SINOP,tuberculose,39,1,2.5641,tuberculose,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,dengue,29,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,raiva_raiva,26,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,sars_cov_2,25,0,0.0,,0,0.0,,2026-SE31
-2026,35,JACIARA,JACIARA,tuberculose,20,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,hepatite_b_hbv,19,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,hepatite_b_hbv,18,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,influenza,17,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,sars_cov_2,16,0,0.0,,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,tuberculose,16,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,RIO DE JANEIRO,RIO DE JANEIRO,tuberculose,13,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,tuberculose,13,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,hepatite_b_hbv,12,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,NOVA XAVANTINA,NOVA XAVANTINA,hepatite_b_hbv,10,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,meningite,10,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,hansen_ase_hansen_ase,9,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,hepatite_c_hcv,9,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,JURUENA,JURUENA,tuberculose,9,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,tuberculose,9,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,leptospira,9,0,0.0,,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,9,0,0.0,,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,9,0,0.0,,0,0.0,,2026-SE31
-2026,35,CAMPO VERDE,CAMPO VERDE,tuberculose,8,0,0.0,tuberculose,0,0.0,7.035,2026-SE31
-2026,35,JUINA,JUINA,doen_as_diarr_icas_gastroenterite_bact_rias_teste_de_sensibilidade,8,0,0.0,,0,0.0,,2026-SE31
-2026,35,PARANATINGA,PARANATINGA,meningite,8,0,0.0,,0,0.0,,2026-SE31
-2026,35,AGUA BOA,AGUA BOA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,12.48,2026-SE31
-2026,35,ARIPUANA,ARIPUANA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,8.9,2026-SE31
-2026,35,CASTANHEIRA,CASTANHEIRA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,0.005,2026-SE31
-2026,35,JUINA,JUINA,tuberculose,7,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,MATUPA,MATUPA,meningite,7,0,0.0,,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,APIACAS,APIACAS,hepatite_b_hbv,6,0,0.0,hepatite,0,0.0,11.24,2026-SE31
-2026,35,BRASILIA,BRASILIA,hepatite_b_hbv,6,0,0.0,hepatite,0,,,2026-SE31
-2026,35,CACERES,CACERES,tuberculose,6,0,0.0,tuberculose,0,0.0,12.82,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_fungos,6,0,0.0,,0,0.0,9.05,2026-SE31
-2026,35,CANARANA,CANARANA,hepatite_b_hbv,6,0,0.0,hepatite,0,0.0,11.665,2026-SE31
-2026,35,CLAUDIA,CLAUDIA,tuberculose,6,0,0.0,tuberculose,0,0.0,1.0,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,dengue,6,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,dengue,6,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,hepatite_b_hbv,6,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,6,0,0.0,,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,dengue,6,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,hepatite_a,6,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TOLEDO,TOLEDO,hepatite_b_hbv,6,0,0.0,hepatite,0,,,2026-SE31
-2026,35,ARAPUTANGA,ARAPUTANGA,dengue,5,0,0.0,dengue_arbovirose,0,0.0,6.91,2026-SE31
-2026,35,ARIPUANA,ARIPUANA,tuberculose,5,0,0.0,tuberculose,0,0.0,8.9,2026-SE31
-2026,35,BARRA DO GARCAS,BARRA DO GARCAS,tuberculose,5,1,20.0,tuberculose,0,0.0,12.52,2026-SE31
-2026,35,CACERES,CACERES,dengue,5,0,0.0,dengue_arbovirose,0,0.0,12.82,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_cultura_para_fungos,5,0,0.0,,0,0.0,9.05,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_fungos_teste_de_sensibilidade,5,0,0.0,,0,0.0,9.05,2026-SE31
-2026,35,COMODORO,COMODORO,meningite,5,0,0.0,,0,0.0,10.15,2026-SE31
-2026,35,COMODORO,COMODORO,tuberculose,5,0,0.0,tuberculose,0,0.0,10.15,2026-SE31
-2026,35,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,tuberculose,5,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOVA MUTUM,NOVA MUTUM,tuberculose,5,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOVA SANTA HELENA,NOVA SANTA HELENA,hepatite_b_hbv,5,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,dengue,5,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,SANTO ANTONIO DO LEVERGER,SANTO ANTONIO DO LEVERGER,tuberculose,5,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,ARAPUTANGA,ARAPUTANGA,tuberculose,4,0,0.0,tuberculose,0,0.0,6.91,2026-SE31
-2026,35,BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,dengue,4,0,0.0,dengue_arbovirose,0,,,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,sars_cov_2,4,0,0.0,,0,0.0,9.05,2026-SE31
-2026,35,CUIABA,CUIABA,hepatite_a,4,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,GENERAL CARNEIRO,GENERAL CARNEIRO,tuberculose,4,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,hepatite,4,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,tuberculose,4,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,JUINA,JUINA,doen_as_diarr_icas_gastroenterite_bact_rias_cultura,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,JUINA,JUINA,doen_as_diarr_icas_gastroenterite_coprocultura,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,JUINA,JUINA,doen_as_diarr_icas_gastroenterite_rotav_rus,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,influenza,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,MARCELANDIA,MARCELANDIA,hepatite_b_hbv,4,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,MIRASSOL D''OESTE,MIRASSOL D''OESTE,tuberculose,4,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,leishmaniose,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,RIO BRANCO,RIO BRANCO,tuberculose,4,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_identifica_o,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,hepatite_b_hbv,4,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,infec_o_coloniza_o_bact_rias_cultura,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,sars_cov_2,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,raiva_raiva,4,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,hepatite_b_hbv,4,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,AGUA BOA,AGUA BOA,tuberculose,3,0,0.0,tuberculose,0,0.0,12.48,2026-SE31
-2026,35,APIACAS,APIACAS,hepatite,3,1,33.3333,hepatite,0,0.0,11.24,2026-SE31
-2026,35,BRASILIA,BRASILIA,hepatite,3,1,33.3333,hepatite,0,,,2026-SE31
-2026,35,CACERES,CACERES,leptospira,3,0,0.0,,0,0.0,12.82,2026-SE31
-2026,35,CAMPINAPOLIS,CAMPINAPOLIS,tuberculose,3,0,0.0,tuberculose,0,0.0,11.4,2026-SE31
-2026,35,CAMPO GRANDE,CAMPO GRANDE,tuberculose,3,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,CASTANHEIRA,CASTANHEIRA,tuberculose,3,0,0.0,tuberculose,0,0.0,0.005,2026-SE31
-2026,35,COLNIZA,COLNIZA,tuberculose,3,0,0.0,tuberculose,0,0.0,4.27,2026-SE31
-2026,35,CUIABA,CUIABA,dengue,3,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,hepatite,3,1,33.3333,hepatite,0,0.0,,2026-SE31
-2026,35,DENISE,DENISE,dengue,3,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,influenza,3,0,0.0,,0,0.0,,2026-SE31
-2026,35,ITAPECURU MIRIM,ITAPECURU MIRIM,tuberculose,3,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,JACIARA,JACIARA,leptospira,3,0,0.0,,0,0.0,,2026-SE31
-2026,35,MIRASSOL D''OESTE,MIRASSOL D''OESTE,meningite,3,0,0.0,,0,,,2026-SE31
-2026,35,PEIXOTO DE AZEVEDO,PEIXOTO DE AZEVEDO,hepatite_b_hbv,3,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,hepatite_c_hcv,3,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,3,0,0.0,,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,hepatite,3,1,33.3333,hepatite,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,hepatite_c_hcv,3,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,hepatite_c_hcv,3,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TOLEDO,TOLEDO,hepatite,3,1,33.3333,hepatite,0,,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_biologia_molecular,3,0,0.0,,0,0.0,,2026-SE31
-2026,35,ALTO GARCAS,ALTO GARCAS,dengue,2,0,0.0,dengue_arbovirose,0,0.0,6.1,2026-SE31
-2026,35,APIACAS,APIACAS,hepatite_a,2,0,0.0,hepatite,0,0.0,11.24,2026-SE31
-2026,35,ARIPUANA,ARIPUANA,sars_cov_2,2,0,0.0,,0,0.0,8.9,2026-SE31
-2026,35,BRASILIA,BRASILIA,hepatite_a,2,0,0.0,hepatite,0,,,2026-SE31
-2026,35,CACERES,CACERES,leishmaniose,2,0,0.0,,0,0.0,12.82,2026-SE31
-2026,35,CANARANA,CANARANA,hepatite_a,2,0,0.0,hepatite,0,0.0,11.665,2026-SE31
-2026,35,CERES,CERES,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,COLIDER,COLIDER,tuberculose,2,0,0.0,tuberculose,0,0.0,6.23,2026-SE31
-2026,35,CUIABA,CUIABA,hansen_ase_bact_rias_cultura,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,hansen_ase_bact_rias_teste_de_sensibilidade,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,DENISE,DENISE,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,hantavirus,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,hepatite_a,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,infec_o_coloniza_o_cultura_para_fungos,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,infec_o_coloniza_o_fungos,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,infec_o_coloniza_o_fungos_teste_de_sensibilidade,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,JUINA,JUINA,hepatite_c_hcv,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,JUSCIMEIRA,JUSCIMEIRA,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,LAMBARI D''OESTE,LAMBARI D''OESTE,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,MACEIO,MACEIO,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,MARIBONDO,MARIBONDO,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,MATUPA,MATUPA,raiva_raiva,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,MIRASSOL D''OESTE,MIRASSOL D''OESTE,chikungunya,2,0,0.0,dengue_arbovirose,0,,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,influenza,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA MUTUM,NOVA MUTUM,hepatite_c_hcv,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,NOVO MUNDO,NOVO MUNDO,hepatite_b_hbv,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,sars_cov_2,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,zika,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_cultura,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade_ii,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia_fungos,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,SALINOPOLIS,SALINOPOLIS,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,SENADOR CANEDO,SENADOR CANEDO,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,SINOP,SINOP,hepatite_c_hcv,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,hepatite_a,2,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,hiv,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,hantavirus,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,TOLEDO,TOLEDO,hepatite_a,2,0,0.0,hepatite,0,,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,zika,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,VERA,VERA,sars_cov_2,2,0,0.0,,0,0.0,,2026-SE31
-2026,35,AGUA BOA,AGUA BOA,meningite,1,0,0.0,,0,0.0,12.48,2026-SE31
-2026,35,ALTA FLORESTA,ALTA FLORESTA,hepatite,1,0,0.0,hepatite,0,0.0,10.63,2026-SE31
-2026,35,ALTA FLORESTA,ALTA FLORESTA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,10.63,2026-SE31
-2026,35,ALTO ARAGUAIA,ALTO ARAGUAIA,tuberculose,1,0,0.0,tuberculose,0,0.0,11.18,2026-SE31
-2026,35,ALTO GARCAS,ALTO GARCAS,chikungunya,1,0,0.0,dengue_arbovirose,0,0.0,6.1,2026-SE31
-2026,35,ALTO GARCAS,ALTO GARCAS,tuberculose,1,0,0.0,tuberculose,0,0.0,6.1,2026-SE31
-2026,35,ALTO TAQUARI,ALTO TAQUARI,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,0.0,5.39,2026-SE31
-2026,35,APARECIDA DE GOIANIA,APARECIDA DE GOIANIA,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,APIACAS,APIACAS,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,11.24,2026-SE31
-2026,35,ARAPUTANGA,ARAPUTANGA,leishmaniose,1,0,0.0,,0,0.0,6.91,2026-SE31
-2026,35,BARAO DE MELGACO,BARAO DE MELGACO,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,11.51,2026-SE31
-2026,35,BARRA DO BUGRES,BARRA DO BUGRES,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,0.0,3.7,2026-SE31
-2026,35,BARRA DO GARCAS,BARRA DO GARCAS,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,12.52,2026-SE31
-2026,35,BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,citomegalov_rus_pesquisa_qualitativa_do_dna_do_citomegalov_rus,1,0,0.0,,0,,,2026-SE31
-2026,35,BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,hepatite_b_hbv,1,0,0.0,hepatite,0,,,2026-SE31
-2026,35,BRASILIA,BRASILIA,hepatite_c_hcv,1,0,0.0,hepatite,0,,,2026-SE31
-2026,35,BRASILIA,BRASILIA,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,BRASNORTE,BRASNORTE,sars_cov_2,1,0,0.0,,0,0.0,4.0,2026-SE31
-2026,35,CACERES,CACERES,coqueluche_bordetella,1,0,0.0,,0,0.0,12.82,2026-SE31
-2026,35,CACERES,CACERES,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,12.82,2026-SE31
-2026,35,CACERES,CACERES,sars_cov_2,1,0,0.0,,0,0.0,12.82,2026-SE31
-2026,35,CAIAPONIA,CAIAPONIA,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,chikungunya,1,0,0.0,dengue_arbovirose,0,0.0,9.05,2026-SE31
-2026,35,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,tuberculose,1,0,0.0,tuberculose,0,0.0,9.05,2026-SE31
-2026,35,CAMPOS DE JULIO,CAMPOS DE JULIO,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,4.225,2026-SE31
-2026,35,CANARANA,CANARANA,sars_cov_2,1,0,0.0,,0,0.0,11.665,2026-SE31
-2026,35,CANARANA,CANARANA,varicela_herpes_zoster_varicela_zoster_biologia_molecular,1,0,0.0,,0,0.0,11.665,2026-SE31
-2026,35,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,sars_cov_2,1,0,0.0,,0,0.0,3.86,2026-SE31
-2026,35,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,tuberculose,1,0,0.0,tuberculose,0,0.0,3.86,2026-SE31
-2026,35,CLAUDIA,CLAUDIA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,1.0,2026-SE31
-2026,35,COMODORO,COMODORO,influenza,1,0,0.0,,0,0.0,10.15,2026-SE31
-2026,35,CONFRESA,CONFRESA,sars_cov_2,1,0,0.0,,0,0.0,49.935,2026-SE31
-2026,35,CONFRESA,CONFRESA,tuberculose,1,0,0.0,tuberculose,0,0.0,49.935,2026-SE31
-2026,35,COTRIGUACU,COTRIGUACU,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,7.04,2026-SE31
-2026,35,CUIABA,CUIABA,citomegalov_rus_citomegalov_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,citomegalov_rus_citomegalov_rus_igg_avidez,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,citomegalov_rus_citomegalov_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,doenca_de_chagas_aguda_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,infec_o_coloniza_o_cultura_para_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,infec_o_coloniza_o_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,infec_o_coloniza_o_fungos_teste_de_sensibilidade,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CUIABA,CUIABA,infec_o_coloniza_o_v_rus_respirat_rios,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,CURVELANDIA,CURVELANDIA,infec_o_coloniza_o_v_rus_respirat_rios,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,doenca_de_chagas_aguda_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,doenca_de_chagas_aguda_chagas_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,leptospira,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,DIAMANTINO,DIAMANTINO,meningite,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,DOURADOS,DOURADOS,influenza,1,0,0.0,,0,,,2026-SE31
-2026,35,FAXINAL DO SOTURNO,FAXINAL DO SOTURNO,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,FELIZ NATAL,FELIZ NATAL,tuberculose,1,0,0.0,tuberculose,0,0.0,2.0,2026-SE31
-2026,35,FORTALEZA,FORTALEZA,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,herpes_simples_herpes_v_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,herpes_simples_herpes_v_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,GUARANTA DO NORTE,GUARANTA DO NORTE,infec_o_coloniza_o_paracoccidioidomicose,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,GUIRATINGA,GUIRATINGA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,IPIRANGA DO NORTE,IPIRANGA DO NORTE,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,ITANHANGA,ITANHANGA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,ITIQUIRA,ITIQUIRA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,JACIARA,JACIARA,infec_o_coloniza_o_cultura_para_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,JACIARA,JACIARA,infec_o_coloniza_o_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,JACIARA,JACIARA,infec_o_coloniza_o_fungos_teste_de_sensibilidade,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,JANGADA,JANGADA,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,JUARA,JUARA,dengue,1,0,0.0,dengue_arbovirose,1,2.8349,,2026-SE31
-2026,35,JUARA,JUARA,influenza,1,0,0.0,,1,2.8349,,2026-SE31
-2026,35,JUARA,JUARA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,JURUENA,JURUENA,infec_o_coloniza_o_bact_rias_cultura,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,MARCELANDIA,MARCELANDIA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,MIRANTE DA SERRA,MIRANTE DA SERRA,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
-2026,35,MIRASSOL D''OESTE,MIRASSOL D''OESTE,sars_cov_2,1,0,0.0,,0,,,2026-SE31
-2026,35,NAVIRAI,NAVIRAI,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,NOBRES,NOBRES,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,infec_o_coloniza_o_bact_rias_cultura,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,infec_o_coloniza_o_cultura_para_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,infec_o_coloniza_o_fungos,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,infec_o_coloniza_o_fungos_teste_de_sensibilidade,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA BANDEIRANTES,NOVA BANDEIRANTES,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOVA GUARITA,NOVA GUARITA,raiva_raiva,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA MONTE VERDE,NOVA MONTE VERDE,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOVA MUTUM,NOVA MUTUM,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA OLIMPIA,NOVA OLIMPIA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA UBIRATA,NOVA UBIRATA,influenza,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,NOVA XAVANTINA,NOVA XAVANTINA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,NOVA XAVANTINA,NOVA XAVANTINA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,NOVO MUNDO,NOVO MUNDO,raiva_raiva,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,PACARAIMA,PACARAIMA,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
-2026,35,PACARAIMA,PACARAIMA,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,PARANAITA,PARANAITA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,PARANATINGA,PARANATINGA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,PARANATINGA,PARANATINGA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,PARAUAPEBAS,PARAUAPEBAS,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,PEDRA PRETA,PEDRA PRETA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,POCONE,POCONE,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,POCONE,POCONE,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,sarampo_sarampo_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,sarampo_sarampo_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,sarampo_sarampo_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,PONTES E LACERDA,PONTES E LACERDA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
-2026,35,PORTO VELHO,PORTO VELHO,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,POXOREO,POXOREO,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,RONDONOPOLIS,RONDONOPOLIS,doen_a_de_chagas_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,ROSARIO OESTE,ROSARIO OESTE,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,RUROPOLIS,RUROPOLIS,sars_cov_2,1,0,0.0,,0,,,2026-SE31
-2026,35,SAO GABRIEL DO OESTE,SAO GABRIEL DO OESTE,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,SAO PEDRO DA CIPA,SAO PEDRO DA CIPA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SAPEZAL,SAPEZAL,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,SAPEZAL,SAPEZAL,influenza,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SERRA NOVA DOURADA,SERRA NOVA DOURADA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,hiv,1,1,100.0,,0,0.0,,2026-SE31
-2026,35,SINOP,SINOP,infec_o_coloniza_o_bact_rias_identifica_o,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SOLEDADE DE MINAS,SOLEDADE DE MINAS,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,SORRISO,SORRISO,doen_a_de_chagas_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,influenza,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SORRISO,SORRISO,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,SUMARE,SUMARE,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
-2026,35,TABAPORA,TABAPORA,hiv,1,1,100.0,,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
-2026,35,TANGARA DA SERRA,TANGARA DA SERRA,leptospira,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,TOLEDO,TOLEDO,hepatite_c_hcv,1,0,0.0,hepatite,0,,,2026-SE31
-2026,35,URUPA,URUPA,influenza,1,0,0.0,,0,,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_citomegalov_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_citomegalov_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_epstein_barr_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_epstein_barr_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_herpes_v_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_herpes_v_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_toxoplasmose_igg,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_toxoplasmose_igm,1,0,0.0,,0,0.0,,2026-SE31
-2026,35,VILHENA,VILHENA,influenza,1,0,0.0,,0,,,2026-SE31
+2026,36,CUIABA,CUIABA,tuberculose,126,4,3.1746,tuberculose,0,0.0,,2026-SE31
+2026,36,CACERES,CACERES,papilomavirus_humano_hpv_papiloma_v_rus_biologia_molecular,54,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,tuberculose,52,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,dengue,50,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,JUINA,JUINA,hepatite_b_hbv,49,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,tuberculose,43,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,dengue,41,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,tuberculose,39,1,2.5641,tuberculose,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,dengue,30,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,dengue,29,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,24,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,sars_cov_2,21,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,tuberculose,19,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,hansen_ase_hansen_ase,17,0,0.0,,0,0.0,,2026-SE31
+2026,36,CACERES,CACERES,tuberculose,16,0,0.0,tuberculose,0,0.0,12.82,2026-SE31
+2026,36,CUIABA,CUIABA,influenza,16,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,hepatite_b_hbv,13,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,CAMPO VERDE,CAMPO VERDE,dengue,12,0,0.0,dengue_arbovirose,0,0.0,7.035,2026-SE31
+2026,36,CUIABA,CUIABA,hepatite_c_hcv,12,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,infec_o_coloniza_o_bact_rias_cultura,12,0,0.0,,0,0.0,,2026-SE31
+2026,36,ALTA FLORESTA,ALTA FLORESTA,tuberculose,10,0,0.0,tuberculose,0,0.0,10.63,2026-SE31
+2026,36,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,tuberculose,10,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,COLIDER,COLIDER,dengue,9,0,0.0,dengue_arbovirose,0,0.0,6.23,2026-SE31
+2026,36,CUIABA,CUIABA,sars_cov_2,9,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOBRES,NOBRES,tuberculose,9,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,tuberculose,9,1,11.1111,tuberculose,0,0.0,,2026-SE31
+2026,36,NOVA UBIRATA,NOVA UBIRATA,chikungunya,8,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,8,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,hepatite_b_hbv,8,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,ARIPUANA,ARIPUANA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,8.9,2026-SE31
+2026,36,CASTANHEIRA,CASTANHEIRA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,0.005,2026-SE31
+2026,36,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,tuberculose,7,0,0.0,tuberculose,0,0.0,3.86,2026-SE31
+2026,36,COLNIZA,COLNIZA,hepatite_b_hbv,7,0,0.0,hepatite,0,0.0,4.27,2026-SE31
+2026,36,CUIABA,CUIABA,chikungunya,7,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,influenza,7,0,0.0,,0,0.0,,2026-SE31
+2026,36,CAMPINAPOLIS,CAMPINAPOLIS,tuberculose,6,0,0.0,tuberculose,0,0.0,11.4,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,hepatite_b_hbv,6,0,0.0,hepatite,0,0.0,9.05,2026-SE31
+2026,36,CUIABA,CUIABA,meningite,6,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,zika,6,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,6,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA BANDEIRANTES,NOVA BANDEIRANTES,tuberculose,6,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PONTES E LACERDA,PONTES E LACERDA,dengue,6,1,16.6667,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,PORTO VELHO,PORTO VELHO,tuberculose,6,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,SINOP,SINOP,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,6,0,0.0,,0,0.0,,2026-SE31
+2026,36,CACERES,CACERES,dengue,5,0,0.0,dengue_arbovirose,0,0.0,12.82,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,influenza,5,0,0.0,,0,0.0,,2026-SE31
+2026,36,JANGADA,JANGADA,dengue,5,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,hiv,5,0,0.0,,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,dengue,5,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,ALTO GARCAS,ALTO GARCAS,tuberculose,4,0,0.0,tuberculose,0,0.0,6.1,2026-SE31
+2026,36,ARIPUANA,ARIPUANA,tuberculose,4,0,0.0,tuberculose,0,0.0,8.9,2026-SE31
+2026,36,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,influenza,4,0,0.0,,0,0.0,3.86,2026-SE31
+2026,36,CONFRESA,CONFRESA,zika,4,0,0.0,dengue_arbovirose,0,0.0,49.935,2026-SE31
+2026,36,COTRIGUACU,COTRIGUACU,dengue,4,0,0.0,dengue_arbovirose,0,0.0,7.04,2026-SE31
+2026,36,CUIABA,CUIABA,hepatite_a,4,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,DIAMANTINO,DIAMANTINO,hepatite_b_hbv,4,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,PORTO DOS GAUCHOS,PORTO DOS GAUCHOS,meningite,4,0,0.0,,1,18.7126,,2026-SE31
+2026,36,SINOP,SINOP,meningite,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,meningite,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,UNIAO DO SUL,UNIAO DO SUL,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARGEAO,VARGEAO,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,4,0,0.0,,0,,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,meningite,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_toxoplasmose_igg,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_toxoplasmose_igm,4,0,0.0,,0,0.0,,2026-SE31
+2026,36,AGUA BOA,AGUA BOA,hepatite_b_hbv,3,0,0.0,hepatite,0,0.0,12.48,2026-SE31
+2026,36,BARRA DO GARCAS,BARRA DO GARCAS,hepatite_b_hbv,3,0,0.0,hepatite,0,0.0,12.52,2026-SE31
+2026,36,BARRA DO GARCAS,BARRA DO GARCAS,tuberculose,3,0,0.0,tuberculose,0,0.0,12.52,2026-SE31
+2026,36,COLIDER,COLIDER,hepatite_b_hbv,3,0,0.0,hepatite,0,0.0,6.23,2026-SE31
+2026,36,CONFRESA,CONFRESA,dengue,3,0,0.0,dengue_arbovirose,0,0.0,49.935,2026-SE31
+2026,36,CONFRESA,CONFRESA,tuberculose,3,0,0.0,tuberculose,0,0.0,49.935,2026-SE31
+2026,36,CUIABA,CUIABA,sarampo_sarampo_biologia_molecular,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,sarampo_sarampo_igg,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,sarampo_sarampo_igm,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,meningite,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,PEROLA,PEROLA,dengue,3,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,meningite,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,SAO JOSE DO RIO CLARO,SAO JOSE DO RIO CLARO,tuberculose,3,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,hepatite_c_hcv,3,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,hepatite_b_hbv,3,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,influenza,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_biologia_molecular,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_citomegalov_rus_igg,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_citomegalov_rus_igm,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_epstein_barr_igg,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_epstein_barr_igm,3,0,0.0,,0,0.0,,2026-SE31
+2026,36,BARAO DE MELGACO,BARAO DE MELGACO,tuberculose,2,0,0.0,tuberculose,0,0.0,11.51,2026-SE31
+2026,36,BARRA DO BUGRES,BARRA DO BUGRES,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2,0,0.0,,0,0.0,3.7,2026-SE31
+2026,36,BARRA DO GARCAS,BARRA DO GARCAS,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,12.52,2026-SE31
+2026,36,BARRA DO GARCAS,BARRA DO GARCAS,hepatite_c_hcv,2,0,0.0,hepatite,0,0.0,12.52,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,9.05,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_cultura_para_fungos,2,0,0.0,,0,0.0,9.05,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_fungos,2,0,0.0,,0,0.0,9.05,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,esporotricose_humana_fungos_teste_de_sensibilidade,2,0,0.0,,0,0.0,9.05,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,tuberculose,2,0,0.0,tuberculose,0,0.0,9.05,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,zika,2,0,0.0,dengue_arbovirose,0,0.0,9.05,2026-SE31
+2026,36,CAMPO VERDE,CAMPO VERDE,htlv_htlv_i_ii_v_rus_linfotr_pico_humano_tipo_i_e_ii,2,0,0.0,,0,0.0,7.035,2026-SE31
+2026,36,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,3.86,2026-SE31
+2026,36,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,zika,2,0,0.0,dengue_arbovirose,0,0.0,3.86,2026-SE31
+2026,36,CLAUDIA,CLAUDIA,tuberculose,2,0,0.0,tuberculose,0,0.0,1.0,2026-SE31
+2026,36,CONFRESA,CONFRESA,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,49.935,2026-SE31
+2026,36,CORUMBA,CORUMBA,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,CUIABA,CUIABA,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,sarampo_rub_ola_igg,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,sarampo_rub_ola_igm,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,GENERAL CARNEIRO,GENERAL CARNEIRO,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,JANGADA,JANGADA,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,JUARA,JUARA,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2,0,0.0,,1,2.8349,,2026-SE31
+2026,36,JUINA,JUINA,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,NOVA BRASILANDIA,NOVA BRASILANDIA,sars_cov_2,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA MARINGA,NOVA MARINGA,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PACARAIMA,PACARAIMA,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_fungos_teste_de_sensibilidade,2,0,0.0,,1,8.8566,,2026-SE31
+2026,36,POCONE,POCONE,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,hepatite_b_hbv,2,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,sars_cov_2,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,RIO VERDE,RIO VERDE,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,ROSARIO OESTE,ROSARIO OESTE,tuberculose,2,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,SAPUCAIA DO SUL,SAPUCAIA DO SUL,tuberculose,2,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,SINOP,SINOP,hansen_ase_hansen_ase_biologia_molecular,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,hepatite_b_hbv,2,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,sarampo_sarampo_biologia_molecular,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,infec_o_coloniza_o_cultura_para_fungos,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,infec_o_coloniza_o_fungos,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,infec_o_coloniza_o_fungos_teste_de_sensibilidade,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,hantavirus,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,hepatite_b_hbv,2,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,UNIAO DO SUL,UNIAO DO SUL,infec_o_coloniza_o_bact_rias_cultura,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARGEAO,VARGEAO,infec_o_coloniza_o_bact_rias_cultura,2,0,0.0,,0,,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,chikungunya,2,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_herpes_v_rus_igg,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_herpes_v_rus_igm,2,0,0.0,,0,0.0,,2026-SE31
+2026,36,AGUA BOA,AGUA BOA,dengue,1,0,0.0,dengue_arbovirose,0,0.0,12.48,2026-SE31
+2026,36,AGUA BOA,AGUA BOA,sars_cov_2,1,0,0.0,,0,0.0,12.48,2026-SE31
+2026,36,ALTO TAQUARI,ALTO TAQUARI,tuberculose,1,0,0.0,tuberculose,0,0.0,5.39,2026-SE31
+2026,36,ARIPUANA,ARIPUANA,influenza,1,0,0.0,,0,0.0,8.9,2026-SE31
+2026,36,ARIPUANA,ARIPUANA,sars_cov_2,1,0,0.0,,0,0.0,8.9,2026-SE31
+2026,36,BARRA DO BUGRES,BARRA DO BUGRES,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,0.0,3.7,2026-SE31
+2026,36,BARRA DO BUGRES,BARRA DO BUGRES,tuberculose,1,0,0.0,tuberculose,0,0.0,3.7,2026-SE31
+2026,36,BARRA DO GARCAS,BARRA DO GARCAS,zika,1,0,0.0,dengue_arbovirose,0,0.0,12.52,2026-SE31
+2026,36,BARRA DO PIRAI,BARRA DO PIRAI,hansen_ase_hansen_ase_biologia_molecular,1,0,0.0,,0,,,2026-SE31
+2026,36,BARRO,BARRO,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,BELEM,BELEM,brucelose_brucelose,1,0,0.0,,0,,,2026-SE31
+2026,36,BELEM,BELEM,brucelose_brucelose_igg,1,0,0.0,,0,,,2026-SE31
+2026,36,BELEM,BELEM,brucelose_brucelose_igm,1,0,0.0,,0,,,2026-SE31
+2026,36,BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,citomegalov_rus_pesquisa_qualitativa_do_dna_do_citomegalov_rus,1,0,0.0,,0,,,2026-SE31
+2026,36,BOM JESUS DO ARAGUAIA,BOM JESUS DO ARAGUAIA,influenza,1,0,0.0,,0,0.0,20.62,2026-SE31
+2026,36,BRASNORTE,BRASNORTE,sars_cov_2,1,0,0.0,,0,0.0,4.0,2026-SE31
+2026,36,CACERES,CACERES,brucelose_brucelose,1,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,CACERES,CACERES,brucelose_brucelose_biologia_molecular,1,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,CACERES,CACERES,brucelose_brucelose_igg,1,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,CACERES,CACERES,brucelose_brucelose_igm,1,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,CACERES,CACERES,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,12.82,2026-SE31
+2026,36,CACERES,CACERES,influenza,1,0,0.0,,0,0.0,12.82,2026-SE31
+2026,36,CAMPO GRANDE,CAMPO GRANDE,tuberculose,1,0,0.0,tuberculose,0,,,2026-SE31
+2026,36,CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,dengue,1,0,0.0,dengue_arbovirose,0,0.0,9.05,2026-SE31
+2026,36,CAMPO VERDE,CAMPO VERDE,sars_cov_2,1,0,0.0,,0,0.0,7.035,2026-SE31
+2026,36,CAMPO VERDE,CAMPO VERDE,tuberculose,1,0,0.0,tuberculose,0,0.0,7.035,2026-SE31
+2026,36,CANABRAVA DO NORTE,CANABRAVA DO NORTE,tuberculose,1,0,0.0,tuberculose,0,0.0,0.0,2026-SE31
+2026,36,CANARANA,CANARANA,influenza,1,0,0.0,,0,0.0,11.665,2026-SE31
+2026,36,CAXIAS,CAXIAS,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,dengue,1,0,0.0,dengue_arbovirose,0,0.0,3.86,2026-SE31
+2026,36,COLIDER,COLIDER,hiv,1,0,0.0,,0,0.0,6.23,2026-SE31
+2026,36,COLIDER,COLIDER,sars_cov_2,1,0,0.0,,0,0.0,6.23,2026-SE31
+2026,36,COLNIZA,COLNIZA,tuberculose,1,0,0.0,tuberculose,0,0.0,4.27,2026-SE31
+2026,36,COMODORO,COMODORO,tuberculose,1,0,0.0,tuberculose,0,0.0,10.15,2026-SE31
+2026,36,CONFRESA,CONFRESA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,49.935,2026-SE31
+2026,36,CRICIUMA,CRICIUMA,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,CUIABA,CUIABA,doenca_de_chagas_aguda_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,infec_o_coloniza_o_bact_rias_cultura,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade_ii,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,toxoplasmose_citomegalov_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,toxoplasmose_citomegalov_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,toxoplasmose_toxoplasmose_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,toxoplasmose_toxoplasmose_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,varicela_herpes_zoster_herpes_simplex_1_e_2_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,CUIABA,CUIABA,varicela_herpes_zoster_varicela_zoster_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,DENISE,DENISE,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,DIAMANTINO,DIAMANTINO,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,DIAMANTINO,DIAMANTINO,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,hiv,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,rub_ola_rub_ola_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,rub_ola_rub_ola_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,toxoplasmose_citomegalov_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,toxoplasmose_citomegalov_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,toxoplasmose_htlv_i_ii_v_rus_linfotr_pico_humano_tipo_i_e_ii,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,toxoplasmose_toxoplasmose_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,toxoplasmose_toxoplasmose_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,GUARANTA DO NORTE,GUARANTA DO NORTE,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,GUIRATINGA,GUIRATINGA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,JACIARA,JACIARA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,JANGADA,JANGADA,toxoplasmose_criptococos,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,JUSCIMEIRA,JUSCIMEIRA,rub_ola_rub_ola_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,JUSCIMEIRA,JUSCIMEIRA,rub_ola_rub_ola_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,MATUPA,MATUPA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,MIRASSOL D''OESTE,MIRASSOL D''OESTE,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,,,2026-SE31
+2026,36,NORTELANDIA,NORTELANDIA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,influenza,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA CANAA DO NORTE,NOVA CANAA DO NORTE,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA MARINGA,NOVA MARINGA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA MUTUM,NOVA MUTUM,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA NAZARE,NOVA NAZARE,influenza,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA OLIMPIA,NOVA OLIMPIA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA OLIMPIA,NOVA OLIMPIA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,NOVA UBIRATA,NOVA UBIRATA,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,NOVA XAVANTINA,NOVA XAVANTINA,febre_maculosa_rickettsioses_febre_maculosa_1a_amostra,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,NOVA XAVANTINA,NOVA XAVANTINA,febre_maculosa_rickettsioses_febre_maculosa_2a_amostra,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,PACARAIMA,PACARAIMA,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_cultura_para_fungos,1,0,0.0,,1,8.8566,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_fungos,1,0,0.0,,1,8.8566,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_micobact_rias_identifica_o,1,0,0.0,,1,8.8566,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_micobacteriose_biologia_molecular,1,0,0.0,,1,8.8566,,2026-SE31
+2026,36,PARANAITA,PARANAITA,micobacterioses_micobacteriose_tsa,1,0,0.0,,1,8.8566,,2026-SE31
+2026,36,PARANATINGA,PARANATINGA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,PARANATINGA,PARANATINGA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,PARANATINGA,PARANATINGA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PEDRA PRETA,PEDRA PRETA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PEIXOTO DE AZEVEDO,PEIXOTO DE AZEVEDO,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,PIRACICABA,PIRACICABA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,,,2026-SE31
+2026,36,PLANALTO DA SERRA,PLANALTO DA SERRA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,POCONE,POCONE,dengue,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,POCONE,POCONE,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,PONTES E LACERDA,PONTES E LACERDA,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,PONTES E LACERDA,PONTES E LACERDA,influenza,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,PONTES E LACERDA,PONTES E LACERDA,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,POXOREO,POXOREO,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,QUERENCIA,QUERENCIA,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,RIO BRANCO,RIO BRANCO,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,doen_a_de_chagas_chagas_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_cultura,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade_ii,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,influenza,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,RONDONOPOLIS,RONDONOPOLIS,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SANTA CARMEM,SANTA CARMEM,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,SAO JOSE DOS QUATRO MARCOS,SAO JOSE DOS QUATRO MARCOS,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SAPEZAL,SAPEZAL,chikungunya,1,0,0.0,dengue_arbovirose,0,0.0,,2026-SE31
+2026,36,SAPEZAL,SAPEZAL,hepatite_b_hbv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,febre_maculosa_rickettsioses_febre_maculosa_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,hiv,1,1,100.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,influenza,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,micose_paracoccidioidomicose,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,sarampo_sarampo_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,sarampo_sarampo_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SINOP,SINOP,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,SORRISO,SORRISO,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,TANGARA DA SERRA,TANGARA DA SERRA,sars_cov_2,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,TAPURAH,TAPURAH,tuberculose,1,0,0.0,tuberculose,0,0.0,,2026-SE31
+2026,36,TRINDADE,TRINDADE,dengue,1,0,0.0,dengue_arbovirose,0,,,2026-SE31
+2026,36,UNIAO DO SUL,UNIAO DO SUL,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARGEAO,VARGEAO,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,1,0,0.0,,0,,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,criptococose_criptococos,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,herpes_simples_herpes_simplex_1_e_2_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,herpes_simples_herpes_v_rus_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,herpes_simples_herpes_v_rus_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,infec_o_coloniza_o_paracoccidioidomicose,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,infec_o_coloniza_o_pesquisa_de_arbov_rus_zdc,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,sarampo_sarampo_igm,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_herpes_simplex_1_e_2_biologia_molecular,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VARZEA GRANDE,VARZEA GRANDE,toxoplasmose_toxoplasmose_avidez_igg,1,0,0.0,,0,0.0,,2026-SE31
+2026,36,VERA,VERA,hepatite_c_hcv,1,0,0.0,hepatite,0,0.0,,2026-SE31
+2026,36,VILA BELA DA SANTISSIMA TRINDADE,VILA BELA DA SANTISSIMA TRINDADE,sars_cov_2,1,0,0.0,,0,,,2026-SE31

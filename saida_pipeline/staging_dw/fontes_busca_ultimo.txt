@@ -1,5 +1,5 @@
 LACEN MT — busca de fontes adicionais (IndicaSUS / SISREG / DW leftovers)
-gerado_em: 2026-09-10T11:47:26
+gerado_em: 2026-09-11T07:17:46
 
 === DW estadual ===
 tcp/connect: ok=True
@@ -17,14 +17,14 @@ objects_listed: 356
   extracted: ind.ImportacaoCalculado → indicasus_importacao_calculado (2 rows)
   extracted: ind.EntradaDados → indicasus_entrada_dados (30000 rows)
   extracted: form.HistoricoOcupacao → indicasus_historico_ocupacao_sample (20000 rows)
-  extracted: form.HistoricoOcupacao/agg → indicasus_ocupacao_agg (372 rows)
+  extracted: form.HistoricoOcupacao/agg → indicasus_ocupacao_agg (370 rows)
   failure: ind.MetaIndicadorValor: vazio
 
 === SISREG ===
 connected: True | host=10.15.1.71 | db=SES | user=sisreg_sureg | auth=None
 objects_listed: 15
-  extracted: dbo.VW_SAMU_FILA_HOSPITALAR → sisreg_samu_fila (38665 rows)
-  extracted: dbo.VW_AMBULATORIAL_SOLICITACAO/agg → sisreg_amb_mun_status_agg (28819 rows)
-  extracted: dbo.VW_HOSPITALAR_SINTETICO/agg → sisreg_hosp_mun_status_agg (3285 rows)
+  extracted: dbo.VW_SAMU_FILA_HOSPITALAR → sisreg_samu_fila (38670 rows)
+  extracted: dbo.VW_AMBULATORIAL_SOLICITACAO/agg → sisreg_amb_mun_status_agg (28754 rows)
+  extracted: dbo.VW_HOSPITALAR_SINTETICO/agg → sisreg_hosp_mun_status_agg (3279 rows)
   extracted: dbo.VW_HOSPITALAR_SINTETICO/sample → sisreg_hosp_recent (25000 rows)
 

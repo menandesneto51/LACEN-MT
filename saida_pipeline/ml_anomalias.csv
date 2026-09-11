@@ -5,7 +5,7 @@ LUCAS DO RIO VERDE,chikungunya,2026,13,positividade,0.5,0.0625,7.0,alta_atipica,
 LUCAS DO RIO VERDE,zika,2026,13,positividade,0.5,0.0625,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MUTUM,hiv,2025,43,positividade,1.0,0.125,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SAPEZAL,tuberculose,2026,37,positividade,0.2,0.025,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-TANGARA DA SERRA,tuberculose,2026,37,positividade,0.1428571428571428,0.01785714285714285,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+TANGARA DA SERRA,tuberculose,2026,37,positividade,0.0136986301369863,0.0017123287671232876,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VERA,tuberculose,2026,27,positividade,0.5,0.0625,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FELIZ NATAL,chikungunya,2025,28,incidencia_100k,19.00598688586905,2.375748360733631,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MUTUM,hiv,2025,43,incidencia_100k,1.575919943266882,0.19698999290836025,7.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -29,15 +29,14 @@ VARZEA GRANDE,hiv,2026,29,positividade,0.5,0.11875,3.2105263157894735,alta_atipi
 BOM JESUS DO ARAGUAIA,hepatite_b_hbv,2026,19,tests,18.0,4.285714285714286,3.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 GAUCHA DO NORTE,tuberculose,2026,33,tests,13.0,3.125,3.16,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RIO DE JANEIRO,tuberculose,2026,35,tests,13.0,3.125,3.16,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-NOVO MUNDO,chikungunya,2025,27,positividade,1.0,0.25,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SORRISO,hepatite,2026,35,positividade,0.3333333333333333,0.08333333333333333,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SORRISO,toxoplasmose_toxoplasmose_igm,2025,35,positividade,1.0,0.25,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-NOVO MUNDO,chikungunya,2025,27,incidencia_100k,31.4070351758794,7.85175879396985,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SORRISO,toxoplasmose_toxoplasmose_igm,2025,35,incidencia_100k,0.8021497613604459,0.20053744034011148,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO HORIZONTE DO NORTE,zika,2025,49,notificacoes,2.0,0.5,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PEDRA PRETA,zika,2025,21,notificacoes,1.0,0.25,3.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 GOIANIA,tuberculose,2026,26,tests,8.0,2.125,2.764705882352941,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 APIACAS,hepatite_b_hbv,2026,35,tests,6.0,1.625,2.6923076923076925,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+JUINA,tuberculose,2026,37,tests,18.0,5.375,2.3488372093023258,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 COLIDER,intoxica_o_ex_gena_por_subst_ncias_qu_micas_incluindo_agrot_xicos_gases_t_xicos_,2025,47,tests,18.0,5.5,2.272727272727273,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SORRISO,toxoplasmose_toxoplasmose_igg,2025,35,positividade,1.0,0.3125,2.2,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JACIARA,tuberculose,2026,35,tests,20.0,6.375,2.1372549019607843,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -53,6 +52,7 @@ CUIABA,hiv,2026,30,tests,9.0,3.1666666666666665,1.842105263157895,alta_atipica,a
 JUINA,raiva_raiva,2026,19,tests,47.0,16.571428571428573,1.836206896551724,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CONFRESA,hepatite_b_hbv,2026,31,tests,6.0,2.125,1.8235294117647058,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOSSA SENHORA DO LIVRAMENTO,dengue,2026,33,tests,7.0,2.5,1.8,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+TANGARA DA SERRA,tuberculose,2026,37,tests,73.0,26.25,1.7809523809523808,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOSSA SENHORA DO LIVRAMENTO,tuberculose,2026,35,tests,9.0,3.25,1.7692307692307692,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JUARA,hiv,2026,29,tests,11.0,4.0,1.75,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ITANHANGA,dengue,2026,29,tests,4.0,1.5,1.6666666666666667,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -79,6 +79,7 @@ CANARANA,citomegalov_rus_toxoplasmose_igg,2025,38,tests,4.0,1.75,1.2857142857142
 CANARANA,citomegalov_rus_toxoplasmose_igm,2025,38,tests,4.0,1.75,1.2857142857142858,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FIGUEIROPOLIS D''OESTE,chikungunya,2025,12,tests,4.0,1.75,1.2857142857142858,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA UBIRATA,tuberculose,2026,37,tests,6.0,2.625,1.2857142857142858,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SORRISO,hepatite_b_hbv,2026,36,tests,8.0,3.5,1.2857142857142858,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VARZEA GRANDE,coqueluche_coqueluche_detec_o_de_bordetella_pertussis,2026,15,tests,4.0,1.75,1.2857142857142858,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PORTO ESPERIDIAO,dengue,2026,15,tests,7.0,3.125,1.24,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FLORIANOPOLIS,tuberculose,2026,19,tests,5.0,2.25,1.2222222222222223,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -91,7 +92,6 @@ POXOREO,meningite,2025,33,tests,10.0,4.6,1.173913043478261,alta_atipica,alta,Inv
 RIO VERDE,dengue,2025,21,tests,5.0,2.3333333333333335,1.1428571428571428,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RONDONOPOLIS,chikungunya,2026,27,tests,8.0,3.75,1.1333333333333333,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 LUCIARA,tuberculose,2026,30,tests,6.0,2.8333333333333335,1.1176470588235292,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-SORRISO,hepatite_b_hbv,2026,36,tests,7.0,3.375,1.0740740740740742,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CACERES,meningite,2026,33,tests,8.0,3.875,1.064516129032258,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA UBIRATA,chikungunya,2026,36,tests,8.0,3.875,1.064516129032258,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 BOM JESUS DO ARAGUAIA,hepatite_c_hcv,2026,19,tests,3.0,1.5,1.0,alta_atipica,alta,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -139,19 +139,17 @@ CHAPADA DOS GUIMARAES,toxoplasmose_toxoplasmose_igg,2026,33,positividade,0.0,0.1
 CHAPADA DOS GUIMARAES,toxoplasmose_toxoplasmose_igm,2026,33,positividade,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COLNIZA,dengue,2026,30,positividade,0.0,0.020833333333333325,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COTRIGUACU,tuberculose,2026,30,positividade,0.0,0.041666666666666664,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,citomegalov_rus_citomegalov_rus_igg,2026,35,positividade,0.0,0.2,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,doen_a_de_chagas_chagas,2026,29,positividade,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,doenca_de_chagas_aguda_chagas,2026,10,positividade,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,infec_o_coloniza_o_cultura_para_fungos,2026,35,positividade,0.0,0.5714285714285714,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,leishmaniose,2026,30,positividade,0.0,0.020833333333333325,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,sarampo_sarampo_igm,2026,36,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,tuberculose,2026,37,positividade,0.0,0.007993930505555325,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,tuberculose,2026,37,positividade,0.0,0.00788438807055825,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ESTREITO,tuberculose,2026,23,positividade,0.0,0.14285714285714285,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 FATIMA DO SUL,tuberculose,2026,22,positividade,0.0,0.14285714285714285,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUARANTA DO NORTE,hepatite,2026,35,positividade,0.0,0.03125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUARANTA DO NORTE,hepatite_a,2026,35,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITAUBA,dengue,2026,24,positividade,0.0,0.06672077922077921,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-JACIARA,dengue,2026,30,positividade,0.0,0.10416666666666667,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JANGADA,chikungunya,2025,34,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JANGADA,zika,2025,33,positividade,0.0,0.07142857142857142,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JAURU,tuberculose,2026,13,positividade,0.0,0.08333333333333333,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -171,7 +169,7 @@ NOSSA SENHORA DO LIVRAMENTO,hepatite_b_hbv,2026,30,positividade,0.0,0.0625,-1.0,
 NOVA CANAA DO NORTE,hepatite_b_hbv,2026,10,positividade,0.0,0.14285714285714285,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA CANAA DO NORTE,tuberculose,2026,25,positividade,0.0,0.020833333333333325,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA GUARITA,chikungunya,2025,34,positividade,0.0,0.08333333333333333,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-NOVA GUARITA,dengue,2026,15,positividade,0.0,0.0125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+NOVA GUARITA,dengue,2026,15,positividade,0.0,0.03125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MARILANDIA,chikungunya,2025,30,positividade,0.0,0.2857142857142857,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MARILANDIA,leptospira,2026,25,positividade,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MONTE VERDE,dengue,2025,50,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -209,7 +207,7 @@ SINOP,criptococose_criptococos_teste_r_pido,2026,34,positividade,0.0,0.0625,-1.0
 SINOP,tuberculose,2026,37,positividade,0.0,0.012907137907137885,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SORRISO,tuberculose,2026,37,positividade,0.0,0.013888888888888888,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TABAPORA,tuberculose,2026,17,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-TANGARA DA SERRA,zika,2026,32,positividade,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,zika,2026,32,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TAPURAH,chikungunya,2026,19,positividade,0.0,0.01785714285714285,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,infec_o_coloniza_o_cultura_para_fungos,2026,30,positividade,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,toxoplasmose_rub_ola_igg,2025,43,positividade,0.0,0.0625,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -231,7 +229,7 @@ VARZEA GRANDE,toxoplasmose_rub_ola_igg,2025,43,incidencia_100k,0.0,0.03919453659
 AGUA BOA,meningite,2026,35,notificacoes,0.0,0.42857142857142855,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTA FLORESTA,zika,2026,16,notificacoes,0.0,1.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTO BOA VISTA,tuberculose,2026,24,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-ALTO PARAGUAI,tuberculose,2026,30,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ALTO PARAGUAI,tuberculose,2026,37,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 APIACAS,tuberculose,2026,26,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ARIPUANA,tuberculose,2026,36,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CACERES,meningite,2026,33,notificacoes,0.0,0.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -299,6 +297,7 @@ VARZEA GRANDE,leptospira,2026,30,notificacoes,0.0,0.75,-1.0,queda_atipica,alta,V
 VERA,zika,2025,29,notificacoes,0.0,0.125,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA RICA,leptospira,2026,32,notificacoes,0.0,0.25,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA RICA,tuberculose,2026,15,notificacoes,0.0,0.375,-1.0,queda_atipica,alta,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,meningite,2026,37,tests,14.0,7.125,0.9649122807017544,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 TABAPORA,hepatite_b_hbv,2026,34,tests,6.0,3.125,0.92,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA CANAA DO NORTE,hepatite_b_hbv,2026,10,tests,3.0,1.5714285714285714,0.9090909090909092,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MUTUM,zika,2025,18,notificacoes,3.0,1.5714285714285714,0.9090909090909092,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -316,7 +315,8 @@ CUIABA,varicela_herpes_zoster_var_ola,2026,20,tests,3.0,1.625,0.8461538461538461
 DENISE,dengue,2026,35,tests,3.0,1.625,0.8461538461538461,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 FELIZ NATAL,raiva_raiva,2026,10,tests,6.0,3.25,0.8461538461538461,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 GUARANTA DO NORTE,hepatite_c_hcv,2026,34,tests,3.0,1.625,0.8461538461538461,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-GUARANTA DO NORTE,influenza,2026,36,tests,5.0,2.75,0.8181818181818182,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+NOVA BANDEIRANTES,tuberculose,2026,36,tests,6.0,3.25,0.8461538461538461,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+TANGARA DA SERRA,zika,2026,32,tests,6.0,3.25,0.8461538461538461,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO MUNDO,tuberculose,2026,37,tests,5.0,2.75,0.8181818181818182,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PORTO DOS GAUCHOS,dengue,2025,52,tests,5.0,2.75,0.8181818181818182,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 GLORIA D''OESTE,raiva_raiva,2026,16,tests,4.0,2.2,0.818181818181818,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -335,7 +335,6 @@ JUINA,doen_as_diarr_icas_gastroenterite_rotav_rus,2026,35,tests,4.0,2.25,0.77777
 JUINA,hepatite_c_hcv,2026,35,tests,2.0,1.125,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SANTO ANTONIO DO LEVERGER,sars_cov_2,2026,34,tests,2.0,1.125,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SENADOR CANEDO,tuberculose,2026,35,tests,2.0,1.125,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-TANGARA DA SERRA,zika,2026,32,tests,6.0,3.375,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VILA BELA DA SANTISSIMA TRINDADE,dengue,2026,15,tests,6.0,3.375,0.7777777777777778,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CORUMBA,tuberculose,2026,36,tests,2.0,1.1428571428571428,0.7500000000000001,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CHAPADA DOS GUIMARAES,tuberculose,2026,36,tests,7.0,4.0,0.75,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -347,21 +346,23 @@ GAUCHA DO NORTE,influenza,2026,14,tests,3.0,1.75,0.7142857142857143,alta_atipica
 INDIAVAI,dengue,2026,2,tests,3.0,1.75,0.7142857142857143,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ITAITUBA,dengue,2025,32,tests,3.0,1.75,0.7142857142857143,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ITAPECURU MIRIM,tuberculose,2026,35,tests,3.0,1.75,0.7142857142857143,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+PRIMAVERA DO LESTE,sars_cov_2,2026,37,tests,6.0,3.5,0.7142857142857143,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ANICUNS,dengue,2025,22,tests,2.0,1.1666666666666667,0.7142857142857142,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JI-PARANA,dengue,2026,6,tests,2.0,1.1666666666666667,0.7142857142857142,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MUTUM,hepatite_a,2026,18,tests,4.0,2.3333333333333335,0.7142857142857142,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CHAPADA DOS GUIMARAES,influenza,2026,36,tests,4.0,2.375,0.6842105263157895,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RIBEIRAO CASCALHEIRA,tuberculose,2026,33,tests,4.0,2.375,0.6842105263157895,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VERA,dengue,2026,29,tests,4.0,2.375,0.6842105263157895,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+LAMBARI D''OESTE,tuberculose,2026,37,tests,4.0,2.4,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 MIRASSOL D''OESTE,hansen_ase_hansen_ase_biologia_molecular,2026,34,tests,2.0,1.2,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO SANTO ANTONIO,dengue,2025,22,tests,2.0,1.2,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 PEIXOTO DE AZEVEDO,zika,2025,21,tests,8.0,4.8,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RONDONOPOLIS,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia_fungos,2026,35,tests,2.0,1.2,0.6666666666666667,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ALTAMIRA,hepatite_b_hbv,2026,29,tests,7.0,4.2,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CONQUISTA D''OESTE,dengue,2026,27,tests,5.0,3.0,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-CUIABA,chikungunya,2026,36,tests,5.0,3.0,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVO MUNDO,dengue,2025,49,tests,5.0,3.0,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VARZEA GRANDE,varicela_herpes_zoster_var_ola,2026,22,tests,5.0,3.0,0.6666666666666666,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+BARRA DO GARCAS,tuberculose,2026,37,tests,6.0,3.625,0.6551724137931034,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA SANTA HELENA,chikungunya,2025,23,tests,45.0,27.25,0.6513761467889908,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CANARANA,chikungunya,2025,34,tests,6.0,3.6666666666666665,0.6363636363636365,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SINOP,leptospira,2026,34,tests,3.0,1.8333333333333333,0.6363636363636365,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -377,16 +378,16 @@ RONDONOPOLIS,hepatite_c_hcv,2026,35,tests,3.0,1.875,0.6,alta_atipica,moderada,In
 SANTA CRUZ DO XINGU,tuberculose,2026,34,tests,6.0,3.75,0.6,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SANTO ANTONIO DO LESTE,sars_cov_2,2026,29,tests,2.0,1.25,0.6,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 SAO JOSE DO POVO,hepatite_b_hbv,2026,19,tests,2.0,1.25,0.6,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-TANGARA DA SERRA,influenza,2026,23,tests,2.0,1.25,0.6,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VARZEA GRANDE,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,2025,43,tests,2.0,1.25,0.6,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RIO DE JANEIRO,chikungunya,2025,12,tests,6.0,3.8,0.5789473684210527,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JUARA,raiva_raiva,2026,19,tests,16.0,10.25,0.5609756097560976,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+NOVA MUTUM,tuberculose,2026,37,tests,7.0,4.5,0.5555555555555556,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 RONDONOPOLIS,infec_o_coloniza_o_pesquisa_de_genes_de_resist_ncia,2026,35,tests,2.0,1.2857142857142858,0.5555555555555555,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 TAPURAH,hepatite_c_hcv,2026,34,tests,2.0,1.2857142857142858,0.5555555555555555,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 CAMPO NOVO DO PARECIS,hepatite_b_hbv,2026,36,tests,6.0,3.875,0.5483870967741935,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ACORIZAL,tuberculose,2026,33,tests,5.0,3.25,0.5384615384615384,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
-CUIABA,raiva_raiva,2026,27,tests,5.0,3.25,0.5384615384615384,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 NOVA MARINGA,dengue,2026,17,tests,5.0,3.25,0.5384615384615384,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
+SAO BERNARDO DO CAMPO,dengue,2026,37,tests,5.0,3.25,0.5384615384615384,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 JUARA,meningite,2026,29,tests,4.0,2.625,0.5238095238095238,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 ARAPUTANGA,raiva_raiva,2026,22,tests,8.0,5.333333333333333,0.5000000000000001,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 MARCELANDIA,zika,2026,16,tests,2.0,1.3333333333333333,0.5000000000000001,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
@@ -403,7 +404,9 @@ SANTA RITA DO TRIVELATO,tuberculose,2025,44,tests,3.0,2.0,0.5,alta_atipica,moder
 SAO JOSE DOS BASILIOS,dengue,2025,23,tests,3.0,2.0,0.5,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 VOTUPORANGA,dengue,2025,14,tests,6.0,4.0,0.5,alta_atipica,moderada,Investigar pico atípico e validar capacidade laboratorial/vigilância.,baseline_v1
 AGUA BOA,zika,2025,29,tests,2.0,4.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+ARAPUTANGA,tuberculose,2026,37,tests,2.0,4.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRAS,dengue,2025,23,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+BOM JESUS DO ARAGUAIA,tuberculose,2026,28,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BRASNORTE,chikungunya,2025,24,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPINAPOLIS,chikungunya,2026,11,tests,2.0,4.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO GRANDE,dengue,2026,25,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -431,6 +434,7 @@ SANTO ANTONIO DO LEVERGER,dengue,2026,34,tests,1.0,2.0,-0.5,queda_atipica,modera
 SANTO ANTONIO DO LEVERGER,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2026,11,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO JOSE DO POVO,sarampo_sarampo_igg,2025,48,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO JOSE DO POVO,sarampo_sarampo_igm,2025,48,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SAO PAULO,tuberculose,2026,29,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SIDROLANDIA,tuberculose,2026,28,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,hansen_ase_hansen_ase_teste_de_sensibilidade_genot_pico,2026,35,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2025,43,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -438,6 +442,7 @@ VILA RICA,hepatite_b_hbv,2026,33,tests,1.0,2.0,-0.5,queda_atipica,moderada,Verif
 BRASNORTE,hepatite_b_hbv,2026,24,tests,7.0,14.375,-0.5130434782608696,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,hiv,2026,29,tests,2.0,4.125,-0.5151515151515151,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COMODORO,dengue,2026,19,tests,3.0,6.25,-0.52,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+LUCAS DO RIO VERDE,dengue,2026,37,tests,25.0,52.125,-0.5203836930455635,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTA FLORESTA,hepatite_b_hbv,2026,35,tests,1.0,2.125,-0.5294117647058824,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRA DO BUGRES,influenza,2026,18,tests,1.0,2.125,-0.5294117647058824,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO VERDE,doen_a_de_chagas_chagas,2025,31,tests,1.0,2.125,-0.5294117647058824,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -455,15 +460,12 @@ ALTAMIRA,dengue,2025,21,tests,1.0,2.1666666666666665,-0.5384615384615384,queda_a
 CAMPO VERDE,leishmaniose,2026,32,tests,1.0,2.1666666666666665,-0.5384615384615384,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA BRASILANDIA,tuberculose,2026,22,tests,1.0,2.1666666666666665,-0.5384615384615384,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 FELIZ NATAL,chikungunya,2025,28,tests,2.0,4.375,-0.5428571428571428,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-JUINA,tuberculose,2026,36,tests,2.0,4.375,-0.5428571428571428,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TAPURAH,chikungunya,2026,19,tests,2.0,4.375,-0.5428571428571428,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SINOP,infec_o_coloniza_o_bact_rias_cultura,2026,37,tests,3.0,6.6,-0.5454545454545454,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTO ARAGUAIA,sars_cov_2,2026,29,tests,1.0,2.2,-0.5454545454545455,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GRAJAU,dengue,2025,13,tests,1.0,2.2,-0.5454545454545455,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA OLIMPIA,influenza,2026,20,tests,1.0,2.2,-0.5454545454545455,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TAPURAH,zika,2025,39,tests,1.0,2.2,-0.5454545454545455,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,influenza,2026,37,tests,6.0,13.25,-0.5471698113207547,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-BOM JESUS DO ARAGUAIA,tuberculose,2026,28,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO VERDE,leptospira,2026,23,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CARLINDA,tuberculose,2026,28,tests,3.0,6.75,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CRUZEIRO DO SUL,dengue,2026,26,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -473,9 +475,10 @@ IPIRANGA DO NORTE,tuberculose,2026,28,tests,1.0,2.25,-0.5555555555555556,queda_a
 ITACOATIARA,dengue,2025,23,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITAUBA,influenza,2025,21,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO LUIS DE MONTES BELOS,tuberculose,2026,22,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TERRA NOVA DO NORTE,hepatite_a,2026,37,tests,2.0,4.5,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TERRA NOVA DO NORTE,hepatite_c_hcv,2026,37,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILHENA,sars_cov_2,2026,17,tests,1.0,2.25,-0.5555555555555556,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CACERES,dengue,2026,36,tests,5.0,11.375,-0.5604395604395604,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-VARZEA GRANDE,tuberculose,2026,37,tests,20.0,45.625,-0.5616438356164384,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CANARANA,toxoplasmose_toxoplasmose_avidez_igg,2026,6,tests,1.0,2.2857142857142856,-0.5625,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPINAPOLIS,dengue,2026,34,tests,3.0,6.875,-0.5636363636363636,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,dengue,2026,37,tests,6.0,13.75,-0.5636363636363636,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -485,6 +488,7 @@ BOA VISTA,dengue,2026,26,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moder
 CAMPO NOVO DO PARECIS,dengue,2026,36,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO NOVO DO PARECIS,leptospira,2026,25,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COMODORO,tuberculose,2026,36,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+GUARANTA DO NORTE,influenza,2026,37,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 INDIAVAI,tuberculose,2026,19,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 IPIRANGA DO NORTE,chikungunya,2025,49,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JUARA,sars_cov_2,2026,18,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -501,9 +505,7 @@ VARZEA GRANDE,sarampo_rub_ola_igg,2026,34,tests,1.0,2.375,-0.5789473684210527,qu
 VARZEA GRANDE,sarampo_rub_ola_igm,2026,34,tests,1.0,2.375,-0.5789473684210527,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RONDONOPOLIS,raiva_raiva,2025,34,tests,17.0,40.75,-0.5828220858895705,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO LUDGERO,dengue,2025,23,tests,1.0,2.4,-0.5833333333333334,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,sars_cov_2,2026,37,tests,4.0,9.625,-0.5844155844155844,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAPEZAL,sars_cov_2,2026,33,tests,1.0,2.4285714285714284,-0.5882352941176471,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-LUCAS DO RIO VERDE,dengue,2026,37,tests,21.0,51.625,-0.5932203389830508,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITIQUIRA,dengue,2026,33,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JACIARA,chikungunya,2026,2,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 MANAUS,dengue,2026,25,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -512,6 +514,7 @@ NOVA MARILANDIA,tuberculose,2026,33,tests,1.0,2.5,-0.6,queda_atipica,moderada,Ve
 NOVA OLIMPIA,chikungunya,2025,50,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVO MUNDO,raiva_raiva,2026,35,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PARANATINGA,dengue,2026,29,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+POCONE,tuberculose,2026,37,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PONTES E LACERDA,sarampo_sarampo_biologia_molecular,2026,35,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RIO BRANCO,dengue,2026,34,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RONDONOPOLIS,influenza,2026,36,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -519,18 +522,19 @@ ROSARIO OESTE,dengue,2026,21,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar
 SANTAREM,dengue,2026,10,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SINOP,zika,2026,33,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TANGARA DA SERRA,leptospira,2026,37,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+VARZEA GRANDE,chikungunya,2026,37,tests,1.0,2.5,-0.6,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ARIPUANA,dengue,2025,23,tests,2.0,5.125,-0.6097560975609756,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-TANGARA DA SERRA,tuberculose,2026,37,tests,7.0,18.0,-0.6111111111111112,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PEIXOTO DE AZEVEDO,raiva_raiva,2026,10,tests,2.0,5.166666666666667,-0.6129032258064516,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO PAULO,chikungunya,2025,14,tests,2.0,5.2,-0.6153846153846154,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 APIACAS,dengue,2026,33,tests,2.0,5.25,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRA DO GARCAS,sars_cov_2,2026,34,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BOA VISTA,tuberculose,2026,34,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUIRATINGA,tuberculose,2026,36,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-MARCELANDIA,tuberculose,2026,20,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+MARCELANDIA,tuberculose,2026,37,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MUTUM,hiv,2025,43,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 POCONE,dengue,2026,36,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PONTAL DO ARAGUAIA,tuberculose,2025,23,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+TANGARA DA SERRA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,37,tests,2.0,5.25,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA BELA DA SANTISSIMA TRINDADE,tuberculose,2026,34,tests,1.0,2.625,-0.6190476190476191,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUIRATINGA,dengue,2026,16,tests,1.0,2.6666666666666665,-0.625,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 OURINHOS,dengue,2025,23,tests,1.0,2.6666666666666665,-0.625,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -548,13 +552,13 @@ BELEM,tuberculose,2026,34,tests,1.0,2.857142857142857,-0.65,queda_atipica,modera
 ARAGARCAS,tuberculose,2026,21,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 FELIZ NATAL,dengue,2026,29,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 POCONE,hepatite_b_hbv,2026,35,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-QUERENCIA,influenza,2026,26,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SORRISO,doenca_de_chagas_aguda_chagas_igg,2025,18,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VARZEA GRANDE,leptospira,2026,30,tests,1.0,2.875,-0.6521739130434783,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 MARCELANDIA,influenza,2026,34,tests,2.0,5.8,-0.6551724137931034,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 LAMBARI D''OESTE,dengue,2026,16,tests,5.0,14.625,-0.6581196581196581,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 AGUA BOA,hepatite_a,2026,26,tests,2.0,6.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 AGUA BOA,meningite,2026,35,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,chikungunya,2026,37,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 HUMAITA,dengue,2025,22,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JAURU,dengue,2026,29,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JAURU,tuberculose,2026,13,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -564,14 +568,15 @@ POXOREO,dengue,2025,23,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,
 QUERENCIA,chikungunya,2025,38,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SAO JOSE DO RIO CLARO,influenza,2026,24,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SORRISO,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2026,30,tests,1.0,3.0,-0.6666666666666666,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,tuberculose,2026,37,tests,35.0,107.0,-0.6728971962616822,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 COLIDER,raiva_raiva,2026,19,tests,2.0,6.2,-0.6774193548387097,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 APIACAS,tuberculose,2026,26,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ARAPUTANGA,sars_cov_2,2026,23,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-BARRA DO BUGRES,tuberculose,2026,36,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 POCONE,chikungunya,2026,11,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PORTO VELHO,chikungunya,2025,23,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RIO BRANCO,chikungunya,2026,2,tests,1.0,3.125,-0.68,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ALTO PARAGUAI,dengue,2026,32,tests,1.0,3.25,-0.6923076923076923,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,raiva_raiva,2026,37,tests,1.0,3.25,-0.6923076923076923,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CURVELANDIA,chikungunya,2025,18,tests,4.0,13.0,-0.6923076923076923,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RONDONOPOLIS,infec_o_coloniza_o_bact_rias_teste_de_sensibilidade,2026,36,tests,1.0,3.25,-0.6923076923076923,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SORRISO,doen_a_de_chagas_chagas,2025,35,tests,2.0,6.5,-0.6923076923076923,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -579,15 +584,12 @@ TABAPORA,influenza,2026,14,tests,1.0,3.25,-0.6923076923076923,queda_atipica,mode
 CAMPINAPOLIS,influenza,2026,32,tests,1.0,3.375,-0.7037037037037037,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 IPIRANGA DO NORTE,dengue,2026,35,tests,1.0,3.375,-0.7037037037037037,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PONTAL DO ARAGUAIA,dengue,2026,13,tests,5.0,17.125,-0.708029197080292,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-TERRA NOVA DO NORTE,hepatite_b_hbv,2026,36,tests,2.0,6.875,-0.7090909090909091,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-SORRISO,dengue,2026,37,tests,5.0,17.375,-0.7122302158273381,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRA DO GARCAS,dengue,2026,33,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+COLNIZA,tuberculose,2026,37,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITIQUIRA,tuberculose,2026,35,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 MIRASSOL D''OESTE,dengue,2026,34,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PEIXOTO DE AZEVEDO,hepatite_b_hbv,2026,36,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-SINOP,hepatite_b_hbv,2026,37,tests,1.0,3.5,-0.7142857142857143,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA GUARITA,tuberculose,2026,14,tests,1.0,3.6,-0.7222222222222222,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-COLNIZA,tuberculose,2026,36,tests,1.0,3.625,-0.7241379310344828,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GLORIA D''OESTE,dengue,2025,21,tests,1.0,3.6666666666666665,-0.7272727272727273,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JUINA,hansen_ase_hansen_ase_biologia_molecular,2026,33,tests,1.0,3.75,-0.7333333333333333,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOBRES,tuberculose,2026,37,tests,1.0,3.75,-0.7333333333333333,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -602,16 +604,18 @@ PORTO ESPERIDIAO,tuberculose,2026,29,tests,1.0,4.0,-0.75,queda_atipica,moderada,
 COLIDER,tuberculose,2026,35,tests,2.0,8.25,-0.7575757575757576,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 QUERENCIA,dengue,2026,25,tests,1.0,4.125,-0.7575757575757576,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 SALTO DO CEU,dengue,2026,13,tests,1.0,4.125,-0.7575757575757576,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SORRISO,tuberculose,2026,37,tests,2.0,8.25,-0.7575757575757576,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPO VERDE,tuberculose,2026,36,tests,1.0,4.25,-0.7647058823529411,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CURVELANDIA,zika,2025,12,tests,2.0,8.5,-0.7647058823529411,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA CANAA DO NORTE,influenza,2026,20,tests,1.0,4.25,-0.7647058823529411,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TANGARA DA SERRA,dengue,2026,37,tests,1.0,4.25,-0.7647058823529411,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+SINOP,tuberculose,2026,37,tests,7.0,29.875,-0.7656903765690377,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BRASNORTE,dengue,2026,28,tests,1.0,4.375,-0.7714285714285715,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUARANTA DO NORTE,tuberculose,2026,36,tests,1.0,4.5,-0.7777777777777778,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOSSA SENHORA DO LIVRAMENTO,raiva_raiva,2026,12,tests,1.0,4.5,-0.7777777777777778,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+NOVA GUARITA,dengue,2026,15,tests,1.0,4.875,-0.7948717948717948,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 PARANAITA,influenza,2026,21,tests,1.0,4.875,-0.7948717948717948,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 VILA RICA,tuberculose,2026,15,tests,2.0,9.875,-0.7974683544303798,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,tuberculose,2026,37,tests,21.0,104.625,-0.7992831541218638,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 AGUA BOA,raiva_raiva,2026,18,tests,2.0,10.0,-0.8,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CAMPOS DE JULIO,dengue,2026,7,tests,1.0,5.0,-0.8,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,doen_as_sexualmente_transmitidas_pesquisa_de_multipat_genos_ist,2026,34,tests,1.0,5.125,-0.8048780487804879,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
@@ -638,18 +642,13 @@ SAO JOSE DOS QUATRO MARCOS,raiva_raiva,2026,22,tests,1.0,6.428571428571429,-0.84
 CANARANA,tuberculose,2026,37,tests,1.0,6.5,-0.8461538461538461,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA UBIRATA,dengue,2026,36,tests,1.0,7.125,-0.8596491228070176,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 GUARANTA DO NORTE,zika,2025,32,notificacoes,2.0,14.4,-0.8611111111111112,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-PRIMAVERA DO LESTE,dengue,2026,37,tests,1.0,7.25,-0.8620689655172413,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-SINOP,tuberculose,2026,37,tests,4.0,29.5,-0.864406779661017,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CUIABA,hepatite_c_hcv,2026,37,tests,1.0,7.625,-0.8688524590163934,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CUIABA,hepatite_b_hbv,2026,37,tests,1.0,8.125,-0.8769230769230769,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-SORRISO,tuberculose,2026,37,tests,1.0,8.125,-0.8769230769230769,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
+CUIABA,hepatite_b_hbv,2026,37,tests,1.0,8.25,-0.8787878787878788,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 RONDONOPOLIS,tuberculose,2026,37,tests,3.0,25.875,-0.8840579710144928,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 JURUENA,hepatite_b_hbv,2026,34,tests,1.0,8.875,-0.8873239436619719,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 LUCAS DO RIO VERDE,influenza,2026,37,tests,1.0,8.875,-0.8873239436619719,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-CAMPO VERDE,dengue,2026,37,tests,2.0,18.0,-0.8888888888888888,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 TANGARA DA SERRA,raiva_raiva,2026,20,tests,1.0,9.0,-0.8888888888888888,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 ITAUBA,dengue,2026,24,tests,1.0,9.875,-0.8987341772151899,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
-NOVA GUARITA,dengue,2026,15,tests,1.0,10.125,-0.9012345679012346,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 BARRA DO GARCAS,raiva_raiva,2025,47,tests,1.0,10.571428571428571,-0.9054054054054054,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 NOVA MUTUM,raiva_raiva,2026,25,tests,1.0,10.625,-0.9058823529411765,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1
 CURVELANDIA,dengue,2025,20,tests,1.0,10.875,-0.9080459770114943,queda_atipica,moderada,Verificar possível interrupção de fluxo de coleta ou subnotificação.,baseline_v1

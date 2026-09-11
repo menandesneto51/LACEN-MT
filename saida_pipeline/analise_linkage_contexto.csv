@@ -1,109 +1,94 @@
 municipio,municipio_key,internacoes,internacoes_por_100k,sih_semana_ref,cid_familia,indicasus_score,aviso,fonte_internacao,fonte_indicasus
-JUARA,JUARA,1,2.8349,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PORTO DOS GAUCHOS,PORTO DOS GAUCHOS,1,18.7126,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+JUARA,JUARA,1,2.8349,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PARANAITA,PARANAITA,1,8.8566,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 CUIABA,CUIABA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CACERES,CACERES,0,0.0,2026-SE31,,12.82,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 VARZEA GRANDE,VARZEA GRANDE,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 JUINA,JUINA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+TANGARA DA SERRA,TANGARA DA SERRA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 LUCAS DO RIO VERDE,LUCAS DO RIO VERDE,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CAMPO VERDE,CAMPO VERDE,0,0.0,2026-SE31,dengue_arbovirose,7.035,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 SINOP,SINOP,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 SORRISO,SORRISO,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-GUARANTA DO NORTE,GUARANTA DO NORTE,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-JACIARA,JACIARA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 RONDONOPOLIS,RONDONOPOLIS,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-RIO DE JANEIRO,RIO DE JANEIRO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-TANGARA DA SERRA,TANGARA DA SERRA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA XAVANTINA,NOVA XAVANTINA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-JURUENA,JURUENA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PARANATINGA,PARANATINGA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-AGUA BOA,AGUA BOA,0,0.0,2026-SE31,hepatite,12.48,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+GUARANTA DO NORTE,GUARANTA DO NORTE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CAMPO VERDE,CAMPO VERDE,0,0.0,2026-SE31,dengue_arbovirose,7.035,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+ALTA FLORESTA,ALTA FLORESTA,0,0.0,2026-SE31,tuberculose,10.63,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+COLIDER,COLIDER,0,0.0,2026-SE31,dengue_arbovirose,6.23,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOBRES,NOBRES,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA UBIRATA,NOVA UBIRATA,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 ARIPUANA,ARIPUANA,0,0.0,2026-SE31,hepatite,8.9,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 CASTANHEIRA,CASTANHEIRA,0,0.0,2026-SE31,hepatite,0.005,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MATUPA,MATUPA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-APIACAS,APIACAS,0,0.0,2026-SE31,hepatite,11.24,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BRASILIA,BRASILIA,0,,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CACERES,CACERES,0,0.0,2026-SE31,tuberculose,12.82,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,0,0.0,2026-SE31,,9.05,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CANARANA,CANARANA,0,0.0,2026-SE31,hepatite,11.665,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CLAUDIA,CLAUDIA,0,0.0,2026-SE31,tuberculose,1.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-TOLEDO,TOLEDO,0,,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ARAPUTANGA,ARAPUTANGA,0,0.0,2026-SE31,dengue_arbovirose,6.91,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BARRA DO GARCAS,BARRA DO GARCAS,0,0.0,2026-SE31,tuberculose,12.52,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-COMODORO,COMODORO,0,0.0,2026-SE31,,10.15,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA MUTUM,NOVA MUTUM,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA SANTA HELENA,NOVA SANTA HELENA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SANTO ANTONIO DO LEVERGER,SANTO ANTONIO DO LEVERGER,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-GENERAL CARNEIRO,GENERAL CARNEIRO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MARCELANDIA,MARCELANDIA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MIRASSOL D''OESTE,MIRASSOL D''OESTE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PONTES E LACERDA,PONTES E LACERDA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-RIO BRANCO,RIO BRANCO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,0,0.0,2026-SE31,tuberculose,3.86,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+COLNIZA,COLNIZA,0,0.0,2026-SE31,hepatite,4.27,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 CAMPINAPOLIS,CAMPINAPOLIS,0,0.0,2026-SE31,tuberculose,11.4,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CAMPO GRANDE,CAMPO GRANDE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-COLNIZA,COLNIZA,0,0.0,2026-SE31,tuberculose,4.27,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-DENISE,DENISE,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ITAPECURU MIRIM,ITAPECURU MIRIM,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PEIXOTO DE AZEVEDO,PEIXOTO DE AZEVEDO,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ALTO GARCAS,ALTO GARCAS,0,0.0,2026-SE31,dengue_arbovirose,6.1,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CERES,CERES,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-COLIDER,COLIDER,0,0.0,2026-SE31,tuberculose,6.23,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-DIAMANTINO,DIAMANTINO,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-JUSCIMEIRA,JUSCIMEIRA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-LAMBARI D''OESTE,LAMBARI D''OESTE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MACEIO,MACEIO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MARIBONDO,MARIBONDO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVO MUNDO,NOVO MUNDO,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SALINOPOLIS,SALINOPOLIS,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SENADOR CANEDO,SENADOR CANEDO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-VERA,VERA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ALTA FLORESTA,ALTA FLORESTA,0,0.0,2026-SE31,hepatite,10.63,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ALTO ARAGUAIA,ALTO ARAGUAIA,0,0.0,2026-SE31,tuberculose,11.18,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ALTO TAQUARI,ALTO TAQUARI,0,0.0,2026-SE31,,5.39,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-APARECIDA DE GOIANIA,APARECIDA DE GOIANIA,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BARAO DE MELGACO,BARAO DE MELGACO,0,0.0,2026-SE31,hepatite,11.51,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BARRA DO BUGRES,BARRA DO BUGRES,0,0.0,2026-SE31,,3.7,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-BRASNORTE,BRASNORTE,0,0.0,2026-SE31,,4.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CAIAPONIA,CAIAPONIA,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CAMPOS DE JULIO,CAMPOS DE JULIO,0,0.0,2026-SE31,hepatite,4.225,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CHAPADA DOS GUIMARAES,CHAPADA DOS GUIMARAES,0,0.0,2026-SE31,,3.86,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CONFRESA,CONFRESA,0,0.0,2026-SE31,,49.935,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-COTRIGUACU,COTRIGUACU,0,0.0,2026-SE31,hepatite,7.04,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-CURVELANDIA,CURVELANDIA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-DOURADOS,DOURADOS,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-FAXINAL DO SOTURNO,FAXINAL DO SOTURNO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-FELIZ NATAL,FELIZ NATAL,0,0.0,2026-SE31,tuberculose,2.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-FORTALEZA,FORTALEZA,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-GUIRATINGA,GUIRATINGA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-IPIRANGA DO NORTE,IPIRANGA DO NORTE,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ITANHANGA,ITANHANGA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ITIQUIRA,ITIQUIRA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-JANGADA,JANGADA,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-MIRANTE DA SERRA,MIRANTE DA SERRA,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NAVIRAI,NAVIRAI,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOBRES,NOBRES,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CAMPO NOVO DO PARECIS,CAMPO NOVO DO PARECIS,0,0.0,2026-SE31,hepatite,9.05,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 NOVA BANDEIRANTES,NOVA BANDEIRANTES,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA GUARITA,NOVA GUARITA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA MONTE VERDE,NOVA MONTE VERDE,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA OLIMPIA,NOVA OLIMPIA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-NOVA UBIRATA,NOVA UBIRATA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PACARAIMA,PACARAIMA,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PARANAITA,PARANAITA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PARAUAPEBAS,PARAUAPEBAS,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-PEDRA PRETA,PEDRA PRETA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-POCONE,POCONE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PONTES E LACERDA,PONTES E LACERDA,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
 PORTO VELHO,PORTO VELHO,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-POXOREO,POXOREO,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-ROSARIO OESTE,ROSARIO OESTE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-RUROPOLIS,RUROPOLIS,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SAO GABRIEL DO OESTE,SAO GABRIEL DO OESTE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SAO PEDRO DA CIPA,SAO PEDRO DA CIPA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SAPEZAL,SAPEZAL,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SERRA NOVA DOURADA,SERRA NOVA DOURADA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SOLEDADE DE MINAS,SOLEDADE DE MINAS,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-SUMARE,SUMARE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-TABAPORA,TABAPORA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-URUPA,URUPA,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
-VILHENA,VILHENA,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+JANGADA,JANGADA,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+ALTO GARCAS,ALTO GARCAS,0,0.0,2026-SE31,tuberculose,6.1,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CONFRESA,CONFRESA,0,0.0,2026-SE31,dengue_arbovirose,49.935,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+COTRIGUACU,COTRIGUACU,0,0.0,2026-SE31,dengue_arbovirose,7.04,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+DIAMANTINO,DIAMANTINO,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+UNIAO DO SUL,UNIAO DO SUL,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+VARGEAO,VARGEAO,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+AGUA BOA,AGUA BOA,0,0.0,2026-SE31,hepatite,12.48,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BARRA DO GARCAS,BARRA DO GARCAS,0,0.0,2026-SE31,hepatite,12.52,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PEROLA,PEROLA,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+SAO JOSE DO RIO CLARO,SAO JOSE DO RIO CLARO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BARAO DE MELGACO,BARAO DE MELGACO,0,0.0,2026-SE31,tuberculose,11.51,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BARRA DO BUGRES,BARRA DO BUGRES,0,0.0,2026-SE31,,3.7,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CLAUDIA,CLAUDIA,0,0.0,2026-SE31,tuberculose,1.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CORUMBA,CORUMBA,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+GENERAL CARNEIRO,GENERAL CARNEIRO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA BRASILANDIA,NOVA BRASILANDIA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA MARINGA,NOVA MARINGA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PACARAIMA,PACARAIMA,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+POCONE,POCONE,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PRIMAVERA DO LESTE,PRIMAVERA DO LESTE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+RIO VERDE,RIO VERDE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+ROSARIO OESTE,ROSARIO OESTE,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+SAPUCAIA DO SUL,SAPUCAIA DO SUL,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+TERRA NOVA DO NORTE,TERRA NOVA DO NORTE,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+ALTO TAQUARI,ALTO TAQUARI,0,0.0,2026-SE31,tuberculose,5.39,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BARRA DO PIRAI,BARRA DO PIRAI,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BARRO,BARRO,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BELEM,BELEM,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BOA ESPERANCA DO NORTE,BOA ESPERANCA DO NORTE,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BOM JESUS DO ARAGUAIA,BOM JESUS DO ARAGUAIA,0,0.0,2026-SE31,,20.62,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+BRASNORTE,BRASNORTE,0,0.0,2026-SE31,,4.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CAMPO GRANDE,CAMPO GRANDE,0,,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CANABRAVA DO NORTE,CANABRAVA DO NORTE,0,0.0,2026-SE31,tuberculose,0.0,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CANARANA,CANARANA,0,0.0,2026-SE31,,11.665,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CAXIAS,CAXIAS,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+COMODORO,COMODORO,0,0.0,2026-SE31,tuberculose,10.15,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+CRICIUMA,CRICIUMA,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+DENISE,DENISE,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+GUIRATINGA,GUIRATINGA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+JACIARA,JACIARA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+JUSCIMEIRA,JUSCIMEIRA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+MATUPA,MATUPA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+MIRASSOL D''OESTE,MIRASSOL D''OESTE,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NORTELANDIA,NORTELANDIA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOSSA SENHORA DO LIVRAMENTO,NOSSA SENHORA DO LIVRAMENTO,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA CANAA DO NORTE,NOVA CANAA DO NORTE,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA MUTUM,NOVA MUTUM,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA NAZARE,NOVA NAZARE,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA OLIMPIA,NOVA OLIMPIA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+NOVA XAVANTINA,NOVA XAVANTINA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PARANATINGA,PARANATINGA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PEDRA PRETA,PEDRA PRETA,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PEIXOTO DE AZEVEDO,PEIXOTO DE AZEVEDO,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PIRACICABA,PIRACICABA,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+PLANALTO DA SERRA,PLANALTO DA SERRA,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+POXOREO,POXOREO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+QUERENCIA,QUERENCIA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+RIO BRANCO,RIO BRANCO,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+SANTA CARMEM,SANTA CARMEM,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+SAO JOSE DOS QUATRO MARCOS,SAO JOSE DOS QUATRO MARCOS,0,0.0,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+SAPEZAL,SAPEZAL,0,0.0,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+TAPURAH,TAPURAH,0,0.0,2026-SE31,tuberculose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+TRINDADE,TRINDADE,0,,2026-SE31,dengue_arbovirose,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+VERA,VERA,0,0.0,2026-SE31,hepatite,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv
+VILA BELA DA SANTISSIMA TRINDADE,VILA BELA DA SANTISSIMA TRINDADE,0,,2026-SE31,,,Internações referem-se a 2026-SE31 (lag SIH).,staging_dw/sih_mun_cid_familia_agg.csv,staging_dw/indicadores.csv

@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-10T11:34:44",
+  "ts": "2026-09-11T07:04:52",
   "objects": [
     {
       "TABLE_SCHEMA": "dbo",
@@ -362,11 +362,11 @@
   },
   "error": null,
   "gal_view": "VW_GAL",
-  "weekly_rows": 28685,
+  "weekly_rows": 28659,
   "se_max_dw": "2026-SE37",
-  "exames_proxy": 77746,
-  "positivos_proxy": 1750,
-  "micro_rows": 1178,
+  "exames_proxy": 77673,
+  "positivos_proxy": 1693,
+  "micro_rows": 1174,
   "sih_sia_columns": {
     "VW_INTERNACAO": [
       "AnoCompetencia",
@@ -673,7 +673,7 @@
     ]
   },
   "sih_sia_aggregates": {
-    "sih_mun_cid": 186,
+    "sih_mun_cid": 182,
     "sia_mun_cid": 207
   },
   "cruzamento_sih_sia": {
@@ -707,7 +707,7 @@
         "fonte": "SIH/VW_INTERNACAO",
         "municipio": "TANGARA DA SERRA",
         "cid_familia": "dengue_arbovirose",
-        "n": 12
+        "n": 11
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
@@ -723,12 +723,6 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "CONFRESA",
-        "cid_familia": "dengue_arbovirose",
-        "n": 9
-      },
-      {
-        "fonte": "SIH/VW_INTERNACAO",
         "municipio": "VARZEA GRANDE",
         "cid_familia": "dengue_arbovirose",
         "n": 9
@@ -741,18 +735,24 @@
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "JUARA",
+        "municipio": "CANARANA",
         "cid_familia": "dengue_arbovirose",
         "n": 8
       },
       {
         "fonte": "SIH/VW_INTERNACAO",
-        "municipio": "CANARANA",
+        "municipio": "CONFRESA",
+        "cid_familia": "dengue_arbovirose",
+        "n": 8
+      },
+      {
+        "fonte": "SIH/VW_INTERNACAO",
+        "municipio": "JUARA",
         "cid_familia": "dengue_arbovirose",
         "n": 8
       }
     ],
-    "sih_rows": 186,
+    "sih_rows": 182,
     "sia_rows": 207,
     "familias": [
       "dengue_arbovirose"

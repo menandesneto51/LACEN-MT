@@ -29,9 +29,9 @@ BARRA DO BUGRES,5101704.0,2026,15,pressao_alta,1,6.0,16.0,Observado,alerta_emerg
 BARRA DO BUGRES,5101704.0,2026,15,sla_crise,1,6.0,16.0,Observado,alerta_emergencia_historico
 CACERES,5102504.0,2026,15,pressao_alta,0,61.0,36.0,Observado,alerta_emergencia_historico
 CAMPO NOVO DO PARECIS,5102637.0,2026,15,pressao_alta,1,59.0,182.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,15,silencio_gal,0,282.0,563.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,15,pressao_alta,1,282.0,563.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,15,sla_crise,1,282.0,563.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,silencio_gal,0,282.0,565.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,pressao_alta,1,282.0,565.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,15,sla_crise,1,282.0,565.0,Observado,alerta_emergencia_historico
 DIAMANTINO,5103601.0,2026,15,sla_crise,1,5.0,10.0,Observado,alerta_emergencia_historico
 SINOP,5107925.0,2026,15,pressao_alta,1,68.0,141.0,Observado,alerta_emergencia_historico
 TANGARA DA SERRA,5108006.0,2026,15,pressao_alta,1,26.0,107.0,Observado,alerta_emergencia_historico
@@ -39,8 +39,8 @@ TANGARA DA SERRA,5108006.0,2026,15,sla_crise,1,26.0,107.0,Observado,alerta_emerg
 VARZEA GRANDE,5108402.0,2026,15,pressao_alta,1,284.0,527.0,Observado,alerta_emergencia_historico
 CACERES,5102504.0,2026,16,pressao_alta,1,25.0,31.0,Observado,alerta_emergencia_historico
 CAMPO NOVO DO PARECIS,5102637.0,2026,16,pressao_alta,0,119.0,134.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,16,pressao_alta,1,304.0,549.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,16,sla_crise,1,304.0,549.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,16,pressao_alta,1,304.0,551.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,16,sla_crise,1,304.0,551.0,Observado,alerta_emergencia_historico
 PONTES E LACERDA,5106851.0,2026,16,pressao_alta,1,76.0,91.0,Observado,alerta_emergencia_historico
 PONTES E LACERDA,5106851.0,2026,16,sla_crise,1,76.0,91.0,Observado,alerta_emergencia_historico
 SINOP,5107925.0,2026,16,pressao_alta,1,66.0,135.0,Observado,alerta_emergencia_historico
@@ -49,8 +49,8 @@ TANGARA DA SERRA,5108006.0,2026,16,sla_crise,1,82.0,60.0,Observado,alerta_emerge
 VARZEA GRANDE,5108402.0,2026,16,pressao_alta,1,290.0,411.0,Observado,alerta_emergencia_historico
 CACERES,5102504.0,2026,17,pressao_alta,1,11.0,46.0,Observado,alerta_emergencia_historico
 CAMPO NOVO DO PARECIS,5102637.0,2026,17,pressao_alta,1,63.0,155.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,17,pressao_alta,1,259.0,581.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,17,sla_crise,1,259.0,581.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,17,pressao_alta,1,261.0,581.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,17,sla_crise,1,261.0,581.0,Observado,alerta_emergencia_historico
 NOVA MUTUM,5106257.0,2026,17,pressao_alta,1,20.0,68.0,Observado,alerta_emergencia_historico
 NOVA MUTUM,5106257.0,2026,17,sla_crise,1,20.0,68.0,Observado,alerta_emergencia_historico
 PRIMAVERA DO LESTE,5107065.0,2026,17,pressao_alta,1,25.0,53.0,Observado,alerta_emergencia_historico
@@ -280,40 +280,53 @@ NOVA GUARITA,5106182.0,2026,30,sla_crise,0,1.0,1.0,Observado,alerta_emergencia_h
 COMODORO,5103304.0,2026,30,sla_crise,0,1.0,1.0,Observado,alerta_emergencia_historico
 IPIRANGA DO NORTE,5104542.0,2026,30,sla_crise,1,2.0,6.0,Observado,alerta_emergencia_historico
 BOA ESPERANCA DO NORTE,,2026,30,divergencia,0,1.0,3.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,36,divergencia,0,255.0,42.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,36,pressao_alta,0,255.0,42.0,Observado,alerta_emergencia_historico
-CUIABA,5103437.0,2026,36,sla_crise,0,255.0,42.0,Observado,alerta_emergencia_historico
-VARZEA GRANDE,5108402.0,2026,36,divergencia,0,170.0,74.0,Observado,alerta_emergencia_historico
-VARZEA GRANDE,5108402.0,2026,36,pressao_alta,0,170.0,74.0,Observado,alerta_emergencia_historico
-CACERES,5102504.0,2026,36,divergencia,0,81.0,19.0,Observado,alerta_emergencia_historico
-CACERES,5102504.0,2026,36,pressao_alta,0,81.0,19.0,Observado,alerta_emergencia_historico
-TANGARA DA SERRA,5108006.0,2026,36,divergencia,0,56.0,11.0,Observado,alerta_emergencia_historico
-TANGARA DA SERRA,5108006.0,2026,36,pressao_alta,0,56.0,11.0,Observado,alerta_emergencia_historico
-TANGARA DA SERRA,5108006.0,2026,36,sla_crise,0,56.0,11.0,Observado,alerta_emergencia_historico
-SINOP,5107925.0,2026,36,divergencia,0,109.0,19.0,Observado,alerta_emergencia_historico
-SINOP,5107925.0,2026,36,pressao_alta,0,109.0,19.0,Observado,alerta_emergencia_historico
-CAMPO VERDE,5102678.0,2026,36,pressao_alta,0,16.0,6.0,Observado,alerta_emergencia_historico
-CAMPO VERDE,5102678.0,2026,36,sla_crise,0,16.0,6.0,Observado,alerta_emergencia_historico
-RONDONOPOLIS,5107602.0,2026,36,divergencia,0,28.0,5.0,Observado,alerta_emergencia_historico
-RONDONOPOLIS,5107602.0,2026,36,pressao_alta,0,28.0,5.0,Observado,alerta_emergencia_historico
-SORRISO,5107941.0,2026,36,divergencia,0,61.0,14.0,Observado,alerta_emergencia_historico
-SORRISO,5107941.0,2026,36,pressao_alta,0,61.0,14.0,Observado,alerta_emergencia_historico
-SORRISO,5107941.0,2026,36,sla_crise,0,61.0,14.0,Observado,alerta_emergencia_historico
-COLIDER,5103205.0,2026,36,pressao_alta,0,14.0,1.0,Observado,alerta_emergencia_historico
-LUCAS DO RIO VERDE,5105507.0,2026,36,divergencia,0,67.0,22.0,Observado,alerta_emergencia_historico
-LUCAS DO RIO VERDE,5105507.0,2026,36,pressao_alta,0,67.0,22.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,36,divergencia,0,260.0,87.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,36,pressao_alta,0,260.0,87.0,Observado,alerta_emergencia_historico
+CUIABA,5103437.0,2026,36,sla_crise,0,260.0,87.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,36,divergencia,0,172.0,120.0,Observado,alerta_emergencia_historico
+VARZEA GRANDE,5108402.0,2026,36,pressao_alta,0,172.0,120.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,36,divergencia,0,81.0,22.0,Observado,alerta_emergencia_historico
+CACERES,5102504.0,2026,36,pressao_alta,0,81.0,22.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,36,divergencia,0,56.0,80.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,36,pressao_alta,1,56.0,80.0,Observado,alerta_emergencia_historico
+TANGARA DA SERRA,5108006.0,2026,36,sla_crise,1,56.0,80.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,36,divergencia,0,109.0,25.0,Observado,alerta_emergencia_historico
+SINOP,5107925.0,2026,36,pressao_alta,0,109.0,25.0,Observado,alerta_emergencia_historico
+CAMPO VERDE,5102678.0,2026,36,pressao_alta,1,16.0,14.0,Observado,alerta_emergencia_historico
+CAMPO VERDE,5102678.0,2026,36,sla_crise,1,16.0,14.0,Observado,alerta_emergencia_historico
+RONDONOPOLIS,5107602.0,2026,36,divergencia,0,28.0,10.0,Observado,alerta_emergencia_historico
+RONDONOPOLIS,5107602.0,2026,36,pressao_alta,0,28.0,10.0,Observado,alerta_emergencia_historico
+SORRISO,5107941.0,2026,36,divergencia,0,62.0,22.0,Observado,alerta_emergencia_historico
+SORRISO,5107941.0,2026,36,pressao_alta,0,62.0,22.0,Observado,alerta_emergencia_historico
+SORRISO,5107941.0,2026,36,sla_crise,0,62.0,22.0,Observado,alerta_emergencia_historico
+COLIDER,5103205.0,2026,36,pressao_alta,0,14.0,2.0,Observado,alerta_emergencia_historico
+LUCAS DO RIO VERDE,5105507.0,2026,36,divergencia,0,67.0,27.0,Observado,alerta_emergencia_historico
+LUCAS DO RIO VERDE,5105507.0,2026,36,pressao_alta,0,67.0,27.0,Observado,alerta_emergencia_historico
 PONTES E LACERDA,5106851.0,2026,36,pressao_alta,0,9.0,3.0,Observado,alerta_emergencia_historico
 PONTES E LACERDA,5106851.0,2026,36,sla_crise,0,9.0,3.0,Observado,alerta_emergencia_historico
-PRIMAVERA DO LESTE,5107065.0,2026,36,pressao_alta,1,5.0,8.0,Observado,alerta_emergencia_historico
-CHAPADA DOS GUIMARAES,5103007.0,2026,36,pressao_alta,0,16.0,2.0,Observado,alerta_emergencia_historico
-CHAPADA DOS GUIMARAES,5103007.0,2026,36,sla_crise,0,16.0,2.0,Observado,alerta_emergencia_historico
-NOVA MUTUM,5106257.0,2026,36,pressao_alta,1,1.0,5.0,Observado,alerta_emergencia_historico
-NOVA MUTUM,5106257.0,2026,36,sla_crise,1,1.0,5.0,Observado,alerta_emergencia_historico
+PRIMAVERA DO LESTE,5107065.0,2026,36,pressao_alta,1,5.0,18.0,Observado,alerta_emergencia_historico
+CHAPADA DOS GUIMARAES,5103007.0,2026,36,pressao_alta,0,16.0,3.0,Observado,alerta_emergencia_historico
+CHAPADA DOS GUIMARAES,5103007.0,2026,36,sla_crise,0,16.0,3.0,Observado,alerta_emergencia_historico
+NOVA MUTUM,5106257.0,2026,36,pressao_alta,1,1.0,7.0,Observado,alerta_emergencia_historico
+NOVA MUTUM,5106257.0,2026,36,sla_crise,1,1.0,7.0,Observado,alerta_emergencia_historico
+GUARANTA DO NORTE,5104203.0,2026,36,pressao_alta,0,27.0,1.0,Observado,alerta_emergencia_historico
+GUARANTA DO NORTE,5104203.0,2026,36,sla_crise,0,27.0,1.0,Observado,alerta_emergencia_historico
+ARAPUTANGA,5101258.0,2026,36,pressao_alta,0,0.0,2.0,Observado,alerta_emergencia_historico
+ARAPUTANGA,5101258.0,2026,36,sla_crise,0,0.0,2.0,Observado,alerta_emergencia_historico
+JUINA,5105200.0,2026,36,divergencia,0,51.0,18.0,Observado,alerta_emergencia_historico
+JUINA,5105200.0,2026,36,pressao_alta,0,51.0,18.0,Observado,alerta_emergencia_historico
+JUINA,5105200.0,2026,36,sla_crise,0,51.0,18.0,Observado,alerta_emergencia_historico
 MATUPA,5105622.0,2026,36,sla_crise,1,1.0,6.0,Observado,alerta_emergencia_historico
+ALTO PARAGUAI,5100508.0,2026,36,sla_crise,0,0.0,1.0,Observado,alerta_emergencia_historico
 JUARA,5105150.0,2026,36,sla_crise,0,2.0,2.0,Observado,alerta_emergencia_historico
-SAPEZAL,5107883.0,2026,36,sla_crise,1,2.0,7.0,Observado,alerta_emergencia_historico
+SAPEZAL,5107883.0,2026,36,sla_crise,1,2.0,8.0,Observado,alerta_emergencia_historico
 ALTO GARCAS,5100409.0,2026,36,sla_crise,1,4.0,7.0,Observado,alerta_emergencia_historico
 CANARANA,5102702.0,2026,36,sla_crise,0,1.0,1.0,Observado,alerta_emergencia_historico
+MARCELANDIA,,2026,36,silencio_gal,0,0.0,4.0,Observado,alerta_emergencia_historico
+MARCELANDIA,,2026,36,sla_crise,1,0.0,4.0,Observado,alerta_emergencia_historico
+BARRA DO BUGRES,5101704.0,2026,36,sla_crise,1,4.0,5.0,Observado,alerta_emergencia_historico
+NOVA MARILANDIA,5106224.0,2026,36,silencio_gal,0,0.0,6.0,Observado,alerta_emergencia_historico
+NOVA MARILANDIA,5106224.0,2026,36,sla_crise,1,0.0,6.0,Observado,alerta_emergencia_historico
 NOVA UBIRATA,5106281.0,2026,36,sla_crise,1,9.0,6.0,Observado,alerta_emergencia_historico
 NOVA GUARITA,5106182.0,2026,36,sla_crise,0,0.0,1.0,Observado,alerta_emergencia_historico
 GAUCHA DO NORTE,5103908.0,2026,36,silencio_gal,1,0.0,1.0,Observado,alerta_emergencia_historico
