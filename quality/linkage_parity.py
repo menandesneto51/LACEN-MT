@@ -12,6 +12,11 @@ from typing import Any
 
 import pandas as pd
 
+from quality.territorial_reconciliation import (
+    build_reconciliation_report,
+    write_reconciliation_report,
+)
+
 
 @dataclass
 class LinkageParitySummary:
@@ -207,6 +212,9 @@ def write_linkage_parity(
         index=False,
         encoding="utf-8-sig",
     )
+
+    reconciliation = build_reconciliation_report(investigations)
+    write_reconciliation_report(reconciliation, out)
 
     lines = ["LACEN-MT V2 — PARIDADE DE PAREAMENTOS", f"promotion_status: {overall}", ""]
     for s in summaries:
