@@ -1,0 +1,58 @@
+---
+description: LACEN-MT V2 engineering and epidemiological safety rules
+alwaysApply: true
+---
+
+# Cursor — LACEN-MT V2
+
+## Fluxo obrigatório
+Antes de editar código, leia `README_lacen_integrado_total.md`, `docs/data_quality_agent_v2.md` e os módulos diretamente afetados.
+
+Trabalhe incrementalmente. Não reescreva componentes funcionais sem necessidade demonstrada. Preserve compatibilidade com execução local Windows e futura migração para servidor SES-MT.
+
+## Arquitetura de agentes
+Use esta ordem de revisão conforme aplicável:
+CTO Virtual → Product Owner → Chief Architect → Clinical Specialist → Data Architect → Data Governance → Backend/API → AI/GIS → UX → Performance → Security → QA → Observability/DevOps → Chief Architect.
+
+## Regras epidemiológicas não negociáveis
+- exame ≠ resultado positivo ≠ pessoa positiva ≠ caso ≠ notificação;
+- anomalia estatística ≠ prioridade epidemiológica ≠ surto/epidemia/emergência;
+- Observado, Derivado e Predito devem permanecer separados;
+- IA/ML não pode criar regra clínica/epidemiológica;
+- regra oficial deve ser versionada e rastreável;
+- semana incompleta não pode ser apresentada como consolidada;
+- linkage ausente deve ser descrito como ausência de correspondência no cruzamento disponível, não automaticamente como subnotificação.
+
+## Data Quality Gate
+A ordem é:
+`DADO → QUALIDADE → REGRA → ANÁLISE → SINAL → INTERPRETAÇÃO → AÇÃO`.
+
+`BLOCK` interrompe produtos derivados dependentes: ML, mirror, alerta e publicação consolidada.
+`WARN` permite continuidade com aviso explícito e auditável.
+Nunca contorne um BLOCK para fazer o pipeline terminar.
+
+## Chaves e temporalidade
+- Preferir código IBGE como chave territorial canônica.
+- Não criar novas listas hardcoded de municípios.
+- Centralizar semana epidemiológica em `etl/epi_week.py`; suportar SE 53.
+- Não alterar a âncora temporal GAL (solicitação/coleta) silenciosamente: há decisão epidemiológica pendente e qualquer mudança exige ADR/validação.
+- Denominadores devem registrar fonte e ano. Não aceitar silenciosamente população histórica incompatível com o período analisado.
+
+## Segurança e dados
+Não versionar credenciais, tokens, PII ou microdados identificáveis. Não gravar caminhos locais do usuário em artefatos institucionais.
+
+## Definition of Done
+Toda mudança relevante deve:
+1. ter teste;
+2. preservar outputs existentes ou documentar migração;
+3. produzir erro/aviso acionável;
+4. manter lineage e versão de regra quando aplicável;
+5. passar `pytest`;
+6. ser revisável por PR;
+7. não declarar causalidade ou surto automaticamente.
+
+## Trabalho atual
+Branch: `feat/v2-data-quality-agent`.
+PR: #7.
+Prioridade: issue #2, avançando #3, #4 e #5.
+Próximos checks: freshness por fonte, completude, duplicidade, IBGE, encoding, temporalidade/TAT e lineage.
