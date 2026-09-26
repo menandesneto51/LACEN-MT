@@ -40,6 +40,7 @@ from quality.territorial_dimension import (  # noqa: E402
 from quality.parity_report import build_parity_report, write_parity_report  # noqa: E402
 from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate  # noqa: E402
 from quality.review_package import build_review_package, write_review_package  # noqa: E402
+from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, write_agent_reviews  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -101,6 +102,8 @@ def write_validacao(
         f"parity_status: {report.get('parity_status')}",
         f"linkage_parity_status: {report.get('linkage_parity_status')}",
         f"territorial_promotion_ready: {report.get('territorial_promotion_ready')}",
+        f"agent_review_status: {report.get('agent_review_status')}",
+        f"agent_review_blockers: {report.get('agent_review_blockers')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -291,6 +294,17 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     report["data_quality_publishable"] = quality_report.publishable
     report["passos"].append(f"data_quality_gate:{quality_report.status.value}")
 
+    agent_reviews = load_agent_reviews(
+        ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json"
+    )
+    agent_review_summary = summarize_agent_reviews(agent_reviews)
+    write_agent_reviews(agent_reviews, quality_dir)
+    report["agent_review_status"] = agent_review_summary.get("overall_status")
+    report["agent_review_blockers"] = agent_review_summary.get("blockers", [])
+    report["passos"].append(
+        f"agent_reviews:{report['agent_review_status']}"
+    )
+
     promotion_gate = evaluate_promotion_gate(
         data_quality_status=report.get("data_quality_status"),
         parity_status=report.get("parity_status"),
@@ -299,6 +313,7 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         ci_status=os.getenv("LACEN_PROMOTION_CI_STATUS"),
         architecture_review=os.getenv("LACEN_ARCHITECTURE_REVIEW"),
         epidemiology_review=os.getenv("LACEN_EPIDEMIOLOGY_REVIEW"),
+        agent_reviews_status=report.get("agent_review_status"),
     )
     write_promotion_gate(promotion_gate, quality_dir)
 
