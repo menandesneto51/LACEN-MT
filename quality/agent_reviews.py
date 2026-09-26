@@ -22,6 +22,7 @@ class AgentReview:
     findings: list[str] = field(default_factory=list)
     blockers: list[str] = field(default_factory=list)
     recommendations: list[str] = field(default_factory=list)
+    evidence: dict[str, Any] = field(default_factory=dict)
     decision: str | None = None
     reviewer: str | None = None
     reviewed_at: str | None = None
@@ -133,6 +134,7 @@ def load_agent_reviews(path: Path | str) -> dict[str, AgentReview]:
             findings=list(item.get("findings") or []),
             blockers=list(item.get("blockers") or []),
             recommendations=list(item.get("recommendations") or []),
+            evidence=dict(item.get("evidence") or {}),
             decision=item.get("decision"),
             reviewer=item.get("reviewer"),
             reviewed_at=item.get("reviewed_at"),
