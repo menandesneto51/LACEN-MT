@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-5",
+  "review_version": "v2.1-initial-6",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -13,7 +13,7 @@
         "A governança populacional possui comparação automática de cobertura/diferenças e não autoaprova fonte vencedora.",
         "A análise temporal GAL quantifica impacto por registro e por semana sem alterar a série.",
         "A V2 permanece paralela ao legado e automatic_promotion_allowed=false.",
-        "O CI #291 concluiu SUCCESS no HEAD 98c2d98ce0dd77856f6befb618078ee0f05ae457."
+        "O CI #295 concluiu SUCCESS no HEAD b9a4e1e4bf3ea74899047f4227014b7251a68875."
       ],
       "blockers": [],
       "recommendations": [
@@ -25,11 +25,10 @@
       "reviewer": "Chief Architect Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 291,
-        "workflow_run_id": 36279491009,
-        "head_sha": "98c2d98ce0dd77856f6befb618078ee0f05ae457",
-        "conclusion": "success",
-        "adr_temporal_status": "PENDING_CLINICAL_DECISION"
+        "workflow_run_number": 295,
+        "workflow_run_id": 36279893340,
+        "head_sha": "b9a4e1e4bf3ea74899047f4227014b7251a68875",
+        "conclusion": "success"
       }
     },
     "clinical_epidemiological_specialist": {
@@ -56,7 +55,7 @@
       "agent": "QA",
       "status": "PASS",
       "findings": [
-        "O GitHub Actions LACEN-MT Quality Gate run #291 concluiu SUCCESS para o HEAD 98c2d98ce0dd77856f6befb618078ee0f05ae457.",
+        "O GitHub Actions LACEN-MT Quality Gate run #295 concluiu SUCCESS para o HEAD b9a4e1e4bf3ea74899047f4227014b7251a68875.",
         "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage, análise temporal GAL e joins territoriais determinísticos.",
         "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
         "Há regressão específica contra zero-padding de IBGE, duplicação por variantes nominais, fallback territorial indevido e cobertura populacional incompleta."
@@ -71,9 +70,9 @@
       "reviewer": "QA Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 291,
-        "workflow_run_id": 36279491009,
-        "head_sha": "98c2d98ce0dd77856f6befb618078ee0f05ae457",
+        "workflow_run_number": 295,
+        "workflow_run_id": 36279893340,
+        "head_sha": "b9a4e1e4bf3ea74899047f4227014b7251a68875",
         "conclusion": "success"
       }
     },
