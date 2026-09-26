@@ -192,9 +192,18 @@ def select_population_for_year(
 
     rank = {name: i for i, name in enumerate(source_priority)}
     exact["_source_rank"] = exact["fonte"].map(rank).fillna(len(rank)).astype(int)
-    keys = ["municipio_ibge"] if exact["municipio_ibge"].notna().any() else ["municipio"]
-    exact = exact.sort_values(keys + ["_source_rank", "fonte"])
-    return exact.drop_duplicates(subset=keys, keep="first").drop(columns="_source_rank").reset_index(drop=True)
+    name_key = exact["municipio"].astype("string").str.strip().str.upper()
+    exact["_territory_key"] = exact["municipio_ibge"].astype("string")
+    exact["_territory_key"] = exact["_territory_key"].where(
+        exact["municipio_ibge"].notna(),
+        "NAME:" + name_key,
+    )
+    exact = exact.sort_values(["_territory_key", "_source_rank", "fonte"])
+    return (
+        exact.drop_duplicates(subset=["_territory_key"], keep="first")
+        .drop(columns=["_source_rank", "_territory_key"])
+        .reset_index(drop=True)
+    )
 
 
 def write_population_dimension(dim: pd.DataFrame, outdir: Path | str) -> tuple[Path, Path]:
