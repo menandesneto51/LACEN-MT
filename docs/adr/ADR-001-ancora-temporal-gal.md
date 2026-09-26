@@ -12,6 +12,37 @@ A revisão Clinical/Epidemiological Specialist bloqueou a promoção da V2 enqua
 
 A documentação operacional do GAL evidencia que o sistema acompanha o fluxo desde a solicitação até a liberação do resultado e que a data de coleta é informação laboratorial/epidemiológica relevante. Isso, porém, não é suficiente por si só para substituir a âncora atual sem avaliar o objetivo analítico do produto e o impacto sobre a série histórica.
 
+## Evidência documental oficial
+
+A documentação consultada do GAL trata **Data de Solicitação** e **Data da Coleta** como campos distintos do fluxo laboratorial. Isso sustenta a necessidade de preservar ambas as semânticas no modelo e de não converter uma na outra por conveniência técnica.
+
+Até esta revisão, não foi identificada norma oficial que estabeleça uma dessas duas datas como âncora universal obrigatória para a semana epidemiológica de todos os produtos analíticos derivados do GAL.
+
+Referências consultadas:
+- Ministério da Saúde/BVS — formulários e instruções do GAL, com campos separados para solicitação e coleta;
+- LACEN/SES-MT — manual operacional do GAL, mantendo as duas datas como eventos distintos do fluxo.
+
+Conclusão documental: a escolha da âncora deve ser definida pela **finalidade epidemiológica/operacional do produto**, validada institucionalmente e acompanhada de análise de impacto sobre a série.
+
+## Evidência quantitativa exigida
+
+A V2.1 passa a gerar:
+- cobertura de Data de Solicitação;
+- cobertura de Data da Coleta;
+- atraso solicitação−coleta;
+- proporção de registros que mudam de SE;
+- proporção que muda de ano epidemiológico;
+- comparação semanal das contagens sob cada âncora;
+- número/proporção de semanas com diferença;
+- maior diferença absoluta semanal;
+- soma das diferenças absolutas semanais.
+
+Artefatos:
+- `gal_temporal_anchor_detail.csv`;
+- `gal_temporal_anchor_weekly_comparison.csv`;
+- `gal_temporal_anchor_summary.json`;
+- `gal_temporal_anchor_summary.txt`.
+
 ## Alternativas
 
 ### A. Data de solicitação
