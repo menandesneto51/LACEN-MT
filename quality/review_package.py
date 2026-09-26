@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 import json
 
+from quality.agent_reviews import default_agent_reviews, summarize_agent_reviews
+
 
 def _load(path: Path) -> dict[str, Any]:
     if not path.exists():
@@ -57,8 +59,11 @@ def build_review_package(
     if invalid_closed:
         blockers.append(f"Existem {invalid_closed} fechamento(s) territorial(is) inválido(s).")
 
+    agent_reviews = default_agent_reviews()
+    agent_review_summary = summarize_agent_reviews(agent_reviews)
+
     return {
-        "package_version": "v2.1-review-1",
+        "package_version": "v2.1-review-2",
         "pr_number": pr_number,
         "head_sha": head_sha,
         "promotion_gate_status": promotion.get("status", "UNKNOWN"),
@@ -86,6 +91,10 @@ def build_review_package(
             "reviewer": None,
             "reviewed_at": None,
         },
+        "agent_reviews": {
+            key: review.to_dict() for key, review in agent_reviews.items()
+        },
+        "agent_review_summary": agent_review_summary,
         "release_decision": {
             "status": "PENDING",
             "decision": None,
@@ -132,6 +141,14 @@ def write_review_package(
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
         lines.append(f"- [ ] {item}")
+
+    lines += ["", "## Pareceres multiagente"]
+    for key, review in package.get("agent_reviews", {}).items():
+        lines += [
+            f"### {review.get('agent', key)}",
+            f"- Status: {review.get('status', 'PENDING')}",
+            f"- Decisão: {review.get('decision') or '—'}",
+        ]
 
     lines += [
         "",
