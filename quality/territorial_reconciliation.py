@@ -129,6 +129,18 @@ def apply_resolution(
     if validacao_pos_correcao is not None:
         out.loc[mask, "validacao_pos_correcao"] = validacao_pos_correcao
     if estado == "FECHADO":
+        required = {
+            "decisao": decisao if decisao is not None else out.loc[mask, "decisao"].iloc[0],
+            "evidencia": evidencia if evidencia is not None else out.loc[mask, "evidencia"].iloc[0],
+            "correcao_aplicada": correcao_aplicada if correcao_aplicada is not None else out.loc[mask, "correcao_aplicada"].iloc[0],
+            "validacao_pos_correcao": validacao_pos_correcao if validacao_pos_correcao is not None else out.loc[mask, "validacao_pos_correcao"].iloc[0],
+        }
+        missing = [k for k, v in required.items() if pd.isna(v) or str(v).strip() == ""]
+        if missing:
+            raise ValueError(
+                "FECHADO exige decisão, evidência, correção aplicada e validação pós-correção. "
+                + "Ausentes: " + ", ".join(missing)
+            )
         out.loc[mask, "data_fechamento"] = now
     return out
 
@@ -205,18 +217,46 @@ def summarize_reconciliation(report: pd.DataFrame) -> dict[str, Any]:
     if report is None or report.empty:
         return {
             "open_items": 0,
-            "critical": 0,
-            "high": 0,
-            "moderate": 0,
+            "closed_items": 0,
+            "critical_open": 0,
+            "high_open": 0,
+            "moderate_open": 0,
+            "invalid_closed_items": 0,
             "promotion_ready": True,
         }
-    p = report["prioridade"].astype(str)
+
+    d = report.copy()
+    if "estado_reconciliacao" not in d.columns:
+        d["estado_reconciliacao"] = "ABERTO"
+    state = d["estado_reconciliacao"].astype(str)
+    open_mask = state != "FECHADO"
+    closed_mask = state == "FECHADO"
+    p = d["prioridade"].astype(str)
+
+    required_cols = ("decisao", "evidencia", "correcao_aplicada", "validacao_pos_correcao")
+    invalid_closed = pd.Series(False, index=d.index)
+    for col in required_cols:
+        if col not in d.columns:
+            d[col] = pd.NA
+        invalid_closed = invalid_closed | (closed_mask & (d[col].isna() | d[col].astype(str).str.strip().eq("")))
+
+    critical_open = int((open_mask & (p == "CRITICA")).sum())
+    high_open = int((open_mask & (p == "ALTA")).sum())
+    moderate_open = int((open_mask & (p == "MODERADA")).sum())
+    invalid_closed_items = int(invalid_closed.sum())
+
     return {
-        "open_items": int(len(report)),
-        "critical": int((p == "CRITICA").sum()),
-        "high": int((p == "ALTA").sum()),
-        "moderate": int((p == "MODERADA").sum()),
-        "promotion_ready": not bool(p.isin(["CRITICA", "ALTA"]).any()),
+        "open_items": int(open_mask.sum()),
+        "closed_items": int(closed_mask.sum()),
+        "critical_open": critical_open,
+        "high_open": high_open,
+        "moderate_open": moderate_open,
+        "invalid_closed_items": invalid_closed_items,
+        "promotion_ready": (
+            critical_open == 0
+            and high_open == 0
+            and invalid_closed_items == 0
+        ),
     }
 
 
@@ -253,9 +293,11 @@ def write_reconciliation_report(
     lines = [
         "LACEN-MT V2 — RECONCILIAÇÃO TERRITORIAL",
         f"itens_abertos: {summary['open_items']}",
-        f"criticos: {summary['critical']}",
-        f"altos: {summary['high']}",
-        f"moderados: {summary['moderate']}",
+        f"itens_fechados: {summary['closed_items']}",
+        f"criticos_abertos: {summary['critical_open']}",
+        f"altos_abertos: {summary['high_open']}",
+        f"moderados_abertos: {summary['moderate_open']}",
+        f"fechados_invalidos: {summary['invalid_closed_items']}",
         f"promotion_ready: {str(summary['promotion_ready']).lower()}",
     ]
     txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
