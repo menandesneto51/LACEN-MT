@@ -114,6 +114,7 @@ OPTIONAL_EXTRACT_CANDIDATES: tuple[str, ...] = (
     "VW_POPULACAO",
     "POPULACAO",
     "POPULACAO_TOTAL",
+    "POPULACAO_TCU",
     "VW_MUNICIPIO",
 )
 
