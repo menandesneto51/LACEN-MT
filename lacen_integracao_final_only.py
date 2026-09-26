@@ -13,6 +13,7 @@ from quality.territorial_dimension import (
     build_population_dimension_from_staging,
     select_population_for_year,
 )
+from quality.linkage_parity import compare_linkage, write_linkage_parity
 
 
 def log(msg: str) -> None:
@@ -178,6 +179,83 @@ def _load_population_v2(outdir: Path, analysis_year: int) -> pd.DataFrame:
         "territory_key", "populacao_v2", "populacao_v2_fonte",
         "populacao_v2_ano", "populacao_v2_fallback",
     ]].drop_duplicates(subset=["territory_key"], keep="first")
+
+
+def _read_optional_csv(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+
+
+def _build_linkage_parity_reports(
+    outdir: Path,
+    weekly: pd.DataFrame,
+    sinan: pd.DataFrame,
+    sim: pd.DataFrame,
+) -> dict:
+    """Audita nome versus IBGE sem alterar os joins de produção."""
+    reports = {}
+
+    left = weekly.copy()
+    if "agravo_sinan" not in left.columns and "target" in left.columns:
+        left["agravo_sinan"] = left["target"].map(map_lacen_target_to_sinan)
+
+    sin = sinan.copy()
+    if not sin.empty:
+        sin["agravo_sinan"] = sin.get("target", "").astype(str).str.strip().str.casefold()
+        reports["GALxSINAN"] = compare_linkage(
+            left,
+            sin,
+            source="GAL×SINAN",
+            dimensions=("epi_year", "epi_week", "agravo_sinan"),
+            metric_col="notificacoes_sinan" if "notificacoes_sinan" in sin.columns else "notificacoes",
+        )
+
+    sm = sim.copy()
+    if not sm.empty:
+        sm["agravo_sinan"] = sm.get("target", "").astype(str).str.strip().str.casefold()
+        reports["GALxSIM"] = compare_linkage(
+            left,
+            sm,
+            source="GAL×SIM",
+            dimensions=("epi_year", "epi_week", "agravo_sinan"),
+            metric_col="obitos_sim",
+        )
+
+    stage = outdir / "staging_dw"
+    sih = _read_optional_csv(stage / "sih_mun_cid_familia_agg.csv")
+    if not sih.empty and "n_internacoes" in sih.columns:
+        reports["GALxSIH"] = compare_linkage(
+            left,
+            sih,
+            source="GAL×SIH",
+            dimensions=("epi_year", "epi_week"),
+            metric_col="n_internacoes",
+        )
+
+    sia = _read_optional_csv(stage / "sia_mun_cid_familia_agg.csv")
+    if not sia.empty:
+        metric = "n_procedimentos" if "n_procedimentos" in sia.columns else "n_registros"
+        # SIA está em competência mensal; aqui a auditoria é estritamente territorial.
+        left_territory = (
+            left.groupby(["municipio", "municipio_ibge"], dropna=False, as_index=False)
+            .agg(tests=("tests", "sum"))
+        )
+        reports["GALxSIA"] = compare_linkage(
+            left_territory,
+            sia,
+            source="GAL×SIA",
+            dimensions=(),
+            metric_col=metric,
+        )
+
+    if not reports:
+        return {"promotion_status": "WARN", "sources": []}
+    return write_linkage_parity(reports, outdir / "quality")
+
 
 def read_csv(path: Path) -> pd.DataFrame:
     for enc in ("utf-8-sig", "utf-8", "latin1"):
@@ -347,6 +425,16 @@ def main():
         weekly["populacao_v2_fallback"] = False
 
     weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
+
+    try:
+        linkage_parity = _build_linkage_parity_reports(outdir, weekly, sinan, sim)
+        log(
+            "[B1] Paridade de linkage: "
+            + str(linkage_parity.get("promotion_status", "WARN"))
+        )
+    except Exception as exc:
+        linkage_parity = {"promotion_status": "WARN", "sources": [], "error": str(exc)}
+        log(f"[AVISO] Paridade de linkage não concluída: {type(exc).__name__}: {exc}")
 
     sinan_j = prepare_sinan_for_join(sinan)
     sim_j = prepare_sim_for_join(sim)
