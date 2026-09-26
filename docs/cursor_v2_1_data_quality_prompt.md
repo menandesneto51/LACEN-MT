@@ -41,7 +41,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
-3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
+3. Os testes de integração em `tests/test_run_etl_dw_quality_gate_integration.py` já devem provar que `BLOCK` impede rede/ML/mirror/CIEVS e que `WARN` permite a continuidade inclusive de ML e CIEVS; preserve essa cobertura contra regressões.
 4. Use `quality/parity_report.py` como gate de promoção: `BLOCK` significa não substituir legado pela V2; não usar esse status para interromper a publicação legada.
 5. Use `quality/linkage_parity.py` para revisar diferenças de join por fonte; trate `RECUPERADO_POR_IBGE` como melhoria auditável, `SEM_MATCH` como investigação e `PERDIDO_COM_IBGE`/`CONFLITO` como bloqueio de promoção.
 6. Use `quality/territorial_reconciliation.py` como backlog de saneamento: conflitos são CRÍTICOS, perdas por IBGE são ALTAS e sem-match é MODERADO. Não resolver por fuzzy match em produção; corrigir origem/dimensão e registrar a decisão.
@@ -65,7 +65,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - anos ISO com SE53 são cobertos;
 - população incompatível temporalmente bloqueia taxa dependente;
 - nenhuma credencial/PII/path local é adicionada;
-- `pytest` verde;
+- `pytest` verde, incluindo integração BLOCK/WARN e regressão de zero-padding IBGE;
 - mudanças pequenas, revisáveis e documentadas.
 
 Não faça merge. Prepare commits para revisão no PR #7.
