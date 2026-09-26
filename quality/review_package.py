@@ -36,6 +36,7 @@ def build_review_package(
     recon = _load(q / "reconciliacao_territorial_resumo.json")
     promotion = _load(q / "promotion_gate_v2_1.json")
     temporal_anchor = _load(q / "gal_temporal_anchor_summary.json")
+    population_governance = _load(q / "population_governance_v2_1.json")
 
     architecture_focus = [
         "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
@@ -107,6 +108,7 @@ def build_review_package(
             "territorial_reconciliation": recon,
             "promotion_gate": promotion,
             "gal_temporal_anchor": temporal_anchor,
+            "population_governance": population_governance,
         },
         "architecture_review": {
             "status": "PENDING",
@@ -175,6 +177,15 @@ def write_review_package(
             lines.append(f"- {key}: {value}")
     else:
         lines.append("- Análise de sensibilidade ainda não disponível.")
+
+    lines += ["", "## Governança populacional"]
+    if package.get("evidence", {}).get("population_governance"):
+        for key, value in package["evidence"]["population_governance"].items():
+            if key == "findings":
+                continue
+            lines.append(f"- {key}: {value}")
+    else:
+        lines.append("- Relatório de governança populacional ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
