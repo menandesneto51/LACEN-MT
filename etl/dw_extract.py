@@ -427,11 +427,11 @@ def extract_vw_gal_weekly_agg(
     epi_week_expr = f"DATEPART(iso_week, {d})"
 
     ibge_select = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))) AS municipio_ibge,"
         if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
     )
     ibge_group = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))),"
         if ibge_col else ""
     )
 
@@ -774,11 +774,11 @@ def extract_sih_mun_cid_agg(
     epi_year = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
     epi_week = f"DATEPART(iso_week, {d})"
     ibge_select = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))) AS municipio_ibge,"
         if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
     )
     ibge_group = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))),"
         if ibge_col else ""
     )
     sql = f"""
@@ -872,11 +872,11 @@ def extract_sia_mun_cid_agg(
         else "COUNT_BIG(*)"
     )
     ibge_select = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))) AS municipio_ibge,"
         if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
     )
     ibge_group = (
-        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        f"LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))),"
         if ibge_col else ""
     )
     sql = f"""
