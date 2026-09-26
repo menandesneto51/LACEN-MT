@@ -42,7 +42,7 @@ def test_population_v2_keeps_single_unambiguous_source(tmp_path):
     assert out.loc[0, "populacao_v2_fonte"] == "DW:POPULACAO"
 
 
-def test_population_v2_drops_ambiguous_sources_without_priority(tmp_path, monkeypatch):
+def test_population_v2_drops_ambiguous_sources_without_priority(tmp_path):
     stage = tmp_path / "staging_dw"
     stage.mkdir()
     pd.DataFrame({
@@ -57,12 +57,13 @@ def test_population_v2_drops_ambiguous_sources_without_priority(tmp_path, monkey
         "ano": [2026],
         "populacao": [710000],
     }).to_csv(stage / "populacao_tcu.csv", index=False)
-    monkeypatch.delenv("LACEN_POPULATION_SOURCE_PRIORITY", raising=False)
-    out = _load_population_v2(tmp_path, 2026)
+    out = _load_population_v2(tmp_path, 2026, policy_path=tmp_path / "missing_policy.json")
     assert out.empty
 
 
-def test_population_v2_respects_explicit_priority(tmp_path, monkeypatch):
+def test_population_v2_respects_approved_versioned_priority(tmp_path):
+    import json
+
     stage = tmp_path / "staging_dw"
     stage.mkdir()
     pd.DataFrame({
@@ -77,11 +78,42 @@ def test_population_v2_respects_explicit_priority(tmp_path, monkeypatch):
         "ano": [2026],
         "populacao": [710000],
     }).to_csv(stage / "populacao_tcu.csv", index=False)
-    monkeypatch.setenv(
-        "LACEN_POPULATION_SOURCE_PRIORITY",
-        "DW:POPULACAO_TCU,DW:POPULACAO",
+
+    policy = tmp_path / "population_policy.json"
+    policy.write_text(
+        json.dumps({
+            "status": "APPROVED",
+            "source_priority": ["DW:POPULACAO_TCU", "DW:POPULACAO"],
+            "allow_previous_year": False,
+        }),
+        encoding="utf-8",
     )
-    out = _load_population_v2(tmp_path, 2026)
+    out = _load_population_v2(tmp_path, 2026, policy_path=policy)
     assert len(out) == 1
     assert out.loc[0, "populacao_v2_fonte"] == "DW:POPULACAO_TCU"
     assert float(out.loc[0, "populacao_v2"]) == 710000
+
+
+def test_population_v2_excludes_internal_conflict_same_source(tmp_path):
+    import json
+
+    stage = tmp_path / "staging_dw"
+    stage.mkdir()
+    pd.DataFrame({
+        "codigo_ibge": ["5103403", "5103403"],
+        "municipio": ["Cuiabá", "Cuiabá"],
+        "ano": [2026, 2026],
+        "populacao": [700000, 710000],
+    }).to_csv(stage / "populacao.csv", index=False)
+
+    policy = tmp_path / "population_policy.json"
+    policy.write_text(
+        json.dumps({
+            "status": "APPROVED",
+            "source_priority": ["DW:POPULACAO"],
+            "allow_previous_year": False,
+        }),
+        encoding="utf-8",
+    )
+    out = _load_population_v2(tmp_path, 2026, policy_path=policy)
+    assert out.empty
