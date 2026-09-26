@@ -177,11 +177,37 @@ def write_linkage_parity(
     elif any(s["promotion_status"] == "WARN" for s in summaries):
         overall = "WARN"
 
+    for s in summaries:
+        total = max(int(s.get("rows_left") or 0), 1)
+        s["pct_igual"] = round(100.0 * int(s.get("both_same") or 0) / total, 2)
+        s["pct_recuperado_ibge"] = round(100.0 * int(s.get("recovered_by_ibge") or 0) / total, 2)
+        s["pct_perdido_ibge"] = round(100.0 * int(s.get("lost_by_ibge") or 0) / total, 2)
+        s["pct_conflito"] = round(100.0 * int(s.get("conflict") or 0) / total, 2)
+        s["pct_sem_match"] = round(100.0 * int(s.get("no_match") or 0) / total, 2)
+
     payload = {"promotion_status": overall, "sources": summaries}
     (out / "paridade_linkage_resumo.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    investigation_frames = []
+    for source, (detail, summary) in reports.items():
+        if detail is None or detail.empty or "linkage_parity" not in detail.columns:
+            continue
+        inv = detail[detail["linkage_parity"].isin(["PERDIDO_COM_IBGE", "CONFLITO", "SEM_MATCH"])].copy()
+        if not inv.empty:
+            inv.insert(0, "fonte_linkage", source)
+            investigation_frames.append(inv)
+    investigations = (
+        pd.concat(investigation_frames, ignore_index=True, sort=False)
+        if investigation_frames else pd.DataFrame()
+    )
+    investigations.to_csv(
+        out / "paridade_linkage_investigar.csv",
+        index=False,
+        encoding="utf-8-sig",
+    )
+
     lines = ["LACEN-MT V2 — PARIDADE DE PAREAMENTOS", f"promotion_status: {overall}", ""]
     for s in summaries:
         lines.append(
