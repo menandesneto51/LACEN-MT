@@ -53,9 +53,9 @@ def infer_target(agravo: object, exame: object = "") -> str:
 def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Converte agregação SQL DW → weekly_tests + positivity."""
     if agg is None or agg.empty:
-        empty_t = pd.DataFrame(columns=["epi_year", "epi_week", "target", "municipio", "tests"])
+        empty_t = pd.DataFrame(columns=["epi_year", "epi_week", "target", "municipio", "municipio_ibge", "tests"])
         empty_p = pd.DataFrame(columns=[
-            "epi_year", "epi_week", "target", "municipio", "tests", "positives", "negatives", "positivity",
+            "epi_year", "epi_week", "target", "municipio", "municipio_ibge", "tests", "positives", "negatives", "positivity",
         ])
         return empty_t, empty_p
 
