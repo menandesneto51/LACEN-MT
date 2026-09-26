@@ -269,10 +269,19 @@ def _internacoes_semana(
     return n
 
 
+
+def _territory_key_from_row(row: dict[str, Any]) -> str:
+    code = _clean(row.get("municipio_ibge"))
+    if re.fullmatch(r"\d{7}", code):
+        return "IBGE:" + code
+    mun = _norm_mun(_clean(row.get("municipio")))
+    return "NAME:" + mun if mun else ""
+
+
 def _internacoes_mun(
     sih: list[dict[str, str]],
     yw: tuple[int, int],
-    mun_key: str,
+    territory_key: str,
     *,
     familia: str | None = None,
 ) -> int:
@@ -281,7 +290,7 @@ def _internacoes_mun(
     for r in sih:
         if _to_int(r.get("epi_year")) != y or _to_int(r.get("epi_week")) != w:
             continue
-        if _norm_mun(_clean(r.get("municipio"))) != mun_key:
+        if _territory_key_from_row(r) != territory_key:
             continue
         if familia and _clean(r.get("cid_familia")).casefold() != familia.casefold():
             # se família pedida e não bate, ainda conta total do mun se familia None
@@ -373,7 +382,8 @@ def _build_consolidado(
         if not mun or mun.startswith("*"):
             continue
         tgt = _clean(r.get("target") or r.get("agravo") or "geral")
-        key = (_norm_mun(mun), tgt.casefold())
+        territory_key = _territory_key_from_row(r)
+        key = (territory_key or ("NAME:" + _norm_mun(mun)), tgt.casefold())
         ex = _to_int(r.get("tests"))
         pos = _to_int(r.get("positives"))
         if key not in agg:
@@ -382,6 +392,8 @@ def _build_consolidado(
                 "epi_week": w,
                 "municipio": mun,
                 "municipio_key": _norm_mun(mun),
+                "municipio_ibge": _clean(r.get("municipio_ibge")) or "",
+                "territory_key": territory_key or ("NAME:" + _norm_mun(mun)),
                 "agravo": tgt,
                 "exames": 0,
                 "positivos": 0,
@@ -396,8 +408,9 @@ def _build_consolidado(
         pct = (100.0 * pos / ex) if ex > 0 else None
         fam = _cid_familia(str(item["agravo"]))
         mk = str(item["municipio_key"])
-        intern = _internacoes_mun(sih, sih_yw, mk, familia=fam) if fam else _internacoes_mun(
-            sih, sih_yw, mk
+        tk = str(item["territory_key"])
+        intern = _internacoes_mun(sih, sih_yw, tk, familia=fam) if fam else _internacoes_mun(
+            sih, sih_yw, tk
         )
         pop_n = pop.get(mk)
         rate = (100000.0 * intern / pop_n) if pop_n and pop_n > 0 else None
