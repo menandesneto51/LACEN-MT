@@ -292,6 +292,7 @@ def _load_population_v2(
         for x in (policy.get("source_priority") or [])
         if str(x).strip()
     ) if approved else ()
+    allow_unlisted = bool((policy.get("rules") or {}).get("allow_unlisted_sources", False))
 
     current = dim.copy()
     current["ano_referencia"] = pd.to_numeric(
@@ -316,6 +317,11 @@ def _load_population_v2(
     current = current[conflict_count <= 1].drop(columns=["_territory_key"]).copy()
     if current.empty:
         return empty
+
+    if priority and not allow_unlisted:
+        current = current[current["fonte"].isin(priority)].copy()
+        if current.empty:
+            return empty
 
     selected = select_population_for_year(
         current,
