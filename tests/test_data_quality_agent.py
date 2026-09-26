@@ -128,3 +128,30 @@ def test_ibge_code_validation_accepts_seven_digits():
         f.check_id == "DQ_IBGE_CODE" and f.status == QualityStatus.PASS
         for f in report.findings
     )
+
+
+def test_old_population_only_warns_for_count_product():
+    weekly = pd.DataFrame({
+        "epi_year":[2026],
+        "epi_week":[37],
+        "municipio_ibge":["5103403"],
+        "tests":[10],
+        "positives":[2],
+    })
+    pop = pd.DataFrame({
+        "ano_referencia":[1996],
+        "populacao":[100000],
+        "municipio_ibge":["5103403"],
+    })
+    report = run_quality_gate(
+        weekly=weekly,
+        population=pop,
+        analysis_year=2026,
+        population_required=False,
+    )
+    assert report.status == QualityStatus.WARN
+    assert report.publishable is True
+    assert any(
+        f.check_id == "DQ_POPULATION_FRESHNESS" and f.status == QualityStatus.WARN
+        for f in report.findings
+    )
