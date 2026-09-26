@@ -25,14 +25,16 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `lacen_analise_avancada.py` prefere IBGE no linkage SIH e mantém fallback nominal legado;
 - integração final gera denominadores paralelos `populacao_v2` + fonte/ano e taxas `*_100k_v2`, sem substituir os indicadores legados;
 - `quality/parity_report.py` gera relatório legado × V2 com detalhe municipal e resumo PASS/WARN/BLOCK;
-- `BLOCK` de paridade impede promoção da camada V2, mas não interrompe a vigilância legada em produção.
+- `quality/linkage_parity.py` audita GAL×SINAN, GAL×SIM, GAL×SIH e GAL×SIA comparando nome × IBGE;
+- classificações de linkage: `IGUAL`, `RECUPERADO_POR_IBGE`, `PERDIDO_COM_IBGE`, `CONFLITO`, `SEM_MATCH`;
+- `BLOCK` de paridade/linkage impede promoção da camada V2, mas não interrompe a vigilância legada em produção.
 
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
 3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
 4. Use `quality/parity_report.py` como gate de promoção: `BLOCK` significa não substituir legado pela V2; não usar esse status para interromper a publicação legada.
-5. Amplie a paridade para pareamentos SINAN/SIM/SIH/SIA e documente diferenças de join por `territory_key`.
+5. Use `quality/linkage_parity.py` para revisar diferenças de join por fonte; trate `RECUPERADO_POR_IBGE` como melhoria auditável, `SEM_MATCH` como investigação e `PERDIDO_COM_IBGE`/`CONFLITO` como bloqueio de promoção.
 6. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
 7. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
 8. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
