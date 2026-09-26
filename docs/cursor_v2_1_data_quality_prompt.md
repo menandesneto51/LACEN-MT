@@ -11,19 +11,22 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - checks básicos de SE, contagens, população e TAT;
 - testes em `tests/test_data_quality_agent.py`;
 - CI em `.github/workflows/quality-gate.yml`;
-- gate chamado em `etl/run_etl_dw.py` antes de rede/ML/mirror/CIEVS.
+- gate chamado em `etl/run_etl_dw.py` antes de rede/ML/mirror/CIEVS;
+- freshness auditável sem limiar inventado, completude, duplicidade, encoding e validação de código IBGE;
+- lineage mínimo no artefato de qualidade;
+- utilitário de maturação corrigido para anos ISO com SE 53.
 
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
-3. Adicione testes do comportamento do pipeline quando o gate retorna BLOCK, garantindo que ML/CIEVS não sejam chamados.
-4. Implemente freshness por fonte e completude sem inventar limiares clínicos.
-5. Detecte duplicidades com chaves configuráveis; não presuma uma chave nominal de paciente.
-6. Crie validação territorial baseada em código IBGE quando a fonte o disponibilizar.
-7. Adicione detecção de encoding quebrado como WARN, sem “corrigir” silenciosamente o dado original.
-8. Registre lineage mínimo: fonte, arquivo/tabela, data de corte, versão/check_id.
-9. Corrija qualquer lógica local de SE que assuma sempre 52 semanas usando utilitário ISO central; não altere a âncora solicitação/coleta sem decisão documentada.
-10. Mantenha artefatos em `saida_pipeline/quality/`.
+3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
+4. Localize as fontes populacionais de staging e faça o gate de população atuar apenas nos produtos que realmente calculam taxas/incidência.
+5. Evolua `municipio_ibge` para chave canônica propagada pela dimensão territorial; não introduza novas correções hardcoded de nomes.
+6. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
+7. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
+8. Adicione testes de regressão para encoding e códigos IBGE.
+9. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
+10. Mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
 
 ## Critérios de aceite
 - BLOCK impede inferência/ML/mirror/CIEVS;
