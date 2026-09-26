@@ -126,7 +126,7 @@ def check_population(
     max_age_years: int = 2,
     required_for_product: bool = False,
 ) -> list[QualityFinding]:
-    year_col = next((c for c in ("ano", "year", "ano_populacao") if c in df.columns), None)
+    year_col = next((c for c in ("ano", "year", "ano_referencia", "ano_populacao") if c in df.columns), None)
     pop_col = next((c for c in ("populacao", "population", "pop") if c in df.columns), None)
     findings: list[QualityFinding] = []
     if not year_col:
