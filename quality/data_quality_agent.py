@@ -139,7 +139,8 @@ def check_population(
     invalid_year = int(years.isna().sum())
     findings.append(QualityFinding(
         "DQ_POPULATION_YEAR_VALID",
-        QualityStatus.BLOCK if invalid_year else QualityStatus.PASS,
+        (QualityStatus.BLOCK if required_for_product else QualityStatus.WARN)
+        if invalid_year else QualityStatus.PASS,
         "Ano populacional inválido." if invalid_year else "Ano populacional explícito.",
         source=source, value=invalid_year, threshold=0,
     ))
@@ -159,7 +160,8 @@ def check_population(
         invalid_pop = int((pop.isna() | (pop <= 0)).sum())
         findings.append(QualityFinding(
             "DQ_POPULATION_VALUE",
-            QualityStatus.BLOCK if invalid_pop else QualityStatus.PASS,
+            (QualityStatus.BLOCK if required_for_product else QualityStatus.WARN)
+            if invalid_pop else QualityStatus.PASS,
             "População ausente/não positiva." if invalid_pop else "Valores populacionais positivos.",
             source=source, value=invalid_pop, threshold=0,
         ))
