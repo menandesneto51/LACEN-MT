@@ -16,7 +16,8 @@
     "require_explicit_priority_when_multiple_sources": true,
     "require_exact_analysis_year": true,
     "reject_conflicting_values_within_source": true,
-    "expose_source_and_year_in_outputs": true
+    "expose_source_and_year_in_outputs": true,
+    "allow_unlisted_sources": false
   },
   "decision_note": "Nenhuma fonte vencedora foi definida. Até aprovação institucional, territórios com múltiplas fontes concorrentes permanecem sem denominador V2."
 }
