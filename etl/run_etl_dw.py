@@ -95,6 +95,8 @@ def write_validacao(
         f"mirror_dw_ok: {report.get('mirror_dw_ok')}",
         f"mirror_error: {report.get('mirror_error')}",
         f"mirror_rows: {report.get('mirror_rows')}",
+        f"parity_status: {report.get('parity_status')}",
+        f"linkage_parity_status: {report.get('linkage_parity_status')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -196,6 +198,19 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
 
     weekly_path = outdir / "integrated_weekly_surveillance.csv"
     weekly = pd.read_csv(weekly_path, low_memory=False) if weekly_path.exists() else pd.DataFrame()
+
+    linkage_summary_path = outdir / "quality" / "paridade_linkage_resumo.json"
+    if linkage_summary_path.exists():
+        try:
+            linkage_summary = json.loads(linkage_summary_path.read_text(encoding="utf-8"))
+            report["linkage_parity_status"] = linkage_summary.get("promotion_status")
+            report["linkage_parity_sources"] = linkage_summary.get("sources", [])
+            report["passos"].append(
+                f"linkage_parity:{linkage_summary.get('promotion_status', 'WARN')}"
+            )
+        except Exception as exc:
+            report["linkage_parity_status"] = "WARN"
+            report["linkage_parity_error"] = str(exc)
 
     # V2.1 — gate determinístico antes de rede, ML, mirror e alerta institucional.
     gal_micro_quality = None
