@@ -94,3 +94,37 @@ def test_epi_week_53_is_valid_domain():
     report = run_quality_gate(weekly=weekly)
     assert report.status in (QualityStatus.PASS, QualityStatus.WARN)
     assert report.publishable is True
+
+
+def test_ibge_code_validation_warns_on_bad_format():
+    weekly = pd.DataFrame({
+        "epi_year":[2026],
+        "epi_week":[37],
+        "municipio":["Cuiabá"],
+        "municipio_ibge":["510340"],
+        "tests":[10],
+        "positives":[2],
+    })
+    report = run_quality_gate(weekly=weekly)
+    assert report.status == QualityStatus.WARN
+    assert any(
+        f.check_id == "DQ_IBGE_CODE" and f.status == QualityStatus.WARN
+        for f in report.findings
+    )
+
+
+def test_ibge_code_validation_accepts_seven_digits():
+    weekly = pd.DataFrame({
+        "epi_year":[2026],
+        "epi_week":[37],
+        "municipio":["Cuiabá"],
+        "municipio_ibge":["5103403"],
+        "tests":[10],
+        "positives":[2],
+    })
+    report = run_quality_gate(weekly=weekly)
+    assert report.publishable is True
+    assert any(
+        f.check_id == "DQ_IBGE_CODE" and f.status == QualityStatus.PASS
+        for f in report.findings
+    )
