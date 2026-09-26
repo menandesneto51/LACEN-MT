@@ -13,6 +13,7 @@ from quality.territorial_dimension import (
     build_population_dimension_from_staging,
     select_population_for_year,
 )
+from quality.population_governance import load_population_governance
 from quality.linkage_parity import compare_linkage, write_linkage_parity
 
 
@@ -136,35 +137,74 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
 
 
 
-def _load_population_v2(outdir: Path, analysis_year: int) -> pd.DataFrame:
-    """Carrega denominador versionado sem escolher fonte silenciosamente."""
+def _load_population_v2(
+    outdir: Path,
+    analysis_year: int,
+    *,
+    policy_path: Path | None = None,
+) -> pd.DataFrame:
+    """Carrega denominador versionado sob política explícita de governança."""
+    empty = pd.DataFrame(columns=[
+        "territory_key", "populacao_v2", "populacao_v2_fonte",
+        "populacao_v2_ano", "populacao_v2_fallback",
+    ])
     dim = build_population_dimension_from_staging(outdir / "staging_dw")
     if dim.empty:
-        return pd.DataFrame(columns=[
-            "territory_key", "populacao_v2", "populacao_v2_fonte",
-            "populacao_v2_ano", "populacao_v2_fallback",
-        ])
+        return empty
 
-    priority_env = (os.getenv("LACEN_POPULATION_SOURCE_PRIORITY") or "").strip()
-    priority = tuple(x.strip() for x in priority_env.split(",") if x.strip())
+    policy_file = policy_path or (
+        Path(__file__).resolve().parent / "config" / "population_governance_v2_1.json"
+    )
+    policy = load_population_governance(policy_file)
+    approved = str(policy.get("status") or "").upper() == "APPROVED"
+    priority = tuple(
+        str(x).strip()
+        for x in (policy.get("source_priority") or [])
+        if str(x).strip()
+    ) if approved else ()
+
+    current = dim.copy()
+    current["ano_referencia"] = pd.to_numeric(
+        current["ano_referencia"], errors="coerce"
+    ).astype("Int64")
+    current = current[current["ano_referencia"] == int(analysis_year)].copy()
+    if current.empty:
+        return empty
+
+    # Nunca escolher "keep first" quando a mesma fonte oferece valores
+    # conflitantes para o mesmo território/ano.
+    name_key = current["municipio"].astype("string").str.strip().str.upper()
+    current["_territory_key"] = current["municipio_ibge"].astype("string")
+    current["_territory_key"] = current["_territory_key"].where(
+        current["municipio_ibge"].notna(),
+        "NAME:" + name_key,
+    )
+    conflict_count = (
+        current.groupby(["fonte", "_territory_key"], dropna=False)["populacao"]
+        .transform(lambda s: s.dropna().nunique())
+    )
+    current = current[conflict_count <= 1].drop(columns=["_territory_key"]).copy()
+    if current.empty:
+        return empty
+
     selected = select_population_for_year(
-        dim,
+        current,
         analysis_year,
         source_priority=priority,
-        allow_previous_year=False,
+        allow_previous_year=bool(policy.get("allow_previous_year", False)) if approved else False,
     )
     if selected.empty:
-        return pd.DataFrame(columns=[
-            "territory_key", "populacao_v2", "populacao_v2_fonte",
-            "populacao_v2_ano", "populacao_v2_fallback",
-        ])
+        return empty
 
     selected = selected.copy()
     selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
     selected["territory_key"] = "NAME:" + selected["municipio"]
     mask = selected["municipio_ibge"].notna()
-    selected.loc[mask, "territory_key"] = "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+    selected.loc[mask, "territory_key"] = (
+        "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+    )
 
+    # Sem política APPROVED, só aceita território com uma única fonte candidata.
     if not priority:
         counts = selected.groupby("territory_key", dropna=False)["fonte"].transform("nunique")
         selected = selected[counts == 1].copy()
@@ -179,7 +219,6 @@ def _load_population_v2(outdir: Path, analysis_year: int) -> pd.DataFrame:
         "territory_key", "populacao_v2", "populacao_v2_fonte",
         "populacao_v2_ano", "populacao_v2_fallback",
     ]].drop_duplicates(subset=["territory_key"], keep="first")
-
 
 def _read_optional_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
