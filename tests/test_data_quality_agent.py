@@ -38,3 +38,59 @@ def test_negative_tat_blocks():
     })
     report = run_quality_gate(weekly=weekly, gal_micro=gal)
     assert report.status == QualityStatus.BLOCK
+
+
+def test_population_is_not_required_for_count_only_products():
+    weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[37],"tests":[10],"positives":[2]})
+    report = run_quality_gate(weekly=weekly, analysis_year=2026)
+    assert report.status in (QualityStatus.PASS, QualityStatus.WARN)
+    assert report.publishable is True
+    assert not any(f.check_id == "DQ_POPULATION_MISSING" for f in report.findings)
+
+
+def test_population_required_blocks_without_denominator():
+    weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[37],"tests":[10],"positives":[2]})
+    report = run_quality_gate(
+        weekly=weekly,
+        analysis_year=2026,
+        population_required=True,
+    )
+    assert report.status == QualityStatus.BLOCK
+    assert any(f.check_id == "DQ_POPULATION_MISSING" for f in report.findings)
+
+
+def test_missing_required_value_warns_completeness():
+    weekly = pd.DataFrame({
+        "epi_year":[2026, 2026],
+        "epi_week":[37, 37],
+        "tests":[10, None],
+        "positives":[2, 0],
+    })
+    report = run_quality_gate(weekly=weekly)
+    assert report.status == QualityStatus.WARN
+    assert any(
+        f.check_id == "DQ_COMPLETENESS_TESTS" and f.status == QualityStatus.WARN
+        for f in report.findings
+    )
+
+
+def test_duplicate_weekly_key_warns_without_blocking():
+    weekly = pd.DataFrame({
+        "epi_year":[2026, 2026],
+        "epi_week":[37, 37],
+        "municipio":["Cuiabá", "Cuiabá"],
+        "agravo":["Dengue", "Dengue"],
+        "tests":[10, 10],
+        "positives":[2, 2],
+    })
+    report = run_quality_gate(weekly=weekly)
+    assert report.status == QualityStatus.WARN
+    assert report.publishable is True
+    assert any(f.check_id == "DQ_DUPLICATES" for f in report.findings)
+
+
+def test_epi_week_53_is_valid_domain():
+    weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[53],"tests":[1],"positives":[0]})
+    report = run_quality_gate(weekly=weekly)
+    assert report.status in (QualityStatus.PASS, QualityStatus.WARN)
+    assert report.publishable is True
