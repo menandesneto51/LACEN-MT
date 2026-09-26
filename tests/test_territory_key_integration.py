@@ -69,3 +69,23 @@ def test_prepare_sim_groups_by_territory_key():
     assert len(out) == 1
     assert out.loc[0, "territory_key"] == "IBGE:5103403"
     assert int(out.loc[0, "obitos_sim"]) == 1
+
+
+def test_ibge_dimension_preserves_weekly_totals():
+    legacy = pd.DataFrame({
+        "epi_year": [2026, 2026],
+        "epi_week": [37, 37],
+        "municipio": ["CUIABÁ", "CUIABÁ"],
+        "agravo_raw": ["dengue", "dengue"],
+        "exame_raw": ["ns1", "pcr"],
+        "n_registros": [10, 5],
+        "n_positivos_proxy": [2, 1],
+    })
+    with_ibge = legacy.copy()
+    with_ibge["municipio_ibge"] = ["5103403", "5103403"]
+
+    _, pos_legacy = weekly_from_dw_agg(legacy)
+    _, pos_ibge = weekly_from_dw_agg(with_ibge)
+
+    assert int(pos_legacy["tests"].sum()) == int(pos_ibge["tests"].sum()) == 15
+    assert int(pos_legacy["positives"].sum()) == int(pos_ibge["positives"].sum()) == 3
