@@ -38,6 +38,7 @@ def build_review_package(
     temporal_anchor = _load(q / "gal_temporal_anchor_summary.json")
     population_governance = _load(q / "population_governance_v2_1.json")
     population_source_comparison = _load(q / "population_source_comparison_summary.json")
+    decision_registry = _load(q / "decision_status_registry_v2_1.json")
 
     architecture_focus = [
         "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
@@ -112,6 +113,7 @@ def build_review_package(
             "gal_temporal_anchor": temporal_anchor,
             "population_governance": population_governance,
             "population_source_comparison": population_source_comparison,
+            "decision_registry": decision_registry,
         },
         "architecture_review": {
             "status": "PENDING",
@@ -196,6 +198,17 @@ def write_review_package(
             lines.append(f"- {key}: {value}")
     else:
         lines.append("- Comparação de fontes ainda não disponível.")
+
+    lines += ["", "## Decision Status Registry"]
+    registry = package.get("evidence", {}).get("decision_registry") or {}
+    if registry:
+        lines.append(f"- overall_status: {registry.get('overall_status')}")
+        for decision_id, item in (registry.get("decisions") or {}).items():
+            lines.append(
+                f"- {decision_id}: {item.get('status')} | valid={item.get('valid')}"
+            )
+    else:
+        lines.append("- Registry ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
