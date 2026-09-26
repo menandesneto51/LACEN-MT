@@ -733,17 +733,23 @@ def extract_sih_mun_cid_agg(
     cols = set(discover_table_columns(mode, queryable, schema, view))
     date_expr = _sih_date_expr(cols)
     mun_col = next(
+        (c for c in ("MunicipioResidencia", "MunicipioOcorrencia") if c in cols),
+        None,
+    )
+    ibge_col = next(
         (
-            c
-            for c in (
-                "MunicipioResidencia",
-                "MunicipioOcorrencia",
+            c for c in (
                 "CodigoMunicipioResidencia",
+                "CodigoIBGEMunicipioResidencia",
+                "IBGEMunicipioResidencia",
+                "CodMunicipioResidencia",
             )
             if c in cols
         ),
         None,
     )
+    if not mun_col and ibge_col:
+        mun_col = ibge_col
     cid_col = next(
         (
             c
@@ -767,11 +773,20 @@ def extract_sih_mun_cid_agg(
     d = f"({date_expr})"
     epi_year = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
     epi_week = f"DATEPART(iso_week, {d})"
+    ibge_select = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
+    )
+    ibge_group = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        if ibge_col else ""
+    )
     sql = f"""
     SELECT
       {epi_year} AS epi_year,
       {epi_week} AS epi_week,
       UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))) AS municipio,
+      {ibge_select}
       {fam_expr} AS cid_familia,
       COUNT_BIG(*) AS n_internacoes,
       MIN({d}) AS dt_min,
@@ -786,6 +801,7 @@ def extract_sih_mun_cid_agg(
       {epi_year},
       {epi_week},
       UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))),
+      {ibge_group}
       {fam_expr}
     """
     _log(f"[DW] Agg SIH mun×SE×CID família (~{days_back}d)…")
@@ -811,17 +827,23 @@ def extract_sia_mun_cid_agg(
     cols = set(discover_table_columns(mode, queryable, schema, table_name))
     date_expr = _sia_date_expr(cols)
     mun_col = next(
+        (c for c in ("MunicipioResidencia", "MunicipioAtendimento") if c in cols),
+        None,
+    )
+    ibge_col = next(
         (
-            c
-            for c in (
-                "MunicipioResidencia",
-                "MunicipioAtendimento",
+            c for c in (
                 "CodigoMunicipioResidencia",
+                "CodigoIBGEMunicipioResidencia",
+                "IBGEMunicipioResidencia",
+                "CodMunicipioResidencia",
             )
             if c in cols
         ),
         None,
     )
+    if not mun_col and ibge_col:
+        mun_col = ibge_col
     cid_col = next(
         (
             c
@@ -849,11 +871,20 @@ def extract_sia_mun_cid_agg(
         if "QuantidadeAprovada" in cols
         else "COUNT_BIG(*)"
     )
+    ibge_select = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
+    )
+    ibge_group = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        if ibge_col else ""
+    )
     sql = f"""
     SELECT
       YEAR({d}) AS ano,
       MONTH({d}) AS mes,
       UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))) AS municipio,
+      {ibge_select}
       {fam_expr} AS cid_familia,
       COUNT_BIG(*) AS n_registros,
       {qty} AS n_procedimentos
@@ -867,6 +898,7 @@ def extract_sia_mun_cid_agg(
       YEAR({d}),
       MONTH({d}),
       UPPER(LTRIM(RTRIM(CAST([{mun_col}] AS NVARCHAR(200))))),
+      {ibge_group}
       {fam_expr}
     """
     _log(f"[DW] Agg {table_name} mun×mês×CID família (~{days_back}d)…")
