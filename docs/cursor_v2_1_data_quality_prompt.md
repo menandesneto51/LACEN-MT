@@ -20,15 +20,18 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - contrato documentado em `docs/dimensao_territorial_populacao_v2.md`;
 - GAL/DW e fallback local propagam `municipio_ibge` para os agregados semanais;
 - integração epidemiológica usa `territory_key`: `IBGE:<7 dígitos>` quando disponível e `NAME:<nome normalizado>` apenas como fallback legado;
-- testes em `tests/test_territory_key_integration.py` cobrem propagação e joins determinísticos.
+- testes em `tests/test_territory_key_integration.py` cobrem propagação, joins determinísticos e paridade de totais;
+- SIH/SIA agregados propagam `municipio_ibge` quando a origem disponibiliza código confiável;
+- `lacen_analise_avancada.py` prefere IBGE no linkage SIH e mantém fallback nominal legado;
+- integração final gera denominadores paralelos `populacao_v2` + fonte/ano e taxas `*_100k_v2`, sem substituir os indicadores legados.
 
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
 3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
-4. Rode testes de paridade: compare contagens e pareamentos antes/depois da introdução de `territory_key`; diferenças devem ser explicadas e documentadas.
-5. Propague `territory_key` para SIH/SIA somente quando houver código territorial confiável; mantenha fallback por nome separado e auditável, sem fuzzy match.
-6. Conecte produtos de taxa/incidência a `select_population_for_year()` e exija prioridade de fonte configurada quando houver mais de uma candidata.
+4. Amplie os testes de paridade para pareamentos SINAN/SIM/SIH/SIA e documente qualquer diferença entre chave nominal e IBGE.
+5. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
+6. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
 7. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
 8. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
 9. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
