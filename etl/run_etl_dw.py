@@ -43,6 +43,7 @@ from quality.review_package import build_review_package, write_review_package  #
 from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, write_agent_reviews  # noqa: E402
 from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_temporal_anchor_analysis  # noqa: E402
 from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_report  # noqa: E402
+from quality.product_lineage import build_product_lineage, write_lineage_registry  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -109,6 +110,7 @@ def write_validacao(
         f"gal_temporal_anchor_analysis: {report.get('gal_temporal_anchor_analysis')}",
         f"artifact_hygiene_status: {report.get('artifact_hygiene_status')}",
         f"artifact_hygiene_findings: {report.get('artifact_hygiene_findings')}",
+        f"product_lineage_count: {report.get('product_lineage_count')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -343,6 +345,57 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         head_sha=os.getenv("GITHUB_SHA"),
     )
     write_review_package(review_package, quality_dir)
+
+    lineage_sources = list(report.get("sources_extracted") or [])
+    cutoff = report.get("se_esperada") or report.get("hoje")
+    lineage = [
+        build_product_lineage(
+            product="integrated_weekly_surveillance",
+            logical_sources=lineage_sources,
+            cutoff=cutoff,
+            dependencies=["territory_key", "epi_year", "epi_week"],
+            notes=["Camada legada preservada; V2 permanece paralela."],
+        ),
+        build_product_lineage(
+            product="paridade_legado_v2",
+            logical_sources=lineage_sources + list(report.get("population_sources") or []),
+            cutoff=cutoff,
+            dependencies=["integrated_weekly_surveillance", "dim_populacao_versionada"],
+        ),
+        build_product_lineage(
+            product="paridade_linkage",
+            logical_sources=lineage_sources,
+            cutoff=cutoff,
+            dependencies=["GAL", "SINAN", "SIM", "SIH", "SIA", "territory_key"],
+        ),
+        build_product_lineage(
+            product="reconciliacao_territorial",
+            logical_sources=["paridade_linkage"],
+            cutoff=cutoff,
+            dependencies=["paridade_linkage"],
+        ),
+        build_product_lineage(
+            product="promotion_gate_v2_1",
+            logical_sources=["quality_artifacts"],
+            cutoff=cutoff,
+            dependencies=[
+                "data_quality_gate",
+                "paridade_legado_v2",
+                "paridade_linkage",
+                "reconciliacao_territorial",
+                "agent_reviews",
+            ],
+        ),
+        build_product_lineage(
+            product="review_package_v2_1",
+            logical_sources=["quality_artifacts", "agent_reviews"],
+            cutoff=cutoff,
+            dependencies=["promotion_gate_v2_1", "gal_temporal_anchor_analysis"],
+        ),
+    ]
+    write_lineage_registry(lineage, quality_dir)
+    report["product_lineage_count"] = len(lineage)
+    report["passos"].append("product_lineage")
 
     hygiene_report = scan_quality_artifacts(quality_dir)
     write_hygiene_report(hygiene_report, quality_dir)
