@@ -131,7 +131,8 @@ def check_population(
     findings: list[QualityFinding] = []
     if not year_col:
         return [QualityFinding(
-            "DQ_POPULATION_YEAR_MISSING", QualityStatus.BLOCK,
+            "DQ_POPULATION_YEAR_MISSING",
+            QualityStatus.BLOCK if required_for_product else QualityStatus.WARN,
             "Fonte populacional sem ano explícito.", source=source,
             action="Versionar população por município × ano × fonte."
         )]
@@ -164,6 +165,14 @@ def check_population(
             if invalid_pop else QualityStatus.PASS,
             "População ausente/não positiva." if invalid_pop else "Valores populacionais positivos.",
             source=source, value=invalid_pop, threshold=0,
+        ))
+    else:
+        findings.append(QualityFinding(
+            "DQ_POPULATION_VALUE_MISSING",
+            QualityStatus.BLOCK if required_for_product else QualityStatus.WARN,
+            "Fonte populacional sem coluna de população reconhecida.",
+            source=source,
+            action="Mapear o contrato da fonte antes de usar denominadores.",
         ))
     return findings
 
