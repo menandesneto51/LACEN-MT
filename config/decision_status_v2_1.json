@@ -1,0 +1,32 @@
+{
+  "registry_version": "v2.1",
+  "automatic_decision_allowed": false,
+  "decisions": {
+    "DEC-001": {
+      "title": "Âncora temporal GAL — solicitação × coleta",
+      "status": "PENDING",
+      "decided_by": null,
+      "decided_at": null,
+      "evidence": [
+        "gal_temporal_anchor_summary.json",
+        "gal_temporal_anchor_weekly_comparison.csv",
+        "decision_brief_DEC-001.md"
+      ],
+      "decision": null
+    },
+    "DEC-002": {
+      "title": "Prioridade institucional das fontes populacionais",
+      "status": "PENDING",
+      "decided_by": null,
+      "decided_at": null,
+      "evidence": [
+        "population_source_comparison_summary.json",
+        "population_source_coverage_detail.csv",
+        "population_source_pairwise_comparison.csv",
+        "population_governance_v2_1.json",
+        "decision_brief_DEC-002.md"
+      ],
+      "decision": null
+    }
+  }
+}
