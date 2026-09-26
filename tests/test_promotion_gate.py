@@ -14,6 +14,7 @@ def test_promotion_gate_not_ready_on_block():
         ci_status="PASS",
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
     )
     assert result.status == "NOT_READY"
     assert result.automatic_promotion_allowed is False
@@ -29,6 +30,7 @@ def test_promotion_gate_conditional_when_external_reviews_missing():
         ci_status=None,
         architecture_review=None,
         epidemiology_review=None,
+        agent_reviews_status=None,
     )
     assert result.status == "CONDITIONAL"
     assert result.blocking_reasons == []
@@ -44,6 +46,7 @@ def test_promotion_gate_ready_for_review_only_with_all_evidence():
         ci_status="SUCCESS",
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
     )
     assert result.status == "READY_FOR_REVIEW"
     assert result.conditions == []
@@ -59,6 +62,7 @@ def test_territorial_not_ready_blocks_promotion():
         ci_status="PASS",
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
     )
     assert result.status == "NOT_READY"
     assert any("Reconciliação territorial" in x for x in result.blocking_reasons)
@@ -82,6 +86,7 @@ def test_build_gate_from_artifacts(tmp_path):
         ci_status="PASS",
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
     )
     assert result.status == "READY_FOR_REVIEW"
 
@@ -95,6 +100,7 @@ def test_promotion_gate_writes_artifacts(tmp_path):
         ci_status="PASS",
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
     )
     paths = write_promotion_gate(result, tmp_path)
     assert paths["json"].exists()
