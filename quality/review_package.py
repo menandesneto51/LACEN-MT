@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 import json
 
-from quality.agent_reviews import default_agent_reviews, summarize_agent_reviews
+from quality.agent_reviews import AgentReview, default_agent_reviews, summarize_agent_reviews
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -59,7 +59,28 @@ def build_review_package(
     if invalid_closed:
         blockers.append(f"Existem {invalid_closed} fechamento(s) territorial(is) inválido(s).")
 
+    for item in agent_review_summary.get("blockers", []):
+        blockers.append(item)
+    if agent_review_summary.get("overall_status") != "PASS":
+        conditions.append(
+            "Pareceres multiagente ainda não estão todos em PASS."
+        )
+
     agent_reviews = default_agent_reviews()
+    reviews_payload = _load(q / "reviews" / "v2_1_initial_reviews.json")
+    for key, payload in (reviews_payload.get("reviews") or {}).items():
+        if key not in agent_reviews:
+            continue
+        agent_reviews[key] = AgentReview(
+            agent=payload.get("agent") or agent_reviews[key].agent,
+            status=payload.get("status") or "PENDING",
+            findings=list(payload.get("findings") or []),
+            blockers=list(payload.get("blockers") or []),
+            recommendations=list(payload.get("recommendations") or []),
+            decision=payload.get("decision"),
+            reviewer=payload.get("reviewer"),
+            reviewed_at=payload.get("reviewed_at"),
+        )
     agent_review_summary = summarize_agent_reviews(agent_reviews)
 
     return {
