@@ -93,3 +93,24 @@ def test_population_governance_writes_artifacts(tmp_path):
     paths = write_population_governance_report(decision, tmp_path)
     assert paths["json"].exists()
     assert paths["txt"].exists()
+
+
+def test_approved_strict_policy_blocks_uncovered_territory():
+    dim = pd.DataFrame({
+        "municipio_ibge": ["5103403", "5108402"],
+        "municipio": ["CUIABÁ", "VÁRZEA GRANDE"],
+        "ano_referencia": [2026, 2026],
+        "populacao": [700000, 300000],
+        "fonte": ["DW:POPULACAO_TCU", "DW:POPULACAO"],
+    })
+    decision = evaluate_population_governance(
+        dim,
+        analysis_year=2026,
+        policy={
+            "status": "APPROVED",
+            "source_priority": ["DW:POPULACAO_TCU"],
+            "allow_previous_year": False,
+            "rules": {"allow_unlisted_sources": False},
+        },
+    )
+    assert any("território(s) sem fonte populacional aprovada" in x for x in decision.blockers)
