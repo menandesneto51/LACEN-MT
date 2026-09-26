@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from datetime import datetime
+import hashlib
 
 import pandas as pd
 
@@ -29,6 +31,107 @@ _REASON_MAP = {
         "MODERADA",
     ),
 }
+
+
+def _stable_issue_id(row: pd.Series) -> str:
+    parts = [
+        str(row.get("fonte_linkage") or ""),
+        str(row.get("linkage_parity") or ""),
+        str(row.get("municipio_ibge") or ""),
+        str(row.get("municipio") or ""),
+        str(row.get("epi_year") or ""),
+        str(row.get("epi_week") or ""),
+        str(row.get("agravo_sinan") or row.get("cid_familia") or ""),
+    ]
+    digest = hashlib.sha1("|".join(parts).encode("utf-8")).hexdigest()[:12]
+    return "TR-" + digest.upper()
+
+
+def merge_resolution_state(
+    current: pd.DataFrame,
+    previous: pd.DataFrame | None,
+    *,
+    now: str | None = None,
+) -> pd.DataFrame:
+    """Preserva decisões humanas anteriores por issue_id entre execuções."""
+    if current is None:
+        return pd.DataFrame()
+    out = current.copy()
+    now = now or datetime.now().isoformat(timespec="seconds")
+    if "issue_id" not in out.columns:
+        out["issue_id"] = out.apply(_stable_issue_id, axis=1)
+
+    lifecycle_defaults = {
+        "responsavel_atual": pd.NA,
+        "decisao": pd.NA,
+        "evidencia": pd.NA,
+        "correcao_aplicada": pd.NA,
+        "validacao_pos_correcao": pd.NA,
+        "data_abertura": now,
+        "data_atualizacao": now,
+        "data_fechamento": pd.NA,
+    }
+    for col, default in lifecycle_defaults.items():
+        if col not in out.columns:
+            out[col] = default
+
+    if previous is None or previous.empty or "issue_id" not in previous.columns:
+        return out
+
+    prev = previous.drop_duplicates(subset=["issue_id"], keep="last").set_index("issue_id")
+    preserved = [
+        "responsavel_atual", "decisao", "evidencia", "correcao_aplicada",
+        "validacao_pos_correcao", "data_abertura", "data_atualizacao",
+        "data_fechamento", "estado_reconciliacao",
+    ]
+    for idx, issue in out["issue_id"].items():
+        if issue not in prev.index:
+            continue
+        for col in preserved:
+            if col in prev.columns:
+                val = prev.at[issue, col]
+                if pd.notna(val) and str(val) != "":
+                    out.at[idx, col] = val
+    return out
+
+
+def apply_resolution(
+    report: pd.DataFrame,
+    issue_id: str,
+    *,
+    estado: str,
+    responsavel: str | None = None,
+    decisao: str | None = None,
+    evidencia: str | None = None,
+    correcao_aplicada: str | None = None,
+    validacao_pos_correcao: str | None = None,
+    now: str | None = None,
+) -> pd.DataFrame:
+    """Aplica transição explícita a um item; não fecha automaticamente."""
+    allowed = {"ABERTO", "EM_ANALISE", "CORRECAO_APLICADA", "VALIDADO", "FECHADO"}
+    if estado not in allowed:
+        raise ValueError(f"Estado inválido: {estado}")
+    out = report.copy()
+    mask = out["issue_id"].astype(str) == str(issue_id)
+    if not mask.any():
+        raise KeyError(f"issue_id não encontrado: {issue_id}")
+    now = now or datetime.now().isoformat(timespec="seconds")
+    out.loc[mask, "estado_reconciliacao"] = estado
+    out.loc[mask, "data_atualizacao"] = now
+    if responsavel is not None:
+        out.loc[mask, "responsavel_atual"] = responsavel
+    if decisao is not None:
+        out.loc[mask, "decisao"] = decisao
+    if evidencia is not None:
+        out.loc[mask, "evidencia"] = evidencia
+    if correcao_aplicada is not None:
+        out.loc[mask, "correcao_aplicada"] = correcao_aplicada
+    if validacao_pos_correcao is not None:
+        out.loc[mask, "validacao_pos_correcao"] = validacao_pos_correcao
+    if estado == "FECHADO":
+        out.loc[mask, "data_fechamento"] = now
+    return out
+
 
 
 def build_reconciliation_report(investigations: pd.DataFrame) -> pd.DataFrame:
@@ -81,6 +184,7 @@ def build_reconciliation_report(investigations: pd.DataFrame) -> pd.DataFrame:
     d["acao_recomendada"] = actions
     d["responsavel_sugerido"] = owners
     d["estado_reconciliacao"] = "ABERTO"
+    d["issue_id"] = d.apply(_stable_issue_id, axis=1)
 
     order = {"CRITICA": 0, "ALTA": 1, "MODERADA": 2, "BAIXA": 3}
     d["_ord"] = d["prioridade"].map(order).fillna(9)
@@ -88,7 +192,7 @@ def build_reconciliation_report(investigations: pd.DataFrame) -> pd.DataFrame:
     d = d.sort_values(sort_cols).drop(columns="_ord").reset_index(drop=True)
 
     first = [
-        "prioridade", "fonte_linkage", "linkage_parity", "municipio",
+        "issue_id", "prioridade", "fonte_linkage", "linkage_parity", "municipio",
         "municipio_ibge", "legacy_match_value", "v2_match_value",
         "hipotese_tecnica", "acao_recomendada", "responsavel_sugerido",
         "estado_reconciliacao",
@@ -128,6 +232,13 @@ def write_reconciliation_report(
     json_path = out / "reconciliacao_territorial_resumo.json"
     txt_path = out / "reconciliacao_territorial_resumo.txt"
 
+    previous = pd.DataFrame()
+    if csv_path.exists():
+        try:
+            previous = pd.read_csv(csv_path, low_memory=False)
+        except Exception:
+            previous = pd.DataFrame()
+    report = merge_resolution_state(report, previous)
     report.to_csv(csv_path, index=False, encoding="utf-8-sig")
     try:
         report.to_parquet(out / "reconciliacao_territorial.parquet", index=False)
