@@ -51,6 +51,36 @@ def map_lacen_target_to_sinan(target: object) -> str:
     return ""
 
 
+
+def _add_territory_key(df: pd.DataFrame) -> pd.DataFrame:
+    """Cria chave territorial determinística sem fuzzy matching."""
+    out = df.copy()
+    if "municipio" not in out.columns:
+        out["municipio"] = ""
+    out["municipio"] = out["municipio"].astype(str).str.strip().str.upper()
+
+    code_col = next(
+        (
+            col for col in (
+                "municipio_ibge", "codigo_ibge", "cod_ibge", "ibge",
+                "codigo_municipio", "cod_municipio", "co_municipio",
+            )
+            if col in out.columns
+        ),
+        None,
+    )
+    if code_col:
+        code = (
+            out[code_col].astype("string").str.strip().str.replace(r"\.0$", "", regex=True)
+        )
+        code = code.where(code.str.fullmatch(r"\d{7}", na=False))
+    else:
+        code = pd.Series(pd.NA, index=out.index, dtype="string")
+    out["municipio_ibge"] = code
+    out["territory_key"] = "NAME:" + out["municipio"]
+    out.loc[code.notna(), "territory_key"] = "IBGE:" + code[code.notna()]
+    return out
+
 def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
     s = sinan.copy()
     if "notificacoes_sinan" in s.columns and "notificacoes" not in s.columns:
@@ -61,11 +91,13 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
         s[c] = pd.to_numeric(s[c], errors="coerce").fillna(0)
     s["epi_year"] = pd.to_numeric(s["epi_year"], errors="coerce")
     s["epi_week"] = pd.to_numeric(s["epi_week"], errors="coerce")
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
+        s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
         .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
             notificacoes=("notificacoes", "sum"),
             obitos_sinan=("obitos_sinan", "sum"),
             encerrados_sinan=("encerrados_sinan", "sum"),
@@ -90,11 +122,15 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s = s.loc[~bad_year].copy()
     if s.empty:
         return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
-        .agg(obitos_sim=("obitos_sim", "sum"))
+        s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
+        .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
+            obitos_sim=("obitos_sim", "sum"),
+        )
     )
 
 
@@ -254,7 +290,7 @@ def main():
     pop["ano"] = pd.to_numeric(pop["ano"], errors="coerce")
     weekly = weekly.merge(pop[["municipio", "ano", "populacao"]], on=["municipio", "ano"], how="left")
 
-    weekly["municipio"] = weekly["municipio"].astype(str).str.strip().str.upper()
+    weekly = _add_territory_key(weekly)
     weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
 
     sinan_j = prepare_sinan_for_join(sinan)
@@ -264,13 +300,13 @@ def main():
 
     weekly = weekly.merge(
         sinan_j,
-        on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
+        on=["epi_year", "epi_week", "territory_key", "agravo_sinan"],
         how="left",
     )
     if not sim_j.empty:
         weekly = weekly.merge(
             sim_j,
-            on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
+            on=["epi_year", "epi_week", "territory_key", "agravo_sinan"],
             how="left",
         )
     else:
@@ -278,10 +314,10 @@ def main():
 
     # Complemento: notificações municipais totais da semana (mesmo sem match de alvo)
     sinan_mun = (
-        sinan_j.groupby(["epi_year", "epi_week", "municipio"], as_index=False)
+        sinan_j.groupby(["epi_year", "epi_week", "territory_key"], as_index=False)
         .agg(notificacoes_mun_semana=("notificacoes", "sum"))
     )
-    weekly = weekly.merge(sinan_mun, on=["epi_year", "epi_week", "municipio"], how="left")
+    weekly = weekly.merge(sinan_mun, on=["epi_year", "epi_week", "territory_key"], how="left")
     weekly["notificacoes"] = weekly["notificacoes"].fillna(0)
     # Se o alvo não mapeou, ainda registra o total municipal da semana (rateado em 0; usa coluna auxiliar)
     weekly["notificacoes"] = np.where(
