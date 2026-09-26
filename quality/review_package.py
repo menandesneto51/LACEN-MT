@@ -37,6 +37,8 @@ def build_review_package(
     promotion = _load(q / "promotion_gate_v2_1.json")
     temporal_anchor = _load(q / "gal_temporal_anchor_summary.json")
     population_governance = _load(q / "population_governance_v2_1.json")
+    population_comparison = _load(q / "population_source_comparison_summary.json")
+    population_governance = _load(q / "population_governance_v2_1.json")
     population_source_comparison = _load(q / "population_source_comparison_summary.json")
 
     architecture_focus = [
@@ -110,6 +112,8 @@ def build_review_package(
             "territorial_reconciliation": recon,
             "promotion_gate": promotion,
             "gal_temporal_anchor": temporal_anchor,
+            "population_governance": population_governance,
+            "population_source_comparison": population_comparison,
             "population_governance": population_governance,
             "population_source_comparison": population_source_comparison,
         },
@@ -196,6 +200,25 @@ def write_review_package(
             lines.append(f"- {key}: {value}")
     else:
         lines.append("- Comparação de fontes ainda não disponível.")
+
+    lines += ["", "## Evidência de governança populacional"]
+    pop_gov = package.get("evidence", {}).get("population_governance") or {}
+    pop_cmp = package.get("evidence", {}).get("population_source_comparison") or {}
+    if pop_gov:
+        lines.append(f"- status: {pop_gov.get('status')}")
+        lines.append(f"- approved: {pop_gov.get('approved')}")
+        for item in pop_gov.get("blockers", []) or []:
+            lines.append(f"- bloqueio: {item}")
+    else:
+        lines.append("- Relatório de governança populacional ainda não disponível.")
+    if pop_cmp:
+        lines.append(f"- fontes: {pop_cmp.get('sources')}")
+        lines.append(f"- territórios totais: {pop_cmp.get('territories_total')}")
+        lines.append(f"- territórios com múltiplas fontes: {pop_cmp.get('territories_with_multiple_sources')}")
+        lines.append(f"- territórios com diferença: {pop_cmp.get('territories_with_any_difference')}")
+        lines.append(f"- maior diferença relativa: {pop_cmp.get('max_relative_difference')}")
+    else:
+        lines.append("- Comparação entre fontes populacionais ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
