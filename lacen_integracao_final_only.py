@@ -170,8 +170,21 @@ def _merge_metrics_dual_territory_key(
     ]))
     rr = r[keep_right].copy()
 
+    # Consolida variantes nominais que apontam para a mesma chave territorial,
+    # evitando multiplicação de linhas no merge primário.
+    agg_spec = {col: "sum" for col in metric_cols}
+    agg_spec.update({
+        "municipio": "first",
+        "municipio_ibge": "first",
+        "_name_key_v2": "first",
+    })
+    rr_primary = (
+        rr.groupby([*base_keys, "territory_key"], as_index=False, dropna=False)
+        .agg(agg_spec)
+    )
+
     primary = l.merge(
-        rr,
+        rr_primary,
         on=[*base_keys, "territory_key"],
         how="left",
         suffixes=("", "_src"),
