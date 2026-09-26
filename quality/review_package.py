@@ -61,13 +61,6 @@ def build_review_package(
     if invalid_closed:
         blockers.append(f"Existem {invalid_closed} fechamento(s) territorial(is) inválido(s).")
 
-    for item in agent_review_summary.get("blockers", []):
-        blockers.append(item)
-    if agent_review_summary.get("overall_status") != "PASS":
-        conditions.append(
-            "Pareceres multiagente ainda não estão todos em PASS."
-        )
-
     agent_reviews = default_agent_reviews()
     if reviews_path is not None:
         reviews_payload = _load(Path(reviews_path))
@@ -91,6 +84,13 @@ def build_review_package(
             reviewed_at=payload.get("reviewed_at"),
         )
     agent_review_summary = summarize_agent_reviews(agent_reviews)
+
+    for item in agent_review_summary.get("blockers", []):
+        blockers.append(item)
+    if agent_review_summary.get("overall_status") != "PASS":
+        conditions.append(
+            "Pareceres multiagente ainda não estão todos em PASS."
+        )
 
     return {
         "package_version": "v2.1-review-2",
