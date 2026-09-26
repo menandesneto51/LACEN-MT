@@ -17,14 +17,17 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - utilitário de maturação corrigido para anos ISO com SE 53;
 - `quality/territorial_dimension.py` com dimensão populacional versionada e seleção explícita por ano/fonte;
 - staging ampliado para considerar `POPULACAO_TCU`;
-- contrato documentado em `docs/dimensao_territorial_populacao_v2.md`.
+- contrato documentado em `docs/dimensao_territorial_populacao_v2.md`;
+- GAL/DW e fallback local propagam `municipio_ibge` para os agregados semanais;
+- integração epidemiológica usa `territory_key`: `IBGE:<7 dígitos>` quando disponível e `NAME:<nome normalizado>` apenas como fallback legado;
+- testes em `tests/test_territory_key_integration.py` cobrem propagação e joins determinísticos.
 
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
 3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
-4. Propague `municipio_ibge` do GAL para os agregados semanais sem remover o campo textual `municipio` usado pelo legado.
-5. Mapeie SINAN/SIM/SIH/SIA para a mesma chave IBGE somente quando a origem fornecer código confiável ou houver dimensão territorial oficial; não faça fuzzy match automático em produção.
+4. Rode testes de paridade: compare contagens e pareamentos antes/depois da introdução de `territory_key`; diferenças devem ser explicadas e documentadas.
+5. Propague `territory_key` para SIH/SIA somente quando houver código territorial confiável; mantenha fallback por nome separado e auditável, sem fuzzy match.
 6. Conecte produtos de taxa/incidência a `select_population_for_year()` e exija prioridade de fonte configurada quando houver mais de uma candidata.
 7. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
 8. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
