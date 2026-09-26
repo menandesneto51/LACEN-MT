@@ -132,3 +132,23 @@ def test_linkage_report_writes_summary(tmp_path):
     assert payload["promotion_status"] == "PASS"
     assert (tmp_path / "paridade_linkage_resumo.json").exists()
     assert (tmp_path / "paridade_linkage_resumo.txt").exists()
+
+
+def test_linkage_report_writes_investigation_queue_and_percentages(tmp_path):
+    right = pd.DataFrame({
+        "epi_year": [2026],
+        "epi_week": [37],
+        "agravo_sinan": ["dengue"],
+        "municipio": ["OUTRO MUNICIPIO"],
+        "municipio_ibge": ["5109999"],
+        "notificacoes": [3],
+    })
+    report = compare_linkage(
+        _left(), right,
+        source="GAL×SINAN",
+        dimensions=("epi_year", "epi_week", "agravo_sinan"),
+        metric_col="notificacoes",
+    )
+    payload = write_linkage_parity({"GALxSINAN": report}, tmp_path)
+    assert payload["sources"][0]["pct_sem_match"] == 100.0
+    assert (tmp_path / "paridade_linkage_investigar.csv").exists()
