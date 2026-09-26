@@ -202,7 +202,14 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         weekly=weekly if not weekly.empty else tests,
         gal_micro=gal_micro_quality,
         analysis_year=int(hoje.year),
-        metadata={"pipeline": "etl.run_etl_dw", "fonte_dados": report.get("fonte_dados"), "se_esperada": report.get("se_esperada")},
+        metadata={
+            "pipeline": "etl.run_etl_dw",
+            "pipeline_version": "v2.1",
+            "fonte_dados": report.get("fonte_dados"),
+            "extracted_at": extract_meta.get("ts"),
+            "se_esperada": report.get("se_esperada"),
+            "sources_extracted": list(report.get("sources_extracted") or []),
+        },
     )
     quality_dir = outdir / "quality"
     write_quality_report(quality_report, quality_dir)
