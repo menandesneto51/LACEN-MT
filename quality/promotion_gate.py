@@ -34,6 +34,7 @@ def evaluate_promotion_gate(
     ci_status: str | None = None,
     architecture_review: str | None = None,
     epidemiology_review: str | None = None,
+    agent_reviews_status: str | None = None,
 ) -> PromotionGateResult:
     """Avalia prontidão para revisão humana, nunca para promoção automática."""
     blocking: list[str] = []
@@ -45,6 +46,7 @@ def evaluate_promotion_gate(
     ci = (ci_status or "UNKNOWN").upper()
     arch = (architecture_review or "PENDING").upper()
     epi = (epidemiology_review or "PENDING").upper()
+    agents = (agent_reviews_status or "PENDING").upper()
 
     if dq == "BLOCK":
         blocking.append("Data Quality Gate em BLOCK.")
@@ -76,6 +78,11 @@ def evaluate_promotion_gate(
     if epi not in {"APPROVED", "PASS"}:
         conditions.append("Revisão epidemiológica ainda pendente.")
 
+    if agents == "BLOCK":
+        blocking.append("Pareceres multiagente contêm BLOCK.")
+    elif agents != "PASS":
+        conditions.append(f"Pareceres multiagente em {agents}.")
+
     if blocking:
         status = "NOT_READY"
     elif conditions:
@@ -95,6 +102,7 @@ def evaluate_promotion_gate(
             "ci_status": ci,
             "architecture_review": arch,
             "epidemiology_review": epi,
+            "agent_reviews_status": agents,
         },
         automatic_promotion_allowed=False,
     )
@@ -116,6 +124,7 @@ def build_gate_from_artifacts(
     ci_status: str | None = None,
     architecture_review: str | None = None,
     epidemiology_review: str | None = None,
+    agent_reviews_status: str | None = None,
 ) -> PromotionGateResult:
     q = Path(quality_dir)
     dq = load_json(q / "data_quality_gate_ultimo.json")
@@ -131,6 +140,7 @@ def build_gate_from_artifacts(
         ci_status=ci_status,
         architecture_review=architecture_review,
         epidemiology_review=epidemiology_review,
+        agent_reviews_status=agent_reviews_status,
     )
 
 
