@@ -72,3 +72,18 @@ def test_agent_review_artifacts(tmp_path):
     paths = write_agent_reviews(reviews, tmp_path)
     assert paths["json"].exists()
     assert paths["txt"].exists()
+
+
+def test_agent_review_preserves_evidence_in_artifact(tmp_path):
+    reviews = default_agent_reviews()
+    reviews["qa"].status = "PASS"
+    reviews["qa"].decision = "Aprovado."
+    reviews["qa"].evidence = {
+        "workflow_run_number": 262,
+        "head_sha": "6bf4d2978c80b62043b2faa7ea482e24334c20e7",
+        "conclusion": "success",
+    }
+    paths = write_agent_reviews(reviews, tmp_path)
+    payload = paths["json"].read_text(encoding="utf-8")
+    assert '"workflow_run_number": 262' in payload
+    assert '"conclusion": "success"' in payload
