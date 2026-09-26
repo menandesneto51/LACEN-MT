@@ -394,6 +394,12 @@ def extract_vw_gal_weekly_agg(
     if not mun_col:
         raise RuntimeError(f"{schema}.{view} sem coluna de município.")
 
+    ibge_col = None
+    if mun_col == "Municipio_Residencia_Paciente" and "IBGE_Municipio_Residencia_Paciente" in cols:
+        ibge_col = "IBGE_Municipio_Residencia_Paciente"
+    elif mun_col == "Municipio_Solicitante" and "IBGE_Municipio_Solicitante" in cols:
+        ibge_col = "IBGE_Municipio_Solicitante"
+
     agravo_col = next(
         (c for c in ("Agravo_Requisicao", "Agravo_Gal", "Exame") if c in cols),
         None,
@@ -420,11 +426,21 @@ def extract_vw_gal_weekly_agg(
     epi_year_expr = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
     epi_week_expr = f"DATEPART(iso_week, {d})"
 
+    ibge_select = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7) AS municipio_ibge,"
+        if ibge_col else "CAST(NULL AS NVARCHAR(7)) AS municipio_ibge,"
+    )
+    ibge_group = (
+        f"RIGHT('0000000' + LTRIM(RTRIM(CAST([{ibge_col}] AS NVARCHAR(20)))), 7),"
+        if ibge_col else ""
+    )
+
     sql = f"""
     SELECT
       {epi_year_expr} AS epi_year,
       {epi_week_expr} AS epi_week,
       UPPER(LTRIM(RTRIM([{mun_col}]))) AS municipio,
+      {ibge_select}
       LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))) AS agravo_raw,
       LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400))))) AS exame_raw,
       COUNT_BIG(*) AS n_registros,
@@ -449,6 +465,7 @@ def extract_vw_gal_weekly_agg(
       {epi_year_expr},
       {epi_week_expr},
       UPPER(LTRIM(RTRIM([{mun_col}]))),
+      {ibge_group}
       LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))),
       LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400)))))
     """
