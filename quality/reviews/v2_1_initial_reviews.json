@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-2",
+  "review_version": "v2.1-initial-3",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -44,22 +44,28 @@
     },
     "qa": {
       "agent": "QA",
-      "status": "WARN",
+      "status": "PASS",
       "findings": [
-        "Existem testes unitários para DQ, paridade, linkage, reconciliação, promotion gate, review package, multiagente, governança populacional, artifact hygiene e lineage.",
-        "Foram adicionados testes de integração de run_pipeline() cobrindo BLOCK e WARN sobre rede, ML, mirror e CIEVS.",
-        "Foi adicionado teste de regressão impedindo zero-padding de código IBGE.",
-        "O CI do HEAD corrente ainda precisa concluir com sucesso antes de qualquer elevação para PASS."
+        "O GitHub Actions LACEN-MT Quality Gate run #262 concluiu SUCCESS para o HEAD 6bf4d2978c80b62043b2faa7ea482e24334c20e7.",
+        "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage e análise temporal GAL.",
+        "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
+        "Há regressão específica contra zero-padding de IBGE, joins determinísticos e cobertura territorial populacional."
       ],
       "blockers": [],
       "recommendations": [
-        "Manter o teste de integração BLOCK/WARN como cobertura obrigatória do PR.",
-        "Manter regressão de código IBGE e smoke tests Linux no Quality Gate.",
-        "Elevar QA para PASS somente após CI verde do HEAD corrente."
+        "Manter o Quality Gate obrigatório em todos os PRs e pushes relevantes.",
+        "Preservar os testes de integração BLOCK/WARN e os testes de joins territoriais como cobertura de regressão.",
+        "Reexecutar o CI sempre que regras epidemiológicas, denominadores ou joins forem alterados."
       ],
-      "decision": "Qualidade funcionalmente coberta, aguardando evidência de CI verde do HEAD corrente.",
+      "decision": "PASS no escopo de QA da V2.1 para continuidade da revisão; isso não autoriza release enquanto outros pareceres permanecerem WARN/BLOCK.",
       "reviewer": "QA Agent",
-      "reviewed_at": "2026-09-26"
+      "reviewed_at": "2026-09-26",
+      "evidence": {
+        "workflow_run_number": 262,
+        "workflow_run_id": 36279034558,
+        "head_sha": "6bf4d2978c80b62043b2faa7ea482e24334c20e7",
+        "conclusion": "success"
+      }
     },
     "security_data_governance": {
       "agent": "Security/Data Governance",
