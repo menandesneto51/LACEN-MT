@@ -244,6 +244,15 @@ def _merge_metrics_dual_territory_key(
     return primary.drop(columns=[x for x in drop_cols if x in primary.columns])
 
 
+def _analysis_year_from_weekly(df: pd.DataFrame) -> int | None:
+    if df is None or df.empty or "ano" not in df.columns:
+        return None
+    years = pd.to_numeric(df["ano"], errors="coerce").dropna()
+    if years.empty:
+        return None
+    return int(years.max())
+
+
 def _load_population_v2(
     outdir: Path,
     analysis_year: int,
@@ -567,7 +576,8 @@ def main():
 
     weekly = _add_territory_key(weekly)
 
-    pop_v2 = _load_population_v2(outdir, int(pd.to_numeric(weekly["ano"], errors="coerce").dropna().max()))
+    analysis_year_v2 = _analysis_year_from_weekly(weekly)
+    pop_v2 = _load_population_v2(outdir, analysis_year_v2) if analysis_year_v2 is not None else pd.DataFrame()
     if not pop_v2.empty:
         weekly = weekly.merge(pop_v2, on="territory_key", how="left")
     else:
