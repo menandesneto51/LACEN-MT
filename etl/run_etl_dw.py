@@ -371,7 +371,10 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     decision_registry = load_decision_registry(
         ROOT / "config" / "decision_status_v2_1.json"
     )
-    decision_registry_eval = evaluate_decision_registry(decision_registry)
+    decision_registry_eval = evaluate_decision_registry(
+        decision_registry,
+        evidence_dir=quality_dir,
+    )
     write_decision_registry_report(decision_registry_eval, quality_dir)
     report["decision_registry_status"] = decision_registry_eval.get("overall_status")
     report["decision_registry_blockers"] = decision_registry_eval.get("blockers", [])
