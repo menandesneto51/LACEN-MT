@@ -40,7 +40,8 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/gal_temporal_anchor_analysis.py` mede cobertura das datas, atraso solicitação−coleta, impacto em SE/ano epidemiológico e diferença agregada por semana sem alterar o comportamento atual;
 - `quality/artifact_hygiene.py` bloqueia possíveis segredos/credenciais e sinaliza PII/path local em artefatos antes do downstream;
 - `quality/product_lineage.py` registra lineage por produto com fontes lógicas, corte temporal, versão do pipeline e dependências, sem path absoluto local;
-- `quality/population_governance.py` + `config/population_governance_v2_1.json` controlam aprovação, prioridade de fontes e conflitos internos de denominadores. A política inicia `PENDING_APPROVAL` e não escolhe fonte vencedora automaticamente.
+- `quality/population_governance.py` + `config/population_governance_v2_1.json` controlam aprovação, prioridade de fontes e conflitos internos de denominadores. A política inicia `PENDING_APPROVAL` e não escolhe fonte vencedora automaticamente;
+- `quality/population_source_comparison.py` produz cobertura territorial e diferenças par-a-par entre fontes populacionais para sustentar a decisão institucional.
 
 ## Execute agora
 1. Rode `pytest`.
@@ -56,7 +57,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 11. Use os pareceres versionados em `quality/reviews/v2_1_initial_reviews.json` como estado atual da revisão. Não sobrescreva um `BLOCK/WARN` com `PASS` sem evidência objetiva e registro da correção/decisão que resolveu o achado. Todos os quatro devem estar `PASS` antes de qualquer decisão favorável de release.
 12. Resolver prioritariamente o BLOCK epidemiológico usando `ADR-001` e os artefatos `gal_temporal_anchor_*`. Avaliar cobertura, atraso, mudança de SE/ano, semanas com diferença, magnitude das diferenças semanais e impacto nas séries/baselines antes da decisão. Até aprovação formal do ADR, não alterar a âncora nem promover a V2.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
-14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. Enquanto `status != APPROVED`, territórios com múltiplas fontes concorrentes permanecem sem denominador V2. Com política aprovada e `allow_unlisted_sources=false`, fontes fora de `source_priority` não podem ser usadas como fallback silencioso. Não usar variável de ambiente para contornar essa governança.
+14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. Antes de aprovar, revisar `population_source_comparison_summary.json`, cobertura por fonte, diferenças par-a-par e conflitos internos. Enquanto `status != APPROVED`, territórios com múltiplas fontes concorrentes permanecem sem denominador V2. Com política aprovada e `allow_unlisted_sources=false`, fontes fora de `source_priority` não podem ser usadas como fallback silencioso. Não usar variável de ambiente para contornar essa governança.
 15. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
 16. Preserve e amplie `product_lineage_v2_1.json`; nenhuma fonte deve ser registrada como path local absoluto.
 17. Preserve o Artifact Hygiene Gate; segredo/credencial = `BLOCK`, PII/path local = `WARN` e investigação.
