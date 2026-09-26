@@ -89,3 +89,44 @@ def test_decision_registry_writes_artifacts(tmp_path):
     paths = write_decision_registry_report(evaluated, tmp_path)
     assert paths["json"].exists()
     assert paths["txt"].exists()
+
+
+def test_completed_decision_with_missing_runtime_evidence_blocks(tmp_path):
+    evaluated = evaluate_decision_registry(
+        {
+            "decisions": {
+                "DEC-001": {
+                    "status": "APPROVED",
+                    "decided_by": "Comitê A",
+                    "decided_at": "2026-09-26",
+                    "evidence": ["missing.json"],
+                    "decision": {"anchor": "collection"},
+                },
+                "DEC-002": {"status": "PENDING"},
+            }
+        },
+        evidence_dir=tmp_path,
+    )
+    assert evaluated["overall_status"] == "BLOCK"
+    assert any("evidência ausente" in x for x in evaluated["blockers"])
+
+
+def test_completed_decision_with_existing_runtime_evidence_is_valid(tmp_path):
+    (tmp_path / "evidence.json").write_text("{}", encoding="utf-8")
+    evaluated = evaluate_decision_registry(
+        {
+            "decisions": {
+                "DEC-001": {
+                    "status": "APPROVED",
+                    "decided_by": "Comitê A",
+                    "decided_at": "2026-09-26",
+                    "evidence": ["evidence.json"],
+                    "decision": {"anchor": "collection"},
+                },
+                "DEC-002": {"status": "PENDING"},
+            }
+        },
+        evidence_dir=tmp_path,
+    )
+    assert evaluated["overall_status"] == "PENDING"
+    assert not any("evidência ausente" in x for x in evaluated["blockers"])
