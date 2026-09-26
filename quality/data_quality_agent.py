@@ -124,6 +124,7 @@ def check_population(
     *,
     analysis_year: int | None = None,
     max_age_years: int = 2,
+    required_for_product: bool = False,
 ) -> list[QualityFinding]:
     year_col = next((c for c in ("ano", "year", "ano_populacao") if c in df.columns), None)
     pop_col = next((c for c in ("populacao", "population", "pop") if c in df.columns), None)
@@ -147,7 +148,8 @@ def check_population(
         age = analysis_year - newest
         findings.append(QualityFinding(
             "DQ_POPULATION_FRESHNESS",
-            QualityStatus.BLOCK if age > max_age_years else (QualityStatus.WARN if age > 0 else QualityStatus.PASS),
+            (QualityStatus.BLOCK if required_for_product else QualityStatus.WARN)
+            if age > max_age_years else (QualityStatus.WARN if age > 0 else QualityStatus.PASS),
             f"Denominador populacional mais recente: {newest}; análise: {analysis_year}.",
             source=source, metric="age_years", value=age, threshold=max_age_years,
             action="Usar fonte populacional compatível com o período ou documentar fallback." if age else "",
@@ -408,7 +410,12 @@ def run_quality_gate(
         findings += check_freshness(gal_micro, "GAL")
         findings += check_encoding(gal_micro, "GAL")
     if population is not None:
-        findings += check_population(population, "population", analysis_year=analysis_year)
+        findings += check_population(
+            population,
+            "population",
+            analysis_year=analysis_year,
+            required_for_product=population_required,
+        )
     elif population_required:
         findings.append(QualityFinding(
             "DQ_POPULATION_MISSING", QualityStatus.BLOCK,
