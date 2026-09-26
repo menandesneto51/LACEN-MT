@@ -283,20 +283,55 @@ def _internacoes_mun(
     yw: tuple[int, int],
     territory_key: str,
     *,
+    municipio_key: str | None = None,
     familia: str | None = None,
 ) -> int:
+    """Pareia SIH por IBGE e usa nome exato apenas quando algum lado não possui código.
+
+    Códigos válidos conflitantes nunca são resolvidos por nome.
+    """
     y, w = yw
-    n = 0
+    target_code = territory_key[5:] if territory_key.startswith("IBGE:") else ""
+    target_name = _norm_mun(municipio_key or "")
+    if not target_name and territory_key.startswith("NAME:"):
+        target_name = _norm_mun(territory_key[5:])
+
+    primary_rows: list[dict[str, str]] = []
+    fallback_rows: list[dict[str, str]] = []
+
     for r in sih:
         if _to_int(r.get("epi_year")) != y or _to_int(r.get("epi_week")) != w:
             continue
-        if _territory_key_from_row(r) != territory_key:
-            continue
         if familia and _clean(r.get("cid_familia")).casefold() != familia.casefold():
-            # se família pedida e não bate, ainda conta total do mun se familia None
             continue
-        n += _to_int(r.get("n_internacoes"))
-    return n
+
+        row_code = _clean(r.get("municipio_ibge"))
+        row_code_valid = bool(re.fullmatch(r"\d{7}", row_code))
+        row_name = _norm_mun(_clean(r.get("municipio")))
+
+        if target_code:
+            if row_code_valid:
+                if row_code == target_code:
+                    primary_rows.append(r)
+                # código válido conflitante: não entra no fallback
+                continue
+            if target_name and row_name == target_name:
+                fallback_rows.append(r)
+        else:
+            if target_name and row_name == target_name:
+                fallback_rows.append(r)
+
+    chosen = primary_rows if primary_rows else fallback_rows
+    if not target_code and chosen:
+        valid_codes = {
+            _clean(r.get("municipio_ibge"))
+            for r in chosen
+            if re.fullmatch(r"\d{7}", _clean(r.get("municipio_ibge")))
+        }
+        if len(valid_codes) > 1:
+            return 0
+
+    return sum(_to_int(r.get("n_internacoes")) for r in chosen)
 
 
 def _escolher_semana_sih(
@@ -409,8 +444,17 @@ def _build_consolidado(
         fam = _cid_familia(str(item["agravo"]))
         mk = str(item["municipio_key"])
         tk = str(item["territory_key"])
-        intern = _internacoes_mun(sih, sih_yw, tk, familia=fam) if fam else _internacoes_mun(
-            sih, sih_yw, tk
+        intern = _internacoes_mun(
+            sih,
+            sih_yw,
+            tk,
+            municipio_key=mk,
+            familia=fam,
+        ) if fam else _internacoes_mun(
+            sih,
+            sih_yw,
+            tk,
+            municipio_key=mk,
         )
         pop_n = pop.get(mk)
         rate = (100000.0 * intern / pop_n) if pop_n and pop_n > 0 else None
