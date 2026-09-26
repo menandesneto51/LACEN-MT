@@ -35,6 +35,7 @@ def build_review_package(
     linkage = _load(q / "paridade_linkage_resumo.json")
     recon = _load(q / "reconciliacao_territorial_resumo.json")
     promotion = _load(q / "promotion_gate_v2_1.json")
+    temporal_anchor = _load(q / "gal_temporal_anchor_summary.json")
 
     architecture_focus = [
         "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
@@ -105,6 +106,7 @@ def build_review_package(
             "linkage": linkage,
             "territorial_reconciliation": recon,
             "promotion_gate": promotion,
+            "gal_temporal_anchor": temporal_anchor,
         },
         "architecture_review": {
             "status": "PENDING",
@@ -166,6 +168,13 @@ def write_review_package(
     lines += ["", "## Revisão arquitetural"]
     for item in package["architecture_review"]["focus"]:
         lines.append(f"- [ ] {item}")
+
+    lines += ["", "## Evidência temporal GAL"]
+    if package.get("evidence", {}).get("gal_temporal_anchor"):
+        for key, value in package["evidence"]["gal_temporal_anchor"].items():
+            lines.append(f"- {key}: {value}")
+    else:
+        lines.append("- Análise de sensibilidade ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
