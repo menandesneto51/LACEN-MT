@@ -96,8 +96,6 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
     return (
         s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
         .agg(
-            municipio=("municipio", "first"),
-            municipio_ibge=("municipio_ibge", "first"),
             notificacoes=("notificacoes", "sum"),
             obitos_sinan=("obitos_sinan", "sum"),
             encerrados_sinan=("encerrados_sinan", "sum"),
@@ -126,11 +124,7 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
         s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
-        .agg(
-            municipio=("municipio", "first"),
-            municipio_ibge=("municipio_ibge", "first"),
-            obitos_sim=("obitos_sim", "sum"),
-        )
+        .agg(obitos_sim=("obitos_sim", "sum"))
     )
 
 
