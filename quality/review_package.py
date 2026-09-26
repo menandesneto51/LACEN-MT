@@ -80,6 +80,7 @@ def build_review_package(
             findings=list(payload.get("findings") or []),
             blockers=list(payload.get("blockers") or []),
             recommendations=list(payload.get("recommendations") or []),
+            evidence=dict(payload.get("evidence") or {}),
             decision=payload.get("decision"),
             reviewer=payload.get("reviewer"),
             reviewed_at=payload.get("reviewed_at"),
