@@ -45,6 +45,7 @@ from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_
 from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_report  # noqa: E402
 from quality.product_lineage import build_product_lineage, write_lineage_registry  # noqa: E402
 from quality.population_governance import load_population_governance, evaluate_population_governance, write_population_governance_report  # noqa: E402
+from quality.population_source_comparison import compare_population_sources, write_population_source_comparison  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -115,6 +116,7 @@ def write_validacao(
         f"population_governance_status: {report.get('population_governance_status')}",
         f"population_governance_approved: {report.get('population_governance_approved')}",
         f"population_governance_blockers: {report.get('population_governance_blockers')}",
+        f"population_source_comparison: {report.get('population_source_comparison')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -286,6 +288,19 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     else:
         report["population_dimension_rows"] = 0
         report["population_sources"] = []
+
+    pop_source_detail, pop_pair_detail, pop_compare_summary = compare_population_sources(
+        population_dim,
+        analysis_year=int(hoje.year),
+    )
+    write_population_source_comparison(
+        pop_source_detail,
+        pop_pair_detail,
+        pop_compare_summary,
+        outdir / "quality",
+    )
+    report["population_source_comparison"] = pop_compare_summary.to_dict()
+    report["passos"].append("population_source_comparison")
 
     population_policy = load_population_governance(
         ROOT / "config" / "population_governance_v2_1.json"
