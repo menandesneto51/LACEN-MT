@@ -74,7 +74,11 @@ def validate_decision(
     )
 
 
-def evaluate_decision_registry(registry: dict[str, Any]) -> dict[str, Any]:
+def evaluate_decision_registry(
+    registry: dict[str, Any],
+    *,
+    evidence_dir: Path | str | None = None,
+) -> dict[str, Any]:
     decisions_payload = registry.get("decisions") or {}
     decisions: dict[str, DecisionStatus] = {}
     for decision_id in ("DEC-001", "DEC-002"):
@@ -85,6 +89,7 @@ def evaluate_decision_registry(registry: dict[str, Any]) -> dict[str, Any]:
 
     blockers: list[str] = []
     conditions: list[str] = []
+    evidence_root = Path(evidence_dir) if evidence_dir is not None else None
     for decision_id, item in decisions.items():
         if not item.valid:
             blockers.append(
@@ -92,6 +97,17 @@ def evaluate_decision_registry(registry: dict[str, Any]) -> dict[str, Any]:
                 + "; ".join(item.validation_errors)
             )
             continue
+        if item.status in {"APPROVED", "REJECTED"} and evidence_root is not None:
+            missing_evidence = [
+                ref for ref in item.evidence
+                if not (evidence_root / ref).exists()
+            ]
+            if missing_evidence:
+                blockers.append(
+                    f"{decision_id} referencia evidência ausente: "
+                    + ", ".join(missing_evidence)
+                )
+                continue
         if item.status == "REJECTED":
             blockers.append(f"{decision_id} foi REJECTED.")
         elif item.status == "PENDING":
