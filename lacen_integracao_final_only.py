@@ -102,7 +102,7 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
     s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
+        s.groupby(["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge", "agravo_sinan"], as_index=False, dropna=False)
         .agg(
             notificacoes=("notificacoes", "sum"),
             obitos_sinan=("obitos_sinan", "sum"),
@@ -131,10 +131,104 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "territory_key", "agravo_sinan"], as_index=False, dropna=False)
+        s.groupby(["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge", "agravo_sinan"], as_index=False, dropna=False)
         .agg(obitos_sim=("obitos_sim", "sum"))
     )
 
+
+
+
+def _merge_metrics_dual_territory_key(
+    left: pd.DataFrame,
+    right: pd.DataFrame,
+    *,
+    base_keys: tuple[str, ...],
+    metric_cols: tuple[str, ...],
+    method_col: str,
+) -> pd.DataFrame:
+    """Pareia por IBGE primeiro; fallback por nome exato só se algum lado não tem código.
+
+    Nunca usa fuzzy matching e nunca resolve códigos IBGE válidos conflitantes por nome.
+    """
+    if right is None or right.empty:
+        out = left.copy()
+        for col in metric_cols:
+            if col not in out.columns:
+                out[col] = np.nan
+        out[method_col] = "UNMATCHED"
+        return out
+
+    l = _add_territory_key(left).copy()
+    r = _add_territory_key(right).copy()
+    l["_row_id_v2"] = np.arange(len(l))
+    l["_name_key_v2"] = l["municipio"].astype(str).str.strip().str.upper()
+    r["_name_key_v2"] = r["municipio"].astype(str).str.strip().str.upper()
+
+    keep_right = list(dict.fromkeys([
+        *base_keys, "territory_key", "municipio", "municipio_ibge", "_name_key_v2",
+        *metric_cols,
+    ]))
+    rr = r[keep_right].copy()
+
+    primary = l.merge(
+        rr,
+        on=[*base_keys, "territory_key"],
+        how="left",
+        suffixes=("", "_src"),
+        indicator="_primary_merge",
+    )
+    primary[method_col] = np.where(
+        primary["_primary_merge"].eq("both"),
+        np.where(
+            primary["territory_key"].astype(str).str.startswith("IBGE:"),
+            "IBGE",
+            "NAME_EXACT",
+        ),
+        "UNMATCHED",
+    )
+
+    unmatched_ids = primary.loc[
+        primary["_primary_merge"].eq("left_only"), "_row_id_v2"
+    ].unique().tolist()
+    if unmatched_ids:
+        left_unmatched = l[l["_row_id_v2"].isin(unmatched_ids)].copy()
+
+        # Fallback candidates are exact-name matches where NOT BOTH sides
+        # have valid codes. Therefore conflicting valid IBGE codes are excluded.
+        fallback = left_unmatched.merge(
+            rr,
+            on=[*base_keys, "_name_key_v2"],
+            how="left",
+            suffixes=("", "_src"),
+            indicator="_fallback_merge",
+        )
+        left_has_code = fallback["municipio_ibge"].notna()
+        src_has_code = fallback["municipio_ibge_src"].notna()
+        valid_fallback = fallback["_fallback_merge"].eq("both") & ~(left_has_code & src_has_code)
+        fallback = fallback[valid_fallback].copy()
+
+        # Avoid ambiguous exact-name fallback: one source row max per left row.
+        counts = fallback.groupby("_row_id_v2", dropna=False).size()
+        unique_ids = set(counts[counts == 1].index.tolist())
+        fallback = fallback[fallback["_row_id_v2"].isin(unique_ids)].copy()
+
+        if not fallback.empty:
+            fb_metrics = fallback[["_row_id_v2", *metric_cols]].copy()
+            fb_metrics[method_col] = "NAME_EXACT_FALLBACK"
+
+            for col in metric_cols:
+                mapping = fb_metrics.set_index("_row_id_v2")[col]
+                mask = primary["_row_id_v2"].isin(mapping.index) & primary["_primary_merge"].eq("left_only")
+                primary.loc[mask, col] = primary.loc[mask, "_row_id_v2"].map(mapping)
+            method_mapping = fb_metrics.set_index("_row_id_v2")[method_col]
+            mask = primary["_row_id_v2"].isin(method_mapping.index) & primary["_primary_merge"].eq("left_only")
+            primary.loc[mask, method_col] = primary.loc[mask, "_row_id_v2"].map(method_mapping)
+
+    drop_cols = [
+        "_row_id_v2", "_name_key_v2", "_primary_merge",
+        "municipio_src", "municipio_ibge_src",
+    ]
+    return primary.drop(columns=[x for x in drop_cols if x in primary.columns])
 
 
 def _load_population_v2(
@@ -486,26 +580,41 @@ def main():
     if sim_j.empty:
         log("[AVISO] SIM sem anos válidos (possível arquivo corrompido). Óbitos SIM ficarão zerados.")
 
-    weekly = weekly.merge(
+    weekly = _merge_metrics_dual_territory_key(
+        weekly,
         sinan_j,
-        on=["epi_year", "epi_week", "territory_key", "agravo_sinan"],
-        how="left",
+        base_keys=("epi_year", "epi_week", "agravo_sinan"),
+        metric_cols=("notificacoes", "obitos_sinan", "encerrados_sinan"),
+        method_col="sinan_match_method",
     )
     if not sim_j.empty:
-        weekly = weekly.merge(
+        weekly = _merge_metrics_dual_territory_key(
+            weekly,
             sim_j,
-            on=["epi_year", "epi_week", "territory_key", "agravo_sinan"],
-            how="left",
+            base_keys=("epi_year", "epi_week", "agravo_sinan"),
+            metric_cols=("obitos_sim",),
+            method_col="sim_match_method",
         )
     else:
         weekly["obitos_sim"] = 0
+        weekly["sim_match_method"] = "UNMATCHED"
 
     # Complemento: notificações municipais totais da semana (mesmo sem match de alvo)
     sinan_mun = (
-        sinan_j.groupby(["epi_year", "epi_week", "territory_key"], as_index=False)
+        sinan_j.groupby(
+            ["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge"],
+            as_index=False,
+            dropna=False,
+        )
         .agg(notificacoes_mun_semana=("notificacoes", "sum"))
     )
-    weekly = weekly.merge(sinan_mun, on=["epi_year", "epi_week", "territory_key"], how="left")
+    weekly = _merge_metrics_dual_territory_key(
+        weekly,
+        sinan_mun,
+        base_keys=("epi_year", "epi_week"),
+        metric_cols=("notificacoes_mun_semana",),
+        method_col="sinan_mun_match_method",
+    )
     weekly["notificacoes"] = weekly["notificacoes"].fillna(0)
     # Se o alvo não mapeou, ainda registra o total municipal da semana (rateado em 0; usa coluna auxiliar)
     weekly["notificacoes"] = np.where(
