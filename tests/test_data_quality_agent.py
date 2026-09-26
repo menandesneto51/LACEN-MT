@@ -4,7 +4,7 @@ from quality.data_quality_agent import QualityStatus, run_quality_gate
 
 
 def test_valid_weekly_passes():
-    weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[37],"tests":[10],"positives":[2]})
+    weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[37],"municipio_ibge":["5103403"],"tests":[10],"positives":[2]})
     report = run_quality_gate(weekly=weekly)
     assert report.status == QualityStatus.PASS
     assert report.publishable is True
@@ -25,7 +25,7 @@ def test_invalid_epi_week_blocks():
 def test_old_population_blocks_current_rate_analysis():
     weekly = pd.DataFrame({"epi_year":[2026],"epi_week":[37],"tests":[1],"positives":[0]})
     pop = pd.DataFrame({"ano":[1996],"populacao":[100000]})
-    report = run_quality_gate(weekly=weekly, population=pop, analysis_year=2026)
+    report = run_quality_gate(weekly=weekly, population=pop, analysis_year=2026, population_required=True)
     assert report.status == QualityStatus.BLOCK
     assert any(f.check_id == "DQ_POPULATION_FRESHNESS" for f in report.findings)
 
