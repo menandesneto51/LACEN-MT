@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-4",
+  "review_version": "v2.1-initial-5",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -10,8 +10,10 @@
         "Joins territoriais de produção e auditoria seguem a mesma política determinística IBGE-first, sem fuzzy matching.",
         "Zero-padding de códigos IBGE foi removido e coberto por teste de regressão.",
         "Lineage por produto, Artifact Hygiene, reconciliação territorial e governança populacional versionada foram incorporados.",
+        "A governança populacional possui comparação automática de cobertura/diferenças e não autoaprova fonte vencedora.",
+        "A análise temporal GAL quantifica impacto por registro e por semana sem alterar a série.",
         "A V2 permanece paralela ao legado e automatic_promotion_allowed=false.",
-        "O CI #269 concluiu SUCCESS no HEAD 72a1bedaac4ba091846fe9b57137a698cb3f76c0."
+        "O CI #291 concluiu SUCCESS no HEAD 98c2d98ce0dd77856f6befb618078ee0f05ae457."
       ],
       "blockers": [],
       "recommendations": [
@@ -23,9 +25,9 @@
       "reviewer": "Chief Architect Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 269,
-        "workflow_run_id": 36279142477,
-        "head_sha": "72a1bedaac4ba091846fe9b57137a698cb3f76c0",
+        "workflow_run_number": 291,
+        "workflow_run_id": 36279491009,
+        "head_sha": "98c2d98ce0dd77856f6befb618078ee0f05ae457",
         "conclusion": "success",
         "adr_temporal_status": "PENDING_CLINICAL_DECISION"
       }
@@ -54,7 +56,7 @@
       "agent": "QA",
       "status": "PASS",
       "findings": [
-        "O GitHub Actions LACEN-MT Quality Gate run #269 concluiu SUCCESS para o HEAD 72a1bedaac4ba091846fe9b57137a698cb3f76c0.",
+        "O GitHub Actions LACEN-MT Quality Gate run #291 concluiu SUCCESS para o HEAD 98c2d98ce0dd77856f6befb618078ee0f05ae457.",
         "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage, análise temporal GAL e joins territoriais determinísticos.",
         "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
         "Há regressão específica contra zero-padding de IBGE, duplicação por variantes nominais, fallback territorial indevido e cobertura populacional incompleta."
@@ -69,9 +71,9 @@
       "reviewer": "QA Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 269,
-        "workflow_run_id": 36279142477,
-        "head_sha": "72a1bedaac4ba091846fe9b57137a698cb3f76c0",
+        "workflow_run_number": 291,
+        "workflow_run_id": 36279491009,
+        "head_sha": "98c2d98ce0dd77856f6befb618078ee0f05ae457",
         "conclusion": "success"
       }
     },
