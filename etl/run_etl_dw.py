@@ -31,6 +31,7 @@ from etl.build_weekly_from_gal import (  # noqa: E402
 )
 from etl.dw_extract import check_dw_tcp, run_extract, staging_dir  # noqa: E402
 from etl.epi_week import format_se, semana_completa_mais_recente  # noqa: E402
+from quality.data_quality_agent import run_quality_gate, write_report as write_quality_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -190,6 +191,30 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
 
     weekly_path = outdir / "integrated_weekly_surveillance.csv"
     weekly = pd.read_csv(weekly_path, low_memory=False) if weekly_path.exists() else pd.DataFrame()
+
+    # V2.1 — gate determinístico antes de rede, ML, mirror e alerta institucional.
+    gal_micro_quality = None
+    stage = staging_dir(outdir)
+    micro_quality_path = stage / "vw_gal_micro_recent.parquet"
+    if micro_quality_path.exists():
+        gal_micro_quality = pd.read_parquet(micro_quality_path)
+    quality_report = run_quality_gate(
+        weekly=weekly if not weekly.empty else tests,
+        gal_micro=gal_micro_quality,
+        analysis_year=int(hoje.year),
+        metadata={"pipeline": "etl.run_etl_dw", "fonte_dados": report.get("fonte_dados"), "se_esperada": report.get("se_esperada")},
+    )
+    quality_dir = outdir / "quality"
+    write_quality_report(quality_report, quality_dir)
+    report["data_quality_status"] = quality_report.status.value
+    report["data_quality_publishable"] = quality_report.publishable
+    report["passos"].append(f"data_quality_gate:{quality_report.status.value}")
+    if not quality_report.publishable:
+        report["aviso"] = ((report.get("aviso") or "") + " | DATA QUALITY BLOCK: inferência, ML, mirror e alerta CIEVS não executados.").strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+        raise RuntimeError("Data Quality Gate = BLOCK. Consulte " + str(quality_dir / "data_quality_gate_ultimo.txt"))
+
     se_info = choose_se_operacional(weekly if not weekly.empty else tests, hoje=hoje)
     report.update({k: se_info.get(k) for k in (
         "se_usada", "atraso_se", "atraso_dias", "se_fonte", "aviso",
