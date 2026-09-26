@@ -111,3 +111,24 @@ def test_dual_join_fallback_rejects_ambiguous_exact_name():
     )
     assert pd.isna(out.loc[0, "notificacoes"])
     assert out.loc[0, "match_method"] == "UNMATCHED"
+
+
+def test_dual_join_aggregates_name_variants_with_same_ibge_without_row_duplication():
+    right = pd.DataFrame({
+        "epi_year": [2026, 2026],
+        "epi_week": [37, 37],
+        "agravo_sinan": ["dengue", "dengue"],
+        "municipio": ["CUIABÁ", "CUIABA"],
+        "municipio_ibge": ["5103403", "5103403"],
+        "notificacoes": [2, 3],
+    })
+    out = _merge_metrics_dual_territory_key(
+        _left(),
+        right,
+        base_keys=("epi_year", "epi_week", "agravo_sinan"),
+        metric_cols=("notificacoes",),
+        method_col="match_method",
+    )
+    assert len(out) == 1
+    assert out.loc[0, "notificacoes"] == 5
+    assert out.loc[0, "match_method"] == "IBGE"
