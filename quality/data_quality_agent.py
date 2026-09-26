@@ -18,6 +18,26 @@ import pandas as pd
 
 TZ = ZoneInfo("America/Cuiaba")
 
+def load_freshness_contracts(path: Path | str | None = None) -> dict[str, Any]:
+    """Carrega contratos versionados de freshness (sem inventar limiar)."""
+    candidate = Path(path) if path else Path(__file__).with_name("freshness_contracts.json")
+    if not candidate.exists():
+        return {"version": None, "sources": {}, "policy": "missing_contracts_file"}
+    return json.loads(candidate.read_text(encoding="utf-8"))
+
+
+def freshness_thresholds_for(source: str, contracts: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Retorna date_candidates e limiares explicitos (podem ser null)."""
+    cfg = contracts if contracts is not None else load_freshness_contracts()
+    src_cfg = (cfg.get("sources") or {}).get(source) or {}
+    return {
+        "date_candidates": tuple(src_cfg.get("date_candidates") or ()),
+        "warn_after_days": src_cfg.get("warn_after_days"),
+        "block_after_days": src_cfg.get("block_after_days"),
+        "contract_version": cfg.get("version"),
+    }
+
+
 
 class QualityStatus(str, Enum):
     PASS = "PASS"
@@ -395,6 +415,10 @@ def run_quality_gate(
     metadata: dict[str, Any] | None = None,
 ) -> QualityReport:
     findings: list[QualityFinding] = []
+    freshness_contracts = load_freshness_contracts()
+    meta = dict(metadata or {})
+    meta.setdefault("freshness_contracts_version", freshness_contracts.get("version"))
+    meta.setdefault("freshness_policy", freshness_contracts.get("policy"))
     if weekly is not None:
         findings += check_epi_week(weekly, "weekly")
         findings += check_counts(weekly, "weekly")
@@ -438,7 +462,7 @@ def run_quality_gate(
         generated_at=datetime.now(TZ).isoformat(timespec="seconds"),
         status=_worst(findings),
         findings=findings,
-        metadata=metadata or {},
+        metadata=meta,
     )
 
 

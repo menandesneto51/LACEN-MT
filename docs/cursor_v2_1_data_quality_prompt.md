@@ -32,6 +32,8 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `FECHADO` exige decisão, evidência, correção aplicada e validação pós-correção; o resumo calcula `promotion_ready` somente com itens críticos/altos resolvidos e sem fechamentos inválidos;
 - classificações de linkage: `IGUAL`, `RECUPERADO_POR_IBGE`, `PERDIDO_COM_IBGE`, `CONFLITO`, `SEM_MATCH`;
 - `BLOCK` de paridade/linkage impede promoção da camada V2, mas não interrompe a vigilância legada em produção;
+- testes de integração BLOCK/WARN cobertos em `tests/test_run_etl_dw_quality_gate_integration.py`;
+- contratos versionados de freshness em `quality/freshness_contracts.json` (SLA null até validação institucional);
 - `quality/promotion_gate.py` consolida Data Quality, paridade, linkage, reconciliação, CI e revisões arquitetural/epidemiológica em `NOT_READY`, `CONDITIONAL` ou `READY_FOR_REVIEW`; nunca promove automaticamente;
 - `quality/review_package.py` gera o pacote único de revisão humana em JSON/Markdown com evidências, bloqueios, condições e checklists específicos para Chief Architect e especialista epidemiológico;
 - `quality/agent_reviews.py` define contratos auditáveis para Chief Architect, Clinical/Epidemiological Specialist, QA e Security/Data Governance, com status `PENDING/PASS/WARN/BLOCK`, achados, bloqueios, recomendações e decisão;
@@ -58,7 +60,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 12. Resolver prioritariamente o BLOCK epidemiológico usando `ADR-001` e os artefatos `gal_temporal_anchor_*`. Avaliar cobertura, atraso, mudança de SE/ano, semanas com diferença, magnitude das diferenças semanais e impacto nas séries/baselines antes da decisão. Até aprovação formal do ADR, não alterar a âncora nem promover a V2.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
 14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. Antes de aprovar, revisar `population_source_comparison_summary.json`, cobertura por fonte, diferenças par-a-par e conflitos internos. Enquanto `status != APPROVED`, territórios com múltiplas fontes concorrentes permanecem sem denominador V2. Com política aprovada e `allow_unlisted_sources=false`, fontes fora de `source_priority` não podem ser usadas como fallback silencioso. Não usar variável de ambiente para contornar essa governança.
-15. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
+15. Contratos de freshness versionados em `quality/freshness_contracts.json`; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
 16. Preserve e amplie `product_lineage_v2_1.json`; nenhuma fonte deve ser registrada como path local absoluto.
 17. Preserve o Artifact Hygiene Gate; segredo/credencial = `BLOCK`, PII/path local = `WARN` e investigação.
 18. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
