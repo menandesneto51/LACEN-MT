@@ -144,3 +144,39 @@ def test_population_v2_rejects_unlisted_source_when_policy_is_strict(tmp_path):
 
     out = _load_population_v2(tmp_path, 2026, policy_path=policy)
     assert out.empty
+
+
+def test_advanced_sih_linkage_falls_back_to_exact_name_when_source_lacks_code():
+    sih = [{
+        "epi_year": "2026",
+        "epi_week": "37",
+        "municipio": "CUIABÁ",
+        "municipio_ibge": "",
+        "cid_familia": "tuberculose",
+        "n_internacoes": "4",
+    }]
+    assert _internacoes_mun(
+        sih,
+        (2026, 37),
+        "IBGE:5103403",
+        municipio_key="CUIABÁ",
+        familia="tuberculose",
+    ) == 4
+
+
+def test_advanced_sih_linkage_does_not_fallback_on_conflicting_valid_code():
+    sih = [{
+        "epi_year": "2026",
+        "epi_week": "37",
+        "municipio": "CUIABÁ",
+        "municipio_ibge": "5108402",
+        "cid_familia": "tuberculose",
+        "n_internacoes": "4",
+    }]
+    assert _internacoes_mun(
+        sih,
+        (2026, 37),
+        "IBGE:5103403",
+        municipio_key="CUIABÁ",
+        familia="tuberculose",
+    ) == 0
