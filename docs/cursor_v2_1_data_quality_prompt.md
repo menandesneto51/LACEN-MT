@@ -27,6 +27,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/parity_report.py` gera relatório legado × V2 com detalhe municipal e resumo PASS/WARN/BLOCK;
 - `quality/linkage_parity.py` audita GAL×SINAN, GAL×SIM, GAL×SIH e GAL×SIA comparando nome × IBGE;
 - `quality/territorial_reconciliation.py` transforma divergências em fila acionável com prioridade, hipótese técnica, ação recomendada, responsável sugerido e estado de reconciliação;
+- cada item de reconciliação recebe `issue_id` estável e ciclo de vida `ABERTO → EM_ANALISE → CORRECAO_APLICADA → VALIDADO → FECHADO`, preservando decisão/evidência/correção entre execuções;
 - classificações de linkage: `IGUAL`, `RECUPERADO_POR_IBGE`, `PERDIDO_COM_IBGE`, `CONFLITO`, `SEM_MATCH`;
 - `BLOCK` de paridade/linkage impede promoção da camada V2, mas não interrompe a vigilância legada em produção.
 
@@ -37,12 +38,13 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 4. Use `quality/parity_report.py` como gate de promoção: `BLOCK` significa não substituir legado pela V2; não usar esse status para interromper a publicação legada.
 5. Use `quality/linkage_parity.py` para revisar diferenças de join por fonte; trate `RECUPERADO_POR_IBGE` como melhoria auditável, `SEM_MATCH` como investigação e `PERDIDO_COM_IBGE`/`CONFLITO` como bloqueio de promoção.
 6. Use `quality/territorial_reconciliation.py` como backlog de saneamento: conflitos são CRÍTICOS, perdas por IBGE são ALTAS e sem-match é MODERADO. Não resolver por fuzzy match em produção; corrigir origem/dimensão e registrar a decisão.
-7. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
-8. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
-9. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
-10. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
-11. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
-12. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
+7. Preserve `issue_id` e histórico humano entre execuções. Nunca fechar automaticamente: `FECHADO` exige decisão explícita, evidência, correção aplicada e validação pós-correção registradas.
+8. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
+9. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
+10. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
+11. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
+12. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
+13. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
 
 ## Critérios de aceite
 - BLOCK impede inferência/ML/mirror/CIEVS;
