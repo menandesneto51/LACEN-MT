@@ -340,6 +340,40 @@ def check_encoding(
     )]
 
 
+
+def check_municipality_ibge(
+    df: pd.DataFrame,
+    source: str,
+    *,
+    code_candidates: tuple[str, ...] = ("municipio_ibge", "codigo_ibge", "cod_ibge", "ibge"),
+) -> list[QualityFinding]:
+    """Valida formato do código IBGE quando a fonte já o disponibiliza."""
+    code_col = next((col for col in code_candidates if col in df.columns), None)
+    if not code_col:
+        return [QualityFinding(
+            "DQ_IBGE_CODE_MISSING", QualityStatus.WARN,
+            "Código IBGE municipal não disponível; chave territorial canônica ainda não pode ser validada.",
+            source=source,
+            action="Propagar código IBGE da origem/dimensão territorial; não criar correção nominal hardcoded.",
+        )]
+    raw = df[code_col]
+    normalized = raw.astype("string").str.replace(r"\.0$", "", regex=True).str.strip()
+    valid = normalized.str.fullmatch(r"\d{7}", na=False)
+    invalid = int((~valid & raw.notna()).sum())
+    missing = int(raw.isna().sum())
+    status = QualityStatus.WARN if (invalid or missing) else QualityStatus.PASS
+    return [QualityFinding(
+        "DQ_IBGE_CODE", status,
+        "Código IBGE municipal com ausências/formato inválido." if status == QualityStatus.WARN
+        else "Código IBGE municipal disponível em formato de 7 dígitos.",
+        source=source,
+        metric="invalid_or_missing_rows",
+        value={"invalid": invalid, "missing": missing, "column": code_col},
+        threshold=0,
+        action="Resolver via dimensão territorial versionada." if status == QualityStatus.WARN else "",
+    )]
+
+
 def run_quality_gate(
     *,
     weekly: pd.DataFrame | None = None,
@@ -365,6 +399,7 @@ def run_quality_gate(
             ) or None,
         )
         findings += check_encoding(weekly, "weekly")
+        findings += check_municipality_ibge(weekly, "weekly")
     else:
         findings.append(QualityFinding(
             "DQ_WEEKLY_MISSING", QualityStatus.BLOCK,
@@ -403,6 +438,11 @@ def write_report(report: QualityReport, outdir: Path | str) -> tuple[Path, Path]
         f"gerado_em: {report.generated_at}",
         f"status: {report.status.value}",
         f"publicavel: {str(report.publishable).lower()}",
+        f"pipeline: {report.metadata.get('pipeline', '—')}",
+        f"fonte_dados: {report.metadata.get('fonte_dados', '—')}",
+        f"extraido_em: {report.metadata.get('extracted_at', '—')}",
+        f"se_esperada: {report.metadata.get('se_esperada', '—')}",
+        f"fontes_extraidas: {report.metadata.get('sources_extracted', [])}",
         "",
     ]
     for f in report.findings:
