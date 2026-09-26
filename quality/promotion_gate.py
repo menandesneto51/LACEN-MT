@@ -35,6 +35,8 @@ def evaluate_promotion_gate(
     architecture_review: str | None = None,
     epidemiology_review: str | None = None,
     agent_reviews_status: str | None = None,
+    population_governance_approved: bool | None = None,
+    population_governance_blockers: list[str] | None = None,
 ) -> PromotionGateResult:
     """Avalia prontidão para revisão humana, nunca para promoção automática."""
     blocking: list[str] = []
@@ -47,6 +49,7 @@ def evaluate_promotion_gate(
     arch = (architecture_review or "PENDING").upper()
     epi = (epidemiology_review or "PENDING").upper()
     agents = (agent_reviews_status or "PENDING").upper()
+    pop_blockers = list(population_governance_blockers or [])
 
     if dq == "BLOCK":
         blocking.append("Data Quality Gate em BLOCK.")
@@ -83,6 +86,13 @@ def evaluate_promotion_gate(
     elif agents != "PASS":
         conditions.append(f"Pareceres multiagente em {agents}.")
 
+    if pop_blockers:
+        blocking.extend([f"Governança populacional: {x}" for x in pop_blockers])
+    elif population_governance_approved is False:
+        conditions.append("Governança populacional ainda não aprovada.")
+    elif population_governance_approved is None:
+        conditions.append("Governança populacional sem evidência de aprovação.")
+
     if blocking:
         status = "NOT_READY"
     elif conditions:
@@ -103,6 +113,8 @@ def evaluate_promotion_gate(
             "architecture_review": arch,
             "epidemiology_review": epi,
             "agent_reviews_status": agents,
+            "population_governance_approved": population_governance_approved,
+            "population_governance_blockers": pop_blockers,
         },
         automatic_promotion_allowed=False,
     )
@@ -125,6 +137,8 @@ def build_gate_from_artifacts(
     architecture_review: str | None = None,
     epidemiology_review: str | None = None,
     agent_reviews_status: str | None = None,
+    population_governance_approved: bool | None = None,
+    population_governance_blockers: list[str] | None = None,
 ) -> PromotionGateResult:
     q = Path(quality_dir)
     dq = load_json(q / "data_quality_gate_ultimo.json")
@@ -141,6 +155,8 @@ def build_gate_from_artifacts(
         architecture_review=architecture_review,
         epidemiology_review=epidemiology_review,
         agent_reviews_status=agent_reviews_status,
+        population_governance_approved=population_governance_approved,
+        population_governance_blockers=population_governance_blockers,
     )
 
 
