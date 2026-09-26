@@ -46,6 +46,7 @@ from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_repor
 from quality.product_lineage import build_product_lineage, write_lineage_registry  # noqa: E402
 from quality.population_governance import load_population_governance, evaluate_population_governance, write_population_governance_report  # noqa: E402
 from quality.population_source_comparison import compare_population_sources, write_population_source_comparison  # noqa: E402
+from quality.decision_briefs import write_decision_briefs  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -116,6 +117,7 @@ def write_validacao(
         f"population_governance_status: {report.get('population_governance_status')}",
         f"population_governance_approved: {report.get('population_governance_approved')}",
         f"population_governance_blockers: {report.get('population_governance_blockers')}",
+        f"decision_briefs: {report.get('decision_briefs')}",
         f"population_source_comparison: {report.get('population_source_comparison')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
@@ -382,6 +384,12 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         head_sha=os.getenv("GITHUB_SHA"),
     )
     write_review_package(review_package, quality_dir)
+
+    decision_brief_paths = write_decision_briefs(quality_dir)
+    report["decision_briefs"] = {
+        key: path.name for key, path in decision_brief_paths.items()
+    }
+    report["passos"].append("decision_briefs")
 
     lineage_sources = list(report.get("sources_extracted") or [])
     cutoff = report.get("se_esperada") or report.get("hoje")
