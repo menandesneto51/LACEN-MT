@@ -68,6 +68,8 @@ def build_review_package(
 
     agent_reviews = default_agent_reviews()
     reviews_payload = _load(q / "reviews" / "v2_1_initial_reviews.json")
+    if not reviews_payload:
+        reviews_payload = _load(Path(__file__).resolve().parent / "reviews" / "v2_1_initial_reviews.json")
     for key, payload in (reviews_payload.get("reviews") or {}).items():
         if key not in agent_reviews:
             continue
