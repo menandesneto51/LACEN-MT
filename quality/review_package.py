@@ -37,6 +37,7 @@ def build_review_package(
     promotion = _load(q / "promotion_gate_v2_1.json")
     temporal_anchor = _load(q / "gal_temporal_anchor_summary.json")
     population_governance = _load(q / "population_governance_v2_1.json")
+    population_source_comparison = _load(q / "population_source_comparison_summary.json")
 
     architecture_focus = [
         "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
@@ -110,6 +111,7 @@ def build_review_package(
             "promotion_gate": promotion,
             "gal_temporal_anchor": temporal_anchor,
             "population_governance": population_governance,
+            "population_source_comparison": population_source_comparison,
         },
         "architecture_review": {
             "status": "PENDING",
@@ -187,6 +189,13 @@ def write_review_package(
             lines.append(f"- {key}: {value}")
     else:
         lines.append("- Relatório de governança populacional ainda não disponível.")
+
+    lines += ["", "## Comparação das fontes populacionais"]
+    if package.get("evidence", {}).get("population_source_comparison"):
+        for key, value in package["evidence"]["population_source_comparison"].items():
+            lines.append(f"- {key}: {value}")
+    else:
+        lines.append("- Comparação de fontes ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
