@@ -21,6 +21,11 @@ class TemporalAnchorSummary:
     changed_epi_week_pct: float
     changed_epi_year_rows: int
     changed_epi_year_pct: float
+    weeks_compared: int
+    weeks_with_count_delta: int
+    weeks_with_count_delta_pct: float
+    max_absolute_weekly_count_diff: int
+    sum_absolute_weekly_count_diff: int
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -32,6 +37,36 @@ def _pick_col(columns, candidates):
         if candidate.lower() in lower:
             return lower[candidate.lower()]
     return None
+
+
+def build_weekly_anchor_comparison(paired: pd.DataFrame) -> pd.DataFrame:
+    """Compara contagens semanais usando solicitação versus coleta."""
+    if paired is None or paired.empty:
+        return pd.DataFrame(columns=[
+            "epi_year", "epi_week", "n_solicitacao", "n_coleta",
+            "diff_coleta_minus_solicitacao", "abs_diff",
+        ])
+
+    sol = (
+        paired.groupby(["sol_epi_year", "sol_epi_week"], dropna=False)
+        .size()
+        .rename("n_solicitacao")
+        .reset_index()
+        .rename(columns={"sol_epi_year": "epi_year", "sol_epi_week": "epi_week"})
+    )
+    col = (
+        paired.groupby(["coleta_epi_year", "coleta_epi_week"], dropna=False)
+        .size()
+        .rename("n_coleta")
+        .reset_index()
+        .rename(columns={"coleta_epi_year": "epi_year", "coleta_epi_week": "epi_week"})
+    )
+    out = sol.merge(col, on=["epi_year", "epi_week"], how="outer")
+    out["n_solicitacao"] = out["n_solicitacao"].fillna(0).astype(int)
+    out["n_coleta"] = out["n_coleta"].fillna(0).astype(int)
+    out["diff_coleta_minus_solicitacao"] = out["n_coleta"] - out["n_solicitacao"]
+    out["abs_diff"] = out["diff_coleta_minus_solicitacao"].abs()
+    return out.sort_values(["epi_year", "epi_week"]).reset_index(drop=True)
 
 
 def analyze_temporal_anchor(df: pd.DataFrame) -> tuple[pd.DataFrame, TemporalAnchorSummary]:
@@ -47,6 +82,11 @@ def analyze_temporal_anchor(df: pd.DataFrame) -> tuple[pd.DataFrame, TemporalAnc
             changed_epi_week_pct=0.0,
             changed_epi_year_rows=0,
             changed_epi_year_pct=0.0,
+            weeks_compared=0,
+            weeks_with_count_delta=0,
+            weeks_with_count_delta_pct=0.0,
+            max_absolute_weekly_count_diff=0,
+            sum_absolute_weekly_count_diff=0,
         )
         return pd.DataFrame(), summary
 
@@ -92,6 +132,11 @@ def analyze_temporal_anchor(df: pd.DataFrame) -> tuple[pd.DataFrame, TemporalAnc
             changed_epi_week_pct=0.0,
             changed_epi_year_rows=0,
             changed_epi_year_pct=0.0,
+            weeks_compared=0,
+            weeks_with_count_delta=0,
+            weeks_with_count_delta_pct=0.0,
+            max_absolute_weekly_count_diff=0,
+            sum_absolute_weekly_count_diff=0,
         )
         return paired, summary
 
@@ -115,6 +160,12 @@ def analyze_temporal_anchor(df: pd.DataFrame) -> tuple[pd.DataFrame, TemporalAnc
     median = paired["delay_days"].median()
     p90 = paired["delay_days"].quantile(0.90)
 
+    weekly_comparison = build_weekly_anchor_comparison(paired)
+    weeks_compared = int(len(weekly_comparison))
+    weeks_with_delta = int((weekly_comparison["abs_diff"] > 0).sum()) if weeks_compared else 0
+    max_abs_diff = int(weekly_comparison["abs_diff"].max()) if weeks_compared else 0
+    sum_abs_diff = int(weekly_comparison["abs_diff"].sum()) if weeks_compared else 0
+
     summary = TemporalAnchorSummary(
         rows_total=total,
         rows_both_dates=int(len(paired)),
@@ -126,6 +177,11 @@ def analyze_temporal_anchor(df: pd.DataFrame) -> tuple[pd.DataFrame, TemporalAnc
         changed_epi_week_pct=float(changed_week.mean()),
         changed_epi_year_rows=int(changed_year.sum()),
         changed_epi_year_pct=float(changed_year.mean()),
+        weeks_compared=weeks_compared,
+        weeks_with_count_delta=weeks_with_delta,
+        weeks_with_count_delta_pct=(float(weeks_with_delta / weeks_compared) if weeks_compared else 0.0),
+        max_absolute_weekly_count_diff=max_abs_diff,
+        sum_absolute_weekly_count_diff=sum_abs_diff,
     )
     return paired, summary
 
@@ -140,10 +196,14 @@ def write_temporal_anchor_analysis(
     out = Path(outdir)
     out.mkdir(parents=True, exist_ok=True)
     detail_path = out / "gal_temporal_anchor_detail.csv"
+    weekly_path = out / "gal_temporal_anchor_weekly_comparison.csv"
     summary_path = out / "gal_temporal_anchor_summary.json"
     txt_path = out / "gal_temporal_anchor_summary.txt"
 
     detail.to_csv(detail_path, index=False, encoding="utf-8-sig")
+    build_weekly_anchor_comparison(detail).to_csv(
+        weekly_path, index=False, encoding="utf-8-sig"
+    )
     summary_path.write_text(
         json.dumps(summary.to_dict(), ensure_ascii=False, indent=2),
         encoding="utf-8",
@@ -161,8 +221,18 @@ def write_temporal_anchor_analysis(
             f"changed_epi_week_pct: {summary.changed_epi_week_pct:.4f}",
             f"changed_epi_year_rows: {summary.changed_epi_year_rows}",
             f"changed_epi_year_pct: {summary.changed_epi_year_pct:.4f}",
+            f"weeks_compared: {summary.weeks_compared}",
+            f"weeks_with_count_delta: {summary.weeks_with_count_delta}",
+            f"weeks_with_count_delta_pct: {summary.weeks_with_count_delta_pct:.4f}",
+            f"max_absolute_weekly_count_diff: {summary.max_absolute_weekly_count_diff}",
+            f"sum_absolute_weekly_count_diff: {summary.sum_absolute_weekly_count_diff}",
             "decision: PENDING",
         ]) + "\n",
         encoding="utf-8",
     )
-    return {"detail_csv": detail_path, "summary_json": summary_path, "summary_txt": txt_path}
+    return {
+        "detail_csv": detail_path,
+        "weekly_comparison_csv": weekly_path,
+        "summary_json": summary_path,
+        "summary_txt": txt_path,
+    }
