@@ -36,6 +36,7 @@ from quality.territorial_dimension import (  # noqa: E402
     build_population_dimension_from_staging,
     write_population_dimension,
 )
+from quality.parity_report import build_parity_report, write_parity_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -216,6 +217,18 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     else:
         report["population_dimension_rows"] = 0
         report["population_sources"] = []
+
+    parity_detail = pd.DataFrame()
+    parity_summary = None
+    if not weekly.empty:
+        parity_detail, parity_summary = build_parity_report(weekly)
+        write_parity_report(parity_detail, parity_summary, outdir / "quality")
+        report["parity_status"] = parity_summary.status
+        report["parity_rows"] = parity_summary.rows
+        report["parity_without_v2_population"] = parity_summary.rows_without_v2_population
+        report["parity_max_population_rel_diff"] = parity_summary.max_population_rel_diff
+        report["parity_max_rate_rel_diff"] = parity_summary.max_rate_rel_diff
+        report["passos"].append(f"parity_report:{parity_summary.status}")
 
     quality_report = run_quality_gate(
         weekly=weekly if not weekly.empty else tests,
