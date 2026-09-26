@@ -97,6 +97,7 @@ def write_validacao(
         f"mirror_rows: {report.get('mirror_rows')}",
         f"parity_status: {report.get('parity_status')}",
         f"linkage_parity_status: {report.get('linkage_parity_status')}",
+        f"territorial_promotion_ready: {report.get('territorial_promotion_ready')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -211,6 +212,24 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         except Exception as exc:
             report["linkage_parity_status"] = "WARN"
             report["linkage_parity_error"] = str(exc)
+
+    reconciliation_summary_path = outdir / "quality" / "reconciliacao_territorial_resumo.json"
+    if reconciliation_summary_path.exists():
+        try:
+            reconciliation_summary = json.loads(
+                reconciliation_summary_path.read_text(encoding="utf-8")
+            )
+            report["territorial_promotion_ready"] = bool(
+                reconciliation_summary.get("promotion_ready")
+            )
+            report["territorial_reconciliation"] = reconciliation_summary
+            report["passos"].append(
+                "territorial_promotion:"
+                + ("READY" if report["territorial_promotion_ready"] else "BLOCK")
+            )
+        except Exception as exc:
+            report["territorial_promotion_ready"] = False
+            report["territorial_reconciliation_error"] = str(exc)
 
     # V2.1 — gate determinístico antes de rede, ML, mirror e alerta institucional.
     gal_micro_quality = None
