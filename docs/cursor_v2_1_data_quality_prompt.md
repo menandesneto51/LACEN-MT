@@ -23,19 +23,22 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - testes em `tests/test_territory_key_integration.py` cobrem propagação, joins determinísticos e paridade de totais;
 - SIH/SIA agregados propagam `municipio_ibge` quando a origem disponibiliza código confiável;
 - `lacen_analise_avancada.py` prefere IBGE no linkage SIH e mantém fallback nominal legado;
-- integração final gera denominadores paralelos `populacao_v2` + fonte/ano e taxas `*_100k_v2`, sem substituir os indicadores legados.
+- integração final gera denominadores paralelos `populacao_v2` + fonte/ano e taxas `*_100k_v2`, sem substituir os indicadores legados;
+- `quality/parity_report.py` gera relatório legado × V2 com detalhe municipal e resumo PASS/WARN/BLOCK;
+- `BLOCK` de paridade impede promoção da camada V2, mas não interrompe a vigilância legada em produção.
 
 ## Execute agora
 1. Rode `pytest`.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
 3. Adicione testes de integração provando que `BLOCK` impede chamadas de rede/ML/mirror/CIEVS e que `WARN` não interrompe o pipeline.
-4. Amplie os testes de paridade para pareamentos SINAN/SIM/SIH/SIA e documente qualquer diferença entre chave nominal e IBGE.
-5. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
-6. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
-7. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
-8. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
-9. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
-10. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
+4. Use `quality/parity_report.py` como gate de promoção: `BLOCK` significa não substituir legado pela V2; não usar esse status para interromper a publicação legada.
+5. Amplie a paridade para pareamentos SINAN/SIM/SIH/SIA e documente diferenças de join por `territory_key`.
+6. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
+7. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
+8. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
+9. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
+10. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
+11. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
 
 ## Critérios de aceite
 - BLOCK impede inferência/ML/mirror/CIEVS;
