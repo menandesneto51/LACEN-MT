@@ -356,6 +356,8 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         architecture_review=os.getenv("LACEN_ARCHITECTURE_REVIEW"),
         epidemiology_review=os.getenv("LACEN_EPIDEMIOLOGY_REVIEW"),
         agent_reviews_status=report.get("agent_review_status"),
+        population_governance_approved=report.get("population_governance_approved"),
+        population_governance_blockers=report.get("population_governance_blockers"),
     )
     write_promotion_gate(promotion_gate, quality_dir)
 
