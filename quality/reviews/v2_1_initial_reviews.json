@@ -1,0 +1,80 @@
+{
+  "review_version": "v2.1-initial-1",
+  "automatic_release_allowed": false,
+  "reviews": {
+    "chief_architect": {
+      "agent": "Chief Architect",
+      "status": "WARN",
+      "findings": [
+        "A arquitetura separa gate global de qualidade, gate de promoção e decisão humana.",
+        "O zero-padding de códigos IBGE no SQL foi identificado como risco de sintetizar chaves territoriais aparentemente válidas e foi corrigido nesta revisão.",
+        "A camada V2 permanece paralela ao legado e não há promoção automática."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Manter validação downstream de código IBGE estritamente com 7 dígitos, sem preenchimento sintético.",
+        "Concluir testes de integração do bloqueio antes de rede/ML/mirror/CIEVS e do caminho WARN.",
+        "Formalizar ADR sobre a âncora temporal GAL antes de promover a V2."
+      ],
+      "decision": "Arquitetura aceitável para continuidade da revisão, com pendências obrigatórias antes de release.",
+      "reviewer": "Chief Architect Agent",
+      "reviewed_at": "2026-09-26"
+    },
+    "clinical_epidemiological_specialist": {
+      "agent": "Clinical/Epidemiological Specialist",
+      "status": "BLOCK",
+      "findings": [
+        "A implementação mantém separação entre anomalia estatística, prioridade epidemiológica e surto/emergência.",
+        "A integração evita interpretar ausência de correspondência como subnotificação automática.",
+        "A semana epidemiológica GAL permanece ancorada preferencialmente na data de solicitação, com fallback para outras datas."
+      ],
+      "blockers": [
+        "A regra institucional/epidemiológica para a âncora temporal GAL (solicitação versus coleta) ainda não está formalmente decidida e documentada; a V2 não deve ser promovida até essa decisão."
+      ],
+      "recommendations": [
+        "Produzir ADR epidemiológico com fonte normativa/operacional, finalidade de cada data e impacto sobre séries históricas.",
+        "Executar análise de sensibilidade solicitação versus coleta antes de qualquer mudança.",
+        "Preservar o comportamento atual até decisão formal; não alterar a âncora silenciosamente."
+      ],
+      "decision": "Bloquear promoção da V2 até resolução formal e validada da semântica temporal GAL.",
+      "reviewer": "Clinical/Epidemiological Specialist Agent",
+      "reviewed_at": "2026-09-26"
+    },
+    "qa": {
+      "agent": "QA",
+      "status": "WARN",
+      "findings": [
+        "O CI atual está verde para a branch revisada.",
+        "Existem testes unitários para DQ, paridade, linkage, reconciliação, promotion gate, review package e contratos multiagente.",
+        "Ainda falta evidência explícita de teste de integração do pipeline comprovando que BLOCK impede rede/ML/mirror/CIEVS e que WARN não interrompe o pipeline."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Adicionar testes de integração com mocks das chamadas downstream.",
+        "Adicionar regressão específica garantindo que código IBGE malformado não seja zero-preenchido nem aceito.",
+        "Adicionar smoke test do ETL em ambiente Linux sem dependência de paths locais."
+      ],
+      "decision": "Qualidade suficiente para continuar desenvolvimento, mas não para release da V2.",
+      "reviewer": "QA Agent",
+      "reviewed_at": "2026-09-26"
+    },
+    "security_data_governance": {
+      "agent": "Security/Data Governance",
+      "status": "WARN",
+      "findings": [
+        "Não foi introduzida promoção automática, fuzzy matching territorial em produção ou escolha silenciosa de fonte populacional.",
+        "A reconciliação preserva decisão humana e evidência por issue_id.",
+        "O uso de variáveis de ambiente separa configuração de código."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Versionar a prioridade institucional das fontes populacionais em configuração governada antes da promoção.",
+        "Garantir lineage por produto com fonte lógica, data de corte, versão e sem path absoluto/local.",
+        "Validar que artefatos de qualidade não contenham PII nem credenciais antes de publicação ou mirror."
+      ],
+      "decision": "Governança adequada para fase de validação, com pendências antes de produção V2.",
+      "reviewer": "Security/Data Governance Agent",
+      "reviewed_at": "2026-09-26"
+    }
+  }
+}
