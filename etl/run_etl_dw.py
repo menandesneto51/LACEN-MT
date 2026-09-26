@@ -44,6 +44,7 @@ from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, w
 from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_temporal_anchor_analysis  # noqa: E402
 from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_report  # noqa: E402
 from quality.product_lineage import build_product_lineage, write_lineage_registry  # noqa: E402
+from quality.population_governance import load_population_governance, evaluate_population_governance, write_population_governance_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -111,6 +112,9 @@ def write_validacao(
         f"artifact_hygiene_status: {report.get('artifact_hygiene_status')}",
         f"artifact_hygiene_findings: {report.get('artifact_hygiene_findings')}",
         f"product_lineage_count: {report.get('product_lineage_count')}",
+        f"population_governance_status: {report.get('population_governance_status')}",
+        f"population_governance_approved: {report.get('population_governance_approved')}",
+        f"population_governance_blockers: {report.get('population_governance_blockers')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -282,6 +286,22 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     else:
         report["population_dimension_rows"] = 0
         report["population_sources"] = []
+
+    population_policy = load_population_governance(
+        ROOT / "config" / "population_governance_v2_1.json"
+    )
+    population_governance = evaluate_population_governance(
+        population_dim,
+        analysis_year=int(hoje.year),
+        policy=population_policy,
+    )
+    write_population_governance_report(population_governance, outdir / "quality")
+    report["population_governance_status"] = population_governance.status
+    report["population_governance_approved"] = population_governance.approved
+    report["population_governance_blockers"] = population_governance.blockers
+    report["passos"].append(
+        f"population_governance:{population_governance.status}"
+    )
 
     parity_detail = pd.DataFrame()
     parity_summary = None
