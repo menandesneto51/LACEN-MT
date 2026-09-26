@@ -1,6 +1,7 @@
 import pandas as pd
 
 from quality.territorial_dimension import (
+    build_population_dimension_from_staging,
     normalize_population_source,
     select_population_for_year,
 )
@@ -89,3 +90,27 @@ def test_previous_year_is_only_used_when_explicitly_allowed():
     fallback = select_population_for_year(dim, 2026, allow_previous_year=True)
     assert len(fallback) == 1
     assert bool(fallback.loc[0, "is_fallback"]) is True
+
+
+def test_build_population_dimension_from_staging_multiple_sources(tmp_path):
+    pd.DataFrame({
+        "codigo_ibge": ["5103403"],
+        "municipio": ["Cuiabá"],
+        "ano": [2026],
+        "populacao": [700000],
+    }).to_csv(tmp_path / "populacao.csv", index=False)
+
+    pd.DataFrame({
+        "codigo_ibge": ["5103403"],
+        "municipio": ["Cuiabá"],
+        "ano": [2026],
+        "populacao": [710000],
+    }).to_csv(tmp_path / "populacao_tcu.csv", index=False)
+
+    dim = build_population_dimension_from_staging(
+        tmp_path,
+        extracted_at="2026-09-26T14:00:00",
+    )
+    assert len(dim) == 2
+    assert set(dim["fonte"]) == {"DW:POPULACAO", "DW:POPULACAO_TCU"}
+    assert set(dim["ano_referencia"].astype(int)) == {2026}
