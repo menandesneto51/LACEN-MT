@@ -3,10 +3,16 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+from quality.territorial_dimension import (
+    build_population_dimension_from_staging,
+    select_population_for_year,
+)
 
 
 def log(msg: str) -> None:
@@ -127,6 +133,51 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
         .agg(obitos_sim=("obitos_sim", "sum"))
     )
 
+
+
+def _load_population_v2(outdir: Path, analysis_year: int) -> pd.DataFrame:
+    """Carrega denominador versionado sem escolher fonte silenciosamente."""
+    dim = build_population_dimension_from_staging(outdir / "staging_dw")
+    if dim.empty:
+        return pd.DataFrame(columns=[
+            "territory_key", "populacao_v2", "populacao_v2_fonte",
+            "populacao_v2_ano", "populacao_v2_fallback",
+        ])
+
+    priority_env = (os.getenv("LACEN_POPULATION_SOURCE_PRIORITY") or "").strip()
+    priority = tuple(x.strip() for x in priority_env.split(",") if x.strip())
+    selected = select_population_for_year(
+        dim,
+        analysis_year,
+        source_priority=priority,
+        allow_previous_year=False,
+    )
+    if selected.empty:
+        return pd.DataFrame(columns=[
+            "territory_key", "populacao_v2", "populacao_v2_fonte",
+            "populacao_v2_ano", "populacao_v2_fallback",
+        ])
+
+    selected = selected.copy()
+    selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
+    selected["territory_key"] = "NAME:" + selected["municipio"]
+    mask = selected["municipio_ibge"].notna()
+    selected.loc[mask, "territory_key"] = "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+
+    if not priority:
+        counts = selected.groupby("territory_key", dropna=False)["fonte"].transform("nunique")
+        selected = selected[counts == 1].copy()
+
+    selected = selected.rename(columns={
+        "populacao": "populacao_v2",
+        "fonte": "populacao_v2_fonte",
+        "ano_referencia": "populacao_v2_ano",
+        "is_fallback": "populacao_v2_fallback",
+    })
+    return selected[[
+        "territory_key", "populacao_v2", "populacao_v2_fonte",
+        "populacao_v2_ano", "populacao_v2_fallback",
+    ]].drop_duplicates(subset=["territory_key"], keep="first")
 
 def read_csv(path: Path) -> pd.DataFrame:
     for enc in ("utf-8-sig", "utf-8", "latin1"):
@@ -285,6 +336,16 @@ def main():
     weekly = weekly.merge(pop[["municipio", "ano", "populacao"]], on=["municipio", "ano"], how="left")
 
     weekly = _add_territory_key(weekly)
+
+    pop_v2 = _load_population_v2(outdir, int(pd.to_numeric(weekly["ano"], errors="coerce").dropna().max()))
+    if not pop_v2.empty:
+        weekly = weekly.merge(pop_v2, on="territory_key", how="left")
+    else:
+        weekly["populacao_v2"] = np.nan
+        weekly["populacao_v2_fonte"] = pd.NA
+        weekly["populacao_v2_ano"] = pd.NA
+        weekly["populacao_v2_fallback"] = False
+
     weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
 
     sinan_j = prepare_sinan_for_join(sinan)
@@ -346,6 +407,20 @@ def main():
     weekly["notificacoes_100k"] = np.where(weekly["populacao"] > 0, weekly["notificacoes"] / weekly["populacao"] * 100000, np.nan)
     weekly["mortalidade_100k"] = np.where(weekly["populacao"] > 0, weekly["obitos_sim"] / weekly["populacao"] * 100000, np.nan)
     weekly["letalidade_proxy"] = np.where(weekly["notificacoes"] > 0, weekly["obitos_sim"] / weekly["notificacoes"], np.nan)
+
+    weekly["populacao_v2"] = pd.to_numeric(weekly.get("populacao_v2"), errors="coerce")
+    weekly["solicitacoes_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["tests"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["incidencia_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["positives"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["notificacoes_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["notificacoes"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["mortalidade_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["obitos_sim"] / weekly["populacao_v2"] * 100000, np.nan
+    )
 
     pos_ci = weekly.apply(lambda r: wilson_interval(r["positives"], r["tests"]), axis=1)
     weekly["positivity_ci_low"] = [x[0] for x in pos_ci]
