@@ -47,6 +47,7 @@ from quality.product_lineage import build_product_lineage, write_lineage_registr
 from quality.population_governance import load_population_governance, evaluate_population_governance, write_population_governance_report  # noqa: E402
 from quality.population_source_comparison import compare_population_sources, write_population_source_comparison  # noqa: E402
 from quality.decision_briefs import write_decision_briefs  # noqa: E402
+from quality.decision_registry import load_decision_registry, evaluate_decision_registry, write_decision_registry_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -118,6 +119,9 @@ def write_validacao(
         f"population_governance_approved: {report.get('population_governance_approved')}",
         f"population_governance_blockers: {report.get('population_governance_blockers')}",
         f"decision_briefs: {report.get('decision_briefs')}",
+        f"decision_registry_status: {report.get('decision_registry_status')}",
+        f"decision_registry_blockers: {report.get('decision_registry_blockers')}",
+        f"decision_registry_conditions: {report.get('decision_registry_conditions')}",
         f"population_source_comparison: {report.get('population_source_comparison')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
@@ -364,6 +368,18 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         f"agent_reviews:{report['agent_review_status']}"
     )
 
+    decision_registry = load_decision_registry(
+        ROOT / "config" / "decision_status_v2_1.json"
+    )
+    decision_registry_eval = evaluate_decision_registry(decision_registry)
+    write_decision_registry_report(decision_registry_eval, quality_dir)
+    report["decision_registry_status"] = decision_registry_eval.get("overall_status")
+    report["decision_registry_blockers"] = decision_registry_eval.get("blockers", [])
+    report["decision_registry_conditions"] = decision_registry_eval.get("conditions", [])
+    report["passos"].append(
+        f"decision_registry:{report['decision_registry_status']}"
+    )
+
     promotion_gate = evaluate_promotion_gate(
         data_quality_status=report.get("data_quality_status"),
         parity_status=report.get("parity_status"),
@@ -375,6 +391,8 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         agent_reviews_status=report.get("agent_review_status"),
         population_governance_approved=report.get("population_governance_approved"),
         population_governance_blockers=report.get("population_governance_blockers"),
+        decision_registry_status=report.get("decision_registry_status"),
+        decision_registry_blockers=report.get("decision_registry_blockers"),
     )
     write_promotion_gate(promotion_gate, quality_dir)
 
