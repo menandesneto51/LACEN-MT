@@ -15,8 +15,8 @@ def _args(tmp_path):
         local_year_min=2024,
         tcp_timeout=0.1,
         allow_local_fallback=False,
-        skip_ml=True,
-        skip_cievs=True,
+        skip_ml=False,
+        skip_cievs=False,
         no_bulk=True,
     )
 
@@ -134,6 +134,7 @@ def test_data_quality_block_stops_all_downstream_execution(monkeypatch, tmp_path
     assert any("lacen_integracao_final_only.py" in x for x in calls)
     assert not any("gerar_indicadores_rede_lacen.py" in x for x in calls)
     assert not any("gerar_indicadores_emergencia.py" in x for x in calls)
+    assert not any("ml.run_ml_pipeline" in x for x in calls)
     assert not any(x.startswith("mirror:") for x in calls)
     assert not any("enviar_relatorio_cievs.py" in x for x in calls)
 
@@ -162,6 +163,7 @@ def test_data_quality_warn_allows_downstream_execution(monkeypatch, tmp_path):
     assert report["data_quality_status"] == "WARN"
     assert any("gerar_indicadores_rede_lacen.py" in x for x in calls)
     assert any("gerar_indicadores_emergencia.py" in x for x in calls)
+    assert any("ml.run_ml_pipeline" in x for x in calls)
     assert any(x.startswith("mirror:") for x in calls)
-    assert not any("enviar_relatorio_cievs.py" in x for x in calls)
+    assert any("enviar_relatorio_cievs.py" in x for x in calls)
     assert report["data_quality_publishable"] is True
