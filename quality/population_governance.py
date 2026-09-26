@@ -76,6 +76,30 @@ def evaluate_population_governance(
         if unknown:
             findings.append("Fontes priorizadas ausentes neste ano: " + ", ".join(unknown))
 
+        allow_unlisted = bool((policy.get("rules") or {}).get("allow_unlisted_sources", False))
+        if approved and not allow_unlisted:
+            name_key = current["municipio"].astype("string").str.strip().str.upper()
+            current["_territory_key_cov"] = current["municipio_ibge"].astype("string")
+            current["_territory_key_cov"] = current["_territory_key_cov"].where(
+                current["municipio_ibge"].notna(),
+                "NAME:" + name_key,
+            )
+            all_territories = set(current["_territory_key_cov"].dropna().astype(str))
+            approved_territories = set(
+                current.loc[current["fonte"].isin(priority), "_territory_key_cov"]
+                .dropna()
+                .astype(str)
+            )
+            uncovered = sorted(all_territories - approved_territories)
+            findings.append(
+                f"Cobertura territorial por fontes aprovadas: {len(approved_territories)}/{len(all_territories)}."
+            )
+            if uncovered:
+                blockers.append(
+                    f"{len(uncovered)} território(s) sem fonte populacional aprovada disponível."
+                )
+            current = current.drop(columns=["_territory_key_cov"])
+
     if not approved:
         blockers.append("Política populacional ainda não está APPROVED.")
 
