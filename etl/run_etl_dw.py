@@ -32,6 +32,10 @@ from etl.build_weekly_from_gal import (  # noqa: E402
 from etl.dw_extract import check_dw_tcp, run_extract, staging_dir  # noqa: E402
 from etl.epi_week import format_se, semana_completa_mais_recente  # noqa: E402
 from quality.data_quality_agent import run_quality_gate, write_report as write_quality_report  # noqa: E402
+from quality.territorial_dimension import (  # noqa: E402
+    build_population_dimension_from_staging,
+    write_population_dimension,
+)
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -198,10 +202,27 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     micro_quality_path = stage / "vw_gal_micro_recent.parquet"
     if micro_quality_path.exists():
         gal_micro_quality = pd.read_parquet(micro_quality_path)
+
+    population_dim = build_population_dimension_from_staging(
+        stage,
+        extracted_at=extract_meta.get("ts"),
+    )
+    if not population_dim.empty:
+        write_population_dimension(population_dim, outdir / "quality")
+        report["population_dimension_rows"] = int(len(population_dim))
+        report["population_sources"] = sorted(
+            population_dim["fonte"].dropna().astype(str).unique().tolist()
+        )
+    else:
+        report["population_dimension_rows"] = 0
+        report["population_sources"] = []
+
     quality_report = run_quality_gate(
         weekly=weekly if not weekly.empty else tests,
         gal_micro=gal_micro_quality,
+        population=population_dim if not population_dim.empty else None,
         analysis_year=int(hoje.year),
+        population_required=False,
         metadata={
             "pipeline": "etl.run_etl_dw",
             "pipeline_version": "v2.1",
