@@ -1,26 +1,34 @@
 {
-  "review_version": "v2.1-initial-3",
+  "review_version": "v2.1-initial-4",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
       "agent": "Chief Architect",
-      "status": "WARN",
+      "status": "PASS",
       "findings": [
-        "A arquitetura separa gate global de qualidade, gate de promoção e decisão humana.",
-        "O zero-padding de códigos IBGE no SQL foi removido e há teste de regressão específico.",
-        "Testes de integração foram adicionados para provar o comportamento BLOCK/WARN do pipeline.",
-        "Lineage por produto e governança populacional versionada foram incorporados.",
-        "A camada V2 permanece paralela ao legado e não há promoção automática."
+        "A arquitetura separa operação legada, Data Quality Gate, Promotion Gate e decisão humana.",
+        "Joins territoriais de produção e auditoria seguem a mesma política determinística IBGE-first, sem fuzzy matching.",
+        "Zero-padding de códigos IBGE foi removido e coberto por teste de regressão.",
+        "Lineage por produto, Artifact Hygiene, reconciliação territorial e governança populacional versionada foram incorporados.",
+        "A V2 permanece paralela ao legado e automatic_promotion_allowed=false.",
+        "O CI #269 concluiu SUCCESS no HEAD 72a1bedaac4ba091846fe9b57137a698cb3f76c0."
       ],
       "blockers": [],
       "recommendations": [
-        "Manter validação downstream de código IBGE estritamente com 7 dígitos, sem preenchimento sintético.",
-        "Exigir CI verde do HEAD corrente para encerrar a pendência de testes de integração.",
-        "Formalizar e aprovar ADR sobre a âncora temporal GAL antes de promover a V2."
+        "Preservar a política de não promoção automática e os gates independentes.",
+        "Manter o ADR-001 como requisito de negócio/epidemiologia antes de qualquer mudança da âncora temporal.",
+        "Reexecutar revisão arquitetural se houver mudança em joins, denominadores, persistência ou contrato de dados."
       ],
-      "decision": "Arquitetura adequada para continuidade da validação, ainda condicionada ao CI do HEAD corrente e à decisão do ADR temporal GAL.",
+      "decision": "PASS no escopo arquitetural da V2.1. A aprovação arquitetural não remove o BLOCK epidemiológico do ADR temporal nem o WARN de Security/Data Governance.",
       "reviewer": "Chief Architect Agent",
-      "reviewed_at": "2026-09-26"
+      "reviewed_at": "2026-09-26",
+      "evidence": {
+        "workflow_run_number": 269,
+        "workflow_run_id": 36279142477,
+        "head_sha": "72a1bedaac4ba091846fe9b57137a698cb3f76c0",
+        "conclusion": "success",
+        "adr_temporal_status": "PENDING_CLINICAL_DECISION"
+      }
     },
     "clinical_epidemiological_specialist": {
       "agent": "Clinical/Epidemiological Specialist",
@@ -46,10 +54,10 @@
       "agent": "QA",
       "status": "PASS",
       "findings": [
-        "O GitHub Actions LACEN-MT Quality Gate run #262 concluiu SUCCESS para o HEAD 6bf4d2978c80b62043b2faa7ea482e24334c20e7.",
-        "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage e análise temporal GAL.",
+        "O GitHub Actions LACEN-MT Quality Gate run #269 concluiu SUCCESS para o HEAD 72a1bedaac4ba091846fe9b57137a698cb3f76c0.",
+        "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage, análise temporal GAL e joins territoriais determinísticos.",
         "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
-        "Há regressão específica contra zero-padding de IBGE, joins determinísticos e cobertura territorial populacional."
+        "Há regressão específica contra zero-padding de IBGE, duplicação por variantes nominais, fallback territorial indevido e cobertura populacional incompleta."
       ],
       "blockers": [],
       "recommendations": [
@@ -61,9 +69,9 @@
       "reviewer": "QA Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 262,
-        "workflow_run_id": 36279034558,
-        "head_sha": "6bf4d2978c80b62043b2faa7ea482e24334c20e7",
+        "workflow_run_number": 269,
+        "workflow_run_id": 36279142477,
+        "head_sha": "72a1bedaac4ba091846fe9b57137a698cb3f76c0",
         "conclusion": "success"
       }
     },
