@@ -21,7 +21,12 @@ def test_review_package_collects_evidence_and_pending_reviews(tmp_path):
         "conditions": [],
     })
 
-    package = build_review_package(tmp_path, pr_number=7, head_sha="abc123")
+    package = build_review_package(
+        tmp_path,
+        pr_number=7,
+        head_sha="abc123",
+        reviews_path=tmp_path / "no_reviews.json",
+    )
     assert package["promotion_gate_status"] == "READY_FOR_REVIEW"
     assert package["automatic_promotion_allowed"] is False
     assert package["architecture_review"]["status"] == "PENDING"
@@ -40,13 +45,18 @@ def test_review_package_surfaces_open_reconciliation_items(tmp_path):
         "blocking_reasons": ["Reconciliação territorial pendente."],
         "conditions": [],
     })
-    package = build_review_package(tmp_path)
+    package = build_review_package(tmp_path, reviews_path=tmp_path / "no_reviews.json")
     assert any("3 item(ns)" in x for x in package["conditions"])
     assert any("1 fechamento" in x for x in package["blocking_reasons"])
 
 
 def test_review_package_writes_json_and_markdown(tmp_path):
-    package = build_review_package(tmp_path, pr_number=7, head_sha="deadbeef")
+    package = build_review_package(
+        tmp_path,
+        pr_number=7,
+        head_sha="deadbeef",
+        reviews_path=tmp_path / "no_reviews.json",
+    )
     paths = write_review_package(package, tmp_path)
     assert paths["json"].exists()
     assert paths["markdown"].exists()
