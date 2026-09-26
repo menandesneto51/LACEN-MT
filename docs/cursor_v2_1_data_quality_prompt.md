@@ -32,7 +32,8 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - classificações de linkage: `IGUAL`, `RECUPERADO_POR_IBGE`, `PERDIDO_COM_IBGE`, `CONFLITO`, `SEM_MATCH`;
 - `BLOCK` de paridade/linkage impede promoção da camada V2, mas não interrompe a vigilância legada em produção;
 - `quality/promotion_gate.py` consolida Data Quality, paridade, linkage, reconciliação, CI e revisões arquitetural/epidemiológica em `NOT_READY`, `CONDITIONAL` ou `READY_FOR_REVIEW`; nunca promove automaticamente;
-- `quality/review_package.py` gera o pacote único de revisão humana em JSON/Markdown com evidências, bloqueios, condições e checklists específicos para Chief Architect e especialista epidemiológico.
+- `quality/review_package.py` gera o pacote único de revisão humana em JSON/Markdown com evidências, bloqueios, condições e checklists específicos para Chief Architect e especialista epidemiológico;
+- `quality/agent_reviews.py` define contratos auditáveis para Chief Architect, Clinical/Epidemiological Specialist, QA e Security/Data Governance, com status `PENDING/PASS/WARN/BLOCK`, achados, bloqueios, recomendações e decisão.
 
 ## Execute agora
 1. Rode `pytest`.
@@ -45,12 +46,13 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 8. Trate `territorial_promotion_ready=true` como requisito necessário, mas não suficiente, para substituir joins/denominadores legados; mantenha CI, paridade e revisão arquitetural/epidemiológica como gates adicionais.
 9. Gere/consulte `promotion_gate_v2_1.json`; `READY_FOR_REVIEW` exige CI confirmado e revisões arquitetural/epidemiológica aprovadas. Use `LACEN_PROMOTION_CI_STATUS`, `LACEN_ARCHITECTURE_REVIEW` e `LACEN_EPIDEMIOLOGY_REVIEW` apenas quando essas evidências tiverem sido realmente verificadas. Ausência de evidência = `CONDITIONAL`.
 10. Gere/consulte `review_package_v2_1.md`; Chief Architect e especialista epidemiológico devem revisar checklists independentes antes da decisão de release. O pacote é evidência de revisão, não autorização automática.
-11. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
-12. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
-13. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
-14. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
-15. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
-16. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
+11. Preencha os quatro pareceres estruturados de `quality/agent_reviews.py`. `BLOCK` exige bloqueio explícito; revisão concluída exige `decision`; todos os quatro devem estar `PASS` antes de qualquer decisão favorável de release. `WARN` mantém a revisão pendente.
+12. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
+13. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
+14. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
+15. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
+16. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
+17. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
 
 ## Critérios de aceite
 - BLOCK impede inferência/ML/mirror/CIEVS;
