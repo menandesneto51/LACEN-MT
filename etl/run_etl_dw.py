@@ -41,6 +41,7 @@ from quality.parity_report import build_parity_report, write_parity_report  # no
 from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate  # noqa: E402
 from quality.review_package import build_review_package, write_review_package  # noqa: E402
 from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, write_agent_reviews  # noqa: E402
+from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_temporal_anchor_analysis  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -104,6 +105,7 @@ def write_validacao(
         f"territorial_promotion_ready: {report.get('territorial_promotion_ready')}",
         f"agent_review_status: {report.get('agent_review_status')}",
         f"agent_review_blockers: {report.get('agent_review_blockers')}",
+        f"gal_temporal_anchor_analysis: {report.get('gal_temporal_anchor_analysis')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -246,6 +248,21 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     micro_quality_path = stage / "vw_gal_micro_recent.parquet"
     if micro_quality_path.exists():
         gal_micro_quality = pd.read_parquet(micro_quality_path)
+        try:
+            temporal_detail, temporal_summary = analyze_temporal_anchor(gal_micro_quality)
+            write_temporal_anchor_analysis(
+                temporal_detail,
+                temporal_summary,
+                outdir / "quality",
+            )
+            report["gal_temporal_anchor_analysis"] = temporal_summary.to_dict()
+            report["passos"].append("gal_temporal_anchor_analysis")
+        except ValueError as exc:
+            report["gal_temporal_anchor_analysis"] = {
+                "status": "WARN",
+                "reason": str(exc),
+            }
+            report["passos"].append("gal_temporal_anchor_analysis:WARN")
 
     population_dim = build_population_dimension_from_staging(
         stage,
