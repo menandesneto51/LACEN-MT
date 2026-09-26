@@ -1,0 +1,143 @@
+# -*- coding: utf-8 -*-
+"""Pacote de revisão humana da V2.1 — LACEN-MT.
+
+Reúne evidências dos gates e organiza uma pauta objetiva para revisão do
+Chief Architect e do especialista epidemiológico. Não aprova nem promove.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+import json
+
+
+def _load(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def build_review_package(
+    quality_dir: Path | str,
+    *,
+    pr_number: int | None = None,
+    head_sha: str | None = None,
+) -> dict[str, Any]:
+    q = Path(quality_dir)
+    dq = _load(q / "data_quality_gate_ultimo.json")
+    parity = _load(q / "paridade_legado_v2_resumo.json")
+    linkage = _load(q / "paridade_linkage_resumo.json")
+    recon = _load(q / "reconciliacao_territorial_resumo.json")
+    promotion = _load(q / "promotion_gate_v2_1.json")
+
+    architecture_focus = [
+        "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
+        "Confirmar que joins V2 usam IBGE quando disponível e não introduzem fuzzy matching em produção.",
+        "Revisar persistência do workflow de reconciliação e estabilidade de issue_id.",
+        "Confirmar que nenhum caminho promove V2 automaticamente.",
+        "Revisar contratos de lineage, configuração e compatibilidade local → servidor SES.",
+    ]
+    epidemiology_focus = [
+        "Confirmar que anomalia estatística, prioridade epidemiológica e surto permanecem semanticamente separados.",
+        "Revisar significado dos pareamentos GAL×SINAN/SIM/SIH/SIA e respectivas limitações.",
+        "Confirmar que produtos de taxa usam denominador versionado e explicitam fonte/ano.",
+        "Revisar manutenção da âncora temporal GAL sem alteração silenciosa.",
+        "Confirmar que ausência de correspondência não é descrita automaticamente como subnotificação.",
+    ]
+
+    blockers = list(promotion.get("blocking_reasons") or [])
+    conditions = list(promotion.get("conditions") or [])
+    open_recon = int(recon.get("open_items") or 0)
+    invalid_closed = int(recon.get("invalid_closed_items") or 0)
+    if open_recon:
+        conditions.append(f"Existem {open_recon} item(ns) de reconciliação territorial ainda abertos.")
+    if invalid_closed:
+        blockers.append(f"Existem {invalid_closed} fechamento(s) territorial(is) inválido(s).")
+
+    return {
+        "package_version": "v2.1-review-1",
+        "pr_number": pr_number,
+        "head_sha": head_sha,
+        "promotion_gate_status": promotion.get("status", "UNKNOWN"),
+        "automatic_promotion_allowed": False,
+        "blocking_reasons": blockers,
+        "conditions": conditions,
+        "evidence": {
+            "data_quality": dq,
+            "parity": parity,
+            "linkage": linkage,
+            "territorial_reconciliation": recon,
+            "promotion_gate": promotion,
+        },
+        "architecture_review": {
+            "status": "PENDING",
+            "focus": architecture_focus,
+            "decision": None,
+            "reviewer": None,
+            "reviewed_at": None,
+        },
+        "epidemiology_review": {
+            "status": "PENDING",
+            "focus": epidemiology_focus,
+            "decision": None,
+            "reviewer": None,
+            "reviewed_at": None,
+        },
+        "release_decision": {
+            "status": "PENDING",
+            "decision": None,
+            "decided_by": None,
+            "decided_at": None,
+        },
+    }
+
+
+def write_review_package(
+    package: dict[str, Any],
+    outdir: Path | str,
+) -> dict[str, Path]:
+    out = Path(outdir)
+    out.mkdir(parents=True, exist_ok=True)
+    json_path = out / "review_package_v2_1.json"
+    md_path = out / "review_package_v2_1.md"
+
+    json_path.write_text(
+        json.dumps(package, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    lines = [
+        "# LACEN-MT V2.1 — Pacote de revisão",
+        "",
+        f"- PR: {package.get('pr_number')}",
+        f"- HEAD: {package.get('head_sha')}",
+        f"- Promotion Gate: **{package.get('promotion_gate_status')}**",
+        "- Promoção automática: **não permitida**",
+        "",
+        "## Bloqueios",
+    ]
+    blockers = package.get("blocking_reasons") or []
+    lines += [f"- {x}" for x in blockers] or ["- Nenhum bloqueio registrado."]
+    lines += ["", "## Condições pendentes"]
+    conditions = package.get("conditions") or []
+    lines += [f"- {x}" for x in conditions] or ["- Nenhuma condição pendente registrada."]
+
+    lines += ["", "## Revisão arquitetural"]
+    for item in package["architecture_review"]["focus"]:
+        lines.append(f"- [ ] {item}")
+
+    lines += ["", "## Revisão epidemiológica"]
+    for item in package["epidemiology_review"]["focus"]:
+        lines.append(f"- [ ] {item}")
+
+    lines += [
+        "",
+        "## Decisão de release",
+        "- Status: PENDING",
+        "- A V2.1 não deve substituir o legado até decisão humana explícita.",
+    ]
+    md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {"json": json_path, "markdown": md_path}
