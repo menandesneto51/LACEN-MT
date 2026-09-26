@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -37,6 +38,7 @@ from quality.territorial_dimension import (  # noqa: E402
     write_population_dimension,
 )
 from quality.parity_report import build_parity_report, write_parity_report  # noqa: E402
+from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -98,6 +100,9 @@ def write_validacao(
         f"parity_status: {report.get('parity_status')}",
         f"linkage_parity_status: {report.get('linkage_parity_status')}",
         f"territorial_promotion_ready: {report.get('territorial_promotion_ready')}",
+        f"promotion_gate_status: {report.get('promotion_gate_status')}",
+        f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
+        f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -284,6 +289,21 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     report["data_quality_status"] = quality_report.status.value
     report["data_quality_publishable"] = quality_report.publishable
     report["passos"].append(f"data_quality_gate:{quality_report.status.value}")
+
+    promotion_gate = evaluate_promotion_gate(
+        data_quality_status=report.get("data_quality_status"),
+        parity_status=report.get("parity_status"),
+        linkage_parity_status=report.get("linkage_parity_status"),
+        territorial_promotion_ready=report.get("territorial_promotion_ready"),
+        ci_status=os.getenv("LACEN_PROMOTION_CI_STATUS"),
+        architecture_review=os.getenv("LACEN_ARCHITECTURE_REVIEW"),
+        epidemiology_review=os.getenv("LACEN_EPIDEMIOLOGY_REVIEW"),
+    )
+    write_promotion_gate(promotion_gate, quality_dir)
+    report["promotion_gate_status"] = promotion_gate.status
+    report["promotion_gate_blocking_reasons"] = promotion_gate.blocking_reasons
+    report["promotion_gate_conditions"] = promotion_gate.conditions
+    report["passos"].append(f"promotion_gate:{promotion_gate.status}")
     if not quality_report.publishable:
         report["aviso"] = ((report.get("aviso") or "") + " | DATA QUALITY BLOCK: inferência, ML, mirror e alerta CIEVS não executados.").strip(" |")
         write_validacao(outdir, report)
