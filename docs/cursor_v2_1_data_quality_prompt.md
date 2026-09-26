@@ -26,6 +26,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - integração final gera denominadores paralelos `populacao_v2` + fonte/ano e taxas `*_100k_v2`, sem substituir os indicadores legados;
 - `quality/parity_report.py` gera relatório legado × V2 com detalhe municipal e resumo PASS/WARN/BLOCK;
 - `quality/linkage_parity.py` audita GAL×SINAN, GAL×SIM, GAL×SIH e GAL×SIA comparando nome × IBGE;
+- os joins de produção SINAN/SIM usam IBGE primeiro; fallback por nome exato só ocorre quando pelo menos um lado não possui código válido. Códigos IBGE válidos conflitantes nunca caem para nome e fuzzy matching permanece proibido;
 - `quality/territorial_reconciliation.py` transforma divergências em fila acionável com prioridade, hipótese técnica, ação recomendada, responsável sugerido e estado de reconciliação;
 - cada item de reconciliação recebe `issue_id` estável e ciclo de vida `ABERTO → EM_ANALISE → CORRECAO_APLICADA → VALIDADO → FECHADO`, preservando decisão/evidência/correção entre execuções;
 - `FECHADO` exige decisão, evidência, correção aplicada e validação pós-correção; o resumo calcula `promotion_ready` somente com itens críticos/altos resolvidos e sem fechamentos inválidos;
@@ -46,7 +47,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 2. Faça smoke test de imports do `etl.run_etl_dw`.
 3. Os testes de integração em `tests/test_run_etl_dw_quality_gate_integration.py` já devem provar que `BLOCK` impede rede/ML/mirror/CIEVS e que `WARN` permite a continuidade inclusive de ML e CIEVS; preserve essa cobertura contra regressões.
 4. Use `quality/parity_report.py` como gate de promoção: `BLOCK` significa não substituir legado pela V2; não usar esse status para interromper a publicação legada.
-5. Use `quality/linkage_parity.py` para revisar diferenças de join por fonte; trate `RECUPERADO_POR_IBGE` como melhoria auditável, `SEM_MATCH` como investigação e `PERDIDO_COM_IBGE`/`CONFLITO` como bloqueio de promoção.
+5. Preserve a mesma semântica entre auditoria e produção: IBGE primeiro; fallback por nome exato apenas se algum lado não tiver código; conflito entre códigos válidos = sem match/diagnóstico, nunca fallback. Fuzzy matching em produção é proibido.
 6. Use `quality/territorial_reconciliation.py` como backlog de saneamento: conflitos são CRÍTICOS, perdas por IBGE são ALTAS e sem-match é MODERADO. Não resolver por fuzzy match em produção; corrigir origem/dimensão e registrar a decisão.
 7. Preserve `issue_id` e histórico humano entre execuções. Nunca fechar automaticamente: `FECHADO` exige decisão explícita, evidência, correção aplicada e validação pós-correção registradas.
 8. Trate `territorial_promotion_ready=true` como requisito necessário, mas não suficiente, para substituir joins/denominadores legados; mantenha CI, paridade e revisão arquitetural/epidemiológica como gates adicionais.
