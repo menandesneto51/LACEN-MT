@@ -16,6 +16,11 @@ def test_temporal_anchor_detects_week_change():
     assert summary.rows_both_dates == 2
     assert summary.changed_epi_week_rows == 1
     assert summary.changed_epi_week_pct == 0.5
+    assert summary.weeks_compared == 2
+    assert summary.weeks_with_count_delta == 2
+    assert summary.weeks_with_count_delta_pct == 1.0
+    assert summary.max_absolute_weekly_count_diff == 1
+    assert summary.sum_absolute_weekly_count_diff == 2
     assert detail["delay_days"].tolist() == [1, 0]
 
 
@@ -59,5 +64,6 @@ def test_temporal_anchor_writes_artifacts(tmp_path):
     detail, summary = analyze_temporal_anchor(df)
     paths = write_temporal_anchor_analysis(detail, summary, tmp_path)
     assert paths["detail_csv"].exists()
+    assert paths["weekly_comparison_csv"].exists()
     assert paths["summary_json"].exists()
     assert paths["summary_txt"].exists()
