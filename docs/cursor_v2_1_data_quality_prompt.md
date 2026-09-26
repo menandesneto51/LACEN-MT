@@ -36,7 +36,9 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/agent_reviews.py` define contratos auditáveis para Chief Architect, Clinical/Epidemiological Specialist, QA e Security/Data Governance, com status `PENDING/PASS/WARN/BLOCK`, achados, bloqueios, recomendações e decisão;
 - `quality/reviews/v2_1_initial_reviews.json` contém os pareceres efetivos iniciais: Chief Architect=WARN, Clinical/Epidemiological Specialist=BLOCK, QA=WARN, Security/Data Governance=WARN. O BLOCK epidemiológico decorre da âncora temporal GAL solicitação×coleta ainda não formalmente decidida;
 - `docs/adr/ADR-001-ancora-temporal-gal.md` registra a decisão como PENDENTE e proíbe mudança silenciosa;
-- `quality/gal_temporal_anchor_analysis.py` mede cobertura das datas, atraso solicitação−coleta e impacto em SE/ano epidemiológico sem alterar o comportamento atual.
+- `quality/gal_temporal_anchor_analysis.py` mede cobertura das datas, atraso solicitação−coleta e impacto em SE/ano epidemiológico sem alterar o comportamento atual;
+- `quality/artifact_hygiene.py` bloqueia possíveis segredos/credenciais e sinaliza PII/path local em artefatos antes do downstream;
+- `quality/product_lineage.py` registra lineage por produto com fontes lógicas, corte temporal, versão do pipeline e dependências, sem path absoluto local.
 
 ## Execute agora
 1. Rode `pytest`.
@@ -54,9 +56,10 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
 14. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
 15. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
-16. Registre lineage por produto com fonte, tabela/arquivo lógico, data de corte, check_id e versão do pipeline, sem path absoluto local.
-17. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
-18. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
+16. Preserve e amplie `product_lineage_v2_1.json`; nenhuma fonte deve ser registrada como path local absoluto.
+17. Preserve o Artifact Hygiene Gate; segredo/credencial = `BLOCK`, PII/path local = `WARN` e investigação.
+18. Preserve a correção ISO/SE53 e não altere a âncora solicitação/coleta sem decisão documentada.
+19. Rode `pytest`, mantenha artefatos em `saida_pipeline/quality/` e não faça merge.
 
 ## Critérios de aceite
 - BLOCK impede inferência/ML/mirror/CIEVS;
