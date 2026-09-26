@@ -34,7 +34,9 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/promotion_gate.py` consolida Data Quality, paridade, linkage, reconciliação, CI e revisões arquitetural/epidemiológica em `NOT_READY`, `CONDITIONAL` ou `READY_FOR_REVIEW`; nunca promove automaticamente;
 - `quality/review_package.py` gera o pacote único de revisão humana em JSON/Markdown com evidências, bloqueios, condições e checklists específicos para Chief Architect e especialista epidemiológico;
 - `quality/agent_reviews.py` define contratos auditáveis para Chief Architect, Clinical/Epidemiological Specialist, QA e Security/Data Governance, com status `PENDING/PASS/WARN/BLOCK`, achados, bloqueios, recomendações e decisão;
-- `quality/reviews/v2_1_initial_reviews.json` contém os pareceres efetivos iniciais: Chief Architect=WARN, Clinical/Epidemiological Specialist=BLOCK, QA=WARN, Security/Data Governance=WARN. O BLOCK epidemiológico decorre da âncora temporal GAL solicitação×coleta ainda não formalmente decidida.
+- `quality/reviews/v2_1_initial_reviews.json` contém os pareceres efetivos iniciais: Chief Architect=WARN, Clinical/Epidemiological Specialist=BLOCK, QA=WARN, Security/Data Governance=WARN. O BLOCK epidemiológico decorre da âncora temporal GAL solicitação×coleta ainda não formalmente decidida;
+- `docs/adr/ADR-001-ancora-temporal-gal.md` registra a decisão como PENDENTE e proíbe mudança silenciosa;
+- `quality/gal_temporal_anchor_analysis.py` mede cobertura das datas, atraso solicitação−coleta e impacto em SE/ano epidemiológico sem alterar o comportamento atual.
 
 ## Execute agora
 1. Rode `pytest`.
@@ -48,7 +50,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 9. Gere/consulte `promotion_gate_v2_1.json`; `READY_FOR_REVIEW` exige CI confirmado e revisões arquitetural/epidemiológica aprovadas. Use `LACEN_PROMOTION_CI_STATUS`, `LACEN_ARCHITECTURE_REVIEW` e `LACEN_EPIDEMIOLOGY_REVIEW` apenas quando essas evidências tiverem sido realmente verificadas. Ausência de evidência = `CONDITIONAL`.
 10. Gere/consulte `review_package_v2_1.md`; Chief Architect e especialista epidemiológico devem revisar checklists independentes antes da decisão de release. O pacote é evidência de revisão, não autorização automática.
 11. Use os pareceres versionados em `quality/reviews/v2_1_initial_reviews.json` como estado atual da revisão. Não sobrescreva um `BLOCK/WARN` com `PASS` sem evidência objetiva e registro da correção/decisão que resolveu o achado. Todos os quatro devem estar `PASS` antes de qualquer decisão favorável de release.
-12. Resolver prioritariamente o BLOCK epidemiológico com ADR da âncora temporal GAL (solicitação × coleta), análise de sensibilidade e validação da regra institucional; até lá, não promover a V2.
+12. Resolver prioritariamente o BLOCK epidemiológico usando `ADR-001` e os artefatos `gal_temporal_anchor_*`. Avaliar cobertura, atraso, mudança de SE/ano e impacto nas séries/baselines antes da decisão. Até aprovação formal do ADR, não alterar a âncora nem promover a V2.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
 14. Para ativar escolha entre múltiplas fontes, use configuração explícita `LACEN_POPULATION_SOURCE_PRIORITY`; sem ela, denominador ambíguo deve permanecer ausente na camada V2.
 15. Defina contratos de freshness por fonte em configuração versionada; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
