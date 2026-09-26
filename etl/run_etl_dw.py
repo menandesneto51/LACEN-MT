@@ -39,6 +39,7 @@ from quality.territorial_dimension import (  # noqa: E402
 )
 from quality.parity_report import build_parity_report, write_parity_report  # noqa: E402
 from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate  # noqa: E402
+from quality.review_package import build_review_package, write_review_package  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -300,6 +301,14 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         epidemiology_review=os.getenv("LACEN_EPIDEMIOLOGY_REVIEW"),
     )
     write_promotion_gate(promotion_gate, quality_dir)
+
+    review_package = build_review_package(
+        quality_dir,
+        pr_number=None,
+        head_sha=os.getenv("GITHUB_SHA"),
+    )
+    write_review_package(review_package, quality_dir)
+
     report["promotion_gate_status"] = promotion_gate.status
     report["promotion_gate_blocking_reasons"] = promotion_gate.blocking_reasons
     report["promotion_gate_conditions"] = promotion_gate.conditions
