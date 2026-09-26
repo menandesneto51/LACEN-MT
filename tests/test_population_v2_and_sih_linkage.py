@@ -117,3 +117,30 @@ def test_population_v2_excludes_internal_conflict_same_source(tmp_path):
     )
     out = _load_population_v2(tmp_path, 2026, policy_path=policy)
     assert out.empty
+
+
+def test_population_v2_rejects_unlisted_source_when_policy_is_strict(tmp_path):
+    import json
+
+    stage = tmp_path / "staging_dw"
+    stage.mkdir()
+    pd.DataFrame({
+        "codigo_ibge": ["5103403"],
+        "municipio": ["Cuiabá"],
+        "ano": [2026],
+        "populacao": [700000],
+    }).to_csv(stage / "populacao.csv", index=False)
+
+    policy = tmp_path / "population_policy.json"
+    policy.write_text(
+        json.dumps({
+            "status": "APPROVED",
+            "source_priority": ["DW:POPULACAO_TCU"],
+            "allow_previous_year": False,
+            "rules": {"allow_unlisted_sources": False},
+        }),
+        encoding="utf-8",
+    )
+
+    out = _load_population_v2(tmp_path, 2026, policy_path=policy)
+    assert out.empty
