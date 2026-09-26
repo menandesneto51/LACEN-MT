@@ -329,9 +329,7 @@ def check_encoding(
         if col not in df.columns:
             continue
         s = df[col].dropna().astype(str)
-        bad += int(s.str.contains("|".join(map(repr, suspicious)), regex=False).sum()) if False else sum(
-            any(token in value for token in suspicious) for value in s
-        )
+        bad += sum(any(token in value for token in suspicious) for value in s)
     return [QualityFinding(
         "DQ_ENCODING", QualityStatus.WARN if bad else QualityStatus.PASS,
         "Possíveis caracteres corrompidos detectados." if bad else "Sem padrão evidente de corrupção de encoding.",
