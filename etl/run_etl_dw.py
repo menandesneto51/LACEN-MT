@@ -42,6 +42,7 @@ from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate
 from quality.review_package import build_review_package, write_review_package  # noqa: E402
 from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, write_agent_reviews  # noqa: E402
 from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_temporal_anchor_analysis  # noqa: E402
+from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -106,6 +107,8 @@ def write_validacao(
         f"agent_review_status: {report.get('agent_review_status')}",
         f"agent_review_blockers: {report.get('agent_review_blockers')}",
         f"gal_temporal_anchor_analysis: {report.get('gal_temporal_anchor_analysis')}",
+        f"artifact_hygiene_status: {report.get('artifact_hygiene_status')}",
+        f"artifact_hygiene_findings: {report.get('artifact_hygiene_findings')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
@@ -341,10 +344,33 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     )
     write_review_package(review_package, quality_dir)
 
+    hygiene_report = scan_quality_artifacts(quality_dir)
+    write_hygiene_report(hygiene_report, quality_dir)
+    report["artifact_hygiene_status"] = hygiene_report.get("status")
+    report["artifact_hygiene_findings"] = hygiene_report.get("finding_count", 0)
+    report["passos"].append(
+        f"artifact_hygiene:{report['artifact_hygiene_status']}"
+    )
+
     report["promotion_gate_status"] = promotion_gate.status
     report["promotion_gate_blocking_reasons"] = promotion_gate.blocking_reasons
     report["promotion_gate_conditions"] = promotion_gate.conditions
     report["passos"].append(f"promotion_gate:{promotion_gate.status}")
+    if report.get("artifact_hygiene_status") == "BLOCK":
+        report["aviso"] = (
+            (report.get("aviso") or "")
+            + " | ARTIFACT HYGIENE BLOCK: possível segredo/credencial em artefato; downstream não executado."
+        ).strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+        raise RuntimeError(
+            "Artifact Hygiene = BLOCK. Consulte "
+            + str(quality_dir / "artifact_hygiene_v2_1.txt")
+        )
+
     if not quality_report.publishable:
         report["aviso"] = ((report.get("aviso") or "") + " | DATA QUALITY BLOCK: inferência, ML, mirror e alerta CIEVS não executados.").strip(" |")
         write_validacao(outdir, report)
