@@ -198,18 +198,173 @@ def check_tat(
     ]
 
 
+def check_freshness(
+    df: pd.DataFrame,
+    source: str,
+    *,
+    date_candidates: tuple[str, ...] = ("data_corte", "updated_at", "extracted_at", "Data_Liberacao_dt", "Data_Solicitacao_dt"),
+    reference_date: datetime | None = None,
+    warn_after_days: int | None = None,
+    block_after_days: int | None = None,
+) -> list[QualityFinding]:
+    """Avalia frescor somente quando há coluna temporal e limiares explicitamente configurados."""
+    date_col = next((col for col in date_candidates if col in df.columns), None)
+    if not date_col:
+        return [QualityFinding(
+            "DQ_FRESHNESS_DATE_MISSING", QualityStatus.WARN,
+            "Frescor não pôde ser calculado: nenhuma coluna temporal configurada está disponível.",
+            source=source,
+        )]
+    dates = pd.to_datetime(df[date_col], errors="coerce")
+    if not dates.notna().any():
+        return [QualityFinding(
+            "DQ_FRESHNESS_DATE_INVALID", QualityStatus.WARN,
+            f"Frescor não pôde ser calculado: {date_col} sem datas válidas.",
+            source=source,
+        )]
+    if warn_after_days is None and block_after_days is None:
+        return [QualityFinding(
+            "DQ_FRESHNESS_UNCONFIGURED", QualityStatus.WARN,
+            f"Data mais recente disponível em {date_col}: {dates.max()}; limiar de frescor ainda não configurado.",
+            source=source, metric="max_date", value=str(dates.max()),
+            action="Definir SLA/frescor por fonte antes de converter este aviso em bloqueio.",
+        )]
+    ref = reference_date or datetime.now(TZ)
+    max_date = dates.max()
+    if getattr(max_date, "tzinfo", None) is None:
+        max_date = max_date.tz_localize(TZ)
+    age_days = max(0, int((ref - max_date.to_pydatetime()).total_seconds() // 86400))
+    status = QualityStatus.PASS
+    if block_after_days is not None and age_days > block_after_days:
+        status = QualityStatus.BLOCK
+    elif warn_after_days is not None and age_days > warn_after_days:
+        status = QualityStatus.WARN
+    return [QualityFinding(
+        "DQ_FRESHNESS", status,
+        f"Frescor da fonte calculado pela coluna {date_col}.",
+        source=source, metric="age_days", value=age_days,
+        threshold={"warn_after_days": warn_after_days, "block_after_days": block_after_days},
+    )]
+
+
+def check_completeness(
+    df: pd.DataFrame,
+    source: str,
+    *,
+    required_columns: tuple[str, ...],
+    warn_below_pct: float | None = None,
+    block_below_pct: float | None = None,
+) -> list[QualityFinding]:
+    """Completude de campos críticos; limiares são de governança e devem ser configurados."""
+    findings: list[QualityFinding] = []
+    missing_cols = [col for col in required_columns if col not in df.columns]
+    if missing_cols:
+        return [QualityFinding(
+            "DQ_COMPLETENESS_SCHEMA", QualityStatus.BLOCK,
+            "Campos críticos ausentes: " + ", ".join(missing_cols) + ".",
+            source=source, action="Corrigir contrato da fonte antes do consumo downstream.",
+        )]
+    if df.empty:
+        return [QualityFinding(
+            "DQ_COMPLETENESS_EMPTY", QualityStatus.WARN,
+            "Fonte vazia; completude não é interpretável.",
+            source=source,
+        )]
+    for col in required_columns:
+        pct = float(df[col].notna().mean() * 100.0)
+        status = QualityStatus.PASS
+        if block_below_pct is not None and pct < block_below_pct:
+            status = QualityStatus.BLOCK
+        elif warn_below_pct is not None and pct < warn_below_pct:
+            status = QualityStatus.WARN
+        elif warn_below_pct is None and block_below_pct is None and pct < 100.0:
+            status = QualityStatus.WARN
+        findings.append(QualityFinding(
+            f"DQ_COMPLETENESS_{col.upper()}", status,
+            f"Completude de {col}: {pct:.1f}%.",
+            source=source, metric="completeness_pct", value=round(pct, 2),
+            threshold={"warn_below_pct": warn_below_pct, "block_below_pct": block_below_pct},
+        ))
+    return findings
+
+
+def check_duplicates(
+    df: pd.DataFrame,
+    source: str,
+    *,
+    key_columns: tuple[str, ...] | None = None,
+) -> list[QualityFinding]:
+    if not key_columns:
+        return [QualityFinding(
+            "DQ_DUPLICATES_UNCONFIGURED", QualityStatus.WARN,
+            "Detecção de duplicidade não executada: chave natural não configurada.",
+            source=source,
+            action="Definir chave de negócio sem usar identificador nominal de paciente por conveniência.",
+        )]
+    missing = [col for col in key_columns if col not in df.columns]
+    if missing:
+        return [QualityFinding(
+            "DQ_DUPLICATES_KEY_MISSING", QualityStatus.WARN,
+            "Chave de duplicidade parcialmente ausente: " + ", ".join(missing) + ".",
+            source=source,
+        )]
+    dup = int(df.duplicated(list(key_columns), keep=False).sum())
+    return [QualityFinding(
+        "DQ_DUPLICATES", QualityStatus.WARN if dup else QualityStatus.PASS,
+        "Registros duplicados pela chave configurada." if dup else "Sem duplicidade pela chave configurada.",
+        source=source, metric="duplicate_rows", value=dup, threshold=0,
+    )]
+
+
+def check_encoding(
+    df: pd.DataFrame,
+    source: str,
+    *,
+    columns: tuple[str, ...] | None = None,
+) -> list[QualityFinding]:
+    suspicious = ("Ã", "Â", "�", "\ufffd")
+    cols = list(columns or tuple(c for c in df.columns if df[c].dtype == "object"))
+    bad = 0
+    for col in cols:
+        if col not in df.columns:
+            continue
+        s = df[col].dropna().astype(str)
+        bad += int(s.str.contains("|".join(map(repr, suspicious)), regex=False).sum()) if False else sum(
+            any(token in value for token in suspicious) for value in s
+        )
+    return [QualityFinding(
+        "DQ_ENCODING", QualityStatus.WARN if bad else QualityStatus.PASS,
+        "Possíveis caracteres corrompidos detectados." if bad else "Sem padrão evidente de corrupção de encoding.",
+        source=source, metric="suspicious_values", value=int(bad), threshold=0,
+        action="Corrigir na camada de normalização sem alterar silenciosamente o dado bruto." if bad else "",
+    )]
+
+
 def run_quality_gate(
     *,
     weekly: pd.DataFrame | None = None,
     gal_micro: pd.DataFrame | None = None,
     population: pd.DataFrame | None = None,
     analysis_year: int | None = None,
+    population_required: bool = False,
     metadata: dict[str, Any] | None = None,
 ) -> QualityReport:
     findings: list[QualityFinding] = []
     if weekly is not None:
         findings += check_epi_week(weekly, "weekly")
         findings += check_counts(weekly, "weekly")
+        findings += check_completeness(
+            weekly, "weekly",
+            required_columns=("epi_year", "epi_week", "tests", "positives"),
+        )
+        findings += check_duplicates(
+            weekly, "weekly",
+            key_columns=tuple(
+                c for c in ("epi_year", "epi_week", "municipio", "agravo")
+                if c in weekly.columns
+            ) or None,
+        )
+        findings += check_encoding(weekly, "weekly")
     else:
         findings.append(QualityFinding(
             "DQ_WEEKLY_MISSING", QualityStatus.BLOCK,
@@ -217,13 +372,16 @@ def run_quality_gate(
         ))
     if gal_micro is not None:
         findings += check_tat(gal_micro, "GAL")
+        findings += check_freshness(gal_micro, "GAL")
+        findings += check_encoding(gal_micro, "GAL")
     if population is not None:
         findings += check_population(population, "population", analysis_year=analysis_year)
-    elif analysis_year is not None:
+    elif population_required:
         findings.append(QualityFinding(
             "DQ_POPULATION_MISSING", QualityStatus.BLOCK,
-            "Denominador populacional não fornecido para análise de taxas.",
-            source="population"
+            "Denominador populacional obrigatório não fornecido para produto dependente de taxa.",
+            source="population",
+            action="Fornecer população versionada por município × ano × fonte.",
         ))
     return QualityReport(
         generated_at=datetime.now(TZ).isoformat(timespec="seconds"),
