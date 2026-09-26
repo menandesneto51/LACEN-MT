@@ -46,7 +46,7 @@ def test_reconciliation_summary_blocks_promotion_when_high_or_critical():
     ], ignore_index=True))
     summary = summarize_reconciliation(report)
     assert summary["open_items"] == 2
-    assert summary["critical"] == 1
+    assert summary["critical_open"] == 1
     assert summary["promotion_ready"] is False
 
 
@@ -125,3 +125,51 @@ def test_invalid_resolution_state_is_rejected():
         pass
     else:
         raise AssertionError("estado inválido deveria gerar ValueError")
+
+
+def test_close_requires_evidence_correction_and_validation():
+    report = build_reconciliation_report(_investigation("CONFLITO"))
+    issue_id = report.loc[0, "issue_id"]
+    report = merge_resolution_state(report, None)
+    try:
+        apply_resolution(
+            report,
+            issue_id,
+            estado="FECHADO",
+            decisao="Corrigir IBGE.",
+        )
+    except ValueError as exc:
+        assert "FECHADO exige" in str(exc)
+    else:
+        raise AssertionError("fechamento incompleto deveria ser rejeitado")
+
+
+def test_closed_critical_item_no_longer_blocks_promotion_when_evidence_complete():
+    report = build_reconciliation_report(_investigation("CONFLITO"))
+    issue_id = report.loc[0, "issue_id"]
+    report = merge_resolution_state(report, None, now="2026-09-26T18:00:00")
+    report = apply_resolution(
+        report,
+        issue_id,
+        estado="FECHADO",
+        decisao="Código corrigido.",
+        evidencia="ticket-123",
+        correcao_aplicada="Dimensão atualizada.",
+        validacao_pos_correcao="Paridade sem conflito.",
+        now="2026-09-26T19:00:00",
+    )
+    summary = summarize_reconciliation(report)
+    assert summary["critical_open"] == 0
+    assert summary["closed_items"] == 1
+    assert summary["invalid_closed_items"] == 0
+    assert summary["promotion_ready"] is True
+
+
+def test_invalid_closed_record_blocks_promotion():
+    report = build_reconciliation_report(_investigation("CONFLITO"))
+    report = merge_resolution_state(report, None)
+    report.loc[0, "estado_reconciliacao"] = "FECHADO"
+    report.loc[0, "decisao"] = "ok"
+    summary = summarize_reconciliation(report)
+    assert summary["invalid_closed_items"] == 1
+    assert summary["promotion_ready"] is False
