@@ -15,6 +15,8 @@ def test_promotion_gate_not_ready_on_block():
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
         agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
     )
     assert result.status == "NOT_READY"
     assert result.automatic_promotion_allowed is False
@@ -47,6 +49,8 @@ def test_promotion_gate_ready_for_review_only_with_all_evidence():
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
         agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
     )
     assert result.status == "READY_FOR_REVIEW"
     assert result.conditions == []
@@ -63,6 +67,8 @@ def test_territorial_not_ready_blocks_promotion():
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
         agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
     )
     assert result.status == "NOT_READY"
     assert any("Reconciliação territorial" in x for x in result.blocking_reasons)
@@ -87,6 +93,8 @@ def test_build_gate_from_artifacts(tmp_path):
         architecture_review="APPROVED",
         epidemiology_review="APPROVED",
         agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
     )
     assert result.status == "READY_FOR_REVIEW"
 
@@ -105,3 +113,36 @@ def test_promotion_gate_writes_artifacts(tmp_path):
     paths = write_promotion_gate(result, tmp_path)
     assert paths["json"].exists()
     assert paths["txt"].exists()
+
+
+def test_population_governance_blockers_make_not_ready():
+    result = evaluate_promotion_gate(
+        data_quality_status="PASS",
+        parity_status="PASS",
+        linkage_parity_status="PASS",
+        territorial_promotion_ready=True,
+        ci_status="PASS",
+        architecture_review="APPROVED",
+        epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
+        population_governance_approved=False,
+        population_governance_blockers=["Múltiplas fontes sem prioridade aprovada."],
+    )
+    assert result.status == "NOT_READY"
+    assert any("Governança populacional" in x for x in result.blocking_reasons)
+
+
+def test_population_governance_pending_keeps_conditional():
+    result = evaluate_promotion_gate(
+        data_quality_status="PASS",
+        parity_status="PASS",
+        linkage_parity_status="PASS",
+        territorial_promotion_ready=True,
+        ci_status="PASS",
+        architecture_review="APPROVED",
+        epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
+        population_governance_approved=False,
+        population_governance_blockers=[],
+    )
+    assert result.status == "CONDITIONAL"
