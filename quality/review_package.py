@@ -27,6 +27,7 @@ def build_review_package(
     *,
     pr_number: int | None = None,
     head_sha: str | None = None,
+    reviews_path: Path | str | None = None,
 ) -> dict[str, Any]:
     q = Path(quality_dir)
     dq = _load(q / "data_quality_gate_ultimo.json")
@@ -67,9 +68,14 @@ def build_review_package(
         )
 
     agent_reviews = default_agent_reviews()
-    reviews_payload = _load(q / "reviews" / "v2_1_initial_reviews.json")
-    if not reviews_payload:
-        reviews_payload = _load(Path(__file__).resolve().parent / "reviews" / "v2_1_initial_reviews.json")
+    if reviews_path is not None:
+        reviews_payload = _load(Path(reviews_path))
+    else:
+        reviews_payload = _load(q / "reviews" / "v2_1_initial_reviews.json")
+        if not reviews_payload:
+            reviews_payload = _load(
+                Path(__file__).resolve().parent / "reviews" / "v2_1_initial_reviews.json"
+            )
     for key, payload in (reviews_payload.get("reviews") or {}).items():
         if key not in agent_reviews:
             continue
