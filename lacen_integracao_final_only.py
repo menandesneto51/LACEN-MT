@@ -205,7 +205,10 @@ def _build_linkage_parity_reports(
 
     sin = sinan.copy()
     if not sin.empty:
-        sin["agravo_sinan"] = sin.get("target", "").astype(str).str.strip().str.casefold()
+        if "target" in sin.columns:
+            sin["agravo_sinan"] = sin["target"].astype(str).str.strip().str.casefold()
+        elif "agravo_sinan" not in sin.columns:
+            sin["agravo_sinan"] = ""
         reports["GALxSINAN"] = compare_linkage(
             left,
             sin,
@@ -216,7 +219,10 @@ def _build_linkage_parity_reports(
 
     sm = sim.copy()
     if not sm.empty:
-        sm["agravo_sinan"] = sm.get("target", "").astype(str).str.strip().str.casefold()
+        if "target" in sm.columns:
+            sm["agravo_sinan"] = sm["target"].astype(str).str.strip().str.casefold()
+        elif "agravo_sinan" not in sm.columns:
+            sm["agravo_sinan"] = ""
         reports["GALxSIM"] = compare_linkage(
             left,
             sm,
