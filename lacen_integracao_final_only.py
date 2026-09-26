@@ -102,8 +102,14 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
     s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge", "agravo_sinan"], as_index=False, dropna=False)
+        s.groupby(
+            ["epi_year", "epi_week", "territory_key", "agravo_sinan"],
+            as_index=False,
+            dropna=False,
+        )
         .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
             notificacoes=("notificacoes", "sum"),
             obitos_sinan=("obitos_sinan", "sum"),
             encerrados_sinan=("encerrados_sinan", "sum"),
@@ -131,8 +137,16 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge", "agravo_sinan"], as_index=False, dropna=False)
-        .agg(obitos_sim=("obitos_sim", "sum"))
+        s.groupby(
+            ["epi_year", "epi_week", "territory_key", "agravo_sinan"],
+            as_index=False,
+            dropna=False,
+        )
+        .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
+            obitos_sim=("obitos_sim", "sum"),
+        )
     )
 
 
