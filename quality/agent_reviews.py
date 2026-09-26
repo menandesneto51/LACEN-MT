@@ -116,3 +116,26 @@ def write_agent_reviews(
         ]
     txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"json": json_path, "txt": txt_path}
+
+
+def load_agent_reviews(path: Path | str) -> dict[str, AgentReview]:
+    p = Path(path)
+    if not p.exists():
+        return default_agent_reviews()
+    payload = json.loads(p.read_text(encoding="utf-8"))
+    reviews = default_agent_reviews()
+    for key, item in (payload.get("reviews") or {}).items():
+        if key not in reviews:
+            continue
+        reviews[key] = AgentReview(
+            agent=item.get("agent") or reviews[key].agent,
+            status=item.get("status") or "PENDING",
+            findings=list(item.get("findings") or []),
+            blockers=list(item.get("blockers") or []),
+            recommendations=list(item.get("recommendations") or []),
+            decision=item.get("decision"),
+            reviewer=item.get("reviewer"),
+            reviewed_at=item.get("reviewed_at"),
+        )
+        reviews[key].validate()
+    return reviews
