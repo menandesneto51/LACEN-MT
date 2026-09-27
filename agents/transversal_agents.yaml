@@ -1,0 +1,24 @@
+version: "1.0"
+project_context: "LACEN-MT"
+
+canonical:
+  repository: "menandesneto51/vigia-vsr"
+  branch: "feat/v2-intelligence-agents"
+  agent_root_env: "SES_DATA_CATALOG_AGENT_ROOT"
+
+preflight:
+  - "INDICATOR_ARCHITECT"
+  - "SES_DATA_CATALOG"
+  - "SEMANTIC_LINKER"
+
+analytical_on_demand:
+  - "FAILURE_PHENOTYPER"
+  - "CARE_JOURNEY"
+  - "BOTTLENECK_ANALYZER"
+  - "ANOMALY_SENTINEL"
+
+rules:
+  - "Não criar fork de agente transversal por doença."
+  - "Agentes analíticos não entram automaticamente em produção."
+  - "Não inventar fórmula oficial ou causalidade."
+  - "Não expor PII."
