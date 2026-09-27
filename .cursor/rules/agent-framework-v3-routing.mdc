@@ -1,0 +1,27 @@
+---
+description: Agent Framework v3 — roteamento transversal por perfil, evidência e Cursor.
+alwaysApply: true
+---
+
+# Agent Framework v3 — projeto integrado
+
+1. Leia AGENTS.md quando existir.
+2. Leia agents/framework-v3-profile.yaml.
+3. Use o registry_source declarado no profile como registry autoritativo do Agent Framework v3.
+4. Use somente agentes/capabilities pertinentes ao perfil e à tarefa.
+5. SES_DATA_CATALOG é preflight antes de nova fonte, coletor, scraper, API, ETL, tabela de integração ou indicador.
+6. SCHEMA_DRIFT_MONITOR é obrigatório quando integração/fonte existente puder ter mudado.
+7. SECURITY_DEVSECOPS_SENTINEL revisa mudança em secrets, dependências, CI/CD, containers, auth, permissões ou dados sensíveis.
+8. CI_OBSERVABILITY classifica falhas sem atribuir causalidade sem evidência; PRE_RUN_FAILURE não incrimina código.
+9. EXECUTIVE_BRIEFING_ORCHESTRATOR consolida evidências; não recalcula epidemiologia nem altera indicador oficial.
+10. MUNICIPAL_READINESS_SPECIALIST avalia capacidade municipal documentada; ausência de evidência permanece UNKNOWN.
+11. TECHNICAL_WRITING_REVIEWER_PTBR deve ser acionado para redação/revisão técnica formal em português, ABNT, tabelas, figuras, imagens, quadros, mapas, fontes, legendas e simbologia cartográfica.
+12. STATISTICAL_METHODS_SPECIALIST deve ser acionado para estatística descritiva/inferencial, PCA, análise fatorial, correspondência, regressões, intervalos, testes, séries temporais, espacial, sobrevivência, métodos robustos/bayesianos e quantificação de incerteza.
+13. MACHINE_LEARNING_PATTERN_ANALYST deve ser acionado para padrões, sazonalidade, anomalias, change points, clusters, PCA/redução de dimensionalidade, forecasting, modelagem preditiva, feature importance e model drift.
+14. Em análise preditiva com interpretação inferencial, exigir revisão cruzada MACHINE_LEARNING_PATTERN_ANALYST ↔ STATISTICAL_METHODS_SPECIALIST.
+15. Feature importance, componentes, fatores, clusters e associações não devem ser interpretados automaticamente como causalidade.
+16. UNKNOWN não pode ser convertido silenciosamente em PASS, READY ou zero.
+17. Novo agente exige gap explícito não atendido por agente/capability existente.
+18. Exceção a BLOCK exige decisão humana documentada.
+
+Registry e contratos autoritativos: menandesneto51/pqavs, Agent Framework v3.

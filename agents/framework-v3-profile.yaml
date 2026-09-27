@@ -1,0 +1,11 @@
+framework_version: "3.0"
+project: "LACEN-MT"
+profile: "epidemiological_intelligence"
+specialist: "LAB_SURVEILLANCE"
+registry_source: "menandesneto51/pqavs/agents/registry.yaml"
+contract_source: "menandesneto51/pqavs/agents/contracts"
+full_bundle_sync: "scripts/agents/sync_agent_framework.py"
+rules:
+  - "Use only agents/capabilities required by this profile and the current task."
+  - "Preserve this project's current architecture and specialist."
+  - "Do not infer missing evidence."
