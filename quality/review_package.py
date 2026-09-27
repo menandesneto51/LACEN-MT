@@ -39,6 +39,7 @@ def build_review_package(
     population_governance = _load(q / "population_governance_v2_1.json")
     population_source_comparison = _load(q / "population_source_comparison_summary.json")
     decision_registry = _load(q / "decision_status_registry_v2_1.json")
+    decision_readiness = _load(q / "decision_readiness_v2_1.json")
 
     architecture_focus = [
         "Confirmar separação entre gate global de qualidade e gate de promoção da V2.",
@@ -114,6 +115,7 @@ def build_review_package(
             "population_governance": population_governance,
             "population_source_comparison": population_source_comparison,
             "decision_registry": decision_registry,
+            "decision_readiness": decision_readiness,
         },
         "architecture_review": {
             "status": "PENDING",
@@ -209,6 +211,17 @@ def write_review_package(
             )
     else:
         lines.append("- Registry ainda não disponível.")
+
+    lines += ["", "## Decision Readiness"]
+    readiness = package.get("evidence", {}).get("decision_readiness") or {}
+    if readiness:
+        lines.append(f"- overall_status: {readiness.get('overall_status')}")
+        for decision_id, item in (readiness.get("decisions") or {}).items():
+            lines.append(
+                f"- {decision_id}: {item.get('status')} | evidence_complete={item.get('evidence_complete')}"
+            )
+    else:
+        lines.append("- Pré-validação técnica ainda não disponível.")
 
     lines += ["", "## Revisão epidemiológica"]
     for item in package["epidemiology_review"]["focus"]:
