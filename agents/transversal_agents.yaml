@@ -40,5 +40,17 @@ engineering_services:
   - "AGENT_EVALUATOR"
   - "AI_GOVERNANCE_SPECIALIST"
 
+  - "MODEL_PERFORMANCE_MONITOR"
+  - "PORTFOLIO_GOVERNOR"
+  - "AI_RESEARCH_SPECIALIST"
 decision_services:
   - "DECISION_ORCHESTRATOR"
+
+governance_services:
+  - "PRIVACY_SENTINEL"
+
+knowledge_services:
+  - "KNOWLEDGE_CURATOR"
+
+governed_registries:
+  - "PROMPT_RAG_REGISTRY"
