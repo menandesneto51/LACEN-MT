@@ -47,6 +47,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/decision_briefs.py` gera `decision_brief_DEC-001` e `decision_brief_DEC-002` em JSON/Markdown a partir dos artefatos reais do ETL, resumindo fatos, riscos e opções sem tomar decisão automaticamente;
 - `quality/decision_registry.py` + `config/decision_status_v2_1.json` consolidam DEC-001/DEC-002 em `PENDING/APPROVED/REJECTED`, exigindo responsável, data, evidência e conteúdo para decisões concluídas; o Promotion Gate consome esse estado. Para decisões concluídas, as evidências referenciadas também precisam existir em `saida_pipeline/quality/`;
 - `quality/decision_readiness.py` verifica se DEC-001/DEC-002 estão tecnicamente prontas para submissão humana: `READY_FOR_HUMAN_DECISION`, `NEEDS_EVIDENCE` ou `DATA_QUALITY_BLOCK`. Essa camada nunca escolhe a decisão.
+- `quality/decision_evidence_packets.py` gera `DEC-001_evidence_packet.md` e `DEC-002_evidence_packet.md` preenchendo evidencias quantitativas sem marcar alternativa nem aprovar decisao;
 
 ## Execute agora
 1. Rode `pytest`.

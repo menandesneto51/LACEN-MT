@@ -10,7 +10,8 @@
       "evidence": [
         "gal_temporal_anchor_summary.json",
         "gal_temporal_anchor_weekly_comparison.csv",
-        "decision_brief_DEC-001.md"
+        "decision_brief_DEC-001.md",
+        "DEC-001_evidence_packet.md"
       ],
       "decision": null
     },
@@ -24,7 +25,8 @@
         "population_source_coverage_detail.csv",
         "population_source_pairwise_comparison.csv",
         "population_governance_v2_1.json",
-        "decision_brief_DEC-002.md"
+        "decision_brief_DEC-002.md",
+        "DEC-002_evidence_packet.md"
       ],
       "decision": null
     }

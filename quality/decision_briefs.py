@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 import json
 
+from quality.decision_evidence_packets import write_decision_evidence_packets
+
 
 def _load(path: Path) -> dict[str, Any]:
     if not path.exists():
@@ -237,9 +239,14 @@ def write_decision_briefs(quality_dir: Path | str) -> dict[str, Path]:
     ]
     population_md.write_text("\n".join(population_lines) + "\n", encoding="utf-8")
 
+    packets = write_decision_evidence_packets(q)
+
     return {
         "temporal_json": temporal_json,
         "temporal_markdown": temporal_md,
         "population_json": population_json,
         "population_markdown": population_md,
+        "dec001_evidence_packet": packets["dec001"],
+        "dec002_evidence_packet": packets["dec002"],
+        "evidence_packets_meta": packets["meta"],
     }
