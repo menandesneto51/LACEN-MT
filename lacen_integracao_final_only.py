@@ -323,27 +323,41 @@ def _load_population_v2(
         if current.empty:
             return empty
 
-    selected = select_population_for_year(
-        current,
-        analysis_year,
-        source_priority=priority,
-        allow_previous_year=bool(policy.get("allow_previous_year", False)) if approved else False,
-    )
+    if not priority:
+        # Sem prioridade APPROVED, não há escolha entre fontes.
+        # Mantém somente territórios com exatamente uma fonte candidata no ano.
+        selected = current.copy()
+        selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
+        selected["territory_key"] = "NAME:" + selected["municipio"]
+        mask = selected["municipio_ibge"].notna()
+        selected.loc[mask, "territory_key"] = (
+            "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+        )
+        source_counts = (
+            selected.groupby("territory_key", dropna=False)["fonte"]
+            .transform("nunique")
+        )
+        selected = selected[source_counts == 1].copy()
+    else:
+        selected = select_population_for_year(
+            current,
+            analysis_year,
+            source_priority=priority,
+            allow_previous_year=bool(policy.get("allow_previous_year", False)),
+        )
+        if selected.empty:
+            return empty
+
+        selected = selected.copy()
+        selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
+        selected["territory_key"] = "NAME:" + selected["municipio"]
+        mask = selected["municipio_ibge"].notna()
+        selected.loc[mask, "territory_key"] = (
+            "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+        )
+
     if selected.empty:
         return empty
-
-    selected = selected.copy()
-    selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
-    selected["territory_key"] = "NAME:" + selected["municipio"]
-    mask = selected["municipio_ibge"].notna()
-    selected.loc[mask, "territory_key"] = (
-        "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
-    )
-
-    # Sem política APPROVED, só aceita território com uma única fonte candidata.
-    if not priority:
-        counts = selected.groupby("territory_key", dropna=False)["fonte"].transform("nunique")
-        selected = selected[counts == 1].copy()
 
     selected = selected.rename(columns={
         "populacao": "populacao_v2",
