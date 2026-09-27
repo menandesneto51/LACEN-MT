@@ -107,6 +107,8 @@ def test_build_gate_from_artifacts(tmp_path):
         population_governance_blockers=[],
         decision_registry_status="APPROVED",
         decision_registry_blockers=[],
+        decision_readiness_status="READY_FOR_HUMAN_DECISION",
+        decision_readiness_blockers=[],
     )
     assert result.status == "READY_FOR_REVIEW"
 
