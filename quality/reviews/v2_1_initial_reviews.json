@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-6",
+  "review_version": "v2.1-initial-7",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -13,7 +13,7 @@
         "A governança populacional possui comparação automática de cobertura/diferenças e não autoaprova fonte vencedora.",
         "A análise temporal GAL quantifica impacto por registro e por semana sem alterar a série.",
         "A V2 permanece paralela ao legado e automatic_promotion_allowed=false.",
-        "O CI #295 concluiu SUCCESS no HEAD b9a4e1e4bf3ea74899047f4227014b7251a68875."
+        "O CI #368 concluiu SUCCESS no HEAD df5ffcac8dac0dd9a0fb61204e91065f40c60fa6."
       ],
       "blockers": [],
       "recommendations": [
@@ -25,9 +25,9 @@
       "reviewer": "Chief Architect Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 295,
-        "workflow_run_id": 36279893340,
-        "head_sha": "b9a4e1e4bf3ea74899047f4227014b7251a68875",
+        "workflow_run_number": 368,
+        "workflow_run_id": 36282146352,
+        "head_sha": "df5ffcac8dac0dd9a0fb61204e91065f40c60fa6",
         "conclusion": "success"
       }
     },
@@ -55,7 +55,7 @@
       "agent": "QA",
       "status": "PASS",
       "findings": [
-        "O GitHub Actions LACEN-MT Quality Gate run #295 concluiu SUCCESS para o HEAD b9a4e1e4bf3ea74899047f4227014b7251a68875.",
+        "O GitHub Actions LACEN-MT Quality Gate run #368 concluiu SUCCESS para o HEAD df5ffcac8dac0dd9a0fb61204e91065f40c60fa6.",
         "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage, análise temporal GAL e joins territoriais determinísticos.",
         "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
         "Há regressão específica contra zero-padding de IBGE, duplicação por variantes nominais, fallback territorial indevido e cobertura populacional incompleta."
@@ -70,9 +70,9 @@
       "reviewer": "QA Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
-        "workflow_run_number": 295,
-        "workflow_run_id": 36279893340,
-        "head_sha": "b9a4e1e4bf3ea74899047f4227014b7251a68875",
+        "workflow_run_number": 368,
+        "workflow_run_id": 36282146352,
+        "head_sha": "df5ffcac8dac0dd9a0fb61204e91065f40c60fa6",
         "conclusion": "success"
       }
     },
