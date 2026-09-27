@@ -38,6 +38,7 @@ core_runtime_specialists:
 engineering_services:
   - "AI_SYSTEMS_SPECIALIST"
   - "AGENT_EVALUATOR"
+  - "AI_GOVERNANCE_SPECIALIST"
 
 decision_services:
   - "DECISION_ORCHESTRATOR"
