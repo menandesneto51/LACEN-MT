@@ -167,3 +167,31 @@ def test_data_quality_warn_allows_downstream_execution(monkeypatch, tmp_path):
     assert any(x.startswith("mirror:") for x in calls)
     assert any("enviar_relatorio_cievs.py" in x for x in calls)
     assert report["data_quality_publishable"] is True
+
+
+def test_evidence_only_returns_before_all_downstream(monkeypatch, tmp_path):
+    calls = []
+    weekly = pd.DataFrame({
+        "epi_year": [2026],
+        "epi_week": [37],
+        "municipio": ["CUIABÁ"],
+        "municipio_ibge": ["5103403"],
+        "target": ["dengue"],
+        "tests": [10],
+        "positives": [2],
+    })
+    _prepare_pipeline(monkeypatch, tmp_path, weekly, calls)
+    args = _args(tmp_path)
+    args.evidence_only = True
+
+    report = pipeline.run_pipeline(args)
+
+    assert report["evidence_only"] is True
+    assert "EVIDENCE ONLY" in str(report.get("aviso"))
+    assert not any("gerar_indicadores_rede_lacen.py" in x for x in calls)
+    assert not any("gerar_indicadores_emergencia.py" in x for x in calls)
+    assert not any("ml.run_ml_pipeline" in x for x in calls)
+    assert not any(x.startswith("mirror:") for x in calls)
+    assert not any("enviar_relatorio_cievs.py" in x for x in calls)
+    assert (tmp_path / "quality" / "decision_readiness_v2_1.json").exists()
+    assert (tmp_path / "quality" / "decision_status_registry_v2_1.json").exists()
