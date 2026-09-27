@@ -4,28 +4,22 @@
   "decisions": {
     "DEC-001": {
       "title": "Âncora temporal GAL — solicitação × coleta",
-      "status": "APPROVED",
-      "decided_by": "Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)",
-      "decided_at": "2026-09-26",
+      "status": "PENDING",
+      "decided_by": null,
+      "decided_at": null,
       "evidence": [
         "gal_temporal_anchor_summary.json",
         "gal_temporal_anchor_weekly_comparison.csv",
         "decision_brief_DEC-001.md",
         "DEC-001_evidence_packet.md"
       ],
-      "decision": {
-        "alternative": "A",
-        "anchor": "solicitacao",
-        "historical_series": "nao_reprocessar",
-        "rationale": "Preserva comportamento atual e comparabilidade histórica; autorização institucional explícita para aprovar e seguir.",
-        "adr": "docs/decisions/DEC-001-ancora-temporal-gal.md"
-      }
+      "decision": null
     },
     "DEC-002": {
       "title": "Prioridade institucional das fontes populacionais",
-      "status": "APPROVED",
-      "decided_by": "Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)",
-      "decided_at": "2026-09-26",
+      "status": "PENDING",
+      "decided_by": null,
+      "decided_at": null,
       "evidence": [
         "population_source_comparison_summary.json",
         "population_source_coverage_detail.csv",
@@ -34,15 +28,7 @@
         "decision_brief_DEC-002.md",
         "DEC-002_evidence_packet.md"
       ],
-      "decision": {
-        "source_priority": [
-          "DW:POPULACAO_TOTAL"
-        ],
-        "allow_previous_year": false,
-        "allow_unlisted_sources": false,
-        "rationale": "Única fonte com cobertura no staging (141 municípios, ano 2021); sem divergência multi-fonte.",
-        "adr": "docs/decisions/DEC-002-prioridade-fontes-populacionais.md"
-      }
+      "decision": null
     }
   }
 }
