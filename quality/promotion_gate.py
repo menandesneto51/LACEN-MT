@@ -39,6 +39,8 @@ def evaluate_promotion_gate(
     population_governance_blockers: list[str] | None = None,
     decision_registry_status: str | None = None,
     decision_registry_blockers: list[str] | None = None,
+    decision_readiness_status: str | None = None,
+    decision_readiness_blockers: list[str] | None = None,
 ) -> PromotionGateResult:
     """Avalia prontidão para revisão humana, nunca para promoção automática."""
     blocking: list[str] = []
@@ -54,6 +56,8 @@ def evaluate_promotion_gate(
     pop_blockers = list(population_governance_blockers or [])
     decision_status = (decision_registry_status or "PENDING").upper()
     decision_blockers = list(decision_registry_blockers or [])
+    readiness_status = (decision_readiness_status or "NEEDS_EVIDENCE").upper()
+    readiness_blockers = list(decision_readiness_blockers or [])
 
     if dq == "BLOCK":
         blocking.append("Data Quality Gate em BLOCK.")
@@ -104,6 +108,13 @@ def evaluate_promotion_gate(
     elif decision_status != "APPROVED":
         conditions.append(f"Decision Registry em {decision_status}.")
 
+    if readiness_blockers:
+        blocking.extend([f"Decision Readiness: {x}" for x in readiness_blockers])
+    elif readiness_status == "DATA_QUALITY_BLOCK":
+        blocking.append("Decision Readiness em DATA_QUALITY_BLOCK.")
+    elif readiness_status != "READY_FOR_HUMAN_DECISION":
+        conditions.append(f"Decision Readiness em {readiness_status}.")
+
     if blocking:
         status = "NOT_READY"
     elif conditions:
@@ -128,6 +139,8 @@ def evaluate_promotion_gate(
             "population_governance_blockers": pop_blockers,
             "decision_registry_status": decision_status,
             "decision_registry_blockers": decision_blockers,
+            "decision_readiness_status": readiness_status,
+            "decision_readiness_blockers": readiness_blockers,
         },
         automatic_promotion_allowed=False,
     )
@@ -154,6 +167,8 @@ def build_gate_from_artifacts(
     population_governance_blockers: list[str] | None = None,
     decision_registry_status: str | None = None,
     decision_registry_blockers: list[str] | None = None,
+    decision_readiness_status: str | None = None,
+    decision_readiness_blockers: list[str] | None = None,
 ) -> PromotionGateResult:
     q = Path(quality_dir)
     dq = load_json(q / "data_quality_gate_ultimo.json")
@@ -174,6 +189,8 @@ def build_gate_from_artifacts(
         population_governance_blockers=population_governance_blockers,
         decision_registry_status=decision_registry_status,
         decision_registry_blockers=decision_registry_blockers,
+        decision_readiness_status=decision_readiness_status,
+        decision_readiness_blockers=decision_readiness_blockers,
     )
 
 
