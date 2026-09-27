@@ -48,6 +48,7 @@ from quality.population_governance import load_population_governance, evaluate_p
 from quality.population_source_comparison import compare_population_sources, write_population_source_comparison  # noqa: E402
 from quality.decision_briefs import write_decision_briefs  # noqa: E402
 from quality.decision_registry import load_decision_registry, evaluate_decision_registry, write_decision_registry_report  # noqa: E402
+from quality.decision_readiness import evaluate_decision_readiness, write_decision_readiness_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -122,6 +123,8 @@ def write_validacao(
         f"decision_registry_status: {report.get('decision_registry_status')}",
         f"decision_registry_blockers: {report.get('decision_registry_blockers')}",
         f"decision_registry_conditions: {report.get('decision_registry_conditions')}",
+        f"decision_readiness_status: {report.get('decision_readiness_status')}",
+        f"decision_readiness_blockers: {report.get('decision_readiness_blockers')}",
         f"population_source_comparison: {report.get('population_source_comparison')}",
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
@@ -368,6 +371,17 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         f"agent_reviews:{report['agent_review_status']}"
     )
 
+    decision_readiness = evaluate_decision_readiness(quality_dir)
+    write_decision_readiness_report(decision_readiness, quality_dir)
+    report["decision_readiness_status"] = decision_readiness.get("overall_status")
+    readiness_blockers = []
+    for item in (decision_readiness.get("decisions") or {}).values():
+        readiness_blockers.extend(item.get("blockers", []) or [])
+    report["decision_readiness_blockers"] = readiness_blockers
+    report["passos"].append(
+        f"decision_readiness:{report['decision_readiness_status']}"
+    )
+
     decision_registry = load_decision_registry(
         ROOT / "config" / "decision_status_v2_1.json"
     )
@@ -396,6 +410,8 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         population_governance_blockers=report.get("population_governance_blockers"),
         decision_registry_status=report.get("decision_registry_status"),
         decision_registry_blockers=report.get("decision_registry_blockers"),
+        decision_readiness_status=report.get("decision_readiness_status"),
+        decision_readiness_blockers=report.get("decision_readiness_blockers"),
     )
     write_promotion_gate(promotion_gate, quality_dir)
 
