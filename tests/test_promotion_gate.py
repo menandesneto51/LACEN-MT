@@ -55,6 +55,8 @@ def test_promotion_gate_ready_for_review_only_with_all_evidence():
         population_governance_blockers=[],
         decision_registry_status="APPROVED",
         decision_registry_blockers=[],
+        decision_readiness_status="READY_FOR_HUMAN_DECISION",
+        decision_readiness_blockers=[],
     )
     assert result.status == "READY_FOR_REVIEW"
     assert result.conditions == []
@@ -75,6 +77,8 @@ def test_territorial_not_ready_blocks_promotion():
         population_governance_blockers=[],
         decision_registry_status="APPROVED",
         decision_registry_blockers=[],
+        decision_readiness_status="READY_FOR_HUMAN_DECISION",
+        decision_readiness_blockers=[],
     )
     assert result.status == "NOT_READY"
     assert any("Reconciliação territorial" in x for x in result.blocking_reasons)
@@ -192,3 +196,45 @@ def test_decision_registry_rejected_blocks_promotion():
     )
     assert result.status == "NOT_READY"
     assert any("DEC-001 foi REJECTED" in x for x in result.blocking_reasons)
+
+
+def test_decision_readiness_needs_evidence_keeps_conditional():
+    result = evaluate_promotion_gate(
+        data_quality_status="PASS",
+        parity_status="PASS",
+        linkage_parity_status="PASS",
+        territorial_promotion_ready=True,
+        ci_status="PASS",
+        architecture_review="APPROVED",
+        epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
+        decision_registry_status="APPROVED",
+        decision_registry_blockers=[],
+        decision_readiness_status="NEEDS_EVIDENCE",
+        decision_readiness_blockers=[],
+    )
+    assert result.status == "CONDITIONAL"
+    assert any("Decision Readiness" in x for x in result.conditions)
+
+
+def test_decision_readiness_data_quality_block_makes_not_ready():
+    result = evaluate_promotion_gate(
+        data_quality_status="PASS",
+        parity_status="PASS",
+        linkage_parity_status="PASS",
+        territorial_promotion_ready=True,
+        ci_status="PASS",
+        architecture_review="APPROVED",
+        epidemiology_review="APPROVED",
+        agent_reviews_status="PASS",
+        population_governance_approved=True,
+        population_governance_blockers=[],
+        decision_registry_status="APPROVED",
+        decision_registry_blockers=[],
+        decision_readiness_status="DATA_QUALITY_BLOCK",
+        decision_readiness_blockers=["Sem dados comparáveis."],
+    )
+    assert result.status == "NOT_READY"
+    assert any("Sem dados comparáveis" in x for x in result.blocking_reasons)
