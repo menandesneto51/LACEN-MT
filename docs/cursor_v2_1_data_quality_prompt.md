@@ -80,3 +80,15 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - mudanças pequenas, revisáveis e documentadas.
 
 Não faça merge. Prepare commits para revisão no PR #7.
+
+
+## Technical Freeze V2.1
+
+A partir do HEAD validado pelo CI #355 (`91d10a2f7ebbe40b01e0b6e71602cc2ab3c64128`), a arquitetura V2.1 está congelada conforme `docs/V2_1_TECHNICAL_FREEZE.md`.
+
+Até resolução de DEC-001 e DEC-002:
+- não adicionar novas features;
+- aceitar somente bugfix, testes, segurança/governança e geração de evidências necessárias às decisões;
+- não alterar silenciosamente âncora temporal GAL, prioridade populacional, thresholds ou regras de promoção;
+- manter PR em draft e sem merge;
+- foco operacional: executar pipeline real e produzir os artefatos de evidência/decision readiness.
