@@ -7,8 +7,8 @@
 ## Evidência de congelamento
 
 - GitHub Actions: `LACEN-MT Quality Gate`
-- Run: #355
-- HEAD validado: `91d10a2f7ebbe40b01e0b6e71602cc2ab3c64128`
+- Run: #368
+- HEAD validado: `df5ffcac8dac0dd9a0fb61204e91065f40c60fa6`
 - Conclusão: `SUCCESS`
 
 ## Escopo congelado
