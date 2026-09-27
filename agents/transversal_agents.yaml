@@ -28,3 +28,5 @@ domain_specialists:
 
 orchestration_services:
   - "SPECIALIST_ORCHESTRATOR"
+  - "GENOMIC_INTELLIGENCE_SPECIALIST"
+  - "SUPPLY_CHAIN_SPECIALIST"
