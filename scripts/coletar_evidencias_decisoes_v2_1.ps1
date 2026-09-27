@@ -61,3 +61,9 @@ if (Test-Path $readinessPath) {
   Write-Host "Decision Readiness:"
   Get-Content $readinessPath -Raw
 }
+
+
+# Fallback sem DW/pyodbc:
+#   python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline
+# Depois:
+#   python scripts/gerar_dossier_sala_decisao_v2_1.py --quality-dir saida_pipeline/quality

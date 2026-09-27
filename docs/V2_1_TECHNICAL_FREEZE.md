@@ -59,15 +59,23 @@ O freeze só pode ser encerrado após:
 
 ## Próximo foco
 
-Executar o ETL com dados reais e produzir:
-- `gal_temporal_anchor_summary.json`;
-- `gal_temporal_anchor_weekly_comparison.csv`;
-- `population_source_comparison_summary.json`;
-- `population_source_coverage_detail.csv`;
-- `population_source_pairwise_comparison.csv`;
-- `decision_brief_DEC-001.md`;
-- `decision_brief_DEC-002.md`;
-- `decision_readiness_v2_1.json`.
+Evidências técnicas DEC-001/DEC-002 já podem ser produzidas. O foco passa a ser a **sala de decisão humana**:
+
+1. Gerar/atualizar evidências:
+   - `python -m etl.run_etl_dw --evidence-only ...` (DW), ou
+   - `python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline` (staging local)
+2. Abrir `saida_pipeline/quality/dossier_sala_decisao_v2_1.md`
+   (`python scripts/gerar_dossier_sala_decisao_v2_1.py --quality-dir saida_pipeline/quality`)
+3. Assinar `docs/decisions/DEC-001-ancora-temporal-gal.md` e `DEC-002-prioridade-fontes-populacionais.md`
+4. Só então atualizar `config/decision_status_v2_1.json` para `APPROVED`
+
+Artefatos esperados em `saida_pipeline/quality/`:
+- `gal_temporal_anchor_summary.json` / `gal_temporal_anchor_weekly_comparison.csv`
+- `population_source_comparison_summary.json` (+ coverage/pairwise)
+- `decision_brief_DEC-001.md` / `decision_brief_DEC-002.md`
+- `DEC-001_evidence_packet.md` / `DEC-002_evidence_packet.md`
+- `decision_readiness_v2_1.json`
+- `dossier_sala_decisao_v2_1.md`
 
 
 ## Execução de evidências
