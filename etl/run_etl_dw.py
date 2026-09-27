@@ -491,6 +491,20 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     report["promotion_gate_blocking_reasons"] = promotion_gate.blocking_reasons
     report["promotion_gate_conditions"] = promotion_gate.conditions
     report["passos"].append(f"promotion_gate:{promotion_gate.status}")
+
+    if getattr(args, "evidence_only", False):
+        report["evidence_only"] = True
+        report["aviso"] = (
+            (report.get("aviso") or "")
+            + " | EVIDENCE ONLY: rede, ML, mirror e CIEVS não executados."
+        ).strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+        return report
+
     if report.get("artifact_hygiene_status") == "BLOCK":
         report["aviso"] = (
             (report.get("aviso") or "")
@@ -612,6 +626,11 @@ def main(argv: list[str] | None = None) -> int:
         "--allow-local-fallback",
         action="store_true",
         help="Se DW/VPN cair, usa CSV GAL local (pode gerar SE atrasada com banner).",
+    )
+    ap.add_argument(
+        "--evidence-only",
+        action="store_true",
+        help="Gera apenas evidências/gates para DEC-001 e DEC-002; não executa rede, ML, mirror ou CIEVS.",
     )
     ap.add_argument("--skip-ml", action="store_true")
     ap.add_argument("--skip-cievs", action="store_true")
