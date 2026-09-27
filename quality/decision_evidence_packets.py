@@ -83,6 +83,10 @@ def build_dec001_evidence_packet(
         / "DEC-001-ancora-temporal-gal.md"
     )
     template = tpl.read_text(encoding="utf-8") if tpl.exists() else ""
+    # Pacote técnico nunca deve reproduzir marcações de aprovação do template.
+    template = template.replace("- [x]", "- [ ]").replace("- [X]", "- [ ]")
+    # Pacote técnico nunca deve reproduzir marcações de aprovação do template.
+    template = template.replace("- [x]", "- [ ]").replace("- [X]", "- [ ]")
 
     evidence_block = f"""## Evidencias preenchidas automaticamente (somente leitura)
 
