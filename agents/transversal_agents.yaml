@@ -34,3 +34,6 @@ orchestration_services:
 
 core_runtime_specialists:
   - "EPIDEMIOLOGIST"
+
+engineering_services:
+  - "AI_SYSTEMS_SPECIALIST"
