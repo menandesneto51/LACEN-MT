@@ -1,9 +1,9 @@
 # Decisão institucional — ADR-001 Âncora temporal GAL
 
-**Status:** APROVADA  
+**Status:** PENDENTE  
 **Produto:** LACEN-MT V2.1  
 **Decisão automática:** proibida  
-**Data:** 2026-09-26
+**Data:** PENDENTE
 
 ## Evidências obrigatórias
 
@@ -36,36 +36,34 @@ e `gal_temporal_anchor_weekly_comparison.csv` (replay staging).
 
 Escolher explicitamente uma das alternativas:
 
-- [x] A — Solicitação como âncora única
+- [ ] A — Solicitação como âncora única
 - [ ] B — Coleta como âncora única
 - [ ] C — Âncoras distintas por finalidade
 - [ ] D — Manter regra atual temporariamente e coletar mais evidências
 
 ### Fundamentação
 
-Autorização institucional explícita para aprovar e seguir. A alternativa **A**
-preserva o comportamento atual do pipeline (SE ancorada em data de solicitação),
-mantém comparabilidade histórica e evita mudança silenciosa da âncora. A análise
-de sensibilidade permanece arquivada para eventual revisão futura (coleta).
+Evidência disponível indica impacto relevante da troca de âncora sobre a distribuição semanal.
+A escolha entre solicitação, coleta ou uso por finalidade permanece **pendente de decisão institucional explícita**.
 
 ### Tratamento da série histórica
 
-- [x] Não reprocessar histórico
+- [ ] Não reprocessar histórico
 - [ ] Reprocessar histórico integralmente
 - [ ] Reprocessar apenas período definido
 - [ ] Manter duas séries paralelas
 
-Período/justificativa: série vigente permanece; não há mudança de âncora.
+Período/justificativa: PENDENTE.
 
 ## Aprovações
 
-- Clinical/Epidemiological Specialist: autorizado via decisão institucional 2026-09-26
-- Chief Architect: PASS prévio mantido (CI #368)
-- Data Governance: alinhado à preservação da âncora atual
-- Responsável institucional pelo produto: Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)
-- Data da decisão: 2026-09-26
+- Clinical/Epidemiological Specialist: PENDENTE
+- Chief Architect: PASS arquitetural prévio; não decide a âncora
+- Data Governance: PENDENTE quanto ao registro institucional
+- Responsável institucional pelo produto: PENDENTE
+- Data da decisão: PENDENTE
 
 ## Critério para remover o BLOCK
 
-Decisão preenchida, aprovada e coberta por teste de regressão do registro
-`config/decision_status_v2_1.json` (alternativa A).
+Decisão específica registrada por responsável autorizado, baseada nas evidências disponíveis,
+com atualização de `config/decision_status_v2_1.json` e teste de regressão do comportamento escolhido.
