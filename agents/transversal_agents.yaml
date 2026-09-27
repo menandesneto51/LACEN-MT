@@ -26,7 +26,11 @@ rules:
 domain_specialists:
   - "LAB_INTELLIGENCE_SPECIALIST"
 
+  - "PUBLIC_HEALTH_MANAGEMENT_SPECIALIST"
 orchestration_services:
   - "SPECIALIST_ORCHESTRATOR"
   - "GENOMIC_INTELLIGENCE_SPECIALIST"
   - "SUPPLY_CHAIN_SPECIALIST"
+
+core_runtime_specialists:
+  - "EPIDEMIOLOGIST"
