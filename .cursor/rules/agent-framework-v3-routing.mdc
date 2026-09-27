@@ -1,0 +1,21 @@
+---
+description: Agent Framework v3 — roteamento transversal por perfil, evidência e Cursor.
+alwaysApply: true
+---
+
+# Agent Framework v3 — projeto integrado
+
+1. Leia AGENTS.md quando existir.
+2. Leia agents/framework-v3-profile.yaml.
+3. Use somente agentes/capabilities pertinentes ao perfil e à tarefa.
+4. SES_DATA_CATALOG é preflight antes de nova fonte, coletor, API, ETL, tabela de integração ou indicador.
+5. SCHEMA_DRIFT_MONITOR é obrigatório quando integração/fonte existente puder ter mudado.
+6. SECURITY_DEVSECOPS_SENTINEL revisa mudança em secrets, dependências, CI/CD, containers, auth, permissões ou dados sensíveis.
+7. CI_OBSERVABILITY classifica falhas sem atribuir causalidade sem evidência; PRE_RUN_FAILURE não incrimina código.
+8. EXECUTIVE_BRIEFING_ORCHESTRATOR consolida evidências; não recalcula epidemiologia nem altera indicador oficial.
+9. MUNICIPAL_READINESS_SPECIALIST avalia capacidade municipal documentada; ausência de evidência permanece UNKNOWN.
+10. UNKNOWN não pode ser convertido silenciosamente em PASS, READY ou zero.
+11. Novo agente exige gap explícito não atendido por agente/capability existente.
+12. Exceção a BLOCK exige decisão humana documentada.
+
+Registry e contratos autoritativos: menandesneto51/pqavs, Agent Framework v3.
