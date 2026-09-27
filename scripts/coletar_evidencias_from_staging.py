@@ -55,6 +55,10 @@ from quality.population_governance import (
 )
 from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate
 from quality.review_package import build_review_package, write_review_package
+from quality.data_quality_agent import run_quality_gate, write_report as write_quality_report
+from quality.parity_report import build_parity_report, write_parity_report
+from quality.linkage_parity import LinkageParitySummary, write_linkage_parity
+from etl.build_weekly_from_gal import weekly_from_dw_agg
 
 
 def _build_dossier(quality: Path) -> str:
@@ -105,6 +109,64 @@ def main(argv: list[str] | None = None) -> int:
     )
     write_population_source_comparison(detail, pairwise, pop_summary, quality)
 
+    # DQ + paridade a partir do weekly GAL do staging (reduz UNKNOWN no Promotion Gate).
+    weekly_pos = pd.DataFrame()
+    dq_status = None
+    parity_status = None
+    agg_path = stage / "vw_gal_weekly_agg.parquet"
+    if agg_path.exists():
+        _tests, weekly_pos = weekly_from_dw_agg(pd.read_parquet(agg_path))
+        if not weekly_pos.empty and "target" in weekly_pos.columns:
+            weekly_pos = weekly_pos.rename(columns={"target": "agravo"})
+        dq_report = run_quality_gate(
+            weekly=weekly_pos if not weekly_pos.empty else None,
+            gal_micro=micro,
+            population=pop_dim if not pop_dim.empty else None,
+            analysis_year=analysis_year,
+            population_required=False,
+            metadata={
+                "pipeline": "scripts.coletar_evidencias_from_staging",
+                "pipeline_version": "v2.1",
+                "fonte_dados": "staging_dw",
+                "mode": "evidence_only_staging_replay",
+            },
+        )
+        write_quality_report(dq_report, quality)
+        dq_status = dq_report.status.value
+        _parity_detail, parity_summary = build_parity_report(
+            weekly_pos if not weekly_pos.empty else pd.DataFrame()
+        )
+        write_parity_report(_parity_detail, parity_summary, quality)
+        parity_status = parity_summary.status
+
+    # Linkage multi-fonte completo exige ETL DW; no staging replay fica WARN explícito.
+    linkage_payload = write_linkage_parity(
+        {
+            "STAGING_REPLAY": (
+                pd.DataFrame(),
+                LinkageParitySummary(
+                    source="STAGING_REPLAY",
+                    rows_left=0,
+                    both_same=0,
+                    recovered_by_ibge=0,
+                    lost_by_ibge=0,
+                    conflict=0,
+                    no_match=0,
+                    promotion_status="WARN",
+                ),
+            )
+        },
+        quality,
+    )
+    linkage_status = linkage_payload.get("promotion_status")
+    recon_summary = {}
+    recon_path = quality / "reconciliacao_territorial_resumo.json"
+    if recon_path.exists():
+        try:
+            recon_summary = json.loads(recon_path.read_text(encoding="utf-8"))
+        except Exception:
+            recon_summary = {}
+
     population_policy = load_population_governance(
         ROOT / "config" / "population_governance_v2_1.json"
     )
@@ -114,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
         policy=population_policy,
     )
     write_population_governance_report(population_governance, quality)
-    # Copia da política aprovada para rastreio junto dos artefatos.
+    # Copia da política (ainda PENDING até endosso formal) para rastreio.
     gov_src = ROOT / "config" / "population_governance_v2_1.json"
     if gov_src.exists():
         shutil.copy(gov_src, quality / "population_governance_policy_v2_1.json")
@@ -137,10 +199,10 @@ def main(argv: list[str] | None = None) -> int:
         readiness_blockers.extend(item.get("blockers", []) or [])
 
     promotion = evaluate_promotion_gate(
-        data_quality_status=None,
-        parity_status=None,
-        linkage_parity_status=None,
-        territorial_promotion_ready=None,
+        data_quality_status=dq_status,
+        parity_status=parity_status,
+        linkage_parity_status=linkage_status,
+        territorial_promotion_ready=recon_summary.get("promotion_ready"),
         ci_status="SUCCESS",
         architecture_review="PASS",
         epidemiology_review="PASS",
@@ -167,6 +229,10 @@ def main(argv: list[str] | None = None) -> int:
         "automatic_decision_allowed": False,
         "analysis_year_population": analysis_year,
         "gal_micro_rows": int(len(micro)),
+        "weekly_pos_rows": int(len(weekly_pos)),
+        "data_quality_status": dq_status,
+        "parity_status": parity_status,
+        "linkage_parity_status": linkage_status,
         "readiness_overall": readiness.get("overall_status"),
         "decision_registry_overall": registry_eval.get("overall_status"),
         "agent_reviews_overall": agent_summary.get("overall_status"),
@@ -175,7 +241,8 @@ def main(argv: list[str] | None = None) -> int:
         "notes": [
             "CodigoMunicipio/CODIGO no staging com 6 digitos: IBGE 7 nao inventado.",
             "POPULACAO_TCU sem ano_referencia pode ficar fora da comparacao anual.",
-            "DEC-001/DEC-002 lidas de config/decision_status_v2_1.json (nao autoaprovadas).",
+            "DEC-001/DEC-002 permanecem PENDING até endosso formal (formulario institucional).",
+            "Linkage STAGING_REPLAY em WARN: pareamentos GAL×SINAN/SIM/SIH/SIA exigem ETL DW.",
         ],
     }
     (quality / "evidence_collection_meta.json").write_text(
@@ -187,6 +254,9 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     print("[OK] evidencias staging geradas em", quality)
+    print("[OK] data_quality:", dq_status)
+    print("[OK] parity:", parity_status)
+    print("[OK] linkage:", linkage_status)
     print("[OK] readiness:", readiness.get("overall_status"))
     print("[OK] decision_registry:", registry_eval.get("overall_status"))
     print("[OK] agent_reviews:", agent_summary.get("overall_status"))

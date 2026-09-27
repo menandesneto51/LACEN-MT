@@ -7,9 +7,11 @@
 ## Evidência de congelamento
 
 - GitHub Actions: `LACEN-MT Quality Gate`
-- Run: #368
-- HEAD validado: `df5ffcac8dac0dd9a0fb61204e91065f40c60fa6`
+- Run: #36286264892 (PR checks verdes no HEAD atual)
+- HEAD validado: `bd84615cfa46a2145f87c799e04b0b0a6a8dfbaf`
 - Conclusão: `SUCCESS`
+- Nota: aprovações gravadas só via chat foram revertidas por guards de governança;
+  DEC-001/DEC-002 permanecem `PENDING` até endosso formal com nome/cargo/data.
 
 ## Escopo congelado
 
@@ -59,16 +61,15 @@ O freeze só pode ser encerrado após:
 
 ## Próximo foco
 
-**DEC-001 e DEC-002 foram aprovadas institucionalmente (2026-09-26).**  
-Âncora temporal: alternativa **A** (solicitação).  
-População: `source_priority = ["DW:POPULACAO_TOTAL"]`.  
-Promoção automática continua **proibida**.
+**DEC-001 e DEC-002 permanecem PENDING** (guards de governança exigem endosso formal).  
+Promoção automática continua **proibida**. Clinical=BLOCK e Security=WARN até assinatura.
 
 Próximos passos:
-1. Reexecutar evidências + Promotion Gate (staging ou DW) e conferir `promotion_gate_v2_1.json`
-2. Revisar `review_package_v2_1.md` (Chief Architect / Epidemiologia / release)
-3. CI verde no HEAD com as aprovações
-4. Só então decidir encerramento do technical freeze e release humano
+1. Preencher `docs/decisions/FORMULARIO_APROVACAO_INSTITUCIONAL_V2_1.md`
+2. Gerar `config/institutional_endorsement_v2_1.json` e validar com  
+   `python scripts/aplicar_aprovacao_institucional_v2_1.py --dry-run`
+3. Reexecutar evidências staging/DW e conferir `promotion_gate_v2_1.json`
+4. Só após endosso válido + CI verde decidir saída do freeze / release humano
 
 Comandos:
 - `python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline`
@@ -77,6 +78,8 @@ Comandos:
 Artefatos esperados em `saida_pipeline/quality/`:
 - `gal_temporal_anchor_summary.json` / `gal_temporal_anchor_weekly_comparison.csv`
 - `population_source_comparison_summary.json` (+ coverage/pairwise)
+- `data_quality_gate_ultimo.json` / `paridade_legado_v2_resumo.json`
+- `paridade_linkage_resumo.json` / `reconciliacao_territorial_resumo.json`
 - `decision_brief_DEC-001.md` / `decision_brief_DEC-002.md`
 - `DEC-001_evidence_packet.md` / `DEC-002_evidence_packet.md`
 - `decision_readiness_v2_1.json` / `decision_status_registry_v2_1.json`
