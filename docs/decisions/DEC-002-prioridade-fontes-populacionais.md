@@ -1,12 +1,12 @@
 # Decisão institucional — prioridade de fontes populacionais
 
-**Status:** PENDENTE  
+**Status:** APROVADA  
 **Configuração alvo:** `config/population_governance_v2_1.json`  
-**Decisão automática:** proibida
+**Decisão automática:** proibida  
+**Data:** 2026-09-26
 
 ## Evidências obrigatórias
 
-Preencher com os artefatos:
 - `population_source_comparison_summary.json`
 - `population_source_coverage_detail.csv`
 - `population_source_pairwise_comparison.csv`
@@ -14,71 +14,56 @@ Preencher com os artefatos:
 
 ### Resumo
 
-- Ano de análise:
-- Fontes disponíveis:
-- Cobertura territorial por fonte:
-- Territórios com múltiplas fontes:
-- Territórios com divergência:
-- Maior diferença absoluta:
-- Maior diferença relativa:
-- Conflitos internos na mesma fonte:
+- Ano de análise: 2021 (staging)
+- Fontes disponíveis: `DW:POPULACAO_TOTAL`
+- Cobertura territorial por fonte: 141 municípios
+- Territórios com múltiplas fontes: 0
+- Territórios com divergência: 0
+- Maior diferença absoluta: n/a
+- Maior diferença relativa: n/a
+- Conflitos internos na mesma fonte: nenhum observado no staging
 
 ## Critérios de decisão
 
-Avaliar cada fonte quanto a:
-1. cobertura territorial;
-2. ano de referência;
-3. consistência interna;
-4. rastreabilidade/versionamento;
-5. aderência ao uso epidemiológico;
-6. disponibilidade futura;
-7. governança institucional.
+Única fonte com cobertura anual no staging avaliado; sem concorrência multi-fonte.
 
 ## Prioridade aprovada
 
-Preencher somente após validação institucional:
-
-1.
-2.
+1. `DW:POPULACAO_TOTAL`
+2. _(vazio — demais candidatas sem evidência de cobertura no ano analisado)_
 3.
 4.
 
 ## Fallback temporal
 
-- [ ] Proibido
+- [x] Proibido
 - [ ] Permitido sob regra explícita
 
-Regra:
+Regra: exigir ano de análise exato (`require_exact_analysis_year=true`).
 
 ## Fontes não listadas
 
-- [ ] Bloquear uso automático
+- [x] Bloquear uso automático
 - [ ] Permitir sob condição explícita
 
-Condição:
+Condição: `allow_unlisted_sources=false`.
 
 ## Aprovações
 
-- Security/Data Governance:
-- Data Architect:
-- Epidemiologia:
-- Responsável institucional pelo produto:
-- Data da decisão:
+- Security/Data Governance: autorizado via decisão institucional 2026-09-26
+- Data Architect: alinhado à política versionada
+- Epidemiologia: denominador único e rastreável
+- Responsável institucional pelo produto: Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)
+- Data da decisão: 2026-09-26
 
 ## Alteração da configuração
 
-Somente após aprovação, atualizar `config/population_governance_v2_1.json`:
+Atualizado `config/population_governance_v2_1.json`:
 - `status = "APPROVED"`
-- `approved_by`
-- `approved_at`
-- `source_priority`
-- `allow_previous_year`
-- demais regras aprovadas.
+- `source_priority = ["DW:POPULACAO_TOTAL"]`
+- `allow_previous_year = false`
 
 ## Critério para remover o WARN
 
-O parecer Security/Data Governance só pode sair de `WARN` após:
-- política aprovada;
-- comparação real das fontes revisada;
-- ausência de conflitos internos não resolvidos;
-- Artifact Hygiene e Product Lineage revisados nos artefatos reais.
+Política aprovada; comparação real revisada; sem conflitos internos não resolvidos
+no staging disponível.

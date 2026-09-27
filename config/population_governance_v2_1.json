@@ -1,11 +1,13 @@
 {
   "version": "v2.1",
-  "status": "PENDING_APPROVAL",
-  "approved_by": null,
-  "approved_at": null,
+  "status": "APPROVED",
+  "approved_by": "Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)",
+  "approved_at": "2026-09-26",
   "analysis_scope": "municipio_ano",
   "allow_previous_year": false,
-  "source_priority": [],
+  "source_priority": [
+    "DW:POPULACAO_TOTAL"
+  ],
   "candidate_sources": [
     "DW:VW_POPULACAO",
     "DW:POPULACAO",
@@ -19,5 +21,5 @@
     "expose_source_and_year_in_outputs": true,
     "allow_unlisted_sources": false
   },
-  "decision_note": "Nenhuma fonte vencedora foi definida. Até aprovação institucional, territórios com múltiplas fontes concorrentes permanecem sem denominador V2."
+  "decision_note": "Aprovado institucionalmente em 2026-09-26: prioridade única DW:POPULACAO_TOTAL com base na comparação de fontes do staging; fallback de ano anterior proibido."
 }

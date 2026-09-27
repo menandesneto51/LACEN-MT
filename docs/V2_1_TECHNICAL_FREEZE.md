@@ -59,22 +59,28 @@ O freeze só pode ser encerrado após:
 
 ## Próximo foco
 
-Evidências técnicas DEC-001/DEC-002 já podem ser produzidas. O foco passa a ser a **sala de decisão humana**:
+**DEC-001 e DEC-002 foram aprovadas institucionalmente (2026-09-26).**  
+Âncora temporal: alternativa **A** (solicitação).  
+População: `source_priority = ["DW:POPULACAO_TOTAL"]`.  
+Promoção automática continua **proibida**.
 
-1. Gerar/atualizar evidências:
-   - `python -m etl.run_etl_dw --evidence-only ...` (DW), ou
-   - `python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline` (staging local)
-2. Abrir `saida_pipeline/quality/dossier_sala_decisao_v2_1.md`
-   (`python scripts/gerar_dossier_sala_decisao_v2_1.py --quality-dir saida_pipeline/quality`)
-3. Assinar `docs/decisions/DEC-001-ancora-temporal-gal.md` e `DEC-002-prioridade-fontes-populacionais.md`
-4. Só então atualizar `config/decision_status_v2_1.json` para `APPROVED`
+Próximos passos:
+1. Reexecutar evidências + Promotion Gate (staging ou DW) e conferir `promotion_gate_v2_1.json`
+2. Revisar `review_package_v2_1.md` (Chief Architect / Epidemiologia / release)
+3. CI verde no HEAD com as aprovações
+4. Só então decidir encerramento do technical freeze e release humano
+
+Comandos:
+- `python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline`
+- `python scripts/gerar_dossier_sala_decisao_v2_1.py --quality-dir saida_pipeline/quality`
 
 Artefatos esperados em `saida_pipeline/quality/`:
 - `gal_temporal_anchor_summary.json` / `gal_temporal_anchor_weekly_comparison.csv`
 - `population_source_comparison_summary.json` (+ coverage/pairwise)
 - `decision_brief_DEC-001.md` / `decision_brief_DEC-002.md`
 - `DEC-001_evidence_packet.md` / `DEC-002_evidence_packet.md`
-- `decision_readiness_v2_1.json`
+- `decision_readiness_v2_1.json` / `decision_status_registry_v2_1.json`
+- `agent_reviews_v2_1.json` / `promotion_gate_v2_1.json`
 - `dossier_sala_decisao_v2_1.md`
 
 

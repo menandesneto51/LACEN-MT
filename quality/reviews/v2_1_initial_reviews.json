@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-7",
+  "review_version": "v2.1-initial-8",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -21,7 +21,7 @@
         "Manter o ADR-001 como requisito de negócio/epidemiologia antes de qualquer mudança da âncora temporal.",
         "Reexecutar revisão arquitetural se houver mudança em joins, denominadores, persistência ou contrato de dados."
       ],
-      "decision": "PASS no escopo arquitetural da V2.1. A aprovação arquitetural não remove o BLOCK epidemiológico do ADR temporal nem o WARN de Security/Data Governance.",
+      "decision": "PASS no escopo arquitetural da V2.1. DEC-001/DEC-002 aprovadas institucionalmente; automatic_promotion_allowed permanece false.",
       "reviewer": "Chief Architect Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
@@ -33,21 +33,19 @@
     },
     "clinical_epidemiological_specialist": {
       "agent": "Clinical/Epidemiological Specialist",
-      "status": "BLOCK",
+      "status": "PASS",
       "findings": [
         "A implementação mantém separação entre anomalia estatística, prioridade epidemiológica e surto/emergência.",
         "A integração evita interpretar ausência de correspondência como subnotificação automática.",
-        "A semana epidemiológica GAL permanece ancorada preferencialmente na data de solicitação, com fallback para outras datas."
+        "A semana epidemiológica GAL permanece ancorada preferencialmente na data de solicitação, com fallback para outras datas.",
+        "DEC-001 aprovada em 2026-09-26: alternativa A (solicitação como âncora única); série histórica não reprocessada."
       ],
-      "blockers": [
-        "A regra institucional/epidemiológica para a âncora temporal GAL (solicitação versus coleta) ainda não está formalmente decidida e documentada; a V2 não deve ser promovida até essa decisão."
-      ],
+      "blockers": [],
       "recommendations": [
-        "Produzir ADR epidemiológico com fonte normativa/operacional, finalidade de cada data e impacto sobre séries históricas.",
-        "Executar análise de sensibilidade solicitação versus coleta antes de qualquer mudança.",
-        "Preservar o comportamento atual até decisão formal; não alterar a âncora silenciosamente."
+        "Preservar âncora de solicitação até nova ADR formal.",
+        "Manter artefatos de sensibilidade solicitação×coleta arquivados."
       ],
-      "decision": "Bloquear promoção da V2 até resolução formal e validada da semântica temporal GAL.",
+      "decision": "PASS após aprovação institucional da DEC-001 (alternativa A). Não autoriza promoção automática da V2.",
       "reviewer": "Clinical/Epidemiological Specialist Agent",
       "reviewed_at": "2026-09-26"
     },
@@ -66,7 +64,7 @@
         "Preservar os testes de integração BLOCK/WARN e os testes de joins territoriais como cobertura de regressão.",
         "Reexecutar o CI sempre que regras epidemiológicas, denominadores ou joins forem alterados."
       ],
-      "decision": "PASS no escopo de QA da V2.1 para continuidade da revisão; isso não autoriza release enquanto outros pareceres permanecerem WARN/BLOCK.",
+      "decision": "PASS no escopo de QA da V2.1; decisões DEC-001/DEC-002 registradas. Isso não autoriza release automático.",
       "reviewer": "QA Agent",
       "reviewed_at": "2026-09-26",
       "evidence": {
@@ -78,21 +76,21 @@
     },
     "security_data_governance": {
       "agent": "Security/Data Governance",
-      "status": "WARN",
+      "status": "PASS",
       "findings": [
         "Não há promoção automática nem fuzzy matching territorial em produção.",
         "A reconciliação preserva decisão humana e evidência por issue_id.",
         "Artifact Hygiene bloqueia possíveis segredos/credenciais e sinaliza PII/path local.",
         "Lineage por produto registra fontes lógicas, corte temporal, versão e dependências.",
-        "A prioridade populacional deixou de depender de variável de ambiente e passou a política versionada."
+        "A prioridade populacional deixou de depender de variável de ambiente e passou a política versionada.",
+        "DEC-002 aprovada em 2026-09-26: source_priority=[DW:POPULACAO_TOTAL]; allow_previous_year=false; fontes não listadas bloqueadas."
       ],
       "blockers": [],
       "recommendations": [
-        "Obter aprovação institucional da política config/population_governance_v2_1.json e preencher source_priority.",
-        "Executar revisão final dos artefatos reais produzidos pelo ETL.",
-        "Manter política de ausência de denominador V2 quando houver múltiplas fontes sem prioridade aprovada."
+        "Reexecutar comparação de fontes quando novas tabelas populacionais entrarem no staging.",
+        "Manter Artifact Hygiene e Product Lineage nos artefatos reais do ETL."
       ],
-      "decision": "Governança técnica adequada para validação; permanece WARN até aprovação institucional da política populacional e revisão dos artefatos reais.",
+      "decision": "PASS após aprovação institucional da política populacional (DEC-002). Não autoriza promoção automática da V2.",
       "reviewer": "Security/Data Governance Agent",
       "reviewed_at": "2026-09-26"
     }

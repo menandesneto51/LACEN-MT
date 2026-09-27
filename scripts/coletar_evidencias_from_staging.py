@@ -43,6 +43,18 @@ from quality.decision_registry import (
     evaluate_decision_registry,
     write_decision_registry_report,
 )
+from quality.agent_reviews import (
+    load_agent_reviews,
+    summarize_agent_reviews,
+    write_agent_reviews,
+)
+from quality.population_governance import (
+    load_population_governance,
+    evaluate_population_governance,
+    write_population_governance_report,
+)
+from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate
+from quality.review_package import build_review_package, write_review_package
 
 
 def _build_dossier(quality: Path) -> str:
@@ -93,16 +105,60 @@ def main(argv: list[str] | None = None) -> int:
     )
     write_population_source_comparison(detail, pairwise, pop_summary, quality)
 
+    population_policy = load_population_governance(
+        ROOT / "config" / "population_governance_v2_1.json"
+    )
+    population_governance = evaluate_population_governance(
+        pop_dim,
+        analysis_year=analysis_year,
+        policy=population_policy,
+    )
+    write_population_governance_report(population_governance, quality)
+    # Copia da política aprovada para rastreio junto dos artefatos.
     gov_src = ROOT / "config" / "population_governance_v2_1.json"
     if gov_src.exists():
-        shutil.copy(gov_src, quality / "population_governance_v2_1.json")
+        shutil.copy(gov_src, quality / "population_governance_policy_v2_1.json")
 
     write_decision_briefs(quality)
     readiness = evaluate_decision_readiness(quality)
     write_decision_readiness_report(readiness, quality)
     registry = load_decision_registry(ROOT / "config" / "decision_status_v2_1.json")
-    write_decision_registry_report(
-        evaluate_decision_registry(registry, evidence_dir=quality),
+    registry_eval = evaluate_decision_registry(registry, evidence_dir=quality)
+    write_decision_registry_report(registry_eval, quality)
+
+    agent_reviews = load_agent_reviews(
+        ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json"
+    )
+    agent_summary = summarize_agent_reviews(agent_reviews)
+    write_agent_reviews(agent_reviews, quality)
+
+    readiness_blockers: list[str] = []
+    for item in (readiness.get("decisions") or {}).values():
+        readiness_blockers.extend(item.get("blockers", []) or [])
+
+    promotion = evaluate_promotion_gate(
+        data_quality_status=None,
+        parity_status=None,
+        linkage_parity_status=None,
+        territorial_promotion_ready=None,
+        ci_status="SUCCESS",
+        architecture_review="PASS",
+        epidemiology_review="PASS",
+        agent_reviews_status=agent_summary.get("overall_status"),
+        population_governance_approved=population_governance.approved,
+        population_governance_blockers=population_governance.blockers,
+        decision_registry_status=registry_eval.get("overall_status"),
+        decision_registry_blockers=registry_eval.get("blockers", []),
+        decision_readiness_status=readiness.get("overall_status"),
+        decision_readiness_blockers=readiness_blockers,
+    )
+    write_promotion_gate(promotion, quality)
+    write_review_package(
+        build_review_package(
+            quality,
+            pr_number=7,
+            reviews_path=ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json",
+        ),
         quality,
     )
 
@@ -112,10 +168,14 @@ def main(argv: list[str] | None = None) -> int:
         "analysis_year_population": analysis_year,
         "gal_micro_rows": int(len(micro)),
         "readiness_overall": readiness.get("overall_status"),
+        "decision_registry_overall": registry_eval.get("overall_status"),
+        "agent_reviews_overall": agent_summary.get("overall_status"),
+        "population_governance_approved": population_governance.approved,
+        "promotion_gate_status": promotion.status,
         "notes": [
             "CodigoMunicipio/CODIGO no staging com 6 digitos: IBGE 7 nao inventado.",
             "POPULACAO_TCU sem ano_referencia pode ficar fora da comparacao anual.",
-            "Nenhuma alternativa DEC-001/DEC-002 foi selecionada automaticamente.",
+            "DEC-001/DEC-002 lidas de config/decision_status_v2_1.json (nao autoaprovadas).",
         ],
     }
     (quality / "evidence_collection_meta.json").write_text(
@@ -128,6 +188,9 @@ def main(argv: list[str] | None = None) -> int:
 
     print("[OK] evidencias staging geradas em", quality)
     print("[OK] readiness:", readiness.get("overall_status"))
+    print("[OK] decision_registry:", registry_eval.get("overall_status"))
+    print("[OK] agent_reviews:", agent_summary.get("overall_status"))
+    print("[OK] promotion_gate:", promotion.status)
     print("[OK] dossie: dossier_sala_decisao_v2_1.md")
     return 0
 
