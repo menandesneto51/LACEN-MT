@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-9",
+  "review_version": "v2.1-initial-10",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -21,9 +21,9 @@
         "Manter o ADR-001 como requisito de negócio/epidemiologia antes de qualquer mudança da âncora temporal.",
         "Reexecutar revisão arquitetural se houver mudança em joins, denominadores, persistência ou contrato de dados."
       ],
-      "decision": "PASS no escopo arquitetural da V2.1. A aprovação arquitetural não remove o BLOCK epidemiológico da DEC-001 nem o WARN de Security/Data Governance da DEC-002.",
+      "decision": "PASS arquitetural mantido. DEC-001/DEC-002 endossadas formalmente; automatic_promotion_allowed=false.",
       "reviewer": "Chief Architect Agent",
-      "reviewed_at": "2026-09-26",
+      "reviewed_at": "2026-09-27",
       "evidence": {
         "workflow_run_number": 368,
         "workflow_run_id": 36282146352,
@@ -33,23 +33,22 @@
     },
     "clinical_epidemiological_specialist": {
       "agent": "Clinical/Epidemiological Specialist",
-      "status": "BLOCK",
+      "status": "PASS",
       "findings": [
         "A implementação mantém separação entre anomalia estatística, prioridade epidemiológica e surto/emergência.",
         "A integração evita interpretar ausência de correspondência como subnotificação automática.",
         "A semana epidemiológica GAL permanece ancorada preferencialmente na data de solicitação, com fallback para outras datas.",
-        "Há evidência quantitativa disponível para solicitação × coleta, mas a escolha institucional da âncora permanece pendente."
+        "Há evidência quantitativa disponível para solicitação × coleta, mas a escolha institucional da âncora permanece pendente.",
+        "DEC-001 aprovada (A) por Menandes Neto em 2026-09-27 via institutional_endorsement_v2_1.json."
       ],
-      "blockers": [
-        "A regra institucional/epidemiológica para a âncora temporal GAL ainda não possui decisão específica e auditável; a V2 não deve ser promovida até essa decisão."
-      ],
+      "blockers": [],
       "recommendations": [
         "Revisar o pacote de evidências DEC-001 e registrar uma alternativa explicitamente.",
         "Preservar o comportamento atual até decisão formal; não alterar a âncora silenciosamente."
       ],
-      "decision": "BLOCK até decisão institucional explícita da DEC-001. Evidência técnica, isoladamente, não constitui aprovação.",
-      "reviewer": "Clinical/Epidemiological Specialist Agent",
-      "reviewed_at": "2026-09-26"
+      "decision": "PASS após endosso formal DEC-001 alternativa A. Promoção automática permanece proibida.",
+      "reviewer": "Menandes Neto (Responsável CIEVS-MT (vigilância epidemiológica))",
+      "reviewed_at": "2026-09-27"
     },
     "qa": {
       "agent": "QA",
@@ -66,9 +65,9 @@
         "Preservar os testes de integração BLOCK/WARN e os testes de joins territoriais como cobertura de regressão.",
         "Reexecutar o CI sempre que regras epidemiológicas, denominadores ou joins forem alterados."
       ],
-      "decision": "PASS no escopo de QA da V2.1; isso não autoriza release enquanto DEC-001/DEC-002 e pareceres associados permanecerem pendentes.",
+      "decision": "PASS de QA mantido após endosso formal DEC-001/DEC-002. Não autoriza release automático.",
       "reviewer": "QA Agent",
-      "reviewed_at": "2026-09-26",
+      "reviewed_at": "2026-09-27",
       "evidence": {
         "workflow_run_number": 368,
         "workflow_run_id": 36282146352,
@@ -78,13 +77,14 @@
     },
     "security_data_governance": {
       "agent": "Security/Data Governance",
-      "status": "WARN",
+      "status": "PASS",
       "findings": [
         "Não há promoção automática nem fuzzy matching territorial em produção.",
         "A reconciliação preserva decisão humana e evidência por issue_id.",
         "Artifact Hygiene bloqueia possíveis segredos/credenciais e sinaliza PII/path local.",
         "Lineage por produto registra fontes lógicas, corte temporal, versão e dependências.",
-        "A política populacional permanece versionada, porém sem prioridade de fonte institucionalmente aprovada."
+        "A política populacional permanece versionada, porém sem prioridade de fonte institucionalmente aprovada.",
+        "DEC-002 aprovada com source_priority=['DW:POPULACAO_TOTAL'] por Menandes Neto em 2026-09-27 via institutional_endorsement_v2_1.json."
       ],
       "blockers": [],
       "recommendations": [
@@ -92,9 +92,9 @@
         "Executar revisão final dos artefatos reais produzidos pelo ETL.",
         "Manter ausência de denominador V2 quando houver múltiplas fontes sem prioridade aprovada."
       ],
-      "decision": "WARN até aprovação institucional explícita da DEC-002 e revisão dos artefatos reais.",
-      "reviewer": "Security/Data Governance Agent",
-      "reviewed_at": "2026-09-26"
+      "decision": "PASS após endosso formal da política populacional (DEC-002). Promoção automática permanece proibida.",
+      "reviewer": "Menandes Neto (Responsável CIEVS-MT (governança dos produtos de vigilância))",
+      "reviewed_at": "2026-09-27"
     }
   }
 }

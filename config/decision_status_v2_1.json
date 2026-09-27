@@ -4,31 +4,49 @@
   "decisions": {
     "DEC-001": {
       "title": "Âncora temporal GAL — solicitação × coleta",
-      "status": "PENDING",
-      "decided_by": null,
-      "decided_at": null,
+      "status": "APPROVED",
+      "decided_by": "Menandes Neto — Responsável CIEVS-MT / produto LACEN-MT V2.1",
+      "decided_at": "2026-09-27",
       "evidence": [
         "gal_temporal_anchor_summary.json",
         "gal_temporal_anchor_weekly_comparison.csv",
         "decision_brief_DEC-001.md",
-        "DEC-001_evidence_packet.md"
+        "DEC-001_evidence_packet.md",
+        "institutional_endorsement_v2_1.json"
       ],
-      "decision": null
+      "decision": {
+        "alternative": "A",
+        "anchor": "solicitacao",
+        "historical_series": "nao_reprocessar",
+        "rationale": "Preservar a âncora atual em data de solicitação, mantendo comparabilidade histórica e evitando reprocessamento. Evidência de sensibilidade solicitação×coleta arquivada; escolha institucional do Responsável CIEVS-MT.",
+        "adr": "docs/decisions/DEC-001-ancora-temporal-gal.md",
+        "endorsement": "config/institutional_endorsement_v2_1.json"
+      }
     },
     "DEC-002": {
       "title": "Prioridade institucional das fontes populacionais",
-      "status": "PENDING",
-      "decided_by": null,
-      "decided_at": null,
+      "status": "APPROVED",
+      "decided_by": "Menandes Neto — Responsável CIEVS-MT / produto LACEN-MT V2.1",
+      "decided_at": "2026-09-27",
       "evidence": [
         "population_source_comparison_summary.json",
         "population_source_coverage_detail.csv",
         "population_source_pairwise_comparison.csv",
         "population_governance_v2_1.json",
         "decision_brief_DEC-002.md",
-        "DEC-002_evidence_packet.md"
+        "DEC-002_evidence_packet.md",
+        "institutional_endorsement_v2_1.json"
       ],
-      "decision": null
+      "decision": {
+        "source_priority": [
+          "DW:POPULACAO_TOTAL"
+        ],
+        "allow_previous_year": false,
+        "allow_unlisted_sources": false,
+        "rationale": "No staging disponível, DW:POPULACAO_TOTAL é a fonte com cobertura anual (141 municípios, ano 2021), sem divergência multi-fonte.",
+        "adr": "docs/decisions/DEC-002-prioridade-fontes-populacionais.md",
+        "endorsement": "config/institutional_endorsement_v2_1.json"
+      }
     }
   }
 }

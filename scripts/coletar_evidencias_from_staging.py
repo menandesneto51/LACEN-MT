@@ -180,6 +180,9 @@ def main(argv: list[str] | None = None) -> int:
     gov_src = ROOT / "config" / "population_governance_v2_1.json"
     if gov_src.exists():
         shutil.copy(gov_src, quality / "population_governance_policy_v2_1.json")
+    endorsement_src = ROOT / "config" / "institutional_endorsement_v2_1.json"
+    if endorsement_src.exists():
+        shutil.copy(endorsement_src, quality / "institutional_endorsement_v2_1.json")
 
     write_decision_briefs(quality)
     readiness = evaluate_decision_readiness(quality)

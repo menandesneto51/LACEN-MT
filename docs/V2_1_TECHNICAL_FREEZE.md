@@ -61,15 +61,15 @@ O freeze só pode ser encerrado após:
 
 ## Próximo foco
 
-**DEC-001 e DEC-002 permanecem PENDING** (guards de governança exigem endosso formal).  
-Promoção automática continua **proibida**. Clinical=BLOCK e Security=WARN até assinatura.
+**Endosso formal:** `config/institutional_endorsement_v2_1.json`  
+Responsável: **Menandes Neto — Responsável CIEVS-MT**.  
+DEC-001: alternativa **A** (solicitação). DEC-002: `DW:POPULACAO_TOTAL`.  
+Promoção automática continua **proibida**.
 
 Próximos passos:
-1. Preencher `docs/decisions/FORMULARIO_APROVACAO_INSTITUCIONAL_V2_1.md`
-2. Gerar `config/institutional_endorsement_v2_1.json` e validar com  
-   `python scripts/aplicar_aprovacao_institucional_v2_1.py --dry-run`
-3. Reexecutar evidências staging/DW e conferir `promotion_gate_v2_1.json`
-4. Só após endosso válido + CI verde decidir saída do freeze / release humano
+1. Conferir CI verde no HEAD com o endosso
+2. Revisar `promotion_gate_v2_1.json` / `review_package_v2_1.md`
+3. Só então decidir saída do technical freeze / release humano
 
 Comandos:
 - `python scripts/coletar_evidencias_from_staging.py --outdir saida_pipeline`
