@@ -27,8 +27,8 @@ def test_agent_reviews_preserve_block_warn_until_decisions_are_explicit():
     summary = summarize_agent_reviews(reviews)
 
     assert summary["overall_status"] == "BLOCK"
-    assert reviews["clinical_epidemiological_specialist"]["status"] == "BLOCK"
-    assert reviews["security_data_governance"]["status"] == "WARN"
+    assert reviews["clinical_epidemiological_specialist"].status == "BLOCK"
+    assert reviews["security_data_governance"].status == "WARN"
 
 
 def test_adrs_are_pending_and_do_not_claim_approval():
