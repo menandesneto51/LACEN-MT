@@ -19,3 +19,13 @@ Antes de criar ou alterar fonte, coletor, scraper, API, ETL, tabela de integraç
 10. Prefira integração Bronze/Silver/Gold a cópias ad hoc.
 
 Contexto padrão deste repositório: LACEN-MT.
+
+
+## Gate de decisão
+
+Obedeça `preflight_decision.status`:
+- `reuse_existing`: bloquear nova fonte e reutilizar/validar candidatos existentes.
+- `refresh_catalog`: bloquear nova fonte até atualizar os inventários incompletos.
+- `review_new_source`: permitir apenas revisão formal de nova fonte; não implementar automaticamente.
+
+`new_source_allowed_for_review=true` autoriza análise de governança, não criação automática nem acesso a dados.
