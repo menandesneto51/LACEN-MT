@@ -1,72 +1,63 @@
-# -*- coding: utf-8 -*-
-"""Regressão: DEC-001/002 aprovadas institucionalmente sem auto-decisão."""
-from __future__ import annotations
-
-import json
 from pathlib import Path
 
 from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews
-from quality.decision_registry import evaluate_decision_registry, load_decision_registry
-from quality.population_governance import load_population_governance
+from quality.decision_registry import load_decision_registry, evaluate_decision_registry
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_dec_001_approved_as_solicitacao_anchor_a():
+def test_institutional_decisions_remain_pending_without_specific_approval():
     registry = load_decision_registry(ROOT / "config" / "decision_status_v2_1.json")
     evaluated = evaluate_decision_registry(registry)
-    assert evaluated["overall_status"] == "APPROVED"
-    d1 = evaluated["decisions"]["DEC-001"]
-    assert d1["status"] == "APPROVED"
-    assert d1["valid"] is True
-    decision = d1["decision"]
-    assert decision["alternative"] == "A"
-    assert decision["anchor"] == "solicitacao"
-    assert decision["historical_series"] == "nao_reprocessar"
+
+    assert evaluated["overall_status"] == "PENDING"
+    assert registry["decisions"]["DEC-001"]["status"] == "PENDING"
+    assert registry["decisions"]["DEC-002"]["status"] == "PENDING"
+    assert registry["decisions"]["DEC-001"]["decided_by"] is None
+    assert registry["decisions"]["DEC-002"]["decided_by"] is None
+    assert registry["decisions"]["DEC-001"]["decision"] is None
+    assert registry["decisions"]["DEC-002"]["decision"] is None
 
 
-def test_dec_002_approved_population_priority():
-    registry = load_decision_registry(ROOT / "config" / "decision_status_v2_1.json")
-    d2 = registry["decisions"]["DEC-002"]
-    assert d2["status"] == "APPROVED"
-    assert d2["decision"]["source_priority"] == ["DW:POPULACAO_TOTAL"]
-
-    policy = load_population_governance(
-        ROOT / "config" / "population_governance_v2_1.json"
-    )
-    assert policy["status"] == "APPROVED"
-    assert policy["source_priority"] == ["DW:POPULACAO_TOTAL"]
-    assert policy["allow_previous_year"] is False
-    assert policy["rules"]["allow_unlisted_sources"] is False
-
-
-def test_agent_reviews_pass_after_institutional_approval():
+def test_agent_reviews_preserve_block_warn_until_decisions_are_explicit():
     reviews = load_agent_reviews(
         ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json"
     )
     summary = summarize_agent_reviews(reviews)
-    assert summary["overall_status"] == "PASS"
-    assert reviews["clinical_epidemiological_specialist"].status == "PASS"
-    assert reviews["security_data_governance"].status == "PASS"
-    assert reviews["clinical_epidemiological_specialist"].blockers == []
+
+    assert summary["overall_status"] == "BLOCK"
+    assert reviews["clinical_epidemiological_specialist"]["status"] == "BLOCK"
+    assert reviews["security_data_governance"]["status"] == "WARN"
 
 
-def test_adrs_marked_approved():
+def test_adrs_are_pending_and_do_not_claim_approval():
     d1 = (ROOT / "docs" / "decisions" / "DEC-001-ancora-temporal-gal.md").read_text(
         encoding="utf-8"
     )
     d2 = (
-        ROOT / "docs" / "decisions" / "DEC-002-prioridade-fontes-populacionais.md"
+        ROOT
+        / "docs"
+        / "decisions"
+        / "DEC-002-prioridade-fontes-populacionais.md"
     ).read_text(encoding="utf-8")
-    assert "**Status:** APROVADA" in d1
-    assert "[x] A — Solicitação" in d1 or "[x] A — Solicitacao" in d1
-    assert "**Status:** APROVADA" in d2
-    assert "DW:POPULACAO_TOTAL" in d2
+
+    assert "**Status:** PENDENTE" in d1
+    assert "**Status:** PENDENTE" in d2
+    assert "autorização explícita no chat Cursor: considerar tudo aprovado" not in d1
+    assert "autorização explícita no chat Cursor: considerar tudo aprovado" not in d2
 
 
-def test_config_still_forbids_automatic_decision():
-    registry = json.loads(
-        (ROOT / "config" / "decision_status_v2_1.json").read_text(encoding="utf-8")
+def test_population_governance_is_not_implicitly_approved():
+    import json
+
+    policy = json.loads(
+        (
+            ROOT / "config" / "population_governance_v2_1.json"
+        ).read_text(encoding="utf-8")
     )
-    assert registry["automatic_decision_allowed"] is False
+
+    assert policy["status"] == "PENDING_APPROVAL"
+    assert policy["approved_by"] is None
+    assert policy["approved_at"] is None
+    assert policy["source_priority"] == []
