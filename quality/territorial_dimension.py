@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Iterable
+import re
 
 import pandas as pd
 
@@ -22,12 +23,15 @@ IBGE_CODE_CANDIDATES = (
     "cod_ibge",
     "ibge",
     "codigo_municipio",
+    "codigomunicipio",
     "cod_municipio",
     "co_municipio",
     "co_municipio_ibge",
+    "codigo",
 )
 MUNICIPIO_CANDIDATES = (
     "municipio",
+    "município",
     "nome_municipio",
     "municipio_nome",
     "nm_municipio",
@@ -47,6 +51,10 @@ POP_CANDIDATES = (
     "populacao_total",
     "qt_populacao",
     "nu_populacao",
+    "populacaoresidente",
+    "populacao_estimada",
+    "população_estimada",
+    "populacaoestimada",
 )
 
 STAGING_POPULATION_STEMS = (
@@ -63,11 +71,20 @@ class PopulationSource:
     source_name: str
 
 
+def _norm_key(text: str) -> str:
+    import unicodedata
+
+    t = unicodedata.normalize("NFKD", str(text))
+    t = "".join(ch for ch in t if not unicodedata.combining(ch))
+    return re.sub(r"[^a-z0-9]+", "", t.casefold())
+
+
 def _pick(columns: Iterable[str], candidates: tuple[str, ...]) -> str | None:
-    by_lower = {str(c).strip().lower(): str(c) for c in columns}
+    by_norm = {_norm_key(c): str(c) for c in columns}
     for candidate in candidates:
-        if candidate.lower() in by_lower:
-            return by_lower[candidate.lower()]
+        key = _norm_key(candidate)
+        if key in by_norm:
+            return by_norm[key]
     return None
 
 
