@@ -1,0 +1,21 @@
+---
+description: Preflight obrigatório do Catálogo Mestre de Dados SES-MT
+alwaysApply: true
+---
+
+# SES_DATA_CATALOG
+
+Antes de criar ou alterar fonte, coletor, scraper, API, ETL, tabela de integração, indicador ou linkage:
+
+1. Execute `.\scripts\catalogo-ses.ps1` com a necessidade de dados.
+2. Consulte SISREG, DW SES/Datawarehouse, eSUS APS, IndicaSUS e SI-PNI via agente canônico.
+3. Reutilize fonte existente quando houver correspondência suficiente.
+4. Não duplique loaders/coletores já existentes.
+5. Trate o retorno como `CatalogEvidencePack`, nunca como autorização de acesso a microdados.
+6. Verifique `catalog_health`; catálogo incompleto invalida a conclusão "o dado não existe".
+7. Encaminhe fontes candidatas para DATA_GUARDIAN/DATAOPS quando esses agentes estiverem disponíveis.
+8. Valide grain, chaves, competência, atualização, completude, duplicidade e lineage antes do uso.
+9. Não exponha CPF, CNS, nome, telefone, endereço ou outros identificadores em prompts/logs/testes.
+10. Prefira integração Bronze/Silver/Gold a cópias ad hoc.
+
+Contexto padrão deste repositório: LACEN-MT.
