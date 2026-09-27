@@ -68,3 +68,23 @@ Executar o ETL com dados reais e produzir:
 - `decision_brief_DEC-001.md`;
 - `decision_brief_DEC-002.md`;
 - `decision_readiness_v2_1.json`.
+
+
+## Execução de evidências
+
+Usar o modo seguro:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/coletar_evidencias_decisoes_v2_1.ps1
+```
+
+Ou diretamente:
+
+```powershell
+python -m etl.run_etl_dw --evidence-only --skip-ml --skip-cievs --no-bulk
+```
+
+O modo `--evidence-only` deve:
+- executar extração, qualidade, paridade, governança, decision briefs, readiness e registry;
+- retornar antes de indicadores de rede/emergência, ML, mirror e CIEVS;
+- gerar `validacao_etl_dw_ultimo.json` com `evidence_only=true`.
