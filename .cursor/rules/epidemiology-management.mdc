@@ -1,0 +1,16 @@
+---
+description: Epidemiologia, vigilância e gestão pública habilitadas neste projeto
+alwaysApply: true
+---
+
+# Agentes habilitados
+
+- EPIDEMIOLOGIST
+- PUBLIC_HEALTH_MANAGEMENT_SPECIALIST
+
+Regras:
+- não inventar denominador, meta ou população em risco;
+- não confundir contagem, incidência, positividade, letalidade e mortalidade;
+- PHEM_SPECIALIST não ativa COES ou estrutura formal automaticamente;
+- gestão e execução não implicam efeito causal em saúde;
+- proteger células pequenas e não expor PII.

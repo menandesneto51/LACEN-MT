@@ -1,0 +1,56 @@
+version: "1.0"
+project_context: "LACEN-MT"
+
+canonical:
+  repository: "menandesneto51/vigia-vsr"
+  branch: "feat/v2-intelligence-agents"
+  agent_root_env: "SES_DATA_CATALOG_AGENT_ROOT"
+
+preflight:
+  - "INDICATOR_ARCHITECT"
+  - "SES_DATA_CATALOG"
+  - "SEMANTIC_LINKER"
+
+analytical_on_demand:
+  - "FAILURE_PHENOTYPER"
+  - "CARE_JOURNEY"
+  - "BOTTLENECK_ANALYZER"
+  - "ANOMALY_SENTINEL"
+
+rules:
+  - "Não criar fork de agente transversal por doença."
+  - "Agentes analíticos não entram automaticamente em produção."
+  - "Não inventar fórmula oficial ou causalidade."
+  - "Não expor PII."
+
+domain_specialists:
+  - "LAB_INTELLIGENCE_SPECIALIST"
+
+  - "PUBLIC_HEALTH_MANAGEMENT_SPECIALIST"
+orchestration_services:
+  - "SPECIALIST_ORCHESTRATOR"
+  - "GENOMIC_INTELLIGENCE_SPECIALIST"
+  - "SUPPLY_CHAIN_SPECIALIST"
+
+core_runtime_specialists:
+  - "EPIDEMIOLOGIST"
+
+engineering_services:
+  - "AI_SYSTEMS_SPECIALIST"
+  - "AGENT_EVALUATOR"
+  - "AI_GOVERNANCE_SPECIALIST"
+
+  - "MODEL_PERFORMANCE_MONITOR"
+  - "PORTFOLIO_GOVERNOR"
+  - "AI_RESEARCH_SPECIALIST"
+decision_services:
+  - "DECISION_ORCHESTRATOR"
+
+governance_services:
+  - "PRIVACY_SENTINEL"
+
+knowledge_services:
+  - "KNOWLEDGE_CURATOR"
+
+governed_registries:
+  - "PROMPT_RAG_REGISTRY"

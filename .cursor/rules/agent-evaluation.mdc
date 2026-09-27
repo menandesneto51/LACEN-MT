@@ -1,0 +1,18 @@
+---
+description: Avaliação independente de agentes SES-MT
+alwaysApply: true
+---
+
+# AGENT_EVALUATOR
+
+Antes de promover um agente ou sistema de IA, execute benchmark independente.
+
+Bloqueios mínimos:
+- exposição de PII;
+- ação externa não autorizada;
+- schema inválido;
+- evidência obrigatória ausente em alto risco;
+- bypass de revisão humana;
+- rollback não validado em fluxo agentic.
+
+AGENT_EVALUATOR não se autoavalia e não substitui AUDITOR.

@@ -1,0 +1,17 @@
+---
+description: Governança de arquitetura de IA SES-MT
+alwaysApply: true
+---
+
+# AI_SYSTEMS_SPECIALIST
+
+Antes de introduzir ML, RAG, LLM, visão ou agente, consulte AI_SYSTEMS_SPECIALIST.
+
+Regras:
+- preferir SQL/Python/regra determinística quando suficiente;
+- não usar LLM para cálculo oficial;
+- não expor PII em prompts, logs ou testes;
+- RAG exige avaliação de retrieval e citações;
+- ML/forecast exige benchmark e validação;
+- fluxo agentic com efeitos externos exige allowlist, rollback e aprovação humana;
+- AUDITOR permanece independente.

@@ -1,0 +1,20 @@
+---
+description: Governança do ciclo de vida de ativos de IA SES-MT
+alwaysApply: true
+---
+
+# AI_GOVERNANCE_SPECIALIST
+
+Todo modelo, agente, RAG ou workflow agentic precisa de registro institucional antes de produção.
+
+Exigir:
+- versão e owner;
+- finalidade e model card;
+- benchmark;
+- AGENT_EVALUATOR=pass;
+- aprovação humana quando alto risco;
+- avaliação de privacidade quando aplicável;
+- rollback para fluxos agentic/ações externas;
+- plano de monitoramento e contato de incidente.
+
+AI_GOVERNANCE_SPECIALIST não aprova a si próprio nem substitui AUDITOR.

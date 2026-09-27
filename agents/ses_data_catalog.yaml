@@ -1,0 +1,40 @@
+version: "1.0"
+name: "SES_DATA_CATALOG"
+execution_scope: "cursor_preflight"
+purpose: "Resolver fontes, objetos e campos no Catálogo Mestre SES-MT antes de nova coleta ou modelagem."
+
+engine:
+  canonical_repository: "menandesneto51/vigia-vsr"
+  canonical_path: "agents/ses_data_catalog/catalog_agent.py"
+  local_fallback_path: "agents/ses_data_catalog/catalog_agent.py"
+  agent_root_env: "SES_DATA_CATALOG_AGENT_ROOT"
+  catalog_root_env: "SES_DATA_CATALOG_ROOT"
+
+project_context: "LACEN-MT"
+
+inputs:
+  - "data_question"
+  - "project_context"
+  - "catalog_inventories"
+
+outputs:
+  - "catalog_evidence_pack"
+  - "catalog_health"
+  - "candidate_sources"
+  - "candidate_fields"
+  - "sensitivity_flags"
+
+handoff:
+  preferred:
+    - "DATA_GUARDIAN"
+    - "DATAOPS"
+
+restrictions:
+  - "Usar somente metadados no preflight."
+  - "Nunca expor microdados ou PII."
+  - "Não executar SQL destrutivo."
+  - "Não criar nova fonte antes de verificar o Catálogo Mestre."
+  - "Ausência no inventário não prova ausência do dado."
+
+can_block_new_data_source: true
+can_block_publication: false

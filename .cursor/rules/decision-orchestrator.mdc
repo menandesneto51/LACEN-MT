@@ -1,0 +1,24 @@
+---
+description: Orquestração decisória pós-análise SES-MT
+alwaysApply: true
+---
+
+# DECISION_ORCHESTRATOR
+
+Use somente após SpecialistAssessment validados.
+
+Rotas possíveis:
+- monitor;
+- investigate;
+- action_plan;
+- phem_review;
+- incident_coordination;
+- risk_communication;
+- intervention_evaluation.
+
+Regras:
+- dado/evidência bloqueados seguem para investigação;
+- baixa confiança não vira plano de ação automaticamente;
+- incidente exige autoridade e aprovação humana;
+- comunicação exige aprovação técnica e revisão de privacidade;
+- automatic_execution_allowed permanece false.

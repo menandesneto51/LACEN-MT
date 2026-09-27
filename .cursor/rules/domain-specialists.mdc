@@ -1,0 +1,15 @@
+---
+description: Especialistas de domínio habilitados neste projeto
+alwaysApply: true
+---
+
+# Especialistas de domínio
+
+- LAB_INTELLIGENCE_SPECIALIST
+
+Use apenas os motores canônicos do repositório menandesneto51/vigia-vsr. Os especialistas recebem evidence packs/sinais validados e permanecem analytical_on_demand até validação específica do projeto.
+
+Não inferir causalidade, não alterar protocolos oficiais e não expor PII.
+
+- GENOMIC_INTELLIGENCE_SPECIALIST
+- SUPPLY_CHAIN_SPECIALIST

@@ -1,0 +1,22 @@
+---
+description: Serviços transversais de monitoramento, privacidade, conhecimento, portfólio e pesquisa de IA
+alwaysApply: true
+---
+
+# Serviços habilitados
+
+- MODEL_PERFORMANCE_MONITOR
+- PRIVACY_SENTINEL
+- KNOWLEDGE_CURATOR
+- PORTFOLIO_GOVERNOR
+- AI_RESEARCH_SPECIALIST
+- PROMPT_RAG_REGISTRY
+
+## Regras
+
+- PRIVACY_SENTINEL antes de prompts/logs com dados sensíveis/PII e saída pública com células pequenas.
+- KNOWLEDGE_CURATOR para RAG e definições técnicas documentais.
+- MODEL_PERFORMANCE_MONITOR em ativos de IA em piloto longitudinal ou produção; nunca suspende automaticamente.
+- PORTFOLIO_GOVERNOR acompanha CI, PRs, blockers e documentação; nunca faz merge/deploy.
+- AI_RESEARCH_SPECIALIST exige evidências identificadas e não declara estado da arte sem fontes atuais.
+- PROMPT_RAG_REGISTRY não armazena segredos ou PII e exige owner, versão, avaliação e fontes curadas.
