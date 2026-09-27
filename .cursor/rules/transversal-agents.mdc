@@ -17,3 +17,8 @@ Sob demanda:
 - ANOMALY_SENTINEL
 
 Use os motores canônicos do repositório menandesneto51/vigia-vsr. Não duplique código de agente neste projeto. Ative os agentes on-demand somente quando houver contrato de dados/sinais suficiente e mantenha revisão humana para interpretações operacionais.
+
+
+## Orquestração de especialistas
+
+Use SPECIALIST_ORCHESTRATOR para selecionar especialistas conforme matriz do projeto e sinais validados. Especialistas optional exigem ativação explícita; projeto desconhecido não ativa especialista automaticamente.
