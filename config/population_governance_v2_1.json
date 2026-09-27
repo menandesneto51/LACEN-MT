@@ -1,13 +1,11 @@
 {
   "version": "v2.1",
-  "status": "APPROVED",
-  "approved_by": "Responsável institucional pelo produto (autorização explícita no chat Cursor: considerar tudo aprovado)",
-  "approved_at": "2026-09-26",
+  "status": "PENDING_APPROVAL",
+  "approved_by": null,
+  "approved_at": null,
   "analysis_scope": "municipio_ano",
   "allow_previous_year": false,
-  "source_priority": [
-    "DW:POPULACAO_TOTAL"
-  ],
+  "source_priority": [],
   "candidate_sources": [
     "DW:VW_POPULACAO",
     "DW:POPULACAO",
@@ -21,5 +19,5 @@
     "expose_source_and_year_in_outputs": true,
     "allow_unlisted_sources": false
   },
-  "decision_note": "Aprovado institucionalmente em 2026-09-26: prioridade única DW:POPULACAO_TOTAL com base na comparação de fontes do staging; fallback de ano anterior proibido."
+  "decision_note": "Nenhuma fonte vencedora aprovada. Preservar comparação de fontes e exigir decisão institucional explícita antes de definir prioridade quando houver concorrência."
 }
