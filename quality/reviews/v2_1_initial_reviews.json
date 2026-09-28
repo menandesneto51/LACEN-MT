@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-10",
+  "review_version": "v2.1-initial-11",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -95,6 +95,134 @@
       "decision": "PASS após endosso formal da política populacional (DEC-002). Promoção automática permanece proibida.",
       "reviewer": "Menandes Neto (Responsável CIEVS-MT (governança dos produtos de vigilância))",
       "reviewed_at": "2026-09-27"
+    },
+    "ml_specialist": {
+      "agent": "ML Specialist",
+      "status": "WARN",
+      "findings": [
+        "O pipeline ML utiliza separação temporal treino/teste e registra AUC, precisão, recall, Brier e precision@K.",
+        "Há limiar calibrado por F1 e modelos por família, com baseline/fallback documentado.",
+        "Os outputs preditivos permanecem separados dos produtos observados e não substituem regra clínica/epidemiológica."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Revisar o artefato real ml_backtest_summary.csv do ciclo operacional antes da revisão final.",
+        "Registrar explicitamente tamanho amostral, prevalência do desfecho e incerteza operacional por família quando disponível."
+      ],
+      "decision": "WARN: arquitetura e validação temporal são adequadas, mas a revisão final requer evidência do backtest real do ciclo avaliado.",
+      "reviewer": "ML Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "code": [
+          "ml/backtest.py",
+          "ml/train.py",
+          "ml/README.md"
+        ],
+        "required_runtime_artifact": "saida_pipeline/ml_backtest_summary.csv"
+      }
+    },
+    "statistics_specialist": {
+      "agent": "Statistics Specialist",
+      "status": "WARN",
+      "findings": [
+        "O canal endêmico usa percentis históricos por semana epidemiológica, não preenche anos ausentes com zero e exige mínimo de anos com dado.",
+        "O backtest de ML reporta métricas discriminativas e de calibração.",
+        "A classificação interna do canal usa o token 'epidemia' para valores >=P75, ainda que a apresentação a rotule como zona epidêmica estatística."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Manter explícito em todos os produtos que zona estatística >=P75 não equivale a epidemia confirmada.",
+        "Preferir nomenclatura operacional neutra como 'acima do P75' em futuras revisões de apresentação, sem alterar retrospectivamente a série.",
+        "Revisar distribuições, denominadores e incerteza nos artefatos reais antes da promoção."
+      ],
+      "decision": "WARN: método estatístico é reproduzível, porém a semântica de zona epidêmica exige cautela e validação final dos artefatos reais.",
+      "reviewer": "Statistics Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "code": [
+          "ml/canal_endemico_bortman.py",
+          "ml/backtest.py"
+        ]
+      }
+    },
+    "laboratory_intelligence_specialist": {
+      "agent": "Laboratory Intelligence Specialist",
+      "status": "PASS",
+      "findings": [
+        "A arquitetura distingue exame, resultado positivo, pessoa positiva, caso e notificação.",
+        "A âncora temporal GAL foi formalmente aprovada pela DEC-001 como data de solicitação.",
+        "A camada laboratorial mantém TAT, positividade e capacidade como métricas próprias, sem convertê-las automaticamente em confirmação epidemiológica."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Preservar deduplicação por pessoa/amostra quando produtos futuros estimarem pessoas positivas.",
+        "Manter TAT e positividade com denominador e janela temporal explícitos."
+      ],
+      "decision": "PASS no escopo de inteligência laboratorial V2.1, sem autorização de promoção automática.",
+      "reviewer": "Laboratory Intelligence Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "decisions": [
+          "DEC-001"
+        ],
+        "code": [
+          "quality/gal_temporal_anchor_analysis.py",
+          "ml/README.md"
+        ]
+      }
+    },
+    "genomic_intelligence_specialist": {
+      "agent": "Genomic Intelligence Specialist",
+      "status": "NOT_APPLICABLE",
+      "findings": [
+        "Não foi identificado fluxo operacional de sequenciamento, variante, linhagem ou vigilância genômica no HEAD atual da V2.1."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Ativar este parecer quando dados de sequenciamento/linhagem forem incorporados ao LACEN-MT."
+      ],
+      "decision": "NOT_APPLICABLE para o escopo operacional atual da V2.1.",
+      "reviewer": "Genomic Intelligence Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "scope": "no_genomic_operational_flow_detected_in_current_head"
+      }
+    },
+    "supply_chain_specialist": {
+      "agent": "Supply Chain Specialist",
+      "status": "NOT_APPLICABLE",
+      "findings": [
+        "Não foi identificado fluxo operacional versionado de estoque de reagentes, kits, consumíveis ou risco de desabastecimento no HEAD atual."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Ativar este parecer quando o módulo de suprimentos laboratoriais entrar no escopo."
+      ],
+      "decision": "NOT_APPLICABLE para o escopo operacional atual da V2.1.",
+      "reviewer": "Supply Chain Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "scope": "no_supply_chain_operational_flow_detected_in_current_head"
+      }
+    },
+    "technical_writing_abnt": {
+      "agent": "Technical Writing/ABNT",
+      "status": "WARN",
+      "findings": [
+        "A documentação técnica principal está em português formal e possui rastreabilidade de decisões e regras.",
+        "O contrato de escrita técnica exige ABNT NBR 6023, títulos e fontes para tabelas, figuras, imagens e quadros."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Executar revisão documental final sobre os relatórios/artefatos publicados, conferindo títulos, fontes, referências e legibilidade.",
+        "Quando houver mapas, validar simbologia e ícones recomendados antes da publicação institucional."
+      ],
+      "decision": "WARN: contrato documental está definido, mas a revisão final deve ocorrer sobre os artefatos efetivamente publicados.",
+      "reviewer": "Technical Writing/ABNT Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "contract": "config/agent_orchestration_v2_1.json"
+      }
     }
   }
 }
