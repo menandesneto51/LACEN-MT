@@ -12,7 +12,7 @@ def test_default_agent_reviews_start_pending():
     reviews = default_agent_reviews()
     summary = summarize_agent_reviews(reviews)
     assert summary["overall_status"] == "PENDING"
-    assert len(summary["pending_agents"]) == 4
+    assert len(summary["pending_agents"]) == 10
     assert summary["all_required_reviews_passed"] is False
 
 
@@ -87,3 +87,29 @@ def test_agent_review_preserves_evidence_in_artifact(tmp_path):
     payload = paths["json"].read_text(encoding="utf-8")
     assert '"workflow_run_number": 262' in payload
     assert '"conclusion": "success"' in payload
+
+
+def test_not_applicable_is_valid_completed_state_and_does_not_block_summary():
+    reviews = default_agent_reviews()
+    for review in reviews.values():
+        review.status = "PASS"
+        review.decision = "Aprovado."
+    reviews["genomic_intelligence_specialist"].status = "NOT_APPLICABLE"
+    reviews["genomic_intelligence_specialist"].decision = "Fora do escopo atual."
+    reviews["supply_chain_specialist"].status = "NOT_APPLICABLE"
+    reviews["supply_chain_specialist"].decision = "Fora do escopo atual."
+    summary = summarize_agent_reviews(reviews)
+    assert summary["overall_status"] == "PASS"
+    assert summary["all_required_reviews_passed"] is True
+
+
+def test_specialist_warn_keeps_review_visible_as_pending():
+    reviews = default_agent_reviews()
+    for review in reviews.values():
+        review.status = "PASS"
+        review.decision = "Aprovado."
+    reviews["ml_specialist"].status = "WARN"
+    reviews["ml_specialist"].decision = "Requer backtest real."
+    summary = summarize_agent_reviews(reviews)
+    assert summary["overall_status"] == "PENDING"
+    assert "ML Specialist" in summary["warning_agents"]
