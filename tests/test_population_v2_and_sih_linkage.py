@@ -35,7 +35,7 @@ def test_population_v2_keeps_single_unambiguous_source(tmp_path):
         "ano": [2026],
         "populacao": [700000],
     }).to_csv(stage / "populacao.csv", index=False)
-    out = _load_population_v2(tmp_path, 2026)
+    out = _load_population_v2(tmp_path, 2026, policy_path=tmp_path / "missing_policy.json")
     assert len(out) == 1
     assert out.loc[0, "territory_key"] == "IBGE:5103403"
     assert float(out.loc[0, "populacao_v2"]) == 700000
