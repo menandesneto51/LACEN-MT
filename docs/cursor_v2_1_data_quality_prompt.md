@@ -116,3 +116,15 @@ A ausência desse preflight para nova dependência de dados deve ser tratada com
 - DEC-002: APPROVED — prioridade populacional `DW:POPULACAO_TOTAL`;
 - próximo foco: validar preflight do catálogo, especialistas aplicáveis e Promotion Gate;
 - não fazer merge automaticamente.
+
+
+## Pareceres especialistas — estado atual (2026-09-28)
+
+- Laboratory Intelligence Specialist: PASS.
+- ML Specialist: WARN — revisar `saida_pipeline/ml_backtest_summary.csv` do ciclo operacional avaliado.
+- Statistics Specialist: WARN — manter explícita a distinção entre zona estatística >=P75 e epidemia confirmada; revisar artefatos reais.
+- Technical Writing/ABNT: WARN — revisão final deve ocorrer sobre os relatórios/artefatos efetivamente publicados.
+- Genomic Intelligence Specialist: NOT_APPLICABLE no HEAD atual; ativar quando houver sequenciamento/variante/linhagem.
+- Supply Chain Specialist: NOT_APPLICABLE no HEAD atual; ativar quando houver estoque/reagentes/consumíveis/risco de desabastecimento.
+
+Enquanto houver WARN aplicável, `agent_reviews_status` deve permanecer `PENDING`, fazendo o Promotion Gate permanecer no máximo `CONDITIONAL` na ausência de outros bloqueios. Não converter WARN em PASS sem evidência objetiva.
