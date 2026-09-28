@@ -60,7 +60,7 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 8. Trate `territorial_promotion_ready=true` como requisito necessário, mas não suficiente, para substituir joins/denominadores legados; mantenha CI, paridade e revisão arquitetural/epidemiológica como gates adicionais.
 9. Gere/consulte `promotion_gate_v2_1.json`; `READY_FOR_REVIEW` exige CI confirmado, revisões arquitetural/epidemiológica aprovadas, governança populacional aprovada, Decision Registry com DEC-001/DEC-002 em `APPROVED` e `decision_readiness_v2_1.json` em `READY_FOR_HUMAN_DECISION`. `NEEDS_EVIDENCE` mantém condição; `DATA_QUALITY_BLOCK` gera bloqueio.
 10. Gere/consulte `review_package_v2_1.md`; Chief Architect e especialista epidemiológico devem revisar checklists independentes antes da decisão de release. O pacote é evidência de revisão, não autorização automática.
-11. Use os pareceres versionados em `quality/reviews/v2_1_initial_reviews.json` como estado atual da revisão. Chief Architect e QA estão `PASS` com CI verde documentado; Clinical/Epidemiological Specialist permanece `BLOCK` e Security/Data Governance permanece `WARN`. Não alterar esses estados sem evidência objetiva e registro da decisão/correção.
+11. Use os pareceres versionados em `quality/reviews/v2_1_initial_reviews.json` como estado atual da revisão. Chief Architect, Clinical/Epidemiological Specialist, QA, Security/Data Governance, Laboratory Intelligence Specialist e Statistics Specialist estão em `PASS`; ML Specialist, Genomic Intelligence Specialist e Technical Writing/ABNT permanecem em `WARN`; Supply Chain Specialist está `NOT_APPLICABLE` no escopo atual. Não alterar esses estados sem evidência objetiva e registro da decisão/correção.
 12. Preservar a decisão aprovada DEC-001: âncora temporal GAL em `solicitacao`. Não reabrir ou alterar essa regra sem nova evidência, ADR e decisão institucional explícita.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
 14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. DEC-002 está aprovada com `source_priority=['DW:POPULACAO_TOTAL']` e `allow_unlisted_sources=false`; fontes fora da prioridade não podem ser usadas como fallback silencioso.
@@ -121,10 +121,22 @@ A ausência desse preflight para nova dependência de dados deve ser tratada com
 ## Pareceres especialistas — estado atual (2026-09-28)
 
 - Laboratory Intelligence Specialist: PASS.
-- ML Specialist: WARN — revisar `saida_pipeline/ml_backtest_summary.csv` do ciclo operacional avaliado.
-- Statistics Specialist: WARN — manter explícita a distinção entre zona estatística >=P75 e epidemia confirmada; revisar artefatos reais.
-- Technical Writing/ABNT: WARN — revisão final deve ocorrer sobre os relatórios/artefatos efetivamente publicados.
-- Genomic Intelligence Specialist: NOT_APPLICABLE no HEAD atual; ativar quando houver sequenciamento/variante/linhagem.
+- ML Specialist: WARN — backtest real revisado; desempenho global é aceitável como sinal auxiliar, mas há desempenho insuficiente em famílias específicas (especialmente respiratório), exigindo recalibração/supressão antes de promoção dessas saídas.
+- Statistics Specialist: PASS — método e backtest revisados; apresentação do canal endêmico corrigida para `acima do P75 (sinal estatístico)`, sem inferência automática de epidemia.
+- Technical Writing/ABNT: WARN — caminho local absoluto já foi saneado; falta revisão final sistemática dos relatórios/artefatos efetivamente destinados à publicação.
+- Genomic Intelligence Specialist: WARN — Genômica é eixo obrigatório do LACEN-MT; contrato em `docs/vigilancia_genomica_v2_1.md`; executar `SES_DATA_CATALOG` e manter readiness visível até validar fonte e ingestão operacional.
 - Supply Chain Specialist: NOT_APPLICABLE no HEAD atual; ativar quando houver estoque/reagentes/consumíveis/risco de desabastecimento.
 
 Enquanto houver WARN aplicável, `agent_reviews_status` deve permanecer `PENDING`, fazendo o Promotion Gate permanecer no máximo `CONDITIONAL` na ausência de outros bloqueios. Não converter WARN em PASS sem evidência objetiva.
+
+
+### Regra específica — Vigilância Genômica
+
+No LACEN-MT, Genômica nunca deve ser classificada como `NOT_APPLICABLE`.
+Enquanto a fonte/ingestão ainda não estiver operacionalmente validada:
+- manter `Genomic Intelligence Specialist = WARN` ou `BLOCK` conforme gravidade;
+- consultar `docs/vigilancia_genomica_v2_1.md`;
+- executar `SES_DATA_CATALOG` antes de criar coletor/API/ETL;
+- produzir `CatalogEvidencePack`;
+- não inferir variante/linhagem a partir de exame molecular;
+- preservar amostra → sequência → linhagem/variante → linkage epidemiológico como entidades distintas.
