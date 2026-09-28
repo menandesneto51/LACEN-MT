@@ -94,8 +94,6 @@ def test_not_applicable_is_valid_completed_state_and_does_not_block_summary():
     for review in reviews.values():
         review.status = "PASS"
         review.decision = "Aprovado."
-    reviews["genomic_intelligence_specialist"].status = "NOT_APPLICABLE"
-    reviews["genomic_intelligence_specialist"].decision = "Fora do escopo atual."
     reviews["supply_chain_specialist"].status = "NOT_APPLICABLE"
     reviews["supply_chain_specialist"].decision = "Fora do escopo atual."
     summary = summarize_agent_reviews(reviews)
@@ -113,3 +111,15 @@ def test_specialist_warn_keeps_review_visible_as_pending():
     summary = summarize_agent_reviews(reviews)
     assert summary["overall_status"] == "PENDING"
     assert "ML Specialist" in summary["warning_agents"]
+
+
+def test_genomic_warn_keeps_project_review_pending():
+    reviews = default_agent_reviews()
+    for review in reviews.values():
+        review.status = "PASS"
+        review.decision = "Aprovado."
+    reviews["genomic_intelligence_specialist"].status = "WARN"
+    reviews["genomic_intelligence_specialist"].decision = "Fonte genômica ainda em readiness."
+    summary = summarize_agent_reviews(reviews)
+    assert summary["overall_status"] == "PENDING"
+    assert "Genomic Intelligence Specialist" in summary["warning_agents"]
