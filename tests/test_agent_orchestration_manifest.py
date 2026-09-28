@@ -55,3 +55,12 @@ def test_cursor_and_human_governance_remain_explicit():
     assert "Cursor_is_the_default_implementation_environment" in rules
     assert "human_decision_required_for_institutional_policy" in rules
     assert "BLOCK_must_not_be_bypassed" in rules
+
+
+def test_genomic_intelligence_is_always_in_scope_for_lacen_mt():
+    payload = _load()
+    genomic = payload["agents"]["GENOMIC_INTELLIGENCE_SPECIALIST"]
+    assert genomic["always_in_scope"] is True
+    assert genomic["readiness_contract"] == "docs/vigilancia_genomica_v2_1.md"
+    assert "lacen_mt_product" in genomic["required_when"]
+    assert "WARN_or_BLOCK" in genomic["status_rule"]
