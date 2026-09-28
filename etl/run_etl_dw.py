@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -31,6 +32,23 @@ from etl.build_weekly_from_gal import (  # noqa: E402
 )
 from etl.dw_extract import check_dw_tcp, run_extract, staging_dir  # noqa: E402
 from etl.epi_week import format_se, semana_completa_mais_recente  # noqa: E402
+from quality.data_quality_agent import run_quality_gate, write_report as write_quality_report  # noqa: E402
+from quality.territorial_dimension import (  # noqa: E402
+    build_population_dimension_from_staging,
+    write_population_dimension,
+)
+from quality.parity_report import build_parity_report, write_parity_report  # noqa: E402
+from quality.promotion_gate import evaluate_promotion_gate, write_promotion_gate  # noqa: E402
+from quality.review_package import build_review_package, write_review_package  # noqa: E402
+from quality.agent_reviews import load_agent_reviews, summarize_agent_reviews, write_agent_reviews  # noqa: E402
+from quality.gal_temporal_anchor_analysis import analyze_temporal_anchor, write_temporal_anchor_analysis  # noqa: E402
+from quality.artifact_hygiene import scan_quality_artifacts, write_hygiene_report  # noqa: E402
+from quality.product_lineage import build_product_lineage, write_lineage_registry  # noqa: E402
+from quality.population_governance import load_population_governance, evaluate_population_governance, write_population_governance_report  # noqa: E402
+from quality.population_source_comparison import compare_population_sources, write_population_source_comparison  # noqa: E402
+from quality.decision_briefs import write_decision_briefs  # noqa: E402
+from quality.decision_registry import load_decision_registry, evaluate_decision_registry, write_decision_registry_report  # noqa: E402
+from quality.decision_readiness import evaluate_decision_readiness, write_decision_readiness_report  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -89,6 +107,28 @@ def write_validacao(
         f"mirror_dw_ok: {report.get('mirror_dw_ok')}",
         f"mirror_error: {report.get('mirror_error')}",
         f"mirror_rows: {report.get('mirror_rows')}",
+        f"parity_status: {report.get('parity_status')}",
+        f"linkage_parity_status: {report.get('linkage_parity_status')}",
+        f"territorial_promotion_ready: {report.get('territorial_promotion_ready')}",
+        f"agent_review_status: {report.get('agent_review_status')}",
+        f"agent_review_blockers: {report.get('agent_review_blockers')}",
+        f"gal_temporal_anchor_analysis: {report.get('gal_temporal_anchor_analysis')}",
+        f"artifact_hygiene_status: {report.get('artifact_hygiene_status')}",
+        f"artifact_hygiene_findings: {report.get('artifact_hygiene_findings')}",
+        f"product_lineage_count: {report.get('product_lineage_count')}",
+        f"population_governance_status: {report.get('population_governance_status')}",
+        f"population_governance_approved: {report.get('population_governance_approved')}",
+        f"population_governance_blockers: {report.get('population_governance_blockers')}",
+        f"decision_briefs: {report.get('decision_briefs')}",
+        f"decision_registry_status: {report.get('decision_registry_status')}",
+        f"decision_registry_blockers: {report.get('decision_registry_blockers')}",
+        f"decision_registry_conditions: {report.get('decision_registry_conditions')}",
+        f"decision_readiness_status: {report.get('decision_readiness_status')}",
+        f"decision_readiness_blockers: {report.get('decision_readiness_blockers')}",
+        f"population_source_comparison: {report.get('population_source_comparison')}",
+        f"promotion_gate_status: {report.get('promotion_gate_status')}",
+        f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
+        f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -190,6 +230,302 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
 
     weekly_path = outdir / "integrated_weekly_surveillance.csv"
     weekly = pd.read_csv(weekly_path, low_memory=False) if weekly_path.exists() else pd.DataFrame()
+
+    linkage_summary_path = outdir / "quality" / "paridade_linkage_resumo.json"
+    if linkage_summary_path.exists():
+        try:
+            linkage_summary = json.loads(linkage_summary_path.read_text(encoding="utf-8"))
+            report["linkage_parity_status"] = linkage_summary.get("promotion_status")
+            report["linkage_parity_sources"] = linkage_summary.get("sources", [])
+            report["passos"].append(
+                f"linkage_parity:{linkage_summary.get('promotion_status', 'WARN')}"
+            )
+        except Exception as exc:
+            report["linkage_parity_status"] = "WARN"
+            report["linkage_parity_error"] = str(exc)
+
+    reconciliation_summary_path = outdir / "quality" / "reconciliacao_territorial_resumo.json"
+    if reconciliation_summary_path.exists():
+        try:
+            reconciliation_summary = json.loads(
+                reconciliation_summary_path.read_text(encoding="utf-8")
+            )
+            report["territorial_promotion_ready"] = bool(
+                reconciliation_summary.get("promotion_ready")
+            )
+            report["territorial_reconciliation"] = reconciliation_summary
+            report["passos"].append(
+                "territorial_promotion:"
+                + ("READY" if report["territorial_promotion_ready"] else "BLOCK")
+            )
+        except Exception as exc:
+            report["territorial_promotion_ready"] = False
+            report["territorial_reconciliation_error"] = str(exc)
+
+    # V2.1 — gate determinístico antes de rede, ML, mirror e alerta institucional.
+    gal_micro_quality = None
+    stage = staging_dir(outdir)
+    micro_quality_path = stage / "vw_gal_micro_recent.parquet"
+    if micro_quality_path.exists():
+        gal_micro_quality = pd.read_parquet(micro_quality_path)
+        try:
+            temporal_detail, temporal_summary = analyze_temporal_anchor(gal_micro_quality)
+            write_temporal_anchor_analysis(
+                temporal_detail,
+                temporal_summary,
+                outdir / "quality",
+            )
+            report["gal_temporal_anchor_analysis"] = temporal_summary.to_dict()
+            report["passos"].append("gal_temporal_anchor_analysis")
+        except ValueError as exc:
+            report["gal_temporal_anchor_analysis"] = {
+                "status": "WARN",
+                "reason": str(exc),
+            }
+            report["passos"].append("gal_temporal_anchor_analysis:WARN")
+
+    population_dim = build_population_dimension_from_staging(
+        stage,
+        extracted_at=extract_meta.get("ts"),
+    )
+    if not population_dim.empty:
+        write_population_dimension(population_dim, outdir / "quality")
+        report["population_dimension_rows"] = int(len(population_dim))
+        report["population_sources"] = sorted(
+            population_dim["fonte"].dropna().astype(str).unique().tolist()
+        )
+    else:
+        report["population_dimension_rows"] = 0
+        report["population_sources"] = []
+
+    pop_source_detail, pop_pair_detail, pop_compare_summary = compare_population_sources(
+        population_dim,
+        analysis_year=int(hoje.year),
+    )
+    write_population_source_comparison(
+        pop_source_detail,
+        pop_pair_detail,
+        pop_compare_summary,
+        outdir / "quality",
+    )
+    report["population_source_comparison"] = pop_compare_summary.to_dict()
+    report["passos"].append("population_source_comparison")
+
+    population_policy = load_population_governance(
+        ROOT / "config" / "population_governance_v2_1.json"
+    )
+    population_governance = evaluate_population_governance(
+        population_dim,
+        analysis_year=int(hoje.year),
+        policy=population_policy,
+    )
+    write_population_governance_report(population_governance, outdir / "quality")
+    report["population_governance_status"] = population_governance.status
+    report["population_governance_approved"] = population_governance.approved
+    report["population_governance_blockers"] = population_governance.blockers
+    report["passos"].append(
+        f"population_governance:{population_governance.status}"
+    )
+
+    parity_detail = pd.DataFrame()
+    parity_summary = None
+    if not weekly.empty:
+        parity_detail, parity_summary = build_parity_report(weekly)
+        write_parity_report(parity_detail, parity_summary, outdir / "quality")
+        report["parity_status"] = parity_summary.status
+        report["parity_rows"] = parity_summary.rows
+        report["parity_without_v2_population"] = parity_summary.rows_without_v2_population
+        report["parity_max_population_rel_diff"] = parity_summary.max_population_rel_diff
+        report["parity_max_rate_rel_diff"] = parity_summary.max_rate_rel_diff
+        report["passos"].append(f"parity_report:{parity_summary.status}")
+
+    quality_report = run_quality_gate(
+        weekly=weekly if not weekly.empty else tests,
+        gal_micro=gal_micro_quality,
+        population=population_dim if not population_dim.empty else None,
+        analysis_year=int(hoje.year),
+        population_required=False,
+        metadata={
+            "pipeline": "etl.run_etl_dw",
+            "pipeline_version": "v2.1",
+            "fonte_dados": report.get("fonte_dados"),
+            "extracted_at": extract_meta.get("ts"),
+            "se_esperada": report.get("se_esperada"),
+            "sources_extracted": list(report.get("sources_extracted") or []),
+        },
+    )
+    quality_dir = outdir / "quality"
+    write_quality_report(quality_report, quality_dir)
+    report["data_quality_status"] = quality_report.status.value
+    report["data_quality_publishable"] = quality_report.publishable
+    report["passos"].append(f"data_quality_gate:{quality_report.status.value}")
+
+    agent_reviews = load_agent_reviews(
+        ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json"
+    )
+    agent_review_summary = summarize_agent_reviews(agent_reviews)
+    write_agent_reviews(agent_reviews, quality_dir)
+    report["agent_review_status"] = agent_review_summary.get("overall_status")
+    report["agent_review_blockers"] = agent_review_summary.get("blockers", [])
+    report["passos"].append(
+        f"agent_reviews:{report['agent_review_status']}"
+    )
+
+    decision_readiness = evaluate_decision_readiness(quality_dir)
+    write_decision_readiness_report(decision_readiness, quality_dir)
+    report["decision_readiness_status"] = decision_readiness.get("overall_status")
+    readiness_blockers = []
+    for item in (decision_readiness.get("decisions") or {}).values():
+        readiness_blockers.extend(item.get("blockers", []) or [])
+    report["decision_readiness_blockers"] = readiness_blockers
+    report["passos"].append(
+        f"decision_readiness:{report['decision_readiness_status']}"
+    )
+
+    decision_registry = load_decision_registry(
+        ROOT / "config" / "decision_status_v2_1.json"
+    )
+    decision_registry_eval = evaluate_decision_registry(
+        decision_registry,
+        evidence_dir=quality_dir,
+    )
+    write_decision_registry_report(decision_registry_eval, quality_dir)
+    report["decision_registry_status"] = decision_registry_eval.get("overall_status")
+    report["decision_registry_blockers"] = decision_registry_eval.get("blockers", [])
+    report["decision_registry_conditions"] = decision_registry_eval.get("conditions", [])
+    report["passos"].append(
+        f"decision_registry:{report['decision_registry_status']}"
+    )
+
+    promotion_gate = evaluate_promotion_gate(
+        data_quality_status=report.get("data_quality_status"),
+        parity_status=report.get("parity_status"),
+        linkage_parity_status=report.get("linkage_parity_status"),
+        territorial_promotion_ready=report.get("territorial_promotion_ready"),
+        ci_status=os.getenv("LACEN_PROMOTION_CI_STATUS"),
+        architecture_review=os.getenv("LACEN_ARCHITECTURE_REVIEW"),
+        epidemiology_review=os.getenv("LACEN_EPIDEMIOLOGY_REVIEW"),
+        agent_reviews_status=report.get("agent_review_status"),
+        population_governance_approved=report.get("population_governance_approved"),
+        population_governance_blockers=report.get("population_governance_blockers"),
+        decision_registry_status=report.get("decision_registry_status"),
+        decision_registry_blockers=report.get("decision_registry_blockers"),
+        decision_readiness_status=report.get("decision_readiness_status"),
+        decision_readiness_blockers=report.get("decision_readiness_blockers"),
+    )
+    write_promotion_gate(promotion_gate, quality_dir)
+
+    review_package = build_review_package(
+        quality_dir,
+        pr_number=None,
+        head_sha=os.getenv("GITHUB_SHA"),
+    )
+    write_review_package(review_package, quality_dir)
+
+    decision_brief_paths = write_decision_briefs(quality_dir)
+    report["decision_briefs"] = {
+        key: path.name for key, path in decision_brief_paths.items()
+    }
+    report["passos"].append("decision_briefs")
+
+    lineage_sources = list(report.get("sources_extracted") or [])
+    cutoff = report.get("se_esperada") or report.get("hoje")
+    lineage = [
+        build_product_lineage(
+            product="integrated_weekly_surveillance",
+            logical_sources=lineage_sources,
+            cutoff=cutoff,
+            dependencies=["territory_key", "epi_year", "epi_week"],
+            notes=["Camada legada preservada; V2 permanece paralela."],
+        ),
+        build_product_lineage(
+            product="paridade_legado_v2",
+            logical_sources=lineage_sources + list(report.get("population_sources") or []),
+            cutoff=cutoff,
+            dependencies=["integrated_weekly_surveillance", "dim_populacao_versionada"],
+        ),
+        build_product_lineage(
+            product="paridade_linkage",
+            logical_sources=lineage_sources,
+            cutoff=cutoff,
+            dependencies=["GAL", "SINAN", "SIM", "SIH", "SIA", "territory_key"],
+        ),
+        build_product_lineage(
+            product="reconciliacao_territorial",
+            logical_sources=["paridade_linkage"],
+            cutoff=cutoff,
+            dependencies=["paridade_linkage"],
+        ),
+        build_product_lineage(
+            product="promotion_gate_v2_1",
+            logical_sources=["quality_artifacts"],
+            cutoff=cutoff,
+            dependencies=[
+                "data_quality_gate",
+                "paridade_legado_v2",
+                "paridade_linkage",
+                "reconciliacao_territorial",
+                "agent_reviews",
+            ],
+        ),
+        build_product_lineage(
+            product="review_package_v2_1",
+            logical_sources=["quality_artifacts", "agent_reviews"],
+            cutoff=cutoff,
+            dependencies=["promotion_gate_v2_1", "gal_temporal_anchor_analysis"],
+        ),
+    ]
+    write_lineage_registry(lineage, quality_dir)
+    report["product_lineage_count"] = len(lineage)
+    report["passos"].append("product_lineage")
+
+    hygiene_report = scan_quality_artifacts(quality_dir)
+    write_hygiene_report(hygiene_report, quality_dir)
+    report["artifact_hygiene_status"] = hygiene_report.get("status")
+    report["artifact_hygiene_findings"] = hygiene_report.get("finding_count", 0)
+    report["passos"].append(
+        f"artifact_hygiene:{report['artifact_hygiene_status']}"
+    )
+
+    report["promotion_gate_status"] = promotion_gate.status
+    report["promotion_gate_blocking_reasons"] = promotion_gate.blocking_reasons
+    report["promotion_gate_conditions"] = promotion_gate.conditions
+    report["passos"].append(f"promotion_gate:{promotion_gate.status}")
+
+    if getattr(args, "evidence_only", False):
+        report["evidence_only"] = True
+        report["aviso"] = (
+            (report.get("aviso") or "")
+            + " | EVIDENCE ONLY: rede, ML, mirror e CIEVS não executados."
+        ).strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+        return report
+
+    if report.get("artifact_hygiene_status") == "BLOCK":
+        report["aviso"] = (
+            (report.get("aviso") or "")
+            + " | ARTIFACT HYGIENE BLOCK: possível segredo/credencial em artefato; downstream não executado."
+        ).strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+        raise RuntimeError(
+            "Artifact Hygiene = BLOCK. Consulte "
+            + str(quality_dir / "artifact_hygiene_v2_1.txt")
+        )
+
+    if not quality_report.publishable:
+        report["aviso"] = ((report.get("aviso") or "") + " | DATA QUALITY BLOCK: inferência, ML, mirror e alerta CIEVS não executados.").strip(" |")
+        write_validacao(outdir, report)
+        (outdir / "validacao_etl_dw_ultimo.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+        raise RuntimeError("Data Quality Gate = BLOCK. Consulte " + str(quality_dir / "data_quality_gate_ultimo.txt"))
+
     se_info = choose_se_operacional(weekly if not weekly.empty else tests, hoje=hoje)
     report.update({k: se_info.get(k) for k in (
         "se_usada", "atraso_se", "atraso_dias", "se_fonte", "aviso",
@@ -290,6 +626,11 @@ def main(argv: list[str] | None = None) -> int:
         "--allow-local-fallback",
         action="store_true",
         help="Se DW/VPN cair, usa CSV GAL local (pode gerar SE atrasada com banner).",
+    )
+    ap.add_argument(
+        "--evidence-only",
+        action="store_true",
+        help="Gera apenas evidências/gates para DEC-001 e DEC-002; não executa rede, ML, mirror ou CIEVS.",
     )
     ap.add_argument("--skip-ml", action="store_true")
     ap.add_argument("--skip-cievs", action="store_true")

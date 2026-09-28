@@ -1,0 +1,83 @@
+---
+description: LACEN-MT V2 engineering, data governance and epidemiological safety rules
+alwaysApply: true
+---
+
+# Cursor — LACEN-MT V2
+
+## Fluxo obrigatório
+Antes de editar código, leia `README_lacen_integrado_total.md`, `docs/data_quality_agent_v2.md`, `docs/SES_DATA_CATALOG_PREFLIGHT.md` e os módulos diretamente afetados.
+
+Trabalhe incrementalmente. Não reescreva componentes funcionais sem necessidade demonstrada. Preserve compatibilidade com execução local Windows e futura migração para servidor SES-MT.
+
+## Preflight obrigatório — SES_DATA_CATALOG
+Antes de criar ou alterar qualquer fonte, coletor, scraper, API, ETL, tabela de integração, dimensão, indicador ou regra que dependa de dados:
+1. consulte primeiro o agente `SES_DATA_CATALOG`;
+2. verifique o Catálogo Mestre SES-MT e fontes já inventariadas;
+3. produza um `CatalogEvidencePack` contendo fonte/objeto existente, evidência encontrada, lacuna real, decisão e recomendação;
+4. reutilize ativos existentes quando houver cobertura suficiente;
+5. somente proponha nova ingestão quando a lacuna estiver explicitamente demonstrada;
+6. nunca hardcode caminho local, credencial ou segredo no repositório.
+
+Ausência de evidência de catálogo para uma nova fonte/integração = `BLOCK` de engenharia até o preflight ser documentado.
+
+## Arquitetura de agentes
+Use esta ordem de revisão conforme aplicável:
+SES_DATA_CATALOG → CTO Virtual → Product Owner → Chief Architect → Clinical/Epidemiological Specialist → Data Architect → Data Governance → Backend/API → AI/GIS → ML Specialist → Statistics Specialist → Laboratory Intelligence Specialist → Genomic Intelligence Specialist → Supply Chain Specialist → Technical Writing/ABNT → UX → Performance → Security → QA → Observability/DevOps → Chief Architect.
+
+Agentes especialistas devem atuar somente quando o escopo correspondente existir. Parecer de agente não substitui decisão humana, regra oficial nem autorização institucional.
+
+## Regras epidemiológicas não negociáveis
+- exame ≠ resultado positivo ≠ pessoa positiva ≠ caso ≠ notificação;
+- anomalia estatística ≠ prioridade epidemiológica ≠ surto/epidemia/emergência;
+- Observado, Derivado e Predito devem permanecer separados;
+- IA/ML não pode criar regra clínica/epidemiológica;
+- regra oficial deve ser versionada e rastreável;
+- semana incompleta não pode ser apresentada como consolidada;
+- linkage ausente deve ser descrito como ausência de correspondência no cruzamento disponível, não automaticamente como subnotificação.
+
+## Data Quality Gate
+A ordem é:
+`DADO → QUALIDADE → REGRA → ANÁLISE → SINAL → INTERPRETAÇÃO → AÇÃO`.
+
+`BLOCK` interrompe produtos derivados dependentes: ML, mirror, alerta e publicação consolidada.
+`WARN` permite continuidade com aviso explícito e auditável.
+Nunca contorne um BLOCK para fazer o pipeline terminar.
+
+## Chaves e temporalidade
+- Preferir código IBGE como chave territorial canônica.
+- Não criar novas listas hardcoded de municípios.
+- Centralizar semana epidemiológica em `etl/epi_week.py`; suportar SE 53.
+- A âncora temporal GAL está formalmente definida pela DEC-001 como `solicitacao`; qualquer alteração futura exige nova decisão/ADR e evidência.
+- A prioridade populacional está formalmente definida pela DEC-002 como `DW:POPULACAO_TOTAL`, sem fallback para fonte não listada; qualquer alteração exige nova decisão/ADR e evidência.
+- Denominadores devem registrar fonte e ano. Não aceitar silenciosamente população histórica incompatível com o período analisado.
+
+## Segurança e dados
+Não versionar credenciais, tokens, PII ou microdados identificáveis. Não gravar caminhos locais do usuário em artefatos institucionais.
+
+## Definition of Done
+Toda mudança relevante deve:
+1. ter preflight `SES_DATA_CATALOG` quando envolver fonte/integração/indicador;
+2. ter teste;
+3. preservar outputs existentes ou documentar migração;
+4. produzir erro/aviso acionável;
+5. manter lineage e versão de regra quando aplicável;
+6. passar `pytest`;
+7. ser revisável por PR;
+8. não declarar causalidade ou surto automaticamente;
+9. atualizar documentação técnica/ABNT quando afetada.
+
+## Trabalho atual
+Branch: `feat/v2-data-quality-agent`.
+PR: #7.
+Estado: DEC-001 e DEC-002 formalmente aprovadas em 2026-09-27.
+Quality Gate do HEAD mais recente: verde.
+Prioridade: consolidar governança, preflight de catálogo, pareceres especialistas aplicáveis, Promotion Gate e pacote final de revisão humana.
+
+## Technical Freeze V2.1
+Até a revisão final:
+- não adicionar novas features funcionais;
+- aceitar somente bugfix, testes, segurança/governança, documentação e geração de evidências;
+- não alterar silenciosamente âncora temporal GAL, prioridade populacional, thresholds ou regras de promoção;
+- manter PR em draft e sem merge;
+- foco operacional: validar pipeline, agentes, evidências e readiness para revisão humana.
