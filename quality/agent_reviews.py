@@ -12,7 +12,7 @@ from typing import Any
 import json
 
 
-ALLOWED_REVIEW_STATUS = {"PENDING", "PASS", "WARN", "BLOCK"}
+ALLOWED_REVIEW_STATUS = {"PENDING", "PASS", "WARN", "BLOCK", "NOT_APPLICABLE"}
 
 
 @dataclass
@@ -32,7 +32,7 @@ class AgentReview:
             raise ValueError(f"Status inválido para {self.agent}: {self.status}")
         if self.status == "BLOCK" and not self.blockers:
             raise ValueError(f"{self.agent}: BLOCK exige ao menos um bloqueio explícito.")
-        if self.status in {"PASS", "WARN", "BLOCK"} and not self.decision:
+        if self.status in {"PASS", "WARN", "BLOCK", "NOT_APPLICABLE"} and not self.decision:
             raise ValueError(f"{self.agent}: revisão concluída exige decision.")
 
     def to_dict(self) -> dict[str, Any]:
@@ -46,6 +46,16 @@ def default_agent_reviews() -> dict[str, AgentReview]:
         "clinical_epidemiological_specialist": AgentReview(
             agent="Clinical/Epidemiological Specialist"
         ),
+        "ml_specialist": AgentReview(agent="ML Specialist"),
+        "statistics_specialist": AgentReview(agent="Statistics Specialist"),
+        "laboratory_intelligence_specialist": AgentReview(
+            agent="Laboratory Intelligence Specialist"
+        ),
+        "genomic_intelligence_specialist": AgentReview(
+            agent="Genomic Intelligence Specialist"
+        ),
+        "supply_chain_specialist": AgentReview(agent="Supply Chain Specialist"),
+        "technical_writing_abnt": AgentReview(agent="Technical Writing/ABNT"),
         "qa": AgentReview(agent="QA"),
         "security_data_governance": AgentReview(agent="Security/Data Governance"),
     }
