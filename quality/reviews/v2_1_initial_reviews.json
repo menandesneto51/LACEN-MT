@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-11",
+  "review_version": "v2.1-initial-12",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -100,49 +100,57 @@
       "agent": "ML Specialist",
       "status": "WARN",
       "findings": [
-        "O pipeline ML utiliza separação temporal treino/teste e registra AUC, precisão, recall, Brier e precision@K.",
-        "Há limiar calibrado por F1 e modelos por família, com baseline/fallback documentado.",
+        "O backtest operacional está presente em saida_pipeline/ml_backtest_summary.csv e usa separação temporal 80/20.",
+        "Modelo global de risco: AUC=0,8158; precisão=0,4839; recall=0,2857 no limiar calibrado 0,25; Brier=0,0167.",
+        "Modelo global de silêncio: AUC=0,8255; precisão=0,7041; recall=0,7044 no limiar calibrado 0,10.",
+        "Pressão de rede: AUC=0,8799; precisão=0,5899; recall=0,7216 no limiar calibrado 0,30.",
+        "Desempenho por família é heterogêneo: arbovirose apresenta AUC=0,9798, enquanto respiratório apresenta AUC=0,1215; hepatite e outros apresentam precisão muito baixa no limiar calibrado.",
         "Os outputs preditivos permanecem separados dos produtos observados e não substituem regra clínica/epidemiológica."
       ],
       "blockers": [],
       "recommendations": [
-        "Revisar o artefato real ml_backtest_summary.csv do ciclo operacional antes da revisão final.",
-        "Registrar explicitamente tamanho amostral, prevalência do desfecho e incerteza operacional por família quando disponível."
+        "Manter o modelo global apenas como sinal preditivo auxiliar.",
+        "Não promover interpretação/alerta autônomo por família com desempenho inadequado; exigir critério mínimo versionado antes de uso operacional.",
+        "Recalibrar ou suprimir o recorte respiratório e revisar hepatite/outros antes da promoção dessas saídas.",
+        "Reportar AUC, precisão, recall, prevalência do desfecho, N de teste e limiar em toda versão operacional."
       ],
-      "decision": "WARN: arquitetura e validação temporal são adequadas, mas a revisão final requer evidência do backtest real do ciclo avaliado.",
+      "decision": "WARN mantido: validação global é aceitável como sinal auxiliar, mas há desempenho insuficiente em famílias específicas; essas saídas não devem ser promovidas sem recalibração/critério de aceitação.",
       "reviewer": "ML Specialist Agent",
       "reviewed_at": "2026-09-28",
       "evidence": {
-        "code": [
-          "ml/backtest.py",
-          "ml/train.py",
-          "ml/README.md"
-        ],
-        "required_runtime_artifact": "saida_pipeline/ml_backtest_summary.csv"
+        "runtime_artifact": "saida_pipeline/ml_backtest_summary.csv",
+        "global_risk_auc": 0.8157502296666934,
+        "silence_auc": 0.8254606992073066,
+        "network_pressure_auc": 0.8799283154121864,
+        "respiratory_risk_auc": 0.1214953271028037,
+        "hepatitis_precision": 0.037037037037037035,
+        "other_precision": 0.04242424242424243
       }
     },
     "statistics_specialist": {
       "agent": "Statistics Specialist",
-      "status": "WARN",
+      "status": "PASS",
       "findings": [
-        "O canal endêmico usa percentis históricos por semana epidemiológica, não preenche anos ausentes com zero e exige mínimo de anos com dado.",
-        "O backtest de ML reporta métricas discriminativas e de calibração.",
-        "A classificação interna do canal usa o token 'epidemia' para valores >=P75, ainda que a apresentação a rotule como zona epidêmica estatística."
+        "O canal endêmico usa percentis históricos por semana epidemiológica, não imputa anos ausentes como zero e exige mínimo de três anos com dado.",
+        "O token computacional legado 'epidemia' permanece apenas interno; a apresentação foi corrigida para 'acima do P75 (sinal estatístico)'.",
+        "O backtest reporta AUC, precisão, recall, Brier, prevalência, N e precision@K, com separação temporal treino/teste.",
+        "A interpretação epidemiológica continua separada do sinal estatístico."
       ],
       "blockers": [],
       "recommendations": [
-        "Manter explícito em todos os produtos que zona estatística >=P75 não equivale a epidemia confirmada.",
-        "Preferir nomenclatura operacional neutra como 'acima do P75' em futuras revisões de apresentação, sem alterar retrospectivamente a série.",
-        "Revisar distribuições, denominadores e incerteza nos artefatos reais antes da promoção."
+        "Preservar denominadores, período e tamanho amostral em toda comunicação.",
+        "Não converter zona estatística, anomalia ou probabilidade predita em declaração de epidemia/surto.",
+        "Reavaliar critérios estatísticos se houver mudança substancial de cobertura, definição de caso ou estratégia de testagem."
       ],
-      "decision": "WARN: método estatístico é reproduzível, porém a semântica de zona epidêmica exige cautela e validação final dos artefatos reais.",
+      "decision": "PASS no escopo estatístico V2.1 após neutralização da nomenclatura de epidemia; não autoriza interpretação epidemiológica automática.",
       "reviewer": "Statistics Specialist Agent",
       "reviewed_at": "2026-09-28",
       "evidence": {
         "code": [
           "ml/canal_endemico_bortman.py",
           "ml/backtest.py"
-        ]
+        ],
+        "runtime_artifact": "saida_pipeline/ml_backtest_summary.csv"
       }
     },
     "laboratory_intelligence_specialist": {
@@ -173,19 +181,27 @@
     },
     "genomic_intelligence_specialist": {
       "agent": "Genomic Intelligence Specialist",
-      "status": "NOT_APPLICABLE",
+      "status": "WARN",
       "findings": [
-        "Não foi identificado fluxo operacional de sequenciamento, variante, linhagem ou vigilância genômica no HEAD atual da V2.1."
+        "Vigilância Genômica foi definida como eixo obrigatório do LACEN-MT.",
+        "O HEAD atual ainda não possui ingestão operacional versionada para sequenciamento, linhagem ou variantes.",
+        "Foi criado contrato mínimo amostra→sequência→linhagem/variante com regras para qualidade, denominadores, temporalidade, viés de seleção e interpretação.",
+        "Nenhuma fonte genômica foi presumida; a origem deve ser resolvida pelo SES_DATA_CATALOG antes de implementação."
       ],
       "blockers": [],
       "recommendations": [
-        "Ativar este parecer quando dados de sequenciamento/linhagem forem incorporados ao LACEN-MT."
+        "Executar SES_DATA_CATALOG para localizar objetos institucionais de sequenciamento/linhagem/variantes e metadados de amostras.",
+        "Produzir CatalogEvidencePack específico de vigilância genômica.",
+        "Implementar camada normalizada somente após validar fonte, granularidade, identificador técnico da amostra e temporalidade.",
+        "Manter distinção entre resultado molecular, sequenciamento, linhagem e inferência epidemiológica."
       ],
-      "decision": "NOT_APPLICABLE para o escopo operacional atual da V2.1.",
+      "decision": "WARN: Genômica é obrigatória no LACEN-MT, mas permanece em readiness até validação da fonte e implementação governada do fluxo.",
       "reviewer": "Genomic Intelligence Specialist Agent",
       "reviewed_at": "2026-09-28",
       "evidence": {
-        "scope": "no_genomic_operational_flow_detected_in_current_head"
+        "contract": "docs/vigilancia_genomica_v2_1.md",
+        "catalog_preflight": "docs/SES_DATA_CATALOG_PREFLIGHT.md",
+        "operational_ingestion": false
       }
     },
     "supply_chain_specialist": {
@@ -210,14 +226,16 @@
       "status": "WARN",
       "findings": [
         "A documentação técnica principal está em português formal e possui rastreabilidade de decisões e regras.",
+        "Foi identificado e removido caminho local absoluto de um artefato versionado de positividade por marcador.",
         "O contrato de escrita técnica exige ABNT NBR 6023, títulos e fontes para tabelas, figuras, imagens e quadros."
       ],
       "blockers": [],
       "recommendations": [
-        "Executar revisão documental final sobre os relatórios/artefatos publicados, conferindo títulos, fontes, referências e legibilidade.",
+        "Executar revisão documental final dos relatórios HTML/Markdown destinados à publicação institucional.",
+        "Conferir sistematicamente títulos, fontes, referências, legendas, siglas e legibilidade.",
         "Quando houver mapas, validar simbologia e ícones recomendados antes da publicação institucional."
       ],
-      "decision": "WARN: contrato documental está definido, mas a revisão final deve ocorrer sobre os artefatos efetivamente publicados.",
+      "decision": "WARN mantido: saneamento de caminho local foi realizado, mas a revisão ABNT final deve abranger os artefatos efetivamente destinados à publicação.",
       "reviewer": "Technical Writing/ABNT Agent",
       "reviewed_at": "2026-09-28",
       "evidence": {
