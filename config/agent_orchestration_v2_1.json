@@ -88,6 +88,7 @@
     },
     "GENOMIC_INTELLIGENCE_SPECIALIST": {
       "required_when": [
+        "lacen_mt_product",
         "sequencing",
         "variant",
         "lineage",
@@ -97,7 +98,10 @@
       "constraints": [
         "no_variant_risk_claim_without_evidence",
         "preserve_sample_lineage"
-      ]
+      ],
+      "always_in_scope": true,
+      "readiness_contract": "docs/vigilancia_genomica_v2_1.md",
+      "status_rule": "WARN_or_BLOCK_until_catalog_source_and_operational_ingestion_are_validated"
     },
     "SUPPLY_CHAIN_SPECIALIST": {
       "required_when": [
