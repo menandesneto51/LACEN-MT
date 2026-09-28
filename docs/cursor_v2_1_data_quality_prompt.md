@@ -37,12 +37,12 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 - `quality/promotion_gate.py` consolida Data Quality, paridade, linkage, reconciliação, CI e revisões arquitetural/epidemiológica em `NOT_READY`, `CONDITIONAL` ou `READY_FOR_REVIEW`; nunca promove automaticamente;
 - `quality/review_package.py` gera o pacote único de revisão humana em JSON/Markdown com evidências, bloqueios, condições e checklists específicos para Chief Architect e especialista epidemiológico;
 - `quality/agent_reviews.py` define contratos auditáveis para Chief Architect, Clinical/Epidemiological Specialist, QA e Security/Data Governance, com status `PENDING/PASS/WARN/BLOCK`, achados, bloqueios, recomendações e decisão;
-- `quality/reviews/v2_1_initial_reviews.json` contém os pareceres efetivos atuais: Chief Architect=PASS, Clinical/Epidemiological Specialist=BLOCK, QA=PASS, Security/Data Governance=WARN. O BLOCK epidemiológico decorre da âncora temporal GAL solicitação×coleta ainda não formalmente decidida;
-- `docs/adr/ADR-001-ancora-temporal-gal.md` registra a decisão como PENDENTE e proíbe mudança silenciosa;
+- `quality/reviews/v2_1_initial_reviews.json` contém os pareceres efetivos atuais: Chief Architect=PASS, Clinical/Epidemiological Specialist=PASS, QA=PASS, Security/Data Governance=PASS, após aprovação formal de DEC-001 e DEC-002;
+- DEC-001 está formalmente aprovada com âncora GAL em `solicitacao`; qualquer mudança futura exige nova decisão/ADR e evidência;
 - `quality/gal_temporal_anchor_analysis.py` mede cobertura das datas, atraso solicitação−coleta, impacto em SE/ano epidemiológico e diferença agregada por semana sem alterar o comportamento atual;
 - `quality/artifact_hygiene.py` bloqueia possíveis segredos/credenciais e sinaliza PII/path local em artefatos antes do downstream;
 - `quality/product_lineage.py` registra lineage por produto com fontes lógicas, corte temporal, versão do pipeline e dependências, sem path absoluto local;
-- `quality/population_governance.py` + `config/population_governance_v2_1.json` controlam aprovação, prioridade de fontes e conflitos internos de denominadores. A política inicia `PENDING_APPROVAL` e não escolhe fonte vencedora automaticamente;
+- `quality/population_governance.py` + `config/population_governance_v2_1.json` controlam aprovação, prioridade de fontes e conflitos internos de denominadores. DEC-002 está aprovada com prioridade `DW:POPULACAO_TOTAL` e sem fallback silencioso para fonte não listada;
 - `quality/population_source_comparison.py` produz cobertura territorial e diferenças par-a-par entre fontes populacionais para sustentar a decisão institucional;
 - `quality/decision_briefs.py` gera `decision_brief_DEC-001` e `decision_brief_DEC-002` em JSON/Markdown a partir dos artefatos reais do ETL, resumindo fatos, riscos e opções sem tomar decisão automaticamente;
 - `quality/decision_registry.py` + `config/decision_status_v2_1.json` consolidam DEC-001/DEC-002 em `PENDING/APPROVED/REJECTED`, exigindo responsável, data, evidência e conteúdo para decisões concluídas; o Promotion Gate consome esse estado. Para decisões concluídas, as evidências referenciadas também precisam existir em `saida_pipeline/quality/`;
@@ -61,9 +61,9 @@ Completar o Data Quality Agent e integrar o gate ao pipeline sem regressão.
 9. Gere/consulte `promotion_gate_v2_1.json`; `READY_FOR_REVIEW` exige CI confirmado, revisões arquitetural/epidemiológica aprovadas, governança populacional aprovada, Decision Registry com DEC-001/DEC-002 em `APPROVED` e `decision_readiness_v2_1.json` em `READY_FOR_HUMAN_DECISION`. `NEEDS_EVIDENCE` mantém condição; `DATA_QUALITY_BLOCK` gera bloqueio.
 10. Gere/consulte `review_package_v2_1.md`; Chief Architect e especialista epidemiológico devem revisar checklists independentes antes da decisão de release. O pacote é evidência de revisão, não autorização automática.
 11. Use os pareceres versionados em `quality/reviews/v2_1_initial_reviews.json` como estado atual da revisão. Chief Architect e QA estão `PASS` com CI verde documentado; Clinical/Epidemiological Specialist permanece `BLOCK` e Security/Data Governance permanece `WARN`. Não alterar esses estados sem evidência objetiva e registro da decisão/correção.
-12. Resolver prioritariamente o BLOCK epidemiológico usando `ADR-001`, `DEC-001` e `decision_brief_DEC-001.md`, além dos artefatos `gal_temporal_anchor_*`. O brief informa a decisão, mas nunca seleciona automaticamente uma alternativa.
+12. Preservar a decisão aprovada DEC-001: âncora temporal GAL em `solicitacao`. Não reabrir ou alterar essa regra sem nova evidência, ADR e decisão institucional explícita.
 13. Não substitua ainda `populacao`/taxas legadas: compare com `populacao_v2` e `*_100k_v2` até decisão formal de governança.
-14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. Antes de aprovar, revisar `DEC-002`, `decision_brief_DEC-002.md`, `population_source_comparison_summary.json`, cobertura por fonte, diferenças par-a-par e conflitos internos. Enquanto `status != APPROVED`, territórios com múltiplas fontes concorrentes permanecem sem denominador V2. Com política aprovada e `allow_unlisted_sources=false`, fontes fora de `source_priority` não podem ser usadas como fallback silencioso.
+14. A prioridade populacional deve vir exclusivamente de `config/population_governance_v2_1.json`. DEC-002 está aprovada com `source_priority=['DW:POPULACAO_TOTAL']` e `allow_unlisted_sources=false`; fontes fora da prioridade não podem ser usadas como fallback silencioso.
 15. Contratos de freshness versionados em `quality/freshness_contracts.json`; até validação institucional, ausência de SLA permanece `WARN`, nunca limiar inventado.
 16. Preserve e amplie `product_lineage_v2_1.json`; nenhuma fonte deve ser registrada como path local absoluto.
 17. Preserve o Artifact Hygiene Gate; segredo/credencial = `BLOCK`, PII/path local = `WARN` e investigação.
@@ -87,9 +87,32 @@ Não faça merge. Prepare commits para revisão no PR #7.
 
 A partir do HEAD validado pelo CI #355 (`91d10a2f7ebbe40b01e0b6e71602cc2ab3c64128`), a arquitetura V2.1 está congelada conforme `docs/V2_1_TECHNICAL_FREEZE.md`.
 
-Até resolução de DEC-001 e DEC-002:
+Após resolução formal de DEC-001 e DEC-002:
 - não adicionar novas features;
 - aceitar somente bugfix, testes, segurança/governança e geração de evidências necessárias às decisões;
 - não alterar silenciosamente âncora temporal GAL, prioridade populacional, thresholds ou regras de promoção;
 - manter PR em draft e sem merge;
-- foco operacional: executar pipeline real e produzir os artefatos de evidência/decision readiness.
+- foco operacional: validar pipeline real, agentes, evidências, Promotion Gate e pacote final de revisão humana.
+
+
+## Preflight institucional obrigatório
+
+Antes de criar ou alterar fonte, coletor, scraper, API, ETL, tabela de integração, dimensão, indicador ou fallback de dados:
+1. consultar o agente `SES_DATA_CATALOG`;
+2. ler `docs/SES_DATA_CATALOG_PREFLIGHT.md`;
+3. produzir um `CatalogEvidencePack`;
+4. reutilizar fonte/objeto institucional já catalogado quando houver cobertura;
+5. somente criar nova ingestão quando a lacuna estiver demonstrada;
+6. manter credenciais, PII e caminhos locais fora do repositório.
+
+A ausência desse preflight para nova dependência de dados deve ser tratada como BLOCK de engenharia no Cursor.
+
+## Estado de continuidade
+
+- Branch: `feat/v2-data-quality-agent`;
+- PR: #7;
+- último Quality Gate confirmado: SUCCESS no commit `5c73a2159ab5fd606f4d558902bf76483e3d6bd6`;
+- DEC-001: APPROVED — GAL ancorado em solicitação;
+- DEC-002: APPROVED — prioridade populacional `DW:POPULACAO_TOTAL`;
+- próximo foco: validar preflight do catálogo, especialistas aplicáveis e Promotion Gate;
+- não fazer merge automaticamente.
