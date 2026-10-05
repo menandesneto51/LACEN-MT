@@ -231,7 +231,7 @@ def build_action_register(
     if previous is not None and not previous.empty and "action_id" in previous.columns:
         prev = previous.drop_duplicates("action_id", keep="last").set_index("action_id")
         preserved = [
-            "estado_acao", "prazo", "dependencia", "bloqueio",
+            "estado_acao", "responsavel", "prazo", "dependencia", "bloqueio",
             "evidencia_execucao", "resultado", "validacao", "criada_em",
             "concluida_em", "validada_em",
         ]
