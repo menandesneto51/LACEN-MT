@@ -118,6 +118,8 @@ DEFERRED_OPTIONAL_FILES = {
     "alerta_historico": "alerta_historico.csv",
     "alerta_emergencia_historico": "alerta_emergencia_historico.csv",
     "executive_state": "executive_state_summary.csv",
+    "risk_register": "quality/risk_register_v2_1.csv",
+    "action_register": "quality/action_register_v2_1.csv",
 }
 
 OPTIONAL_FILES = {**STARTUP_OPTIONAL_FILES, **DEFERRED_OPTIONAL_FILES}
@@ -1768,6 +1770,7 @@ MODULOS = [
     "Territórios prioritários",
     "Integração epidemiológica",
     "Predição e alertas",
+    "Gestão de riscos e ações",
     "Dados e qualidade",
 ]
 # Atalhos da aba Sobre: aplicar nav antes de instanciar o radio (evita
@@ -3848,6 +3851,167 @@ elif modulo == "Predição e alertas":
                 st.info("Forecast encontrado, mas não foi possível identificar uma coluna numérica de previsão.")
         else:
             st.info("forecast_integrated_statewide.csv não encontrado. O painel usa projeção operacional curta baseada no período selecionado.")
+
+
+# =============================================================================
+# Módulo: Gestão de riscos e ações
+# =============================================================================
+elif modulo == "Gestão de riscos e ações":
+    st.subheader("Gestão de riscos e ações — acompanhamento operacional")
+    st.caption(
+        "Ciclo: sinal → risco → priorização → ação → evidência → risco residual → validação. "
+        "Esta visão não declara surto, epidemia ou emergência automaticamente."
+    )
+
+    df_risk_register = get_optional(folder, "risk_register")
+    df_action_register = get_optional(folder, "action_register")
+
+    if df_risk_register.empty:
+        st.info(
+            "Registro de riscos ainda não disponível. Rode o ETL/Radar para gerar "
+            "quality/risk_register_v2_1.csv."
+        )
+    else:
+        risks = df_risk_register.copy()
+        if "estado_risco" not in risks.columns:
+            risks["estado_risco"] = "ABERTO"
+        if "prioridade" not in risks.columns:
+            risks["prioridade"] = "—"
+
+        open_risks = risks[risks["estado_risco"].astype(str) != "FECHADO"].copy()
+        critical_open = int((open_risks["prioridade"].astype(str) == "CRITICA").sum())
+        high_open = int((open_risks["prioridade"].astype(str) == "ALTA").sum())
+        controlled = int(
+            risks["estado_risco"].astype(str).isin(["CONTROLADO", "FECHADO"]).sum()
+        )
+
+        overdue = 0
+        blocked = 0
+        open_actions = 0
+        if not df_action_register.empty:
+            actions = df_action_register.copy()
+            if "estado_acao" not in actions.columns:
+                actions["estado_acao"] = "PLANEJADA"
+            state = actions["estado_acao"].astype(str)
+            open_action_mask = ~state.isin(["VALIDADA", "CANCELADA"])
+            open_actions = int(open_action_mask.sum())
+            blocked = int((state == "BLOQUEADA").sum())
+            if "prazo" in actions.columns:
+                due = pd.to_datetime(actions["prazo"], errors="coerce")
+                now_ts = pd.Timestamp.now()
+                overdue = int((open_action_mask & due.notna() & (due < now_ts)).sum())
+        else:
+            actions = pd.DataFrame()
+
+        m1, m2, m3, m4, m5 = st.columns(5)
+        m1.metric("Riscos críticos abertos", critical_open)
+        m2.metric("Riscos altos abertos", high_open)
+        m3.metric("Ações abertas", open_actions)
+        m4.metric("Ações atrasadas", overdue)
+        m5.metric("Controlados/fechados", controlled)
+
+        if critical_open:
+            st.error(
+                "Há risco(s) CRÍTICO(S) aberto(s). Priorizar análise, coordenação e plano de ação."
+            )
+        elif high_open or overdue or blocked:
+            st.warning(
+                "Há riscos/ações que exigem acompanhamento operacional e validação."
+            )
+        else:
+            st.success("Sem pendência crítica identificada no registro atual.")
+
+        st.markdown("### Registro de riscos")
+        c1, c2 = st.columns(2)
+        priority_options = sorted(
+            [x for x in risks["prioridade"].dropna().astype(str).unique().tolist() if x]
+        )
+        state_options = sorted(
+            [x for x in risks["estado_risco"].dropna().astype(str).unique().tolist() if x]
+        )
+        with c1:
+            selected_priority = st.multiselect(
+                "Prioridade",
+                priority_options,
+                default=priority_options,
+                key="risk_priority_filter",
+            )
+        with c2:
+            selected_state = st.multiselect(
+                "Estado do risco",
+                state_options,
+                default=state_options,
+                key="risk_state_filter",
+            )
+
+        risk_view = risks[
+            risks["prioridade"].astype(str).isin(selected_priority)
+            & risks["estado_risco"].astype(str).isin(selected_state)
+        ].copy()
+        risk_cols = [
+            c for c in [
+                "risk_id", "prioridade", "estado_risco", "evento", "agravo",
+                "municipio", "probabilidade", "impacto", "confianca",
+                "estrategia_tratamento", "responsavel_risco",
+                "se_primeira_deteccao", "se_ultima_deteccao",
+                "prioridade_residual", "probabilidade_residual",
+                "impacto_residual", "data_atualizacao",
+            ] if c in risk_view.columns
+        ]
+        st.dataframe(
+            risk_view[risk_cols] if risk_cols else risk_view,
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        st.markdown("### Plano de ações")
+        if actions.empty:
+            st.info("Nenhuma ação materializada no registro atual.")
+        else:
+            action_state_options = sorted(
+                [x for x in actions["estado_acao"].dropna().astype(str).unique().tolist() if x]
+            )
+            selected_action_state = st.multiselect(
+                "Estado da ação",
+                action_state_options,
+                default=action_state_options,
+                key="risk_action_state_filter",
+            )
+            action_view = actions[
+                actions["estado_acao"].astype(str).isin(selected_action_state)
+            ].copy()
+            if "prazo" in action_view.columns:
+                action_view["prazo_dt"] = pd.to_datetime(
+                    action_view["prazo"], errors="coerce"
+                )
+                action_view["atrasada"] = (
+                    ~action_view["estado_acao"].astype(str).isin(["VALIDADA", "CANCELADA"])
+                    & action_view["prazo_dt"].notna()
+                    & (action_view["prazo_dt"] < pd.Timestamp.now())
+                )
+            action_cols = [
+                c for c in [
+                    "action_id", "risk_id", "prioridade_risco", "estado_acao",
+                    "responsavel", "acao", "prazo", "atrasada", "dependencia",
+                    "bloqueio", "resultado", "validacao", "atualizada_em",
+                ] if c in action_view.columns
+            ]
+            st.dataframe(
+                action_view[action_cols] if action_cols else action_view,
+                use_container_width=True,
+                hide_index=True,
+            )
+
+        with st.expander("Como encerrar um risco corretamente"):
+            st.markdown(
+                """
+                Um risco só pode chegar a **CONTROLADO/FECHADO** com decisão e evidência
+                registradas, avaliação explícita de probabilidade e impacto residuais e
+                justificativa do risco residual. Para **FECHADO**, todas as ações precisam
+                estar **VALIDADA** ou **CANCELADA**. Se o sinal reaparecer em nova semana,
+                o risco volta para **EM_ANALISE**.
+                """
+            )
 
 
 # =============================================================================
