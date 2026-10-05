@@ -54,15 +54,22 @@ def test_population_governance_approved_from_endorsement():
     assert "Menandes Neto" in str(policy["approved_by"])
 
 
-def test_agent_reviews_pass_after_formal_endorsement():
+def test_core_institutional_reviews_pass_after_formal_endorsement():
     reviews = load_agent_reviews(
         ROOT / "quality" / "reviews" / "v2_1_initial_reviews.json"
     )
     summary = summarize_agent_reviews(reviews)
-    assert summary["overall_status"] == "PASS"
+    # DEC-001/DEC-002 estão aprovadas, mas especialistas operacionais podem
+    # manter WARN legítimo sem reabrir a decisão institucional.
+    assert summary["overall_status"] == "PENDING"
     assert reviews["clinical_epidemiological_specialist"].status == "PASS"
     assert reviews["security_data_governance"].status == "PASS"
+    assert reviews["laboratory_intelligence_specialist"].status == "PASS"
+    assert reviews["statistics_specialist"].status == "PASS"
     assert reviews["clinical_epidemiological_specialist"].blockers == []
+    assert "ML Specialist" in summary["warning_agents"]
+    assert "Genomic Intelligence Specialist" in summary["warning_agents"]
+    assert "Technical Writing/ABNT" in summary["warning_agents"]
 
 
 def test_adrs_mark_approved_without_chat_language():
