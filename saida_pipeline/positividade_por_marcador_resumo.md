@@ -3,7 +3,7 @@
 Positividade por marcador (regras_agravo_gal): IgG/anti-HBs não entram em alerta agudo nem Bortman. Não declara surto.
 
 Registros micro lidos: 1174
-Regras carregadas: 122 (fonte: C:\Users\Menandesneto\OneDrive\Área de Trabalho\LACEN\conhecimento_ve\regras_agravo_gal.csv)
+Regras carregadas: 122 (fonte lógica: conhecimento_ve/regras_agravo_gal.csv)
 Linhas com conta_alerta_agudo: 58
 Deduplicação paciente: bloqueada — ausência de identificador no espelho GAL micro (LGPD/dado não extraído)
 

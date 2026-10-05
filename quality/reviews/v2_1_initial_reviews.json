@@ -1,0 +1,246 @@
+{
+  "review_version": "v2.1-initial-12",
+  "automatic_release_allowed": false,
+  "reviews": {
+    "chief_architect": {
+      "agent": "Chief Architect",
+      "status": "PASS",
+      "findings": [
+        "A arquitetura separa operação legada, Data Quality Gate, Promotion Gate e decisão humana.",
+        "Joins territoriais de produção e auditoria seguem a mesma política determinística IBGE-first, sem fuzzy matching.",
+        "Zero-padding de códigos IBGE foi removido e coberto por teste de regressão.",
+        "Lineage por produto, Artifact Hygiene, reconciliação territorial e governança populacional versionada foram incorporados.",
+        "A governança populacional possui comparação automática de cobertura/diferenças e não autoaprova fonte vencedora.",
+        "A análise temporal GAL quantifica impacto por registro e por semana sem alterar a série.",
+        "A V2 permanece paralela ao legado e automatic_promotion_allowed=false.",
+        "O CI #368 concluiu SUCCESS no HEAD df5ffcac8dac0dd9a0fb61204e91065f40c60fa6."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Preservar a política de não promoção automática e os gates independentes.",
+        "Manter o ADR-001 como requisito de negócio/epidemiologia antes de qualquer mudança da âncora temporal.",
+        "Reexecutar revisão arquitetural se houver mudança em joins, denominadores, persistência ou contrato de dados."
+      ],
+      "decision": "PASS arquitetural mantido. DEC-001/DEC-002 endossadas formalmente; automatic_promotion_allowed=false.",
+      "reviewer": "Chief Architect Agent",
+      "reviewed_at": "2026-09-27",
+      "evidence": {
+        "workflow_run_number": 368,
+        "workflow_run_id": 36282146352,
+        "head_sha": "df5ffcac8dac0dd9a0fb61204e91065f40c60fa6",
+        "conclusion": "success"
+      }
+    },
+    "clinical_epidemiological_specialist": {
+      "agent": "Clinical/Epidemiological Specialist",
+      "status": "PASS",
+      "findings": [
+        "A implementação mantém separação entre anomalia estatística, prioridade epidemiológica e surto/emergência.",
+        "A integração evita interpretar ausência de correspondência como subnotificação automática.",
+        "A semana epidemiológica GAL permanece ancorada preferencialmente na data de solicitação, com fallback para outras datas.",
+        "Há evidência quantitativa disponível para solicitação × coleta, mas a escolha institucional da âncora permanece pendente.",
+        "DEC-001 aprovada (A) por Menandes Neto em 2026-09-27 via institutional_endorsement_v2_1.json."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Revisar o pacote de evidências DEC-001 e registrar uma alternativa explicitamente.",
+        "Preservar o comportamento atual até decisão formal; não alterar a âncora silenciosamente."
+      ],
+      "decision": "PASS após endosso formal DEC-001 alternativa A. Promoção automática permanece proibida.",
+      "reviewer": "Menandes Neto (Responsável CIEVS-MT (vigilância epidemiológica))",
+      "reviewed_at": "2026-09-27"
+    },
+    "qa": {
+      "agent": "QA",
+      "status": "PASS",
+      "findings": [
+        "O GitHub Actions LACEN-MT Quality Gate run #368 concluiu SUCCESS para o HEAD df5ffcac8dac0dd9a0fb61204e91065f40c60fa6.",
+        "Os testes cobrem DQ, paridade, linkage, reconciliação, Promotion Gate, review package, multiagente, governança populacional, artifact hygiene, lineage, análise temporal GAL e joins territoriais determinísticos.",
+        "Os testes de integração de run_pipeline() comprovam que DQ=BLOCK impede rede, ML, mirror e CIEVS e que DQ=WARN mantém a continuidade.",
+        "Há regressão específica contra zero-padding de IBGE, duplicação por variantes nominais, fallback territorial indevido e cobertura populacional incompleta."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Manter o Quality Gate obrigatório em todos os PRs e pushes relevantes.",
+        "Preservar os testes de integração BLOCK/WARN e os testes de joins territoriais como cobertura de regressão.",
+        "Reexecutar o CI sempre que regras epidemiológicas, denominadores ou joins forem alterados."
+      ],
+      "decision": "PASS de QA mantido após endosso formal DEC-001/DEC-002. Não autoriza release automático.",
+      "reviewer": "QA Agent",
+      "reviewed_at": "2026-09-27",
+      "evidence": {
+        "workflow_run_number": 368,
+        "workflow_run_id": 36282146352,
+        "head_sha": "df5ffcac8dac0dd9a0fb61204e91065f40c60fa6",
+        "conclusion": "success"
+      }
+    },
+    "security_data_governance": {
+      "agent": "Security/Data Governance",
+      "status": "PASS",
+      "findings": [
+        "Não há promoção automática nem fuzzy matching territorial em produção.",
+        "A reconciliação preserva decisão humana e evidência por issue_id.",
+        "Artifact Hygiene bloqueia possíveis segredos/credenciais e sinaliza PII/path local.",
+        "Lineage por produto registra fontes lógicas, corte temporal, versão e dependências.",
+        "A política populacional permanece versionada, porém sem prioridade de fonte institucionalmente aprovada.",
+        "DEC-002 aprovada com source_priority=['DW:POPULACAO_TOTAL'] por Menandes Neto em 2026-09-27 via institutional_endorsement_v2_1.json."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Revisar o pacote de evidências DEC-002 e aprovar explicitamente a política populacional.",
+        "Executar revisão final dos artefatos reais produzidos pelo ETL.",
+        "Manter ausência de denominador V2 quando houver múltiplas fontes sem prioridade aprovada."
+      ],
+      "decision": "PASS após endosso formal da política populacional (DEC-002). Promoção automática permanece proibida.",
+      "reviewer": "Menandes Neto (Responsável CIEVS-MT (governança dos produtos de vigilância))",
+      "reviewed_at": "2026-09-27"
+    },
+    "ml_specialist": {
+      "agent": "ML Specialist",
+      "status": "WARN",
+      "findings": [
+        "O backtest operacional está presente em saida_pipeline/ml_backtest_summary.csv e usa separação temporal 80/20.",
+        "Modelo global de risco: AUC=0,8158; precisão=0,4839; recall=0,2857 no limiar calibrado 0,25; Brier=0,0167.",
+        "Modelo global de silêncio: AUC=0,8255; precisão=0,7041; recall=0,7044 no limiar calibrado 0,10.",
+        "Pressão de rede: AUC=0,8799; precisão=0,5899; recall=0,7216 no limiar calibrado 0,30.",
+        "Desempenho por família é heterogêneo: arbovirose apresenta AUC=0,9798, enquanto respiratório apresenta AUC=0,1215; hepatite e outros apresentam precisão muito baixa no limiar calibrado.",
+        "Os outputs preditivos permanecem separados dos produtos observados e não substituem regra clínica/epidemiológica."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Manter o modelo global apenas como sinal preditivo auxiliar.",
+        "Não promover interpretação/alerta autônomo por família com desempenho inadequado; exigir critério mínimo versionado antes de uso operacional.",
+        "Recalibrar ou suprimir o recorte respiratório e revisar hepatite/outros antes da promoção dessas saídas.",
+        "Reportar AUC, precisão, recall, prevalência do desfecho, N de teste e limiar em toda versão operacional."
+      ],
+      "decision": "WARN mantido: validação global é aceitável como sinal auxiliar, mas há desempenho insuficiente em famílias específicas; essas saídas não devem ser promovidas sem recalibração/critério de aceitação.",
+      "reviewer": "ML Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "runtime_artifact": "saida_pipeline/ml_backtest_summary.csv",
+        "global_risk_auc": 0.8157502296666934,
+        "silence_auc": 0.8254606992073066,
+        "network_pressure_auc": 0.8799283154121864,
+        "respiratory_risk_auc": 0.1214953271028037,
+        "hepatitis_precision": 0.037037037037037035,
+        "other_precision": 0.04242424242424243
+      }
+    },
+    "statistics_specialist": {
+      "agent": "Statistics Specialist",
+      "status": "PASS",
+      "findings": [
+        "O canal endêmico usa percentis históricos por semana epidemiológica, não imputa anos ausentes como zero e exige mínimo de três anos com dado.",
+        "O token computacional legado 'epidemia' permanece apenas interno; a apresentação foi corrigida para 'acima do P75 (sinal estatístico)'.",
+        "O backtest reporta AUC, precisão, recall, Brier, prevalência, N e precision@K, com separação temporal treino/teste.",
+        "A interpretação epidemiológica continua separada do sinal estatístico."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Preservar denominadores, período e tamanho amostral em toda comunicação.",
+        "Não converter zona estatística, anomalia ou probabilidade predita em declaração de epidemia/surto.",
+        "Reavaliar critérios estatísticos se houver mudança substancial de cobertura, definição de caso ou estratégia de testagem."
+      ],
+      "decision": "PASS no escopo estatístico V2.1 após neutralização da nomenclatura de epidemia; não autoriza interpretação epidemiológica automática.",
+      "reviewer": "Statistics Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "code": [
+          "ml/canal_endemico_bortman.py",
+          "ml/backtest.py"
+        ],
+        "runtime_artifact": "saida_pipeline/ml_backtest_summary.csv"
+      }
+    },
+    "laboratory_intelligence_specialist": {
+      "agent": "Laboratory Intelligence Specialist",
+      "status": "PASS",
+      "findings": [
+        "A arquitetura distingue exame, resultado positivo, pessoa positiva, caso e notificação.",
+        "A âncora temporal GAL foi formalmente aprovada pela DEC-001 como data de solicitação.",
+        "A camada laboratorial mantém TAT, positividade e capacidade como métricas próprias, sem convertê-las automaticamente em confirmação epidemiológica."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Preservar deduplicação por pessoa/amostra quando produtos futuros estimarem pessoas positivas.",
+        "Manter TAT e positividade com denominador e janela temporal explícitos."
+      ],
+      "decision": "PASS no escopo de inteligência laboratorial V2.1, sem autorização de promoção automática.",
+      "reviewer": "Laboratory Intelligence Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "decisions": [
+          "DEC-001"
+        ],
+        "code": [
+          "quality/gal_temporal_anchor_analysis.py",
+          "ml/README.md"
+        ]
+      }
+    },
+    "genomic_intelligence_specialist": {
+      "agent": "Genomic Intelligence Specialist",
+      "status": "WARN",
+      "findings": [
+        "Vigilância Genômica foi definida como eixo obrigatório do LACEN-MT.",
+        "O HEAD atual ainda não possui ingestão operacional versionada para sequenciamento, linhagem ou variantes.",
+        "Foi criado contrato mínimo amostra→sequência→linhagem/variante com regras para qualidade, denominadores, temporalidade, viés de seleção e interpretação.",
+        "Nenhuma fonte genômica foi presumida; a origem deve ser resolvida pelo SES_DATA_CATALOG antes de implementação."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Executar SES_DATA_CATALOG para localizar objetos institucionais de sequenciamento/linhagem/variantes e metadados de amostras.",
+        "Produzir CatalogEvidencePack específico de vigilância genômica.",
+        "Implementar camada normalizada somente após validar fonte, granularidade, identificador técnico da amostra e temporalidade.",
+        "Manter distinção entre resultado molecular, sequenciamento, linhagem e inferência epidemiológica."
+      ],
+      "decision": "WARN: Genômica é obrigatória no LACEN-MT, mas permanece em readiness até validação da fonte e implementação governada do fluxo.",
+      "reviewer": "Genomic Intelligence Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "contract": "docs/vigilancia_genomica_v2_1.md",
+        "catalog_preflight": "docs/SES_DATA_CATALOG_PREFLIGHT.md",
+        "operational_ingestion": false
+      }
+    },
+    "supply_chain_specialist": {
+      "agent": "Supply Chain Specialist",
+      "status": "NOT_APPLICABLE",
+      "findings": [
+        "Não foi identificado fluxo operacional versionado de estoque de reagentes, kits, consumíveis ou risco de desabastecimento no HEAD atual."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Ativar este parecer quando o módulo de suprimentos laboratoriais entrar no escopo."
+      ],
+      "decision": "NOT_APPLICABLE para o escopo operacional atual da V2.1.",
+      "reviewer": "Supply Chain Specialist Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "scope": "no_supply_chain_operational_flow_detected_in_current_head"
+      }
+    },
+    "technical_writing_abnt": {
+      "agent": "Technical Writing/ABNT",
+      "status": "WARN",
+      "findings": [
+        "A documentação técnica principal está em português formal e possui rastreabilidade de decisões e regras.",
+        "Foi identificado e removido caminho local absoluto de um artefato versionado de positividade por marcador.",
+        "O contrato de escrita técnica exige ABNT NBR 6023, títulos e fontes para tabelas, figuras, imagens e quadros."
+      ],
+      "blockers": [],
+      "recommendations": [
+        "Executar revisão documental final dos relatórios HTML/Markdown destinados à publicação institucional.",
+        "Conferir sistematicamente títulos, fontes, referências, legendas, siglas e legibilidade.",
+        "Quando houver mapas, validar simbologia e ícones recomendados antes da publicação institucional."
+      ],
+      "decision": "WARN mantido: saneamento de caminho local foi realizado, mas a revisão ABNT final deve abranger os artefatos efetivamente destinados à publicação.",
+      "reviewer": "Technical Writing/ABNT Agent",
+      "reviewed_at": "2026-09-28",
+      "evidence": {
+        "contract": "config/agent_orchestration_v2_1.json"
+      }
+    }
+  }
+}

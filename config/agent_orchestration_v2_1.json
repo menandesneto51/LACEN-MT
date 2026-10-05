@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0",
+  "project": "LACEN-MT",
+  "release": "v2.1",
+  "automatic_release_allowed": false,
+  "orchestration_order": [
+    "SES_DATA_CATALOG",
+    "CTO_VIRTUAL",
+    "PRODUCT_OWNER",
+    "CHIEF_ARCHITECT",
+    "CLINICAL_EPIDEMIOLOGICAL_SPECIALIST",
+    "EMERGENCY_RESPONSE_COORDINATOR",
+    "RISK_REGISTER_STEWARD",
+    "DATA_ARCHITECT",
+    "DATA_GOVERNANCE",
+    "BACKEND_API",
+    "AI_GIS",
+    "ML_SPECIALIST",
+    "STATISTICS_SPECIALIST",
+    "LAB_INTELLIGENCE_SPECIALIST",
+    "GENOMIC_INTELLIGENCE_SPECIALIST",
+    "SUPPLY_CHAIN_SPECIALIST",
+    "TECHNICAL_WRITING_ABNT",
+    "UX",
+    "PERFORMANCE",
+    "SECURITY",
+    "QA",
+    "OBSERVABILITY_DEVOPS",
+    "CHIEF_ARCHITECT_FINAL"
+  ],
+  "agents": {
+    "SES_DATA_CATALOG": {
+      "required_when": [
+        "data_source_change",
+        "collector_change",
+        "api_change",
+        "etl_change",
+        "integration_table_change",
+        "indicator_change",
+        "linkage_change",
+        "data_fallback_change"
+      ],
+      "output": "CatalogEvidencePack",
+      "blocking_rule": "missing_catalog_evidence_for_new_data_dependency"
+    },
+    "ML_SPECIALIST": {
+      "required_when": [
+        "forecasting",
+        "classification",
+        "clustering",
+        "anomaly_detection",
+        "pattern_detection",
+        "seasonality_modeling"
+      ],
+      "output": "MLReviewPack",
+      "constraints": [
+        "no_clinical_rule_creation",
+        "separate_observed_derived_predicted"
+      ]
+    },
+    "STATISTICS_SPECIALIST": {
+      "required_when": [
+        "inferential_analysis",
+        "time_series",
+        "trend_analysis",
+        "pca",
+        "multivariate_analysis",
+        "uncertainty_estimation"
+      ],
+      "output": "StatisticalReviewPack",
+      "constraints": [
+        "state_population_and_period",
+        "document_assumptions",
+        "report_uncertainty"
+      ]
+    },
+    "LAB_INTELLIGENCE_SPECIALIST": {
+      "required_when": [
+        "gal",
+        "laboratory_turnaround_time",
+        "test_positivity",
+        "laboratory_capacity",
+        "assay_interpretation"
+      ],
+      "output": "LaboratoryIntelligenceReviewPack",
+      "constraints": [
+        "exam_is_not_case",
+        "positive_result_is_not_person_positive_without_deduplication"
+      ]
+    },
+    "GENOMIC_INTELLIGENCE_SPECIALIST": {
+      "required_when": [
+        "lacen_mt_product",
+        "sequencing",
+        "variant",
+        "lineage",
+        "genomic_surveillance"
+      ],
+      "output": "GenomicIntelligenceReviewPack",
+      "constraints": [
+        "no_variant_risk_claim_without_evidence",
+        "preserve_sample_lineage"
+      ],
+      "always_in_scope": true,
+      "readiness_contract": "docs/vigilancia_genomica_v2_1.md",
+      "status_rule": "WARN_or_BLOCK_until_catalog_source_and_operational_ingestion_are_validated"
+    },
+    "SUPPLY_CHAIN_SPECIALIST": {
+      "required_when": [
+        "reagent_stock",
+        "consumables",
+        "kit_inventory",
+        "stockout_risk",
+        "laboratory_supply"
+      ],
+      "output": "SupplyChainReviewPack",
+      "constraints": [
+        "separate_observed_stock_from_projected_consumption"
+      ]
+    },
+    "TECHNICAL_WRITING_ABNT": {
+      "required_when": [
+        "technical_document",
+        "report",
+        "technical_note",
+        "publication_material"
+      ],
+      "output": "TechnicalWritingReviewPack",
+      "constraints": [
+        "pt_BR_formal",
+        "orthography_grammar_cohesion_readability",
+        "ABNT_NBR_6023_references",
+        "titles_for_tables_figures_images_charts",
+        "sources_for_tables_figures_images_charts",
+        "recommended_map_icons_when_maps_exist"
+      ]
+    },
+    "RISK_REGISTER_STEWARD": {
+      "required_when": [
+        "risk_signal",
+        "risk_register",
+        "action_plan",
+        "residual_risk",
+        "overdue_action",
+        "risk_recurrence"
+      ],
+      "output": "RiskRegisterReviewPack",
+      "constraints": [
+        "stable_risk_ids",
+        "preserve_human_state",
+        "no_automatic_risk_closure",
+        "residual_risk_required_for_control_or_closure"
+      ],
+      "operating_contract": "docs/gestao_riscos_acoes_v2_1.md"
+    },
+    "EMERGENCY_RESPONSE_COORDINATOR": {
+      "required_when": [
+        "critical_risk",
+        "high_risk",
+        "multi_actor_action_plan",
+        "blocked_critical_action"
+      ],
+      "output": "EmergencyResponseCoordinationPack",
+      "constraints": [
+        "no_automatic_emergency_declaration",
+        "no_automatic_coes_activation",
+        "human_authority_required_for_escalation"
+      ],
+      "operating_contract": "docs/gestao_riscos_acoes_v2_1.md"
+    }
+  },
+  "global_rules": [
+    "agent_output_never_authorizes_release_automatically",
+    "human_decision_required_for_institutional_policy",
+    "BLOCK_must_not_be_bypassed",
+    "credentials_pii_and_local_paths_must_not_be_versioned",
+    "Cursor_is_the_default_implementation_environment"
+  ]
+}

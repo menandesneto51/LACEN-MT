@@ -7,7 +7,7 @@ Método:
   - Percentis P25/P50/P75 sobre valores observados (casos não nulos).
   - Anos sem observação NÃO são preenchidos com zero.
   - Menos de 3 anos de baseline com dado → zona ``sem_dado``.
-  - Zonas: sucesso (<P25), seguranca [P25,P50), alerta [P50,P75), epidemia (≥P75).
+  - Zonas internas: sucesso (<P25), seguranca [P25,P50), alerta [P50,P75), epidemia (≥P75). O token interno `epidemia` é legado computacional; na apresentação, usar “acima do P75 (sinal estatístico)” e nunca inferir epidemia confirmada.
 
 Série preferencial: positivos laboratoriais (GAL) a partir de
 ``integrated_weekly_surveillance``. Série opcional: notificações.
@@ -34,7 +34,7 @@ MIN_ANOS_BASELINE = 3
 MIN_N_MARCADOR = 5
 ZONAS_RISCO = frozenset({"alerta", "epidemia"})
 ZONA_LABEL_PT = {
-    "epidemia": "zona epidêmica (estatística)",
+    "epidemia": "acima do P75 (sinal estatístico)",
     "alerta": "zona de alerta (estatística)",
     "seguranca": "zona de segurança",
     "sucesso": "zona de sucesso",
