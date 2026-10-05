@@ -48,7 +48,8 @@ def risk_id_for(row: pd.Series | dict[str, Any]) -> str:
     """ID estável entre semanas para o mesmo agravo × território."""
     return _stable_id(
         "RK",
-        row.get("familia") or row.get("agravo"),
+        row.get("agravo"),
+        row.get("familia"),
         row.get("municipio"),
     )
 
@@ -95,6 +96,8 @@ def build_risk_register(
         "data_atualizacao", "data_fechamento",
     ]
     if radar is None or radar.empty:
+        if previous is not None and not previous.empty:
+            return previous.copy().reset_index(drop=True)
         return pd.DataFrame(columns=cols)
 
     rows: list[dict[str, Any]] = []
@@ -157,7 +160,7 @@ def build_risk_register(
                 out.at[idx, col] = value
         out.at[idx, "data_atualizacao"] = now
         # Risco previamente fechado reapareceu: reabre para análise.
-        if str(out.at[idx, "estado_risco"]) == "FECHADO":
+        if str(out.at[idx, "estado_risco"]) in {"CONTROLADO", "FECHADO"}:
             out.at[idx, "estado_risco"] = "EM_ANALISE"
             out.at[idx, "data_fechamento"] = pd.NA
 
@@ -220,6 +223,8 @@ def build_action_register(
     ]
     out = pd.DataFrame(rows, columns=cols)
     if out.empty:
+        if previous is not None and not previous.empty:
+            return previous.copy().reset_index(drop=True)
         return out
     out = out.drop_duplicates("action_id", keep="last")
 
