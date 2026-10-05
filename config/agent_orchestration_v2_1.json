@@ -9,6 +9,8 @@
     "PRODUCT_OWNER",
     "CHIEF_ARCHITECT",
     "CLINICAL_EPIDEMIOLOGICAL_SPECIALIST",
+    "EMERGENCY_RESPONSE_COORDINATOR",
+    "RISK_REGISTER_STEWARD",
     "DATA_ARCHITECT",
     "DATA_GOVERNANCE",
     "BACKEND_API",
@@ -132,6 +134,39 @@
         "sources_for_tables_figures_images_charts",
         "recommended_map_icons_when_maps_exist"
       ]
+    },
+    "RISK_REGISTER_STEWARD": {
+      "required_when": [
+        "risk_signal",
+        "risk_register",
+        "action_plan",
+        "residual_risk",
+        "overdue_action",
+        "risk_recurrence"
+      ],
+      "output": "RiskRegisterReviewPack",
+      "constraints": [
+        "stable_risk_ids",
+        "preserve_human_state",
+        "no_automatic_risk_closure",
+        "residual_risk_required_for_control_or_closure"
+      ],
+      "operating_contract": "docs/gestao_riscos_acoes_v2_1.md"
+    },
+    "EMERGENCY_RESPONSE_COORDINATOR": {
+      "required_when": [
+        "critical_risk",
+        "high_risk",
+        "multi_actor_action_plan",
+        "blocked_critical_action"
+      ],
+      "output": "EmergencyResponseCoordinationPack",
+      "constraints": [
+        "no_automatic_emergency_declaration",
+        "no_automatic_coes_activation",
+        "human_authority_required_for_escalation"
+      ],
+      "operating_contract": "docs/gestao_riscos_acoes_v2_1.md"
     }
   },
   "global_rules": [
