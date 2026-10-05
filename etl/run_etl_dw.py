@@ -477,6 +477,20 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             cutoff=cutoff,
             dependencies=["promotion_gate_v2_1", "gal_temporal_anchor_analysis"],
         ),
+        build_product_lineage(
+            product="risk_action_management_v2_1",
+            logical_sources=["radar_eventos_risco"],
+            cutoff=cutoff,
+            dependencies=[
+                "risk_register_v2_1",
+                "action_register_v2_1",
+                "risk_action_summary_v2_1",
+            ],
+            notes=[
+                "Status operacional separado do Promotion Gate técnico.",
+                "Nenhum risco ou ação é encerrado automaticamente.",
+            ],
+        ),
     ]
     write_lineage_registry(lineage, quality_dir)
     report["product_lineage_count"] = len(lineage)
