@@ -81,3 +81,19 @@ Até a revisão final:
 - não alterar silenciosamente âncora temporal GAL, prioridade populacional, thresholds ou regras de promoção;
 - manter PR em draft e sem merge;
 - foco operacional: validar pipeline, agentes, evidências e readiness para revisão humana.
+
+
+## Gestão de riscos e ações
+Quando o Radar produzir sinais operacionais:
+- executar `quality/risk_action_management.py`;
+- manter `risk_id` e `action_id` estáveis;
+- preservar estados humanos entre execuções;
+- não apagar riscos/ações em ciclos sem novos sinais;
+- risco reaparecido após CONTROLADO/FECHADO volta para `EM_ANALISE`;
+- `CONTROLADO`/`FECHADO` exigem decisão, evidência e risco residual;
+- `FECHADO` exige ações relacionadas `VALIDADA` ou `CANCELADA`;
+- risco CRÍTICO/ALTO aciona revisão do `RISK_REGISTER_STEWARD` e, quando houver coordenação multiárea, do `EMERGENCY_RESPONSE_COORDINATOR`;
+- nenhum agente declara surto, epidemia, emergência ou ativa COES automaticamente;
+- consultar `docs/gestao_riscos_acoes_v2_1.md`.
+
+O `risk_action_status` é operacional e permanece separado do Promotion Gate técnico.
