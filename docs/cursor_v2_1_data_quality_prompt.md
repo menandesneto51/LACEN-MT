@@ -140,3 +140,43 @@ Enquanto a fonte/ingestão ainda não estiver operacionalmente validada:
 - produzir `CatalogEvidencePack`;
 - não inferir variante/linhagem a partir de exame molecular;
 - preservar amostra → sequência → linhagem/variante → linkage epidemiológico como entidades distintas.
+
+
+## Gestão de riscos e ações — implementação V2.1
+
+Implementado:
+- `quality/risk_action_management.py`;
+- registro persistente `risk_register_v2_1.csv`;
+- plano persistente `action_register_v2_1.csv`;
+- resumo `risk_action_summary_v2_1.json`;
+- matriz probabilidade × impacto;
+- prioridades BAIXA/MODERADA/ALTA/CRITICA;
+- estados do risco `ABERTO → EM_ANALISE → EM_MITIGACAO → MONITORAMENTO → CONTROLADO → FECHADO`;
+- estados das ações `PLANEJADA → EM_ANDAMENTO → CONCLUIDA → VALIDADA`, com BLOQUEADA/CANCELADA;
+- prazos padrão por prioridade;
+- risco residual obrigatório para CONTROLADO/FECHADO;
+- reabertura automática para EM_ANALISE quando risco controlado/fechado reaparece;
+- persistência de trabalho humano em ciclos sem novos sinais;
+- módulo de dashboard `Gestão de riscos e ações`;
+- `RISK_REGISTER_STEWARD` e `EMERGENCY_RESPONSE_COORDINATOR` no manifesto de agentes;
+- integração no ETL e no lineage.
+
+Regras:
+1. risco epidemiológico operacional não é Promotion Gate técnico;
+2. nenhum risco fecha automaticamente;
+3. `FECHADO` exige todas as ações VALIDADA ou CANCELADA;
+4. CONCLUIDA/VALIDADA exige evidência de execução + resultado;
+5. risco residual exige probabilidade, impacto e justificativa;
+6. risco CRÍTICO aberto gera `risk_action_status=BLOCK`;
+7. ALTA/ação bloqueada/ação aberta gera `WARN`;
+8. agente não declara emergência nem ativa COES automaticamente;
+9. preservar `risk_id`/`action_id` estáveis;
+10. consultar `docs/gestao_riscos_acoes_v2_1.md`.
+
+Próximas evoluções permitidas:
+- histórico longitudinal de risco;
+- SLA configurável por tipologia;
+- matriz de responsáveis por agravo;
+- integração com comunicação/agenda após autorização;
+- indicadores de aging, tempo até mitigação e efetividade das ações;
+- vínculo com Genômica, rede laboratorial e capacidade quando as fontes estiverem validadas.
