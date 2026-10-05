@@ -35,6 +35,8 @@ def test_required_specialist_agents_are_declared():
         "GENOMIC_INTELLIGENCE_SPECIALIST",
         "SUPPLY_CHAIN_SPECIALIST",
         "TECHNICAL_WRITING_ABNT",
+        "RISK_REGISTER_STEWARD",
+        "EMERGENCY_RESPONSE_COORDINATOR",
     }
     assert required.issubset(payload["agents"])
 
@@ -64,3 +66,13 @@ def test_genomic_intelligence_is_always_in_scope_for_lacen_mt():
     assert genomic["readiness_contract"] == "docs/vigilancia_genomica_v2_1.md"
     assert "lacen_mt_product" in genomic["required_when"]
     assert "WARN_or_BLOCK" in genomic["status_rule"]
+
+
+def test_risk_agents_preserve_human_decision_and_no_auto_emergency():
+    payload = _load()
+    steward = payload["agents"]["RISK_REGISTER_STEWARD"]
+    coordinator = payload["agents"]["EMERGENCY_RESPONSE_COORDINATOR"]
+    assert "no_automatic_risk_closure" in steward["constraints"]
+    assert "residual_risk_required_for_control_or_closure" in steward["constraints"]
+    assert "no_automatic_emergency_declaration" in coordinator["constraints"]
+    assert "no_automatic_coes_activation" in coordinator["constraints"]
