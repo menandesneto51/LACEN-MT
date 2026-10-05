@@ -421,11 +421,10 @@ def write_risk_management(
     risk_csv = out / "risk_register_v2_1.csv"
     action_csv = out / "action_register_v2_1.csv"
 
-    previous_risks = pd.read_csv(risk_csv, low_memory=False) if risk_csv.exists() else pd.DataFrame()
-    previous_actions = pd.read_csv(action_csv, low_memory=False) if action_csv.exists() else pd.DataFrame()
-    # Preserve state again at persistence boundary in case caller supplied fresh frames.
-    current_risks = build_risk_register_from_existing(risks, previous_risks, now=now)
-    current_actions = build_action_register_from_existing(actions, previous_actions, now=now)
+    # O merge de estado humano deve ocorrer em build_risk_register/build_action_register.
+    # Aqui apenas persistimos o snapshot já resolvido para não ressuscitar estado antigo.
+    current_risks = risks.copy()
+    current_actions = actions.copy()
 
     current_risks.to_csv(risk_csv, index=False, encoding="utf-8-sig")
     current_actions.to_csv(action_csv, index=False, encoding="utf-8-sig")
