@@ -49,6 +49,7 @@ from quality.population_source_comparison import compare_population_sources, wri
 from quality.decision_briefs import write_decision_briefs  # noqa: E402
 from quality.decision_registry import load_decision_registry, evaluate_decision_registry, write_decision_registry_report  # noqa: E402
 from quality.decision_readiness import evaluate_decision_readiness, write_decision_readiness_report  # noqa: E402
+from quality.risk_action_management import run_risk_action_management  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -129,6 +130,8 @@ def write_validacao(
         f"promotion_gate_status: {report.get('promotion_gate_status')}",
         f"promotion_gate_blocking_reasons: {report.get('promotion_gate_blocking_reasons')}",
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
+        f"risk_action_status: {report.get('risk_action_status')}",
+        f"risk_action_summary: {report.get('risk_action_summary')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -606,6 +609,28 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             str(PY), str(ROOT / "scripts" / "enviar_relatorio_cievs.py"), "--dry-run",
         ])
         report["passos"].append(f"cievs_dry_run:{code}")
+
+    # Gestão operacional de riscos e ações. Consome somente sinais já produzidos
+    # pelo Radar; não cria evento epidemiológico novo nem altera o Promotion Gate técnico.
+    try:
+        risk_action = run_risk_action_management(
+            outdir,
+            now=datetime.now().isoformat(timespec="seconds"),
+        )
+        report["risk_action_status"] = risk_action.get("status")
+        report["risk_action_summary"] = risk_action
+        report["passos"].append(
+            f"risk_action_management:{risk_action.get('status', 'WARN')}"
+        )
+    except Exception as exc:
+        report["risk_action_status"] = "WARN"
+        report["risk_action_summary"] = {
+            "status": "WARN",
+            "reason": str(exc),
+        }
+        report["passos"].append(
+            f"risk_action_management_fail:{type(exc).__name__}"
+        )
 
     write_validacao(outdir, report)
     (outdir / "validacao_etl_dw_ultimo.json").write_text(
