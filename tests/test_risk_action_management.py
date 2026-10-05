@@ -143,3 +143,39 @@ def test_summary_blocks_critical_open_risk():
     assert summary["status"] == "BLOCK"
     assert summary["critical_open"] == 1
     assert summary["promotion_ready"] is False
+
+
+def test_same_family_different_diseases_have_distinct_risk_ids():
+    radar = pd.DataFrame([
+        {
+            "se": "2026-SE39", "evento": "Dengue × CUIABA",
+            "agravo": "dengue", "familia": "arbovirose", "municipio": "CUIABA",
+            "probabilidade": "médio", "impacto": "médio", "confianca": "Observado",
+            "veredito": "monitorar", "tipo_sinal": "Observado", "regras": "sinal A",
+        },
+        {
+            "se": "2026-SE39", "evento": "Zika × CUIABA",
+            "agravo": "zika", "familia": "arbovirose", "municipio": "CUIABA",
+            "probabilidade": "médio", "impacto": "médio", "confianca": "Observado",
+            "veredito": "monitorar", "tipo_sinal": "Observado", "regras": "sinal B",
+        },
+    ])
+    risks = build_risk_register(radar)
+    assert len(risks) == 2
+    assert risks["risk_id"].nunique() == 2
+
+
+def test_empty_new_radar_does_not_delete_existing_open_work():
+    radar = _radar()
+    risks = build_risk_register(radar, now="2026-10-04T20:00:00")
+    actions = build_action_register(radar, risks, now="2026-10-04T20:00:00")
+    empty = pd.DataFrame()
+    risks2 = build_risk_register(
+        empty, previous=risks, now="2026-10-05T08:00:00"
+    )
+    actions2 = build_action_register(
+        empty, risks2, previous=actions, now="2026-10-05T08:00:00"
+    )
+    assert len(risks2) == len(risks)
+    assert len(actions2) == len(actions)
+    assert risks2.loc[0, "estado_risco"] == "ABERTO"
