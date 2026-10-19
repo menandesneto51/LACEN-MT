@@ -50,6 +50,7 @@ from quality.decision_briefs import write_decision_briefs  # noqa: E402
 from quality.decision_registry import load_decision_registry, evaluate_decision_registry, write_decision_registry_report  # noqa: E402
 from quality.decision_readiness import evaluate_decision_readiness, write_decision_readiness_report  # noqa: E402
 from quality.risk_action_management import run_risk_action_management  # noqa: E402
+from quality.ml_backtest_gate import evaluate_ml_backtest_file, write_ml_backtest_gate  # noqa: E402
 
 PY = ROOT / ".venv" / "Scripts" / "python.exe"
 if not PY.exists():
@@ -132,6 +133,9 @@ def write_validacao(
         f"promotion_gate_conditions: {report.get('promotion_gate_conditions')}",
         f"risk_action_status: {report.get('risk_action_status')}",
         f"risk_action_summary: {report.get('risk_action_summary')}",
+        f"ml_model_gate_status: {report.get('ml_model_gate_status')}",
+        f"ml_model_blocked_scopes: {report.get('ml_model_blocked_scopes')}",
+        f"ml_model_warning_scopes: {report.get('ml_model_warning_scopes')}",
         f"aviso: {report.get('aviso') or '(nenhum)'}",
         f"passos: {json.dumps(report.get('passos', []), ensure_ascii=False)}",
         "",
@@ -568,6 +572,20 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     if not args.skip_ml:
         code = _run([str(PY), "-m", "ml.run_ml_pipeline", "--outdir", str(outdir)])
         report["passos"].append(f"ml:{code}")
+        ml_gate = evaluate_ml_backtest_file(outdir / "ml_backtest_summary.csv")
+        write_ml_backtest_gate(ml_gate, outdir / "quality")
+        report["ml_model_gate_status"] = ml_gate.get("status")
+        report["ml_model_blocked_scopes"] = ml_gate.get("blocked_scopes", [])
+        report["ml_model_warning_scopes"] = ml_gate.get("warning_scopes", [])
+        report["passos"].append(
+            f"ml_model_gate:{ml_gate.get('status', 'WARN')}"
+        )
+        if ml_gate.get("blocked_scopes"):
+            report["aviso"] = (
+                (report.get("aviso") or "")
+                + " | ML MODEL GATE: escopos abaixo do aleatório não devem ser usados como sinal operacional: "
+                + ", ".join(ml_gate.get("blocked_scopes", []))
+            ).strip(" |")
 
     # Mirror DW
     mirror_status: dict[str, Any] = {"dw_ok": False, "error": "não executado"}
