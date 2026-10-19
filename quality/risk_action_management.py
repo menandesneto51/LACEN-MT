@@ -41,7 +41,7 @@ def _norm(value: Any) -> str:
 
 def _stable_id(prefix: str, *parts: Any) -> str:
     raw = "|".join(_norm(x).casefold() for x in parts)
-    return f"{prefix}-" + hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12].upper()
+    return f"{prefix}-" + hashlib.sha1(raw.encode("utf-8"), usedforsecurity=False).hexdigest()[:12].upper()
 
 
 def risk_id_for(row: pd.Series | dict[str, Any]) -> str:
