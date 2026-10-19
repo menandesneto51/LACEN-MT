@@ -349,7 +349,7 @@ def update_action(
         if pd.isna(val) or not str(val).strip():
             raise ValueError("VALIDADA exige validação explícita.")
         out.loc[mask, "validada_em"] = now
-    return out
+    return _enrich_action_metrics(out, now)
 
 
 def update_risk(
@@ -417,7 +417,7 @@ def update_risk(
         if not unresolved.empty:
             raise ValueError("FECHADO exige todas as ações VALIDADA ou CANCELADA.")
         out.loc[mask, "data_fechamento"] = now
-    return out
+    return _enrich_risk_metrics(out, now)
 
 
 def summarize_risk_management(
@@ -432,18 +432,40 @@ def summarize_risk_management(
     if actions is None:
         actions = pd.DataFrame()
 
+    overdue_risks = recurrent_open = 0
+    max_open_age_days = 0.0
     if risks.empty:
         open_risks = risks
         critical_open = high_open = 0
     else:
+        risks = _enrich_risk_metrics(
+            risks,
+            now or datetime.now().isoformat(timespec="seconds"),
+        )
         open_risks = risks[risks["estado_risco"] != "FECHADO"]
         critical_open = int((open_risks["prioridade"] == "CRITICA").sum())
         high_open = int((open_risks["prioridade"] == "ALTA").sum())
+        overdue_risks = int((open_risks["sla_status"] == "ATRASADO").sum())
+        recurrent_open = int(
+            pd.to_numeric(open_risks.get("recurrence_count"), errors="coerce")
+            .fillna(0)
+            .gt(0)
+            .sum()
+        )
+        max_open_age_days = float(
+            pd.to_numeric(open_risks.get("age_days"), errors="coerce")
+            .fillna(0)
+            .max()
+        ) if not open_risks.empty else 0.0
 
     overdue = 0
     blocked = 0
     open_actions = 0
     if not actions.empty:
+        actions = _enrich_action_metrics(
+            actions,
+            now or datetime.now().isoformat(timespec="seconds"),
+        )
         state = actions["estado_acao"].astype(str)
         open_mask = ~state.isin(["VALIDADA", "CANCELADA"])
         open_actions = int(open_mask.sum())
@@ -463,6 +485,9 @@ def summarize_risk_management(
         "open_risks": int(len(open_risks)),
         "critical_open": critical_open,
         "high_open": high_open,
+        "overdue_risks": overdue_risks,
+        "recurrent_open_risks": recurrent_open,
+        "max_open_age_days": round(max_open_age_days, 2),
         "open_actions": open_actions,
         "blocked_actions": blocked,
         "overdue_actions": overdue,
@@ -507,6 +532,9 @@ def write_risk_management(
             f"riscos_abertos: {summary['open_risks']}",
             f"criticos_abertos: {summary['critical_open']}",
             f"altos_abertos: {summary['high_open']}",
+            f"riscos_atrasados_sla: {summary['overdue_risks']}",
+            f"riscos_recorrentes_abertos: {summary['recurrent_open_risks']}",
+            f"maior_aging_risco_dias: {summary['max_open_age_days']}",
             f"acoes_abertas: {summary['open_actions']}",
             f"acoes_bloqueadas: {summary['blocked_actions']}",
             f"acoes_atrasadas: {summary['overdue_actions']}",
