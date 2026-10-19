@@ -1,5 +1,5 @@
 {
-  "review_version": "v2.1-initial-12",
+  "review_version": "v2.1-initial-13",
   "automatic_release_allowed": false,
   "reviews": {
     "chief_architect": {
@@ -183,42 +183,50 @@
       "agent": "Genomic Intelligence Specialist",
       "status": "WARN",
       "findings": [
-        "Vigilância Genômica foi definida como eixo obrigatório do LACEN-MT.",
-        "O HEAD atual ainda não possui ingestão operacional versionada para sequenciamento, linhagem ou variantes.",
-        "Foi criado contrato mínimo amostra→sequência→linhagem/variante com regras para qualidade, denominadores, temporalidade, viés de seleção e interpretação.",
-        "Nenhuma fonte genômica foi presumida; a origem deve ser resolvida pelo SES_DATA_CATALOG antes de implementação."
+        "Vigilância Genômica é eixo obrigatório do LACEN-MT.",
+        "O SES_DATA_CATALOG identificou dbo.VW_GAL como fonte institucional para metadados de amostra e fluxo laboratorial, incluindo Amostra e Codigo_Amostra.",
+        "A busca explícita no catálogo não encontrou campos de linhagem, variante, sequenciamento ou genoma.",
+        "VW_GAL pode apoiar linkage de amostras, mas não substitui a fonte oficial de resultados genômicos."
       ],
       "blockers": [],
       "recommendations": [
-        "Executar SES_DATA_CATALOG para localizar objetos institucionais de sequenciamento/linhagem/variantes e metadados de amostras.",
-        "Produzir CatalogEvidencePack específico de vigilância genômica.",
-        "Implementar camada normalizada somente após validar fonte, granularidade, identificador técnico da amostra e temporalidade.",
-        "Manter distinção entre resultado molecular, sequenciamento, linhagem e inferência epidemiológica."
+        "Identificar e catalogar a fonte oficial já usada pelo LACEN-MT para resultados de sequenciamento/linhagem/variantes.",
+        "Validar compatibilidade de Codigo_Amostra/Amostra antes de qualquer linkage.",
+        "Manter o módulo genômico em readiness até fonte, granularidade e qualidade serem validadas.",
+        "Não inferir linhagem/variante a partir do exame molecular."
       ],
-      "decision": "WARN: Genômica é obrigatória no LACEN-MT, mas permanece em readiness até validação da fonte e implementação governada do fluxo.",
+      "decision": "WARN: preflight concluído; existe âncora institucional de amostra no VW_GAL, mas a fonte de resultados genômicos ainda precisa ser catalogada/validada.",
       "reviewer": "Genomic Intelligence Specialist Agent",
       "reviewed_at": "2026-09-28",
       "evidence": {
         "contract": "docs/vigilancia_genomica_v2_1.md",
-        "catalog_preflight": "docs/SES_DATA_CATALOG_PREFLIGHT.md",
+        "catalog_preflight": "config/catalog_evidence_genomics_v2_1.json",
+        "catalog_decision": "NEW_SOURCE_REQUIRED",
+        "sample_anchor": "DW SES / dbo.VW_GAL",
         "operational_ingestion": false
       }
     },
     "supply_chain_specialist": {
       "agent": "Supply Chain Specialist",
-      "status": "NOT_APPLICABLE",
+      "status": "WARN",
       "findings": [
-        "Não foi identificado fluxo operacional versionado de estoque de reagentes, kits, consumíveis ou risco de desabastecimento no HEAD atual."
+        "O SES_DATA_CATALOG identificou dbo.SUINS_INSUMOS_ENTRADAS_SAIDAS com 19 campos de movimentação de insumos.",
+        "A estrutura contém código/descrição/lote, entradas, saídas, quantidades, fornecedor e órgão destino.",
+        "O catálogo isoladamente não comprova saldo inicial, completude histórica, validade ou vínculo específico com insumos do LACEN."
       ],
       "blockers": [],
       "recommendations": [
-        "Ativar este parecer quando o módulo de suprimentos laboratoriais entrar no escopo."
+        "Validar cobertura temporal e se o LACEN está representado no campo de destino/origem aplicável.",
+        "Não calcular estoque atual ou risco de ruptura antes de validar saldo/base e completude.",
+        "Separar movimento observado de consumo projetado e risco de ruptura."
       ],
-      "decision": "NOT_APPLICABLE para o escopo operacional atual da V2.1.",
+      "decision": "WARN: fonte institucional potencial existe e deve ser estendida/validada antes de entrar no risco operacional do LACEN-MT.",
       "reviewer": "Supply Chain Specialist Agent",
-      "reviewed_at": "2026-09-28",
+      "reviewed_at": "2026-10-19",
       "evidence": {
-        "scope": "no_supply_chain_operational_flow_detected_in_current_head"
+        "catalog_preflight": "config/catalog_evidence_supply_chain_v2_1.json",
+        "catalog_decision": "EXTEND_EXISTING",
+        "candidate_source": "DW SES / dbo.SUINS_INSUMOS_ENTRADAS_SAIDAS"
       }
     },
     "technical_writing_abnt": {
