@@ -77,6 +77,44 @@ def _due_days(priority: str) -> int:
     return {"CRITICA": 1, "ALTA": 2, "MODERADA": 7, "BAIXA": 14}.get(priority, 7)
 
 
+def _enrich_risk_metrics(risks: pd.DataFrame, now: str) -> pd.DataFrame:
+    if risks is None or risks.empty:
+        return risks.copy() if isinstance(risks, pd.DataFrame) else pd.DataFrame()
+    out = risks.copy()
+    now_ts = pd.Timestamp(datetime.fromisoformat(now))
+    opened = pd.to_datetime(out.get("data_abertura"), errors="coerce")
+    closed = pd.to_datetime(out.get("data_fechamento"), errors="coerce")
+    out["age_days"] = (now_ts - opened).dt.total_seconds().div(86400).clip(lower=0)
+    out["sla_days"] = out["prioridade"].astype(str).map(_due_days)
+    out["sla_status"] = "NO_PRAZO"
+    open_mask = out["estado_risco"].astype(str) != "FECHADO"
+    out.loc[
+        open_mask & out["age_days"].gt(pd.to_numeric(out["sla_days"], errors="coerce")),
+        "sla_status",
+    ] = "ATRASADO"
+    out.loc[out["estado_risco"].astype(str).isin(["CONTROLADO", "FECHADO"]), "sla_status"] = "TRATADO"
+    out["time_to_close_days"] = (closed - opened).dt.total_seconds().div(86400)
+    return out
+
+
+def _enrich_action_metrics(actions: pd.DataFrame, now: str) -> pd.DataFrame:
+    if actions is None or actions.empty:
+        return actions.copy() if isinstance(actions, pd.DataFrame) else pd.DataFrame()
+    out = actions.copy()
+    now_ts = pd.Timestamp(datetime.fromisoformat(now))
+    created = pd.to_datetime(out.get("criada_em"), errors="coerce")
+    due = pd.to_datetime(out.get("prazo"), errors="coerce")
+    out["age_days"] = (now_ts - created).dt.total_seconds().div(86400).clip(lower=0)
+    out["days_to_due"] = (due - now_ts).dt.total_seconds().div(86400)
+    state = out["estado_acao"].astype(str)
+    open_mask = ~state.isin(["VALIDADA", "CANCELADA"])
+    out["sla_status"] = "NO_PRAZO"
+    out.loc[open_mask & due.notna() & due.lt(now_ts), "sla_status"] = "ATRASADA"
+    out.loc[state.eq("BLOQUEADA"), "sla_status"] = "BLOQUEADA"
+    out.loc[state.isin(["VALIDADA", "CANCELADA"]), "sla_status"] = "ENCERRADA"
+    return out
+
+
 def build_risk_register(
     radar: pd.DataFrame,
     *,
@@ -92,12 +130,13 @@ def build_risk_register(
         "evidencias_sinal", "estado_risco", "responsavel_risco",
         "estrategia_tratamento", "decisao", "evidencia_decisao",
         "probabilidade_residual", "impacto_residual", "score_residual",
-        "prioridade_residual", "justificativa_residual", "data_abertura",
-        "data_atualizacao", "data_fechamento",
+        "prioridade_residual", "justificativa_residual", "recurrence_count",
+        "reopened_at", "data_abertura", "data_atualizacao", "data_fechamento",
+        "age_days", "sla_days", "sla_status", "time_to_close_days",
     ]
     if radar is None or radar.empty:
         if previous is not None and not previous.empty:
-            return previous.copy().reset_index(drop=True)
+            return _enrich_risk_metrics(previous.copy().reset_index(drop=True), now)
         return pd.DataFrame(columns=cols)
 
     rows: list[dict[str, Any]] = []
@@ -130,13 +169,20 @@ def build_risk_register(
             "score_residual": pd.NA,
             "prioridade_residual": pd.NA,
             "justificativa_residual": pd.NA,
+            "recurrence_count": 0,
+            "reopened_at": pd.NA,
             "data_abertura": now,
             "data_atualizacao": now,
             "data_fechamento": pd.NA,
+            "age_days": 0.0,
+            "sla_days": _due_days(priority),
+            "sla_status": "NO_PRAZO",
+            "time_to_close_days": pd.NA,
         })
 
     out = pd.DataFrame(rows).drop_duplicates(subset=["risk_id"], keep="last")
     if previous is None or previous.empty or "risk_id" not in previous.columns:
+        out = _enrich_risk_metrics(out, now)
         return out[cols].sort_values(
             "prioridade", key=lambda s: s.map(_PRIORITY_ORDER).fillna(9)
         ).reset_index(drop=True)
@@ -146,8 +192,8 @@ def build_risk_register(
         "se_primeira_deteccao", "estado_risco", "responsavel_risco",
         "estrategia_tratamento", "decisao", "evidencia_decisao",
         "probabilidade_residual", "impacto_residual", "score_residual",
-        "prioridade_residual", "justificativa_residual", "data_abertura",
-        "data_fechamento",
+        "prioridade_residual", "justificativa_residual", "recurrence_count",
+        "reopened_at", "data_abertura", "data_fechamento",
     ]
     for idx, rid in out["risk_id"].items():
         if rid not in prev.index:
@@ -161,9 +207,15 @@ def build_risk_register(
         out.at[idx, "data_atualizacao"] = now
         # Risco previamente fechado reapareceu: reabre para análise.
         if str(out.at[idx, "estado_risco"]) in {"CONTROLADO", "FECHADO"}:
+            previous_count = pd.to_numeric(
+                pd.Series([out.at[idx, "recurrence_count"]]), errors="coerce"
+            ).fillna(0).iloc[0]
+            out.at[idx, "recurrence_count"] = int(previous_count) + 1
+            out.at[idx, "reopened_at"] = now
             out.at[idx, "estado_risco"] = "EM_ANALISE"
             out.at[idx, "data_fechamento"] = pd.NA
 
+    out = _enrich_risk_metrics(out, now)
     return out[cols].sort_values(
         "prioridade", key=lambda s: s.map(_PRIORITY_ORDER).fillna(9)
     ).reset_index(drop=True)
@@ -213,6 +265,9 @@ def build_action_register(
                     "atualizada_em": now,
                     "concluida_em": pd.NA,
                     "validada_em": pd.NA,
+                    "age_days": 0.0,
+                    "days_to_due": float(_due_days(priority)),
+                    "sla_status": "NO_PRAZO",
                 })
 
     cols = [
@@ -220,11 +275,12 @@ def build_action_register(
         "estado_acao", "prazo", "dependencia", "bloqueio",
         "evidencia_execucao", "resultado", "validacao", "criada_em",
         "atualizada_em", "concluida_em", "validada_em",
+        "age_days", "days_to_due", "sla_status",
     ]
     out = pd.DataFrame(rows, columns=cols)
     if out.empty:
         if previous is not None and not previous.empty:
-            return previous.copy().reset_index(drop=True)
+            return _enrich_action_metrics(previous.copy().reset_index(drop=True), now)
         return out
     out = out.drop_duplicates("action_id", keep="last")
 
@@ -246,6 +302,7 @@ def build_action_register(
                     out.at[idx, col] = value
             out.at[idx, "atualizada_em"] = now
 
+    out = _enrich_action_metrics(out, now)
     return out[cols].reset_index(drop=True)
 
 
