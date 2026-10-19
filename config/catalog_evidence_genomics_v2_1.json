@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "agent": "SES_DATA_CATALOG",
+  "checked_at": "2026-10-19",
+  "request": "Localizar fonte institucional reutilizável para Vigilância Genômica no LACEN-MT.",
+  "catalog_matches": [
+    {
+      "source": "DW SES",
+      "object": "dbo.VW_GAL",
+      "coverage": "metadata_amostra_e_fluxo_laboratorial",
+      "fields": [
+        "Amostra",
+        "Codigo_Amostra",
+        "Data_Coleta",
+        "Data_Coleta_dt",
+        "Metodologia",
+        "Material_Biologico",
+        "Laboratorio_Responsavel",
+        "Laboratorio_Execucao"
+      ]
+    }
+  ],
+  "searched_terms": [
+    "linhagem",
+    "variante",
+    "sequenciamento",
+    "genoma"
+  ],
+  "explicit_term_matches": [],
+  "gap": "O catálogo institucional consultado não expõe objeto/campo explícito para resultado de sequenciamento, linhagem, variante ou genoma. VW_GAL pode servir como âncora de amostra/linkage, mas não substitui a fonte genômica.",
+  "decision": "NEW_SOURCE_REQUIRED",
+  "recommendation": "Identificar e catalogar a fonte oficial já utilizada pelo LACEN-MT para resultados genômicos; reutilizar Codigo_Amostra/Amostra do VW_GAL como chave técnica somente após validação de compatibilidade e governança.",
+  "constraints": [
+    "não inventar API/tabela/fonte genômica",
+    "não inferir linhagem ou variante a partir de exame molecular",
+    "preservar amostra, sequência, linhagem e caso como entidades distintas",
+    "executar novo SES_DATA_CATALOG preflight após catalogar a fonte genômica"
+  ]
+}
