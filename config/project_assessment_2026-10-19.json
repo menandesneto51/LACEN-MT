@@ -1,0 +1,244 @@
+{
+  "assessment_version": "2026-10-19.1",
+  "project": "LACEN-MT",
+  "branch": "feat/v2-data-quality-agent",
+  "head_sha": "6f12a829641ec8095778f1dc1dce142e5cf1faed",
+  "overall_status": "CONDITIONAL",
+  "automatic_release_allowed": false,
+  "evidence": {
+    "pr": 7,
+    "mergeable": true,
+    "mergeable_state": "clean",
+    "ci_checks": 2,
+    "ci_conclusion": "success",
+    "pytest": "169 passed"
+  },
+  "agents": {
+    "SES_DATA_CATALOG": {
+      "status": "PASS",
+      "findings": [
+        "Preflight institucional está formalizado e obrigatório antes de novas dependências de dados."
+      ],
+      "priority": "P1",
+      "recommendation": "Tornar o CatalogEvidencePack um artefato gerado/validado automaticamente em mudanças de fonte."
+    },
+    "CTO_VIRTUAL": {
+      "status": "PASS",
+      "findings": [
+        "Arquitetura incremental, legado preservado, V2 paralela e gates independentes reduzem risco de migração."
+      ],
+      "priority": "P2",
+      "recommendation": "Manter technical freeze até fechar gaps operacionais prioritários."
+    },
+    "PRODUCT_OWNER": {
+      "status": "PASS",
+      "findings": [
+        "O produto responde a vigilância laboratorial, priorização territorial, risco e ação, com separação entre sinal e decisão."
+      ],
+      "priority": "P2",
+      "recommendation": "Definir critérios de sucesso operacionais: tempo até validação, ação e mitigação."
+    },
+    "CHIEF_ARCHITECT": {
+      "status": "PASS",
+      "findings": [
+        "IBGE-first, lineage, quality gate, risk/action lifecycle e decisões versionadas estão coerentes."
+      ],
+      "priority": "P2",
+      "recommendation": "Reduzir acoplamento do dashboard monolítico em módulos nas próximas versões."
+    },
+    "CLINICAL_EPIDEMIOLOGICAL_SPECIALIST": {
+      "status": "PASS",
+      "findings": [
+        "Exame, positivo, pessoa, caso e notificação estão separados; anomalia não vira surto automaticamente."
+      ],
+      "priority": "P1",
+      "recommendation": "Preservar revisão humana para escalonamento e declaração de evento."
+    },
+    "EMERGENCY_RESPONSE_COORDINATOR": {
+      "status": "PASS",
+      "findings": [
+        "Riscos críticos/altos agora têm fluxo de ações, responsáveis, prazos e risco residual."
+      ],
+      "priority": "P1",
+      "recommendation": "Adicionar matriz RACI por tipologia e SLA por prioridade/agravo."
+    },
+    "RISK_REGISTER_STEWARD": {
+      "status": "PASS",
+      "findings": [
+        "IDs estáveis, persistência, reabertura e fechamento com evidência estão implementados e testados."
+      ],
+      "priority": "P1",
+      "recommendation": "Adicionar aging, tempo até mitigação, recorrência e efetividade das ações."
+    },
+    "DATA_ARCHITECT": {
+      "status": "PASS",
+      "findings": [
+        "Dimensão territorial, população versionada, provenance e linkage determinístico estão adequados."
+      ],
+      "priority": "P2",
+      "recommendation": "Formalizar contratos de schema por produto e drift checks adicionais."
+    },
+    "DATA_GOVERNANCE": {
+      "status": "PASS",
+      "findings": [
+        "DEC-001/002, artifact hygiene, lineage e decisões humanas auditáveis estão presentes."
+      ],
+      "priority": "P1",
+      "recommendation": "Estender artifact hygiene para varredura do repositório inteiro em CI."
+    },
+    "BACKEND_API": {
+      "status": "WARN",
+      "findings": [
+        "O pipeline é funcional, porém parte relevante da aplicação permanece fortemente acoplada a scripts e arquivos CSV."
+      ],
+      "priority": "P2",
+      "recommendation": "Definir camada de serviços/contratos para risco, ações e consultas antes de expansão multiusuário."
+    },
+    "AI_GIS": {
+      "status": "WARN",
+      "findings": [
+        "Há inteligência territorial, mas falta um contrato explícito de QA geoespacial e cobertura de mapas como produto governado."
+      ],
+      "priority": "P3",
+      "recommendation": "Versionar QA espacial, cobertura cartográfica e provenance dos shapes."
+    },
+    "ML_SPECIALIST": {
+      "status": "WARN",
+      "findings": [
+        "Modelos globais têm desempenho útil, porém famílias específicas são frágeis; respiratório tem AUC muito baixa."
+      ],
+      "priority": "P1",
+      "recommendation": "Bloquear uso operacional por família quando abaixo de critérios mínimos versionados; recalibrar respiratório/hepatite/outros."
+    },
+    "STATISTICS_SPECIALIST": {
+      "status": "PASS",
+      "findings": [
+        "Backtest temporal e canal endêmico são reproduzíveis; linguagem P75 foi neutralizada."
+      ],
+      "priority": "P2",
+      "recommendation": "Adicionar intervalos/incerteza onde aplicável e monitoramento de drift estatístico."
+    },
+    "LAB_INTELLIGENCE_SPECIALIST": {
+      "status": "PASS",
+      "findings": [
+        "TAT, positividade, capacidade e interpretação laboratorial são tratados como dimensões próprias."
+      ],
+      "priority": "P1",
+      "recommendation": "Adicionar deduplicação por pessoa/amostra quando fonte governada permitir."
+    },
+    "GENOMIC_INTELLIGENCE_SPECIALIST": {
+      "status": "WARN",
+      "findings": [
+        "Genômica é always_in_scope, mas ainda sem ingestão operacional validada de sequenciamento/linhagem/variantes."
+      ],
+      "priority": "P1",
+      "recommendation": "Executar SES_DATA_CATALOG genômico e implementar camada amostra→sequência→linhagem com QA."
+    },
+    "SUPPLY_CHAIN_SPECIALIST": {
+      "status": "WARN",
+      "findings": [
+        "Estoque de reagentes, kits e consumíveis ainda não integra o risco operacional, embora seja crítico para capacidade laboratorial."
+      ],
+      "priority": "P2",
+      "recommendation": "Mover Supply Chain para escopo operacional e integrar estoque, consumo, cobertura e risco de ruptura."
+    },
+    "TECHNICAL_WRITING_ABNT": {
+      "status": "WARN",
+      "findings": [
+        "Governança documental existe, mas falta auditoria final sistemática dos artefatos publicados."
+      ],
+      "priority": "P2",
+      "recommendation": "Criar checklist automático de títulos, fontes, referências, siglas e notas metodológicas."
+    },
+    "UX": {
+      "status": "WARN",
+      "findings": [
+        "Dashboard ganhou gestão de riscos, mas é um arquivo muito grande e faltam testes de usabilidade e fluxos de tarefa."
+      ],
+      "priority": "P3",
+      "recommendation": "Modularizar páginas e validar tarefas críticas com usuários CIEVS/LACEN."
+    },
+    "PERFORMANCE": {
+      "status": "WARN",
+      "findings": [
+        "Uso extensivo de CSV e dashboard monolítico pode limitar escala e tempo de carregamento."
+      ],
+      "priority": "P3",
+      "recommendation": "Medir tempos, memória e volume; preferir parquet/cache e consultas incrementais onde houver ganho comprovado."
+    },
+    "SECURITY": {
+      "status": "WARN",
+      "findings": [
+        "Segredos reais não estão versionados, mas o CI atual roda apenas pytest; não há lint de segurança, SAST ou auditoria de dependências detectável."
+      ],
+      "priority": "P1",
+      "recommendation": "Adicionar ruff/bandit ou equivalente, pip-audit/dependency review e secret scan ao Quality Gate."
+    },
+    "QA": {
+      "status": "PASS",
+      "findings": [
+        "HEAD atual tem dois checks verdes e 169 testes aprovados."
+      ],
+      "priority": "P1",
+      "recommendation": "Expandir CI para segurança, lint, import smoke e testes de dashboard."
+    },
+    "OBSERVABILITY_DEVOPS": {
+      "status": "WARN",
+      "findings": [
+        "Há validação e artefatos, mas não há healthcheck/telemetria operacional detectável (Prometheus/OpenTelemetry ou equivalente)."
+      ],
+      "priority": "P2",
+      "recommendation": "Adicionar health status, duração por etapa, freshness, falhas, volume e alertas de pipeline."
+    },
+    "CHIEF_ARCHITECT_FINAL": {
+      "status": "CONDITIONAL",
+      "findings": [
+        "Arquitetura é consistente e mergeável, porém ainda existem WARN operacionais relevantes."
+      ],
+      "priority": "P1",
+      "recommendation": "Não tratar merge técnico como promoção institucional; fechar P1 antes de release amplo."
+    }
+  },
+  "prioritized_actions": [
+    {
+      "priority": "P1",
+      "action": "Implementar pipeline de segurança no CI: lint/SAST, dependency audit e secret scan.",
+      "owner": "Security + QA + DevOps"
+    },
+    {
+      "priority": "P1",
+      "action": "Executar SES_DATA_CATALOG para Vigilância Genômica e implementar ingestão governada.",
+      "owner": "Genomic Intelligence + Data Architecture"
+    },
+    {
+      "priority": "P1",
+      "action": "Definir critérios mínimos por família e recalibrar/suprimir modelos ML frágeis.",
+      "owner": "ML + Statistics + Epidemiology"
+    },
+    {
+      "priority": "P1",
+      "action": "Adicionar aging, SLA, efetividade e recorrência à gestão de riscos e ações.",
+      "owner": "Risk Register Steward + Emergency Response Coordinator"
+    },
+    {
+      "priority": "P2",
+      "action": "Integrar Supply Chain (reagentes/kits/consumíveis) à capacidade e risco laboratorial.",
+      "owner": "Supply Chain + LACEN"
+    },
+    {
+      "priority": "P2",
+      "action": "Adicionar observabilidade operacional e health status do pipeline.",
+      "owner": "Observability/DevOps"
+    },
+    {
+      "priority": "P2",
+      "action": "Auditar publicação técnica/ABNT e lineage dos produtos finais.",
+      "owner": "Technical Writing + Data Governance"
+    },
+    {
+      "priority": "P3",
+      "action": "Modularizar dashboard e validar UX/performance.",
+      "owner": "UX + Backend + Performance"
+    }
+  ]
+}
