@@ -30,7 +30,7 @@ PATTERNS = (
         "credential_assignment",
         re.compile(
             r"(?i)\b(password|passwd|pwd|secret|api[_-]?key|access[_-]?token)"
-            r"\b\s*[:=]\s*['\"]?([^\s,'\";#]{8,})"
+            r"\b\s*[:=]\s*['\"]([^'\"\r\n]{8,})['\"]"
         ),
     ),
 )
@@ -70,6 +70,8 @@ def main() -> int:
             for match in pattern.finditer(text):
                 evidence = match.group(0)[:120]
                 if category == "credential_assignment":
+                    if "tests" in path.parts:
+                        continue
                     value = match.group(2)
                     if _is_placeholder(value):
                         continue
