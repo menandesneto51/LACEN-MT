@@ -3884,6 +3884,15 @@ elif modulo == "Gestão de riscos e ações":
         controlled = int(
             risks["estado_risco"].astype(str).isin(["CONTROLADO", "FECHADO"]).sum()
         )
+        overdue_risks = int(
+            (open_risks.get("sla_status", pd.Series(index=open_risks.index, dtype=str)).astype(str) == "ATRASADO").sum()
+        )
+        recurrent_open = int(
+            pd.to_numeric(
+                open_risks.get("recurrence_count", pd.Series(index=open_risks.index, dtype=float)),
+                errors="coerce",
+            ).fillna(0).gt(0).sum()
+        )
 
         overdue = 0
         blocked = 0
@@ -3903,12 +3912,14 @@ elif modulo == "Gestão de riscos e ações":
         else:
             actions = pd.DataFrame()
 
-        m1, m2, m3, m4, m5 = st.columns(5)
-        m1.metric("Riscos críticos abertos", critical_open)
-        m2.metric("Riscos altos abertos", high_open)
-        m3.metric("Ações abertas", open_actions)
-        m4.metric("Ações atrasadas", overdue)
-        m5.metric("Controlados/fechados", controlled)
+        m1, m2, m3, m4, m5, m6, m7 = st.columns(7)
+        m1.metric("Riscos críticos", critical_open)
+        m2.metric("Riscos altos", high_open)
+        m3.metric("Riscos fora do SLA", overdue_risks)
+        m4.metric("Riscos recorrentes", recurrent_open)
+        m5.metric("Ações abertas", open_actions)
+        m6.metric("Ações atrasadas", overdue)
+        m7.metric("Controlados/fechados", controlled)
 
         if critical_open:
             st.error(
@@ -3954,8 +3965,9 @@ elif modulo == "Gestão de riscos e ações":
                 "municipio", "probabilidade", "impacto", "confianca",
                 "estrategia_tratamento", "responsavel_risco",
                 "se_primeira_deteccao", "se_ultima_deteccao",
-                "prioridade_residual", "probabilidade_residual",
-                "impacto_residual", "data_atualizacao",
+                "age_days", "sla_days", "sla_status", "recurrence_count",
+                "reopened_at", "prioridade_residual", "probabilidade_residual",
+                "impacto_residual", "time_to_close_days", "data_atualizacao",
             ] if c in risk_view.columns
         ]
         st.dataframe(
@@ -3992,8 +4004,9 @@ elif modulo == "Gestão de riscos e ações":
             action_cols = [
                 c for c in [
                     "action_id", "risk_id", "prioridade_risco", "estado_acao",
-                    "responsavel", "acao", "prazo", "atrasada", "dependencia",
-                    "bloqueio", "resultado", "validacao", "atualizada_em",
+                    "responsavel", "acao", "prazo", "age_days", "days_to_due",
+                    "sla_status", "atrasada", "dependencia", "bloqueio",
+                    "resultado", "validacao", "atualizada_em",
                 ] if c in action_view.columns
             ]
             st.dataframe(
