@@ -39,7 +39,6 @@ def test_valid_discrimination_can_pass_without_creating_epi_threshold():
     report = evaluate_ml_backtest(df)
     assert report["status"] == "PASS"
     assert report["operational_scopes"] == ["risco:global"]
-    assert "epidemiological" in report["rule"] or "epidemiological" not in report["rule"]
     assert "AUC<0.5" in report["rule"]
 
 
