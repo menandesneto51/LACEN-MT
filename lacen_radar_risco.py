@@ -270,7 +270,7 @@ def montar_cartao_risco(
             tipo = "Derivado" if tipo == "Observado" else tipo
             razao = binfo.get("razao_vs_p50")
             extra = f" (razão vs P50={razao})" if razao not in (None, "") else ""
-            regras.append(f"canal endêmico Bortman: zona epidemia{extra}")
+            regras.append(f"canal endêmico Bortman: acima do P75 (sinal estatístico){extra}")
         elif zona == "alerta":
             score_p += 1.0
             tipo = "Derivado" if tipo == "Observado" else tipo
@@ -382,7 +382,7 @@ def montar_cartao_risco(
     # Canal endêmico: reforça recomendação em linguagem clara
     if zona_bortman == "epidemia":
         acoes["CIEVS"] = _clip(
-            f"Canal endêmico em zona epidêmica (estatística) em {nome_evt}: "
+            f"Canal endêmico acima do P75 (sinal estatístico) em {nome_evt}: "
             f"priorizar investigação (não declarar epidemia automaticamente)."
         )
         if not acoes.get("VE municipal"):

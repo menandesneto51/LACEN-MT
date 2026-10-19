@@ -17,7 +17,7 @@ import math
 import os
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -87,14 +87,11 @@ def _parse_se(se: str) -> tuple[int, int] | None:
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    """Desloca semana ISO respeitando anos com 52 ou 53 semanas."""
+    monday = date.fromisocalendar(int(year), int(week), 1)
+    shifted = monday + timedelta(weeks=int(delta))
+    iso = shifted.isocalendar()
+    return int(iso.year), int(iso.week)
 
 
 def _iso_week(dt: datetime) -> tuple[int, int]:

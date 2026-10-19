@@ -53,14 +53,23 @@ def infer_target(agravo: object, exame: object = "") -> str:
 def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Converte agregação SQL DW → weekly_tests + positivity."""
     if agg is None or agg.empty:
-        empty_t = pd.DataFrame(columns=["epi_year", "epi_week", "target", "municipio", "tests"])
+        empty_t = pd.DataFrame(columns=["epi_year", "epi_week", "target", "municipio", "municipio_ibge", "tests"])
         empty_p = pd.DataFrame(columns=[
-            "epi_year", "epi_week", "target", "municipio", "tests", "positives", "negatives", "positivity",
+            "epi_year", "epi_week", "target", "municipio", "municipio_ibge", "tests", "positives", "negatives", "positivity",
         ])
         return empty_t, empty_p
 
     df = agg.copy()
     df["municipio"] = df["municipio"].astype(str).str.strip().str.upper()
+    if "municipio_ibge" in df.columns:
+        df["municipio_ibge"] = (
+            df["municipio_ibge"].astype("string").str.strip().str.replace(r"\.0$", "", regex=True)
+        )
+        df["municipio_ibge"] = df["municipio_ibge"].where(
+            df["municipio_ibge"].str.fullmatch(r"\d{7}", na=False)
+        )
+    else:
+        df["municipio_ibge"] = pd.NA
     df["epi_year"] = pd.to_numeric(df["epi_year"], errors="coerce")
     df["epi_week"] = pd.to_numeric(df["epi_week"], errors="coerce")
     df = df.dropna(subset=["epi_year", "epi_week", "municipio"])
@@ -73,12 +82,13 @@ def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     df["tests"] = pd.to_numeric(df.get("n_registros"), errors="coerce").fillna(0).astype(int)
     df["positives"] = pd.to_numeric(df.get("n_positivos_proxy"), errors="coerce").fillna(0).astype(int)
 
+    group_cols = ["epi_year", "epi_week", "target", "municipio", "municipio_ibge"]
     tests = (
-        df.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
+        df.groupby(group_cols, as_index=False, dropna=False)
         .agg(tests=("tests", "sum"))
     )
     pos = (
-        df.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
+        df.groupby(group_cols, as_index=False, dropna=False)
         .agg(tests=("tests", "sum"), positives=("positives", "sum"))
     )
     pos["negatives"] = (pos["tests"] - pos["positives"]).clip(lower=0)
@@ -114,6 +124,11 @@ def weekly_from_local_gal(
         "Data_Liberacao",
     )
     mun_col = pick("Municipio_Residencia_Paciente", "Municipio_Solicitante")
+    ibge_col = None
+    if mun_col == "Municipio_Residencia_Paciente":
+        ibge_col = pick("IBGE_Municipio_Residencia_Paciente")
+    elif mun_col == "Municipio_Solicitante":
+        ibge_col = pick("IBGE_Municipio_Solicitante")
     agravo_col = pick("Agravo_Requisicao", "Agravo_Gal")
     exame_col = pick("Exame")
     r1 = pick("Campo_Resultado_1")
@@ -127,7 +142,7 @@ def weekly_from_local_gal(
     else:
         print(f"[SE] weekly local ancorada em {date_col}", flush=True)
 
-    usecols = [c for c in (date_col, mun_col, agravo_col, exame_col, r1) if c]
+    usecols = [c for c in (date_col, mun_col, ibge_col, agravo_col, exame_col, r1) if c]
     parts = []
     for chunk in pd.read_csv(
         gal_path, usecols=usecols, encoding="latin1",
@@ -143,6 +158,15 @@ def weekly_from_local_gal(
         chunk["epi_year"] = epi.year.astype(int)
         chunk["epi_week"] = epi.week.astype(int)
         chunk["municipio"] = chunk[mun_col].astype(str).str.strip().str.upper()
+        if ibge_col:
+            chunk["municipio_ibge"] = (
+                chunk[ibge_col].astype("string").str.strip().str.replace(r"\.0$", "", regex=True)
+            )
+            chunk["municipio_ibge"] = chunk["municipio_ibge"].where(
+                chunk["municipio_ibge"].str.fullmatch(r"\d{7}", na=False)
+            )
+        else:
+            chunk["municipio_ibge"] = pd.NA
         agr = chunk[agravo_col] if agravo_col else ""
         ex = chunk[exame_col] if exame_col else ""
         chunk["target"] = [infer_target(a, e) for a, e in zip(agr, ex)]
@@ -152,7 +176,11 @@ def weekly_from_local_gal(
         else:
             chunk["positives"] = 0
         chunk["tests"] = 1
-        g = chunk.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False).agg(
+        g = chunk.groupby(
+            ["epi_year", "epi_week", "target", "municipio", "municipio_ibge"],
+            as_index=False,
+            dropna=False,
+        ).agg(
             tests=("tests", "sum"),
             positives=("positives", "sum"),
         )
@@ -167,12 +195,16 @@ def weekly_from_local_gal(
 
     allp = pd.concat(parts, ignore_index=True)
     pos = (
-        allp.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
+        allp.groupby(
+            ["epi_year", "epi_week", "target", "municipio", "municipio_ibge"],
+            as_index=False,
+            dropna=False,
+        )
         .agg(tests=("tests", "sum"), positives=("positives", "sum"))
     )
     pos["negatives"] = (pos["tests"] - pos["positives"]).clip(lower=0)
     pos["positivity"] = np.where(pos["tests"] > 0, pos["positives"] / pos["tests"], np.nan)
-    tests = pos[["epi_year", "epi_week", "target", "municipio", "tests"]].copy()
+    tests = pos[["epi_year", "epi_week", "target", "municipio", "municipio_ibge", "tests"]].copy()
     return tests, pos
 
 
@@ -221,10 +253,10 @@ def publish_weekly_inputs(
         new_p = new_p[pd.to_numeric(new_p["epi_year"], errors="coerce") >= replace_from_year]
 
     merged_t = _merge_replace_weeks(
-        old_t, new_t, ["epi_year", "epi_week", "target", "municipio"]
+        old_t, new_t, ["epi_year", "epi_week", "target", "municipio", "municipio_ibge"]
     )
     merged_p = _merge_replace_weeks(
-        old_p, new_p, ["epi_year", "epi_week", "target", "municipio"]
+        old_p, new_p, ["epi_year", "epi_week", "target", "municipio", "municipio_ibge"]
     )
 
     merged_t.to_csv(wt_path, index=False, encoding="utf-8-sig")

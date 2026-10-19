@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-09-26",
+  "policy": "Limiares de freshness so entram em WARN/BLOCK apos validacao institucional. Ate la, ausencia de SLA permanece WARN (DQ_FRESHNESS_UNCONFIGURED), nunca limiar inventado.",
+  "sources": {
+    "weekly": {
+      "date_candidates": [
+        "data_corte",
+        "updated_at",
+        "extracted_at"
+      ],
+      "warn_after_days": null,
+      "block_after_days": null,
+      "status": "pending_institutional_validation"
+    },
+    "gal_micro": {
+      "date_candidates": [
+        "Data_Liberacao_dt",
+        "Data_Recebimento_dt",
+        "Data_Solicitacao_dt",
+        "extracted_at"
+      ],
+      "warn_after_days": null,
+      "block_after_days": null,
+      "status": "pending_institutional_validation"
+    },
+    "population": {
+      "date_candidates": [
+        "extraido_em",
+        "ano"
+      ],
+      "warn_after_days": null,
+      "block_after_days": null,
+      "status": "pending_institutional_validation"
+    }
+  }
+}

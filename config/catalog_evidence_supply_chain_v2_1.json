@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "agent": "SES_DATA_CATALOG",
+  "checked_at": "2026-10-19",
+  "request": "Verificar fonte institucional para gestão de insumos e risco de ruptura no LACEN-MT.",
+  "catalog_matches": [
+    {
+      "source": "DW SES",
+      "object": "dbo.SUINS_INSUMOS_ENTRADAS_SAIDAS",
+      "coverage": "movimentacao_de_insumos",
+      "fields": [
+        "Codigo_Insumo",
+        "Insumo",
+        "Lote",
+        "Quantidade_Entregue",
+        "Tipo_Insumo",
+        "Tipo_Entrada",
+        "Ano_Entrada",
+        "Mês_Entrada",
+        "Código_Saída",
+        "Orgão_Destino",
+        "Ano_Saida",
+        "Mes_Saida",
+        "Tipo_Saida",
+        "Quantidade_Fornecida"
+      ]
+    }
+  ],
+  "gap": "A estrutura suporta entradas e saídas, mas o catálogo isoladamente não comprova saldo inicial, completude histórica, estoque disponível atual, validade ou vínculo direto com insumos específicos do LACEN.",
+  "decision": "EXTEND_EXISTING",
+  "recommendation": "Validar completude e escopo da SUINS; se cobrir o LACEN, derivar consumo e movimentação com lineage explícito. Não calcular risco de ruptura até validar saldo/base temporal e regras de estoque.",
+  "constraints": [
+    "separar estoque observado de consumo projetado",
+    "não inferir saldo atual sem base inicial/completude validada",
+    "não assumir que todo insumo da SUINS pertence ao LACEN"
+  ]
+}

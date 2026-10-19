@@ -1,0 +1,35 @@
+{
+  "schema_version": "v2.1-endorsement-1",
+  "automatic_decision_allowed": false,
+  "DEC-001": {
+    "alternative": "A",
+    "historical_series": "nao_reprocessar",
+    "rationale": "Preservar a âncora atual em data de solicitação, mantendo comparabilidade histórica e evitando reprocessamento. Evidência de sensibilidade solicitação×coleta arquivada; escolha institucional do Responsável CIEVS-MT."
+  },
+  "DEC-002": {
+    "source_priority": ["DW:POPULACAO_TOTAL"],
+    "allow_previous_year": false,
+    "allow_unlisted_sources": false,
+    "rationale": "No staging disponível, DW:POPULACAO_TOTAL é a fonte com cobertura anual (141 municípios, ano 2021), sem divergência multi-fonte."
+  },
+  "signers": {
+    "responsavel_institucional": {
+      "name": "Menandes Neto",
+      "role_title": "Responsável CIEVS-MT / produto LACEN-MT V2.1",
+      "signed_at": "2026-09-27",
+      "note": "Endosso institucional único: responsável CIEVS assume as três papéis de aprovação do produto."
+    },
+    "clinical_epidemiological": {
+      "name": "Menandes Neto",
+      "role_title": "Responsável CIEVS-MT (vigilância epidemiológica)",
+      "signed_at": "2026-09-27",
+      "note": "Mesmo responsável institucional CIEVS."
+    },
+    "data_governance": {
+      "name": "Menandes Neto",
+      "role_title": "Responsável CIEVS-MT (governança dos produtos de vigilância)",
+      "signed_at": "2026-09-27",
+      "note": "Mesmo responsável institucional CIEVS."
+    }
+  }
+}

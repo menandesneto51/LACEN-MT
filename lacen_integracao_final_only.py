@@ -3,10 +3,18 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+from quality.territorial_dimension import (
+    build_population_dimension_from_staging,
+    select_population_for_year,
+)
+from quality.population_governance import load_population_governance
+from quality.linkage_parity import compare_linkage, write_linkage_parity
 
 
 def log(msg: str) -> None:
@@ -51,6 +59,36 @@ def map_lacen_target_to_sinan(target: object) -> str:
     return ""
 
 
+
+def _add_territory_key(df: pd.DataFrame) -> pd.DataFrame:
+    """Cria chave territorial determinística sem fuzzy matching."""
+    out = df.copy()
+    if "municipio" not in out.columns:
+        out["municipio"] = ""
+    out["municipio"] = out["municipio"].astype(str).str.strip().str.upper()
+
+    code_col = next(
+        (
+            col for col in (
+                "municipio_ibge", "codigo_ibge", "cod_ibge", "ibge",
+                "codigo_municipio", "cod_municipio", "co_municipio",
+            )
+            if col in out.columns
+        ),
+        None,
+    )
+    if code_col:
+        code = (
+            out[code_col].astype("string").str.strip().str.replace(r"\.0$", "", regex=True)
+        )
+        code = code.where(code.str.fullmatch(r"\d{7}", na=False))
+    else:
+        code = pd.Series(pd.NA, index=out.index, dtype="string")
+    out["municipio_ibge"] = code
+    out["territory_key"] = "NAME:" + out["municipio"]
+    out.loc[code.notna(), "territory_key"] = "IBGE:" + code[code.notna()]
+    return out
+
 def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
     s = sinan.copy()
     if "notificacoes_sinan" in s.columns and "notificacoes" not in s.columns:
@@ -61,11 +99,17 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
         s[c] = pd.to_numeric(s[c], errors="coerce").fillna(0)
     s["epi_year"] = pd.to_numeric(s["epi_year"], errors="coerce")
     s["epi_week"] = pd.to_numeric(s["epi_week"], errors="coerce")
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
+        s.groupby(
+            ["epi_year", "epi_week", "territory_key", "agravo_sinan"],
+            as_index=False,
+            dropna=False,
+        )
         .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
             notificacoes=("notificacoes", "sum"),
             obitos_sinan=("obitos_sinan", "sum"),
             encerrados_sinan=("encerrados_sinan", "sum"),
@@ -90,12 +134,322 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s = s.loc[~bad_year].copy()
     if s.empty:
         return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s = _add_territory_key(s)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
-        s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
-        .agg(obitos_sim=("obitos_sim", "sum"))
+        s.groupby(
+            ["epi_year", "epi_week", "territory_key", "agravo_sinan"],
+            as_index=False,
+            dropna=False,
+        )
+        .agg(
+            municipio=("municipio", "first"),
+            municipio_ibge=("municipio_ibge", "first"),
+            obitos_sim=("obitos_sim", "sum"),
+        )
     )
+
+
+
+
+def _merge_metrics_dual_territory_key(
+    left: pd.DataFrame,
+    right: pd.DataFrame,
+    *,
+    base_keys: tuple[str, ...],
+    metric_cols: tuple[str, ...],
+    method_col: str,
+) -> pd.DataFrame:
+    """Pareia por IBGE primeiro; fallback por nome exato só se algum lado não tem código.
+
+    Nunca usa fuzzy matching e nunca resolve códigos IBGE válidos conflitantes por nome.
+    """
+    if right is None or right.empty:
+        out = left.copy()
+        for col in metric_cols:
+            if col not in out.columns:
+                out[col] = np.nan
+        out[method_col] = "UNMATCHED"
+        return out
+
+    l = _add_territory_key(left).copy()
+    r = _add_territory_key(right).copy()
+    l["_row_id_v2"] = np.arange(len(l))
+    l["_name_key_v2"] = l["municipio"].astype(str).str.strip().str.upper()
+    r["_name_key_v2"] = r["municipio"].astype(str).str.strip().str.upper()
+
+    keep_right = list(dict.fromkeys([
+        *base_keys, "territory_key", "municipio", "municipio_ibge", "_name_key_v2",
+        *metric_cols,
+    ]))
+    rr = r[keep_right].copy()
+
+    # Consolida variantes nominais que apontam para a mesma chave territorial,
+    # evitando multiplicação de linhas no merge primário.
+    agg_spec = {col: "sum" for col in metric_cols}
+    agg_spec.update({
+        "municipio": "first",
+        "municipio_ibge": "first",
+        "_name_key_v2": "first",
+    })
+    rr_primary = (
+        rr.groupby([*base_keys, "territory_key"], as_index=False, dropna=False)
+        .agg(agg_spec)
+    )
+
+    primary = l.merge(
+        rr_primary,
+        on=[*base_keys, "territory_key"],
+        how="left",
+        suffixes=("", "_src"),
+        indicator="_primary_merge",
+    )
+    primary[method_col] = np.where(
+        primary["_primary_merge"].eq("both"),
+        np.where(
+            primary["territory_key"].astype(str).str.startswith("IBGE:"),
+            "IBGE",
+            "NAME_EXACT",
+        ),
+        "UNMATCHED",
+    )
+
+    unmatched_ids = primary.loc[
+        primary["_primary_merge"].eq("left_only"), "_row_id_v2"
+    ].unique().tolist()
+    if unmatched_ids:
+        left_unmatched = l[l["_row_id_v2"].isin(unmatched_ids)].copy()
+
+        # Fallback candidates are exact-name matches where NOT BOTH sides
+        # have valid codes. Therefore conflicting valid IBGE codes are excluded.
+        fallback = left_unmatched.merge(
+            rr,
+            on=[*base_keys, "_name_key_v2"],
+            how="left",
+            suffixes=("", "_src"),
+            indicator="_fallback_merge",
+        )
+        left_has_code = fallback["municipio_ibge"].notna()
+        src_has_code = fallback["municipio_ibge_src"].notna()
+        valid_fallback = fallback["_fallback_merge"].eq("both") & ~(left_has_code & src_has_code)
+        fallback = fallback[valid_fallback].copy()
+
+        # Avoid ambiguous exact-name fallback: one source row max per left row.
+        counts = fallback.groupby("_row_id_v2", dropna=False).size()
+        unique_ids = set(counts[counts == 1].index.tolist())
+        fallback = fallback[fallback["_row_id_v2"].isin(unique_ids)].copy()
+
+        if not fallback.empty:
+            fb_metrics = fallback[["_row_id_v2", *metric_cols]].copy()
+            fb_metrics[method_col] = "NAME_EXACT_FALLBACK"
+
+            for col in metric_cols:
+                mapping = fb_metrics.set_index("_row_id_v2")[col]
+                mask = primary["_row_id_v2"].isin(mapping.index) & primary["_primary_merge"].eq("left_only")
+                primary.loc[mask, col] = primary.loc[mask, "_row_id_v2"].map(mapping)
+            method_mapping = fb_metrics.set_index("_row_id_v2")[method_col]
+            mask = primary["_row_id_v2"].isin(method_mapping.index) & primary["_primary_merge"].eq("left_only")
+            primary.loc[mask, method_col] = primary.loc[mask, "_row_id_v2"].map(method_mapping)
+
+    drop_cols = [
+        "_row_id_v2", "_name_key_v2", "_primary_merge",
+        "municipio_src", "municipio_ibge_src",
+    ]
+    return primary.drop(columns=[x for x in drop_cols if x in primary.columns])
+
+
+def _analysis_year_from_weekly(df: pd.DataFrame) -> int | None:
+    if df is None or df.empty or "ano" not in df.columns:
+        return None
+    years = pd.to_numeric(df["ano"], errors="coerce").dropna()
+    if years.empty:
+        return None
+    return int(years.max())
+
+
+def _load_population_v2(
+    outdir: Path,
+    analysis_year: int,
+    *,
+    policy_path: Path | None = None,
+) -> pd.DataFrame:
+    """Carrega denominador versionado sob política explícita de governança."""
+    empty = pd.DataFrame(columns=[
+        "territory_key", "populacao_v2", "populacao_v2_fonte",
+        "populacao_v2_ano", "populacao_v2_fallback",
+    ])
+    dim = build_population_dimension_from_staging(outdir / "staging_dw")
+    if dim.empty:
+        return empty
+
+    policy_file = policy_path or (
+        Path(__file__).resolve().parent / "config" / "population_governance_v2_1.json"
+    )
+    policy = load_population_governance(policy_file)
+    approved = str(policy.get("status") or "").upper() == "APPROVED"
+    priority = tuple(
+        str(x).strip()
+        for x in (policy.get("source_priority") or [])
+        if str(x).strip()
+    ) if approved else ()
+    allow_unlisted = bool((policy.get("rules") or {}).get("allow_unlisted_sources", False))
+
+    current = dim.copy()
+    current["ano_referencia"] = pd.to_numeric(
+        current["ano_referencia"], errors="coerce"
+    ).astype("Int64")
+    current = current[current["ano_referencia"] == int(analysis_year)].copy()
+    if current.empty:
+        return empty
+
+    # Nunca escolher "keep first" quando a mesma fonte oferece valores
+    # conflitantes para o mesmo território/ano.
+    name_key = current["municipio"].astype("string").str.strip().str.upper()
+    current["_territory_key"] = current["municipio_ibge"].astype("string")
+    current["_territory_key"] = current["_territory_key"].where(
+        current["municipio_ibge"].notna(),
+        "NAME:" + name_key,
+    )
+    conflict_count = (
+        current.groupby(["fonte", "_territory_key"], dropna=False)["populacao"]
+        .transform(lambda s: s.dropna().nunique())
+    )
+    current = current[conflict_count <= 1].drop(columns=["_territory_key"]).copy()
+    if current.empty:
+        return empty
+
+    if priority and not allow_unlisted:
+        current = current[current["fonte"].isin(priority)].copy()
+        if current.empty:
+            return empty
+
+    if not priority:
+        # Sem prioridade APPROVED, não há escolha entre fontes.
+        # Mantém somente territórios com exatamente uma fonte candidata no ano.
+        selected = current.copy()
+        selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
+        selected["territory_key"] = "NAME:" + selected["municipio"]
+        mask = selected["municipio_ibge"].notna()
+        selected.loc[mask, "territory_key"] = (
+            "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+        )
+        source_counts = (
+            selected.groupby("territory_key", dropna=False)["fonte"]
+            .transform("nunique")
+        )
+        selected = selected[source_counts == 1].copy()
+    else:
+        selected = select_population_for_year(
+            current,
+            analysis_year,
+            source_priority=priority,
+            allow_previous_year=bool(policy.get("allow_previous_year", False)),
+        )
+        if selected.empty:
+            return empty
+
+        selected = selected.copy()
+        selected["municipio"] = selected["municipio"].astype("string").str.strip().str.upper()
+        selected["territory_key"] = "NAME:" + selected["municipio"]
+        mask = selected["municipio_ibge"].notna()
+        selected.loc[mask, "territory_key"] = (
+            "IBGE:" + selected.loc[mask, "municipio_ibge"].astype(str)
+        )
+
+    if selected.empty:
+        return empty
+
+    selected = selected.rename(columns={
+        "populacao": "populacao_v2",
+        "fonte": "populacao_v2_fonte",
+        "ano_referencia": "populacao_v2_ano",
+        "is_fallback": "populacao_v2_fallback",
+    })
+    return selected[[
+        "territory_key", "populacao_v2", "populacao_v2_fonte",
+        "populacao_v2_ano", "populacao_v2_fallback",
+    ]].drop_duplicates(subset=["territory_key"], keep="first")
+
+def _read_optional_csv(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        return read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+
+
+def _build_linkage_parity_reports(
+    outdir: Path,
+    weekly: pd.DataFrame,
+    sinan: pd.DataFrame,
+    sim: pd.DataFrame,
+) -> dict:
+    """Audita nome versus IBGE sem alterar os joins de produção."""
+    reports = {}
+
+    left = weekly.copy()
+    if "agravo_sinan" not in left.columns and "target" in left.columns:
+        left["agravo_sinan"] = left["target"].map(map_lacen_target_to_sinan)
+
+    sin = sinan.copy()
+    if not sin.empty:
+        if "target" in sin.columns:
+            sin["agravo_sinan"] = sin["target"].astype(str).str.strip().str.casefold()
+        elif "agravo_sinan" not in sin.columns:
+            sin["agravo_sinan"] = ""
+        reports["GALxSINAN"] = compare_linkage(
+            left,
+            sin,
+            source="GAL×SINAN",
+            dimensions=("epi_year", "epi_week", "agravo_sinan"),
+            metric_col="notificacoes_sinan" if "notificacoes_sinan" in sin.columns else "notificacoes",
+        )
+
+    sm = sim.copy()
+    if not sm.empty:
+        if "target" in sm.columns:
+            sm["agravo_sinan"] = sm["target"].astype(str).str.strip().str.casefold()
+        elif "agravo_sinan" not in sm.columns:
+            sm["agravo_sinan"] = ""
+        reports["GALxSIM"] = compare_linkage(
+            left,
+            sm,
+            source="GAL×SIM",
+            dimensions=("epi_year", "epi_week", "agravo_sinan"),
+            metric_col="obitos_sim",
+        )
+
+    stage = outdir / "staging_dw"
+    sih = _read_optional_csv(stage / "sih_mun_cid_familia_agg.csv")
+    if not sih.empty and "n_internacoes" in sih.columns:
+        reports["GALxSIH"] = compare_linkage(
+            left,
+            sih,
+            source="GAL×SIH",
+            dimensions=("epi_year", "epi_week"),
+            metric_col="n_internacoes",
+        )
+
+    sia = _read_optional_csv(stage / "sia_mun_cid_familia_agg.csv")
+    if not sia.empty:
+        metric = "n_procedimentos" if "n_procedimentos" in sia.columns else "n_registros"
+        # SIA está em competência mensal; aqui a auditoria é estritamente territorial.
+        left_territory = (
+            left.groupby(["municipio", "municipio_ibge"], dropna=False, as_index=False)
+            .agg(tests=("tests", "sum"))
+        )
+        reports["GALxSIA"] = compare_linkage(
+            left_territory,
+            sia,
+            source="GAL×SIA",
+            dimensions=(),
+            metric_col=metric,
+        )
+
+    if not reports:
+        return {"promotion_status": "WARN", "sources": []}
+    return write_linkage_parity(reports, outdir / "quality")
 
 
 def read_csv(path: Path) -> pd.DataFrame:
@@ -254,34 +608,70 @@ def main():
     pop["ano"] = pd.to_numeric(pop["ano"], errors="coerce")
     weekly = weekly.merge(pop[["municipio", "ano", "populacao"]], on=["municipio", "ano"], how="left")
 
-    weekly["municipio"] = weekly["municipio"].astype(str).str.strip().str.upper()
+    weekly = _add_territory_key(weekly)
+
+    analysis_year_v2 = _analysis_year_from_weekly(weekly)
+    pop_v2 = _load_population_v2(outdir, analysis_year_v2) if analysis_year_v2 is not None else pd.DataFrame()
+    if not pop_v2.empty:
+        weekly = weekly.merge(pop_v2, on="territory_key", how="left")
+    else:
+        weekly["populacao_v2"] = np.nan
+        weekly["populacao_v2_fonte"] = pd.NA
+        weekly["populacao_v2_ano"] = pd.NA
+        weekly["populacao_v2_fallback"] = False
+
     weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
+
+    try:
+        linkage_parity = _build_linkage_parity_reports(outdir, weekly, sinan, sim)
+        log(
+            "[B1] Paridade de linkage: "
+            + str(linkage_parity.get("promotion_status", "WARN"))
+        )
+    except Exception as exc:
+        linkage_parity = {"promotion_status": "WARN", "sources": [], "error": str(exc)}
+        log(f"[AVISO] Paridade de linkage não concluída: {type(exc).__name__}: {exc}")
 
     sinan_j = prepare_sinan_for_join(sinan)
     sim_j = prepare_sim_for_join(sim)
     if sim_j.empty:
         log("[AVISO] SIM sem anos válidos (possível arquivo corrompido). Óbitos SIM ficarão zerados.")
 
-    weekly = weekly.merge(
+    weekly = _merge_metrics_dual_territory_key(
+        weekly,
         sinan_j,
-        on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
-        how="left",
+        base_keys=("epi_year", "epi_week", "agravo_sinan"),
+        metric_cols=("notificacoes", "obitos_sinan", "encerrados_sinan"),
+        method_col="sinan_match_method",
     )
     if not sim_j.empty:
-        weekly = weekly.merge(
+        weekly = _merge_metrics_dual_territory_key(
+            weekly,
             sim_j,
-            on=["epi_year", "epi_week", "municipio", "agravo_sinan"],
-            how="left",
+            base_keys=("epi_year", "epi_week", "agravo_sinan"),
+            metric_cols=("obitos_sim",),
+            method_col="sim_match_method",
         )
     else:
         weekly["obitos_sim"] = 0
+        weekly["sim_match_method"] = "UNMATCHED"
 
     # Complemento: notificações municipais totais da semana (mesmo sem match de alvo)
     sinan_mun = (
-        sinan_j.groupby(["epi_year", "epi_week", "municipio"], as_index=False)
+        sinan_j.groupby(
+            ["epi_year", "epi_week", "territory_key", "municipio", "municipio_ibge"],
+            as_index=False,
+            dropna=False,
+        )
         .agg(notificacoes_mun_semana=("notificacoes", "sum"))
     )
-    weekly = weekly.merge(sinan_mun, on=["epi_year", "epi_week", "municipio"], how="left")
+    weekly = _merge_metrics_dual_territory_key(
+        weekly,
+        sinan_mun,
+        base_keys=("epi_year", "epi_week"),
+        metric_cols=("notificacoes_mun_semana",),
+        method_col="sinan_mun_match_method",
+    )
     weekly["notificacoes"] = weekly["notificacoes"].fillna(0)
     # Se o alvo não mapeou, ainda registra o total municipal da semana (rateado em 0; usa coluna auxiliar)
     weekly["notificacoes"] = np.where(
@@ -316,6 +706,20 @@ def main():
     weekly["notificacoes_100k"] = np.where(weekly["populacao"] > 0, weekly["notificacoes"] / weekly["populacao"] * 100000, np.nan)
     weekly["mortalidade_100k"] = np.where(weekly["populacao"] > 0, weekly["obitos_sim"] / weekly["populacao"] * 100000, np.nan)
     weekly["letalidade_proxy"] = np.where(weekly["notificacoes"] > 0, weekly["obitos_sim"] / weekly["notificacoes"], np.nan)
+
+    weekly["populacao_v2"] = pd.to_numeric(weekly.get("populacao_v2"), errors="coerce")
+    weekly["solicitacoes_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["tests"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["incidencia_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["positives"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["notificacoes_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["notificacoes"] / weekly["populacao_v2"] * 100000, np.nan
+    )
+    weekly["mortalidade_100k_v2"] = np.where(
+        weekly["populacao_v2"] > 0, weekly["obitos_sim"] / weekly["populacao_v2"] * 100000, np.nan
+    )
 
     pos_ci = weekly.apply(lambda r: wilson_interval(r["positives"], r["tests"]), axis=1)
     weekly["positivity_ci_low"] = [x[0] for x in pos_ci]

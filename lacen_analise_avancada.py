@@ -269,25 +269,69 @@ def _internacoes_semana(
     return n
 
 
+
+def _territory_key_from_row(row: dict[str, Any]) -> str:
+    code = _clean(row.get("municipio_ibge"))
+    if re.fullmatch(r"\d{7}", code):
+        return "IBGE:" + code
+    mun = _norm_mun(_clean(row.get("municipio")))
+    return "NAME:" + mun if mun else ""
+
+
 def _internacoes_mun(
     sih: list[dict[str, str]],
     yw: tuple[int, int],
-    mun_key: str,
+    territory_key: str,
     *,
+    municipio_key: str | None = None,
     familia: str | None = None,
 ) -> int:
+    """Pareia SIH por IBGE e usa nome exato apenas quando algum lado não possui código.
+
+    Códigos válidos conflitantes nunca são resolvidos por nome.
+    """
     y, w = yw
-    n = 0
+    target_code = territory_key[5:] if territory_key.startswith("IBGE:") else ""
+    target_name = _norm_mun(municipio_key or "")
+    if not target_name and territory_key.startswith("NAME:"):
+        target_name = _norm_mun(territory_key[5:])
+
+    primary_rows: list[dict[str, str]] = []
+    fallback_rows: list[dict[str, str]] = []
+
     for r in sih:
         if _to_int(r.get("epi_year")) != y or _to_int(r.get("epi_week")) != w:
             continue
-        if _norm_mun(_clean(r.get("municipio"))) != mun_key:
-            continue
         if familia and _clean(r.get("cid_familia")).casefold() != familia.casefold():
-            # se família pedida e não bate, ainda conta total do mun se familia None
             continue
-        n += _to_int(r.get("n_internacoes"))
-    return n
+
+        row_code = _clean(r.get("municipio_ibge"))
+        row_code_valid = bool(re.fullmatch(r"\d{7}", row_code))
+        row_name = _norm_mun(_clean(r.get("municipio")))
+
+        if target_code:
+            if row_code_valid:
+                if row_code == target_code:
+                    primary_rows.append(r)
+                # código válido conflitante: não entra no fallback
+                continue
+            if target_name and row_name == target_name:
+                fallback_rows.append(r)
+        else:
+            if target_name and row_name == target_name:
+                fallback_rows.append(r)
+
+    chosen = primary_rows if primary_rows else fallback_rows
+    if not target_code and chosen:
+        valid_codes = {
+            _clean(r.get("municipio_ibge"))
+            for r in chosen
+            if re.fullmatch(r"\d{7}", _clean(r.get("municipio_ibge")))
+        }
+        if len(valid_codes) > 1:
+            return 0
+
+    return sum(_to_int(r.get("n_internacoes")) for r in chosen)
 
 
 def _escolher_semana_sih(
@@ -373,7 +417,8 @@ def _build_consolidado(
         if not mun or mun.startswith("*"):
             continue
         tgt = _clean(r.get("target") or r.get("agravo") or "geral")
-        key = (_norm_mun(mun), tgt.casefold())
+        territory_key = _territory_key_from_row(r)
+        key = (territory_key or ("NAME:" + _norm_mun(mun)), tgt.casefold())
         ex = _to_int(r.get("tests"))
         pos = _to_int(r.get("positives"))
         if key not in agg:
@@ -382,6 +427,8 @@ def _build_consolidado(
                 "epi_week": w,
                 "municipio": mun,
                 "municipio_key": _norm_mun(mun),
+                "municipio_ibge": _clean(r.get("municipio_ibge")) or "",
+                "territory_key": territory_key or ("NAME:" + _norm_mun(mun)),
                 "agravo": tgt,
                 "exames": 0,
                 "positivos": 0,
@@ -396,8 +443,18 @@ def _build_consolidado(
         pct = (100.0 * pos / ex) if ex > 0 else None
         fam = _cid_familia(str(item["agravo"]))
         mk = str(item["municipio_key"])
-        intern = _internacoes_mun(sih, sih_yw, mk, familia=fam) if fam else _internacoes_mun(
-            sih, sih_yw, mk
+        tk = str(item["territory_key"])
+        intern = _internacoes_mun(
+            sih,
+            sih_yw,
+            tk,
+            municipio_key=mk,
+            familia=fam,
+        ) if fam else _internacoes_mun(
+            sih,
+            sih_yw,
+            tk,
+            municipio_key=mk,
         )
         pop_n = pop.get(mk)
         rate = (100000.0 * intern / pop_n) if pop_n and pop_n > 0 else None
