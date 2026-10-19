@@ -82,6 +82,9 @@ def send_telegram(text: str, *, parse_mode: str = "HTML") -> tuple[bool, str]:
             "TELEGRAM_CHAT_ID (ou TG_CHAT_ID). Defina no .env — ver .env.example."
         )
     url = f"https://api.telegram.org/bot{token}/sendMessage"
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme != "https" or parsed.hostname != "api.telegram.org":
+        return False, "Telegram: endpoint inválido; envio bloqueado."
     payload_dict = {
         "chat_id": chat_id,
         "text": text[:4000],
@@ -97,7 +100,7 @@ def send_telegram(text: str, *, parse_mode: str = "HTML") -> tuple[bool, str]:
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:  # nosec B310 - HTTPS host validated above
             data = json.loads(resp.read().decode("utf-8"))
         if data.get("ok"):
             return True, "Telegram: mensagem enviada."
