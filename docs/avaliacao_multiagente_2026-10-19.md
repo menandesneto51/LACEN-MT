@@ -93,6 +93,58 @@ Adicionar:
 - Medir performance e reduzir dependência de CSV quando houver benefício comprovado.
 - Formalizar QA geoespacial.
 
+## Continuidade P1 — implementação em 19/10/2026
+
+### Segurança do CI
+Implementado no Quality Gate:
+- `ruff` para erros críticos de lint;
+- secret scan do repositório;
+- `bandit` para análise estática de segurança;
+- `pip-audit` para dependências;
+- pytest permanece obrigatório.
+
+O status de Segurança só deve migrar de WARN após o novo workflow concluir sem bloqueios ou após os achados serem saneados.
+
+### Gestão de riscos e ações
+Implementados:
+- `age_days`;
+- `sla_days`;
+- `sla_status`;
+- `time_to_close_days`;
+- `recurrence_count`;
+- `reopened_at`;
+- aging de ações;
+- dias até o prazo;
+- indicadores de riscos fora do SLA e recorrentes no dashboard.
+
+### Vigilância Genômica
+O preflight `SES_DATA_CATALOG` foi concluído:
+- `dbo.VW_GAL` fornece a âncora institucional de amostra, incluindo `Amostra` e `Codigo_Amostra`;
+- não foram encontrados no catálogo campos explícitos de `linhagem`, `variante`, `sequenciamento` ou `genoma`;
+- decisão do preflight: `NEW_SOURCE_REQUIRED`;
+- isso significa identificar/catalogar a fonte oficial já usada pelo LACEN para resultados genômicos, e não inventar um novo sistema.
+
+Artefato: `config/catalog_evidence_genomics_v2_1.json`.
+
+### Supply Chain
+O preflight identificou `dbo.SUINS_INSUMOS_ENTRADAS_SAIDAS` como fonte institucional potencial para movimentação de insumos, com entradas, saídas, lote, fornecedor, destino e quantidades.
+
+Decisão: `EXTEND_EXISTING`. Ainda é necessário validar completude, saldo/base histórica e recorte específico do LACEN antes de calcular estoque ou risco de ruptura.
+
+Artefato: `config/catalog_evidence_supply_chain_v2_1.json`.
+
+### ML
+Foi implementado `quality/ml_backtest_gate.py`.
+
+Regra técnica mínima:
+- `AUC < 0,5` → `BLOCK` para interpretação operacional daquele escopo;
+- AUC ausente → `WARN`;
+- o gate não define limiar epidemiológico nem declara evento.
+
+O ETL gera `quality/ml_model_gate_v2_1.json` e registra os escopos bloqueados/avisados.
+
+---
+
 ## Conclusão dos agentes
 
 **Não há BLOCK estrutural no projeto neste momento.**  
