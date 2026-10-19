@@ -179,3 +179,50 @@ def test_empty_new_radar_does_not_delete_existing_open_work():
     assert len(risks2) == len(risks)
     assert len(actions2) == len(actions)
     assert risks2.loc[0, "estado_risco"] == "ABERTO"
+
+
+def test_risk_aging_sla_and_recurrence_are_computed():
+    radar = _radar()
+    risks = build_risk_register(radar, now="2026-10-01T08:00:00")
+    assert risks.loc[0, "sla_days"] == 1
+    assert risks.loc[0, "sla_status"] == "NO_PRAZO"
+
+    aged = build_risk_register(
+        pd.DataFrame(),
+        previous=risks,
+        now="2026-10-03T08:00:00",
+    )
+    assert aged.loc[0, "age_days"] == pytest.approx(2.0)
+    assert aged.loc[0, "sla_status"] == "ATRASADO"
+
+    aged.loc[0, "estado_risco"] = "CONTROLADO"
+    aged.loc[0, "decisao"] = "Mitigado"
+    aged.loc[0, "evidencia_decisao"] = "Evidência"
+    aged.loc[0, "probabilidade_residual"] = "baixo"
+    aged.loc[0, "impacto_residual"] = "baixo"
+    aged.loc[0, "justificativa_residual"] = "Risco residual baixo"
+
+    recurrence = build_risk_register(
+        radar,
+        previous=aged,
+        now="2026-10-04T08:00:00",
+    )
+    assert recurrence.loc[0, "estado_risco"] == "EM_ANALISE"
+    assert recurrence.loc[0, "recurrence_count"] == 1
+    assert recurrence.loc[0, "reopened_at"] == "2026-10-04T08:00:00"
+
+
+def test_action_sla_metrics_refresh_with_time():
+    radar = _radar()
+    risks = build_risk_register(radar, now="2026-10-01T08:00:00")
+    actions = build_action_register(
+        radar, risks, now="2026-10-01T08:00:00"
+    )
+    refreshed = build_action_register(
+        pd.DataFrame(),
+        risks,
+        previous=actions,
+        now="2026-10-03T08:00:00",
+    )
+    assert refreshed["age_days"].min() == pytest.approx(2.0)
+    assert set(refreshed["sla_status"]) == {"ATRASADA"}
