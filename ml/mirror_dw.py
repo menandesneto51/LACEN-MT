@@ -613,9 +613,20 @@ def _pick_odbc_driver(preferred: str | None = None) -> str:
     )
 
 
+def _validate_sql_identifier(value: str, *, kind: str) -> str:
+    """Valida identificadores SQL antes de interpolá-los em DDL/DML."""
+    text = str(value or "").strip()
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", text):
+        raise ValueError(f"{kind} SQL inválido: {value!r}")
+    return text
+
+
 def _ensure_table(cursor, schema: str, table: str, df: pd.DataFrame) -> str:
     """Garante tabela. Retorna 'created'|'exists'|'denied'."""
-    cols_sql = ", ".join(f"[{c}] {_sql_type(df[c])}" for c in df.columns)
+    schema = _validate_sql_identifier(schema, kind="schema")
+    table = _validate_sql_identifier(table, kind="table")
+    safe_cols = [_validate_sql_identifier(c, kind="column") for c in df.columns]
+    cols_sql = ", ".join(f"[{c}] {_sql_type(df[c])}" for c in safe_cols)
     cursor.execute(
         f"""
         SELECT CASE WHEN OBJECT_ID(N'[{schema}].[{table}]', N'U') IS NULL THEN 0 ELSE 1 END
@@ -641,10 +652,12 @@ def _ensure_table(cursor, schema: str, table: str, df: pd.DataFrame) -> str:
 
 
 def _replace_table_rows(cursor, schema: str, table: str, df: pd.DataFrame) -> int:
-    cursor.execute(f"DELETE FROM [{schema}].[{table}]")
+    schema = _validate_sql_identifier(schema, kind="schema")
+    table = _validate_sql_identifier(table, kind="table")
+    cursor.execute(f"DELETE FROM [{schema}].[{table}]")  # nosec B608 - identifiers validated above
     if df.empty:
         return 0
-    cols = list(df.columns)
+    cols = [_validate_sql_identifier(c, kind="column") for c in df.columns]
     placeholders = ",".join(["?"] * len(cols))
     col_list = ",".join(f"[{c}]" for c in cols)
     sql = f"INSERT INTO [{schema}].[{table}] ({col_list}) VALUES ({placeholders})"
