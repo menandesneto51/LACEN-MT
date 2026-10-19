@@ -43,7 +43,7 @@ def _stable_issue_id(row: pd.Series) -> str:
         str(row.get("epi_week") or ""),
         str(row.get("agravo_sinan") or row.get("cid_familia") or ""),
     ]
-    digest = hashlib.sha1("|".join(parts).encode("utf-8")).hexdigest()[:12]
+    digest = hashlib.sha1("|".join(parts).encode("utf-8"), usedforsecurity=False).hexdigest()[:12]
     return "TR-" + digest.upper()
 
 
