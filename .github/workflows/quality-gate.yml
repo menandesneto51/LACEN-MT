@@ -15,5 +15,14 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install --upgrade pip
-      - run: pip install -r requirements.txt pytest
-      - run: pytest
+      - run: pip install -r requirements.txt pytest ruff bandit pip-audit
+      - name: Critical lint
+        run: ruff check . --select E9,F63,F7,F82
+      - name: Repository secret scan
+        run: python scripts/ci_security_scan.py
+      - name: Security static analysis
+        run: bandit -r quality etl ml scripts -q -ll -ii
+      - name: Dependency audit
+        run: pip-audit -r requirements.txt --progress-spinner off
+      - name: Test suite
+        run: pytest
