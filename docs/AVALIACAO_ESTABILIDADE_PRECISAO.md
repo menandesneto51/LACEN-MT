@@ -84,6 +84,13 @@ A SE do MS/SINAN vai de **domingo a sábado**, e a SE 1 é a semana que contém 
 
 A positividade semanal estadual está em 0,3–0,8% (ex.: SE36: 8 positivos em 1.231 exames). Isso indica que o denominador mistura exames de triagem/controle com exames diagnósticos. A tabela `conhecimento_ve/regras_agravo_gal.csv` (`conta_positividade_agregada`, `classe`, `marcador`) já tem a estrutura certa — o ganho de precisão vem de **calcular positividade por marcador/método** (NS1, IgM, PCR, HBsAg…) e só agregar o que a regra marca como comparável.
 
+### 2.7 Achados adicionais durante a fase 1 — **P0**
+
+- **Painel de features esparso:** o painel só tinha linhas nas semanas *com exame*. `tests_lag1` e `tests_ma8` eram calculados sobre as últimas semanas com dado, não sobre semanas de calendário, e o silêncio ficava invisível. O rótulo `y_silencio` ("próxima semana sem exame") só valia 1 na última linha de cada série, porque a "semana seguinte" inexistente era preenchida com 0.
+- **`semanas_consec_sem_exame` acumulava** todas as semanas sem exame da série, em vez de contar só as consecutivas.
+- **Municípios de fora de MT:** 2.158 dos 2.294 municípios da base semanal são de outros estados (residência do paciente; 3,7% dos exames). A maioria dos pares município×agravo avaliados pelo ML era de fora do estado.
+- **Apóstrofo duplicado:** o GAL traz `MIRASSOL D''OESTE` e a base de população `MIRASSOL D'OESTE`. Os 5 municípios "D'Oeste" de MT (Mirassol, Conquista, Figueirópolis, Glória, Lambari) ficavam sem população, código IBGE e IDH. Só Mirassol d'Oeste tem 6.451 exames sem taxa por 100 mil.
+
 ---
 
 ## 3. Estabilidade e confiabilidade operacional
@@ -169,3 +176,38 @@ Testes: 7/7 passam. Achados:
 | **4 — Manutenção** | contínuo | 3.5 (dados fora do git), 3.7 (modularização), logging estruturado |
 
 **Indicadores para acompanhar a melhoria:** % de SE com `status: OK` no manifesto; atraso médio do painel (dias); taxa de alertas confirmados (`alerta_historico.csv`) por família; nº de anomalias por SE (esperado cair de ~60–80 para um número que a equipe consiga investigar); AUC e precisão@20 em teste realmente fora da amostra.
+
+---
+
+## 6. Status da fase 1 (implementada em 2026-10-26)
+
+| Item | O que mudou | Arquivos |
+|------|-------------|----------|
+| 2.1 SE MS | `etl/epi_week.py` passa a usar domingo–sábado, com `epi_from_series` (pandas), `sql_epi_exprs` (T-SQL, independe de `@@DATEFIRST`), `epi_week_start` e `shift_se` (suporta SE 53). As ~12 cópias do cálculo ISO foram trocadas por essas funções. | `etl/*`, `lacen_builder_integrado_total.py`, `lacen_analysis_pipeline_completo_corrigido.py`, `lacen_relatorio_cievs.py`, `lacen_agente_marcadores.py`, `lacen_semana_maturacao.py`, `lacen_dashboard_integrado_total.py`, `reparar_sim_weekly.py` |
+| 2.2 Semana em curso | `publish_weekly_inputs` descarta semanas após a última SE completa. `choose_se_operacional` nunca escolhe a semana em curso. O ML usa `reference_week()` (pode ser forçada com `LACEN_SE_REFERENCIA=2026-SE36`). A janela de extração do DW começa num domingo; antes cortava a SE mais antiga ao meio e essa contagem parcial substituía a completa no histórico. | `etl/build_weekly_from_gal.py`, `etl/dw_extract.py`, `ml/features.py` |
+| 2.3 Snapshot | Painel denso (uma linha por município×agravo×SE até a referência). O snapshot traz todos os pares **na SE de referência**. Rótulos sem semana seguinte saem do treino. Silêncio só é avaliado em séries ativas (≥ 2 exames em 8 SE); as demais aparecem como `serie_inativa`. Features ficaram ~16× mais rápidas (189 s → 12 s). | `ml/features.py`, `ml/train.py`, `ml/backtest.py`, `ml/models.py` |
+| 2.4 (parcial) | Anomalia exige volume mínimo de 5 (exames ou notificações). | `ml/models.py` |
+| 2.7 | Filtro de municípios de MT no ML (`LACEN_ML_SOMENTE_MT=0` desliga) e correção de `D''OESTE` antes dos joins de população. | `ml/features.py`, `lacen_integracao_final_only.py`, `etl/*` |
+| 3.1 | Etapas críticas (`integracao_final`, `ml`) interrompem o ETL com `status: FALHA`. Falha nas demais gera `PARCIAL` (exit 4). `enviar_relatorio_cievs.py` recusa envio real se o último ETL falhou (exit 5; `--forcar-envio` após revisão). | `etl/run_etl_dw.py`, `scripts/enviar_relatorio_cievs.py` |
+| 3.3 | 26 testes (`tests/`) e GitHub Actions. | `tests/`, `.github/workflows/tests.yml` |
+
+**Efeito medido** (ML rodado sobre os dados versionados, referência SE36, antes → depois):
+
+| Saída | Antes | Depois |
+|-------|-------|--------|
+| `ml_anomalias.csv` | 659 linhas em 66 semanas diferentes (desde 2025), 184 municípios | 35 linhas, só na SE de referência, 22 municípios |
+| `ml_risco_predito.csv` / `ml_silencio_predito.csv` | 6.101 linhas espalhadas em 104 semanas, 1.246 municípios | 3.887 linhas, todas na SE de referência, 140 municípios de MT |
+| Alertas de silêncio (`acima_limiar`) | 5.189 | 454 (+ 3.375 séries marcadas como inativas) |
+
+### Reprocessamento necessário (precisa de VPN/DW — não foi possível fazer aqui)
+
+Os CSV/Parquet em `saida_pipeline/` **ainda estão em semana ISO** e só mudam quando o pipeline rodar com o código novo:
+
+1. `python -m etl.run_etl_dw --weeks-back 160`. A janela maior regrava todo o histórico desde 2024 no calendário MS; sem isso, as semanas mais antigas que a janela do DW continuam com rótulo ISO.
+2. Se o canal endêmico usar o histórico longo do CSV local, rodar também `rodar_lacen_sistema_completo_bases.bat` (builder + integração) para reconstruir SINAN/SIM semanais.
+3. Conferir `validacao_etl_dw_ultimo.txt`: `status: OK` e `se_usada` = última SE completa (ex.: em 26/10/2026, SE 42).
+4. Comunicar no próximo Radar/e-mail que a numeração das SE passou a seguir o calendário MS (em 2026, um número a menos que antes).
+
+### Pendente para a fase 2
+
+Escolha de limiar em validação separada e portão de qualidade por família (hoje hepatite fica com AUC 0,54), contratos de dados, lock de dependências, banner de dados desatualizados e login por padrão.

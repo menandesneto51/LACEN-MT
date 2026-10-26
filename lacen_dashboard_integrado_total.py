@@ -27,6 +27,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from etl.epi_week import epi_week_start
 from lacen_auth import auth_sidebar_status, require_auth
 from lacen_theme import footer_institucional, hero, inject_theme, meta_bar
 
@@ -296,8 +297,9 @@ def format_num(x, digits: int = 2) -> str:
 
 
 def iso_monday(year: int, week: int) -> Optional[date]:
+    """Início (domingo) da SE no calendário MS; nome mantido por compatibilidade."""
     try:
-        return date.fromisocalendar(int(year), int(week), 1)
+        return epi_week_start(int(year), int(week))
     except Exception:
         return None
 

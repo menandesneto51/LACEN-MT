@@ -123,7 +123,10 @@ def _make_labels(features: pd.DataFrame) -> pd.DataFrame:
     df["y_silencio"] = sil_op.astype(int)
     df["y_silencio_epi"] = sil_epi.astype(int)
     df["familia"] = df["target"].map(familia_agravo)
-    return df.dropna(subset=["y_alerta", "y_silencio"])
+    # Sem SE seguinte no painel (fim da série = SE de referência) o futuro é
+    # desconhecido: preencher com 0 criava rótulos falsos de silêncio/não-alerta.
+    tem_proxima = g["epi_week"].shift(-1).notna()
+    return df.loc[tem_proxima].dropna(subset=["y_alerta", "y_silencio"])
 
 
 def _matrix(df: pd.DataFrame, cols: list[str]) -> tuple[pd.DataFrame, list[str]]:
@@ -276,7 +279,11 @@ def train_and_save(features: pd.DataFrame, store_dir: Path | str = STORE) -> dic
         ("risco", FEATURE_COLS_RISCO, "y_alerta"),
         ("silencio", FEATURE_COLS_SILENCIO, "y_silencio"),
     ):
-        results[name] = _train_one(name, cols, ycol, train_df, test_df, "global")
+        tr_df, te_df = train_df, test_df
+        if name == "silencio" and "serie_ativa" in train_df.columns:
+            tr_df = train_df[train_df["serie_ativa"] == 1]
+            te_df = test_df[test_df["serie_ativa"] == 1]
+        results[name] = _train_one(name, cols, ycol, tr_df, te_df, "global")
 
         # Modelos por família (risco)
         if name == "risco":

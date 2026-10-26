@@ -45,6 +45,7 @@ from typing import Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
+from etl.epi_week import epi_from_series  # SE no calendário MS (dom–sáb)
 
 # -----------------------------------------------------------------------------
 # Configuração geral
@@ -431,7 +432,7 @@ def normalize_chunk(df: pd.DataFrame, municipality_source: str) -> pd.DataFrame:
         return pd.DataFrame()
 
     df["year"] = df["event_date"].dt.year.astype(int)
-    iso = df["event_date"].dt.isocalendar()
+    iso = epi_from_series(df["event_date"])
     df["epi_year"] = iso["year"].astype(int)
     df["epi_week"] = iso["week"].astype(int)
     df["municipio_analitico"] = pick_municipality(df, municipality_source)
@@ -718,7 +719,7 @@ def build_arb_case_level(df: pd.DataFrame, agudos_only: bool = True) -> Tuple[pd
     if "event_date" in cases.columns:
         cases["ano"] = pd.to_datetime(cases["event_date"], errors="coerce").dt.year
         cases["mes"] = pd.to_datetime(cases["event_date"], errors="coerce").dt.month
-        epi = pd.to_datetime(cases["event_date"], errors="coerce").dt.isocalendar()
+        epi = epi_from_series(cases["event_date"])
         cases["epi_year"] = epi.year.astype("Int64")
         cases["epi_week"] = epi.week.astype("Int64")
 

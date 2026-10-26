@@ -411,13 +411,14 @@ def extract_vw_gal_weekly_agg(
     concat_expr = " + ' ' + ".join(result_bits) if result_bits else "''"
 
     agravo_sql = f"[{agravo_col}]" if agravo_col else "N''"
-    days = max(7, int(weeks_back) * 7 + 14)
 
-    # isoyear exige SQL Server 2022+; fórmula YEAR(DATEADD(day, 26-iso_week, d))
-    # é compatível com versões anteriores e alinha ao isocalendar() Python.
-    d = f"CAST([{date_col}] AS date)"
-    epi_year_expr = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
-    epi_week_expr = f"DATEPART(iso_week, {d})"
+    # SE no calendário MS (domingo–sábado), igual a etl.epi_week.date_to_epi.
+    from etl.epi_week import epi_week_start, semana_completa_mais_recente, shift_se, sql_epi_exprs
+
+    epi_year_expr, epi_week_expr = sql_epi_exprs(f"[{date_col}]")
+    # Janela começa num domingo: a SE mais antiga vem completa (antes, "hoje − N dias"
+    # cortava essa SE ao meio e a contagem parcial substituía a completa no histórico).
+    inicio = epi_week_start(*shift_se(*semana_completa_mais_recente(), -max(1, int(weeks_back))))
 
     sql = f"""
     SELECT
@@ -441,7 +442,7 @@ def extract_vw_gal_weekly_agg(
       MAX(CAST([{date_col}] AS date)) AS dt_max
     FROM [{schema}].[{view}]
     WHERE [{date_col}] IS NOT NULL
-      AND CAST([{date_col}] AS date) >= DATEADD(day, -{days}, CAST(GETDATE() AS date))
+      AND CAST([{date_col}] AS date) >= '{inicio:%Y-%m-%d}'
       AND CAST([{date_col}] AS date) <= CAST(GETDATE() AS date)
       AND LTRIM(RTRIM([{mun_col}])) <> ''
     GROUP BY
@@ -746,9 +747,9 @@ def extract_sih_mun_cid_agg(
         f"UPPER(REPLACE(REPLACE(LTRIM(RTRIM(CAST([{cid_col}] AS NVARCHAR(20)))), '.', ''), ' ', ''))"
     )
     fam_expr = _cid_familia_case_sql(cid_norm)
-    d = f"({date_expr})"
-    epi_year = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
-    epi_week = f"DATEPART(iso_week, {d})"
+    from etl.epi_week import sql_epi_exprs
+
+    epi_year, epi_week = sql_epi_exprs(f"({date_expr})")
     sql = f"""
     SELECT
       {epi_year} AS epi_year,
@@ -903,10 +904,12 @@ def aggregate_internacao_from_sample(df: pd.DataFrame) -> pd.DataFrame:
     work = work.dropna(subset=["_dt"])
     if work.empty:
         return pd.DataFrame()
-    iso = work["_dt"].apply(lambda d: d.isocalendar())
+    from etl.epi_week import date_to_epi
+
+    iso = work["_dt"].apply(date_to_epi)
     work["epi_year"] = [x[0] for x in iso]
     work["epi_week"] = [x[1] for x in iso]
-    work["municipio"] = work[mun_col].astype(str).str.upper().str.strip()
+    work["municipio"] = work[mun_col].astype(str).str.upper().str.strip().str.replace("''", "'", regex=False)
     work["cid_familia"] = work[cid_col].map(cid_to_familia)
     work = work.dropna(subset=["cid_familia"])
     if work.empty:

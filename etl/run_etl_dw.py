@@ -73,6 +73,8 @@ def write_validacao(
     path = outdir / "validacao_etl_dw_ultimo.txt"
     lines = [
         "LACEN MT — validação ETL DW + SE real",
+        f"status: {report.get('status')}",
+        f"etapas_com_falha: {', '.join(report.get('etapas_com_falha') or []) or '(nenhuma)'}",
         f"gerado_em: {report.get('ts')}",
         f"hoje: {report.get('hoje')}",
         f"se_esperada: {report.get('se_esperada')}",
@@ -115,7 +117,29 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         "fonte_dados": None,
         "objetos_dw": [],
         "sources_extracted": [],
+        "status": "EM_EXECUCAO",
+        "etapas_com_falha": [],
     }
+
+    def etapa(nome: str, cmd: list[str], *, critica: bool) -> int:
+        """Executa etapa; falha crítica interrompe e marca o run como FALHA
+        (artefatos antigos não podem ser apresentados como atualizados)."""
+        code = _run(cmd)
+        report["passos"].append(f"{nome}:{code}")
+        if code != 0:
+            report["etapas_com_falha"].append(nome)
+            if critica:
+                report["status"] = "FALHA"
+                report["aviso"] = (
+                    f"Etapa crítica '{nome}' falhou (código {code}). Artefatos em "
+                    f"{outdir} NÃO foram atualizados por completo — não enviar ao CIEVS."
+                )
+                write_validacao(outdir, report)
+                (outdir / "validacao_etl_dw_ultimo.json").write_text(
+                    json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8",
+                )
+                raise RuntimeError(report["aviso"])
+        return code
 
     tcp_ok, host, port = check_dw_tcp(timeout=float(args.tcp_timeout))
     extract_meta: dict[str, Any] = {}
@@ -185,8 +209,7 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     _log(f"[ETL] weekly publicados: {pub}")
 
     # Integração final (reconstrói integrated_weekly)
-    code = _run([str(PY), str(ROOT / "lacen_integracao_final_only.py"), "--outdir", str(outdir)])
-    report["passos"].append(f"integracao_final:{code}")
+    etapa("integracao_final", [str(PY), str(ROOT / "lacen_integracao_final_only.py"), "--outdir", str(outdir)], critica=True)
 
     weekly_path = outdir / "integrated_weekly_surveillance.csv"
     weekly = pd.read_csv(weekly_path, low_memory=False) if weekly_path.exists() else pd.DataFrame()
@@ -202,19 +225,14 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         rede_args.extend(["--gal", str(micro_csv), "--years", "1"])
     else:
         rede_args.extend(["--years", "2"])
-    code = _run(rede_args)
-    report["passos"].append(f"indicadores_rede:{code}")
-
-    code = _run([str(PY), str(ROOT / "gerar_indicadores_emergencia.py"), "--outdir", str(outdir)])
-    report["passos"].append(f"indicadores_emergencia:{code}")
+    etapa("indicadores_rede", rede_args, critica=False)
+    etapa("indicadores_emergencia", [str(PY), str(ROOT / "gerar_indicadores_emergencia.py"), "--outdir", str(outdir)], critica=False)
 
     if (ROOT / "gerar_confirmacao_emergencia.py").exists():
-        code = _run([str(PY), str(ROOT / "gerar_confirmacao_emergencia.py"), "--outdir", str(outdir)])
-        report["passos"].append(f"confirmacao_emergencia:{code}")
+        etapa("confirmacao_emergencia", [str(PY), str(ROOT / "gerar_confirmacao_emergencia.py"), "--outdir", str(outdir)], critica=False)
 
     if not args.skip_ml:
-        code = _run([str(PY), "-m", "ml.run_ml_pipeline", "--outdir", str(outdir)])
-        report["passos"].append(f"ml:{code}")
+        etapa("ml", [str(PY), "-m", "ml.run_ml_pipeline", "--outdir", str(outdir)], critica=True)
 
     # Mirror DW
     mirror_status: dict[str, Any] = {"dw_ok": False, "error": "não executado"}
@@ -266,11 +284,11 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         report["municipios_se_usada"] = 0
 
     if not args.skip_cievs:
-        code = _run([
+        etapa("cievs_dry_run", [
             str(PY), str(ROOT / "scripts" / "enviar_relatorio_cievs.py"), "--dry-run",
-        ])
-        report["passos"].append(f"cievs_dry_run:{code}")
+        ], critica=False)
 
+    report["status"] = "PARCIAL" if report["etapas_com_falha"] else "OK"
     write_validacao(outdir, report)
     (outdir / "validacao_etl_dw_ultimo.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False, default=str),
@@ -313,6 +331,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     if report.get("aviso"):
         _log(f"[AVISO] {report['aviso']}")
+    if report.get("status") == "PARCIAL":
+        _log(f"[AVISO] Run PARCIAL — etapas com falha: {', '.join(report['etapas_com_falha'])}")
+        return 4
     # Exit 3 se atraso grave (dados meses atrás)
     atr = report.get("atraso_se")
     if atr is not None and int(atr) >= 8:

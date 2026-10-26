@@ -24,6 +24,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
+from etl.epi_week import sql_epi_exprs
 from lacen_briefing_epi import (
     briefing_para_relatorio,
     gerar_briefing_epi,
@@ -35,6 +36,7 @@ from lacen_briefing_epi import (
 
 ROOT = Path(__file__).resolve().parent
 OUTDIR_DEFAULT = ROOT / "saida_pipeline"
+_SE_Y, _SE_W = sql_epi_exprs("Data_Liberacao_dt")  # SE calendário MS (dom–sáb)
 
 DASHBOARD_URL = (
     "https://menandesneto51-lacen-mt-lacen-dashboard-integrado-total-nrdgik.streamlit.app/"
@@ -456,16 +458,16 @@ def _enrich_from_vw_gal(mode: Any, queryable: Any) -> dict[str, Any]:
         weeks = read_sql(
             mode,
             queryable,
-            """
+            f"""
             SELECT TOP 6
-              YEAR(Data_Liberacao_dt) AS y,
-              DATEPART(iso_week, Data_Liberacao_dt) AS iso_w,
+              {_SE_Y} AS y,
+              {_SE_W} AS iso_w,
               COUNT_BIG(*) AS n_exames,
               COUNT(DISTINCT Municipio_Solicitante) AS n_mun
             FROM dbo.VW_GAL
             WHERE Data_Liberacao_dt >= DATEADD(day, -90, CAST(GETDATE() AS date))
               AND Data_Liberacao_dt IS NOT NULL
-            GROUP BY YEAR(Data_Liberacao_dt), DATEPART(iso_week, Data_Liberacao_dt)
+            GROUP BY {_SE_Y}, {_SE_W}
             ORDER BY y DESC, iso_w DESC
             """,
         )

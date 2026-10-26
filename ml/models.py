@@ -17,13 +17,9 @@ def _sigmoid(x: np.ndarray | pd.Series) -> np.ndarray:
 
 
 def _advance_epiweek(year: int, week: int, steps: int = 1) -> tuple[int, int]:
-    y, w = int(year), int(week)
-    for _ in range(steps):
-        w += 1
-        if w > 53:
-            w = 1
-            y += 1
-    return y, w
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, steps)
 
 
 def forecast_demanda(weekly: pd.DataFrame, horizon: int = 4) -> pd.DataFrame:
@@ -96,6 +92,12 @@ def detect_anomalias(features: pd.DataFrame, z_threshold: float = 2.5) -> pd.Dat
         tmp["valor_atual"] = cur
         tmp["baseline_ma8"] = base
         flag = tmp["z_proxy"].abs() >= (z_threshold / 5.0)  # limiar relativo ~0.5
+        # volume mínimo: variação de 1→2 exames não é anomalia investigável
+        if metric in ("tests", "notificacoes"):
+            flag = flag & (np.maximum(cur.fillna(0), base.fillna(0)) >= 5)
+        else:
+            vol = pd.to_numeric(snap.get("tests_ma8", 0), errors="coerce").fillna(0)
+            flag = flag & (np.maximum(pd.to_numeric(snap.get("tests", 0), errors="coerce").fillna(0), vol) >= 5)
         # reforço: se tests atual >> ma8
         if metric == "tests":
             flag = flag | ((cur >= 5) & (cur >= base * 2.0))
@@ -388,6 +390,15 @@ def score_silencio_predito(features: pd.DataFrame) -> pd.DataFrame:
             "Manter acompanhamento de rotina.",
         ),
     )
+    if "serie_ativa" in snap.columns:
+        inativa = ~snap["serie_ativa"].astype(bool).to_numpy()
+        consec = pd.to_numeric(snap.get("semanas_consec_sem_exame", 0), errors="coerce").fillna(0).astype(int)
+        out.loc[inativa, "prob_silencio_proxima_janela"] = np.nan
+        out.loc[inativa, "acima_limiar"] = False
+        out.loc[inativa, "faixa_silencio_predita"] = "serie_inativa"
+        out.loc[inativa, "acao_sugerida"] = [
+            f"Sem exames há {n} SE: confirmar se o agravo segue em vigilância no município." for n in consec[inativa]
+        ]
     out["metodo"] = metodo
     out["modelo_versao"] = "sklearn_v2" if metodo.startswith("sklearn") else "baseline_v1"
-    return out.sort_values("prob_silencio_proxima_janela", ascending=False).reset_index(drop=True)
+    return out.sort_values("prob_silencio_proxima_janela", ascending=False, na_position="last").reset_index(drop=True)

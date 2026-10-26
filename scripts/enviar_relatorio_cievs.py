@@ -250,6 +250,20 @@ def _enviar_legado(
     return ok_any, exit_code
 
 
+def _bloqueio_por_etl(outdir: Path) -> str | None:
+    """Motivo para não enviar ao CIEVS, segundo o último validacao_etl_dw_ultimo.json."""
+    import json
+
+    path = outdir / "validacao_etl_dw_ultimo.json"
+    try:
+        rep = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None  # runs antigos sem JSON: comportamento anterior
+    if str(rep.get("status") or "").upper() == "FALHA":
+        return f"Último ETL ({rep.get('ts')}) terminou em FALHA: {rep.get('aviso') or ''}".strip()
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Radar LACEN — alerta unificado ou legado (CIEVS + Secretário)"
@@ -305,6 +319,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Não tentar DW; usa apenas saida_pipeline",
     )
+    parser.add_argument(
+        "--forcar-envio",
+        action="store_true",
+        help="Envia mesmo se o último ETL terminou com status FALHA (registrar justificativa)",
+    )
     args = parser.parse_args(argv)
 
     modo_unificado = not args.legado
@@ -315,6 +334,11 @@ def main(argv: list[str] | None = None) -> int:
     _load_dotenv(ROOT.parent / "Sentinela" / ".env")
 
     outdir = args.outdir if args.outdir.is_absolute() else (ROOT / args.outdir)
+    if not args.dry_run and not args.forcar_envio:
+        bloqueio = _bloqueio_por_etl(outdir)
+        if bloqueio:
+            print(f"[BLOQUEADO] {bloqueio}\nUse --dry-run para prévia ou --forcar-envio após revisão humana.")
+            return 5
     prefer_dw = not args.no_dw
     sources = load_relatorio_sources(outdir, prefer_dw=prefer_dw)
     print(

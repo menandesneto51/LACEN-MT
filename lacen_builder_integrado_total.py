@@ -9,6 +9,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from etl.epi_week import epi_from_series  # SE no calendário MS (dom–sáb)
 
 def log_step(msg):
     print(msg, flush=True)
@@ -457,7 +458,7 @@ def build_climate_weekly(climate_path, outdir):
         "oid": clim[oid_col] if oid_col else np.arange(len(clim))
     }).dropna(subset=["municipio","event_date"])
 
-    iso = df["event_date"].dt.isocalendar()
+    iso = epi_from_series(df["event_date"])
     df["epi_year"] = iso["year"].astype(int)
     df["epi_week"] = iso["week"].astype(int)
     sev_map = {"SEVERO": 3, "PERIGO": 2, "PERIGO POTENCIAL": 1}
@@ -538,7 +539,7 @@ def build_sinan_weekly(sinan_path, outdir):
             continue
         used_chunks += 1
         work["target"] = work["agravo_texto"].map(lambda x: infer_target_from_text(x) if str(x).strip() else "nao_classificado_sinan")
-        iso = work["event_date"].dt.isocalendar()
+        iso = epi_from_series(work["event_date"])
         work["ano"] = work["event_date"].dt.year
         work["epi_year"] = iso["year"].astype(int)
         work["epi_week"] = iso["week"].astype(int)
@@ -628,11 +629,11 @@ def build_sim_weekly(sim_path, outdir):
             continue
         used_chunks += 1
         work["target"] = work["causa_texto"].map(lambda x: infer_target_from_text(x) if str(x).strip() else "nao_classificado_sim")
-        iso = work["event_date"].dt.isocalendar()
+        iso = epi_from_series(work["event_date"])
         work["ano"] = work["event_date"].dt.year.astype(int)
         work["epi_year"] = iso["year"].astype(int)
         work["epi_week"] = iso["week"].astype(int)
-        # Dupla checagem pós-isocalendar
+        # Dupla checagem pós-cálculo da SE
         work = work[work["epi_year"].between(1990, 2100)].copy()
         if work.empty:
             continue

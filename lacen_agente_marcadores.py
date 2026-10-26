@@ -584,7 +584,9 @@ def contar_marcadores_semana(
     if col_dt not in df.columns:
         return {}
     dts = pd.to_datetime(df[col_dt], errors="coerce")
-    iso = dts.dt.isocalendar()
+    from etl.epi_week import epi_from_series  # SE no calendário MS (dom–sáb)
+
+    iso = epi_from_series(dts)
     mask = (iso.year == int(ano)) & (iso.week == int(se))
     df = df.loc[mask].fillna("")
     flag_key = "conta_bortman" if uso == "bortman" else "conta_alerta_agudo"

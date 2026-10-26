@@ -90,10 +90,14 @@ def run_backtest(features: pd.DataFrame, threshold: float = 0.5) -> pd.DataFrame
         ("risco", FEATURE_COLS_RISCO, "y_alerta"),
         ("silencio", FEATURE_COLS_SILENCIO, "y_silencio"),
     ):
-        Xtr, used = _matrix(train_df, cols)
-        ytr = train_df[ycol].astype(int)
-        Xte, _ = _matrix(test_df, used)
-        yte = test_df[ycol].astype(int)
+        tr_df, te_df = train_df, test_df
+        if name == "silencio" and "serie_ativa" in train_df.columns:
+            tr_df = train_df[train_df["serie_ativa"] == 1]
+            te_df = test_df[test_df["serie_ativa"] == 1]
+        Xtr, used = _matrix(tr_df, cols)
+        ytr = tr_df[ycol].astype(int)
+        Xte, _ = _matrix(te_df, used)
+        yte = te_df[ycol].astype(int)
         if ytr.nunique() < 2:
             rows.append({"modelo": name, "escopo": "global", "status": "skipped",
                          "motivo": "pouca variabilidade", "n": int(len(Xtr))})

@@ -9,7 +9,7 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 
-from etl.epi_week import date_to_epi, format_se, semana_completa_mais_recente
+from etl.epi_week import date_to_epi, epi_from_series, format_se, semana_completa_mais_recente
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -60,7 +60,7 @@ def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         return empty_t, empty_p
 
     df = agg.copy()
-    df["municipio"] = df["municipio"].astype(str).str.strip().str.upper()
+    df["municipio"] = df["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
     df["epi_year"] = pd.to_numeric(df["epi_year"], errors="coerce")
     df["epi_week"] = pd.to_numeric(df["epi_week"], errors="coerce")
     df = df.dropna(subset=["epi_year", "epi_week", "municipio"])
@@ -139,10 +139,10 @@ def weekly_from_local_gal(
         if chunk.empty:
             continue
         dt = dt.loc[mask]
-        epi = dt.dt.isocalendar()
+        epi = epi_from_series(dt)
         chunk["epi_year"] = epi.year.astype(int)
         chunk["epi_week"] = epi.week.astype(int)
-        chunk["municipio"] = chunk[mun_col].astype(str).str.strip().str.upper()
+        chunk["municipio"] = chunk[mun_col].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
         agr = chunk[agravo_col] if agravo_col else ""
         ex = chunk[exame_col] if exame_col else ""
         chunk["target"] = [infer_target(a, e) for a, e in zip(agr, ex)]
@@ -202,8 +202,13 @@ def publish_weekly_inputs(
     outdir: Path | str,
     *,
     replace_from_year: int = 2024,
+    ate_se: tuple[int, int] | None = None,
 ) -> dict:
-    """Atualiza CSVs que a integração final consome; preserva histórico antigo."""
+    """Atualiza CSVs que a integração final consome; preserva histórico antigo.
+
+    Semanas posteriores a `ate_se` (padrão: última SE completa) são descartadas:
+    a semana em curso tem volume parcial e gerava falsas quedas/silêncios.
+    """
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -226,6 +231,18 @@ def publish_weekly_inputs(
     merged_p = _merge_replace_weeks(
         old_p, new_p, ["epi_year", "epi_week", "target", "municipio"]
     )
+
+    lim_y, lim_w = ate_se or semana_completa_mais_recente()
+    lim = lim_y * 100 + lim_w
+
+    def _ate_lim(df: pd.DataFrame) -> pd.DataFrame:
+        if df.empty:
+            return df
+        o = pd.to_numeric(df["epi_year"], errors="coerce") * 100 + pd.to_numeric(df["epi_week"], errors="coerce")
+        return df[o <= lim]
+
+    merged_t = _ate_lim(merged_t)
+    merged_p = _ate_lim(merged_p)
 
     merged_t.to_csv(wt_path, index=False, encoding="utf-8-sig")
     merged_p.to_csv(pos_path, index=False, encoding="utf-8-sig")
@@ -285,8 +302,13 @@ def choose_se_operacional(
         info["aviso"] = "Sem pares epi_year/epi_week válidos."
         return info
 
-    # Preferir SE esperada se houver linhas; senão última presente no DW/local
+    # Semana em curso (posterior à última SE completa) nunca é "SE usada".
     ey, ew = esp
+    weeks = weeks[weeks["epi_year"] * 100 + weeks["epi_week"] <= ey * 100 + ew]
+    if weeks.empty:
+        info["aviso"] = "Só há dados da semana em curso — sem SE completa para análise."
+        return info
+    # Preferir SE esperada se houver linhas; senão última presente no DW/local
     has_esp = ((weeks["epi_year"] == ey) & (weeks["epi_week"] == ew)).any()
     if has_esp:
         usada = (ey, ew)

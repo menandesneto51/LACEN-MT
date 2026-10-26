@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from etl.epi_week import epi_from_series  # SE no calendário MS (dom–sáb)
 
 ROOT = Path(__file__).resolve().parent
 
@@ -86,7 +87,7 @@ def rebuild_sim_weekly(
     if work.empty:
         raise ValueError("Nenhuma data de óbito válida (1990–2100) após parse.")
 
-    iso = work["event_date"].dt.isocalendar()
+    iso = epi_from_series(work["event_date"])
     work["ano"] = work["event_date"].dt.year.astype(int)
     work["epi_year"] = iso["year"].astype(int)
     work["epi_week"] = iso["week"].astype(int)

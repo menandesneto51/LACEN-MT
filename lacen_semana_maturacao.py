@@ -22,6 +22,8 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from etl.epi_week import date_to_epi, shift_se
+
 try:
     from zoneinfo import ZoneInfo as _ZI
 except ImportError:  # pragma: no cover
@@ -87,19 +89,12 @@ def _parse_se(se: str) -> tuple[int, int] | None:
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    return shift_se(year, week, delta)
 
 
 def _iso_week(dt: datetime) -> tuple[int, int]:
-    iso = dt.isocalendar()
-    return int(iso.year), int(iso.week)
+    """SE no calendário MS (domingo–sábado); nome mantido por compatibilidade."""
+    return date_to_epi(dt)
 
 
 def _now_cuiaba() -> datetime:

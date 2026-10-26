@@ -61,7 +61,7 @@ def prepare_sinan_for_join(sinan: pd.DataFrame) -> pd.DataFrame:
         s[c] = pd.to_numeric(s[c], errors="coerce").fillna(0)
     s["epi_year"] = pd.to_numeric(s["epi_year"], errors="coerce")
     s["epi_week"] = pd.to_numeric(s["epi_week"], errors="coerce")
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
         s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
@@ -90,7 +90,7 @@ def prepare_sim_for_join(sim: pd.DataFrame) -> pd.DataFrame:
     s = s.loc[~bad_year].copy()
     if s.empty:
         return pd.DataFrame(columns=["epi_year", "epi_week", "municipio", "agravo_sinan", "obitos_sim"])
-    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper()
+    s["municipio"] = s["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
     s["agravo_sinan"] = s["target"].astype(str).str.strip().str.casefold()
     return (
         s.groupby(["epi_year", "epi_week", "municipio", "agravo_sinan"], as_index=False)
@@ -252,9 +252,12 @@ def main():
     if "ano" not in pop.columns:
         raise ValueError("populacao_municipio.csv sem coluna 'ano'.")
     pop["ano"] = pd.to_numeric(pop["ano"], errors="coerce")
+    # Normalizar ANTES dos joins: o GAL traz "MIRASSOL D''OESTE" (apóstrofo
+    # duplicado) e os 5 municípios "D'Oeste" de MT perdiam população/IBGE.
+    weekly["municipio"] = weekly["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
+    pop["municipio"] = pop["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
     weekly = weekly.merge(pop[["municipio", "ano", "populacao"]], on=["municipio", "ano"], how="left")
 
-    weekly["municipio"] = weekly["municipio"].astype(str).str.strip().str.upper()
     weekly["agravo_sinan"] = weekly["target"].map(map_lacen_target_to_sinan)
 
     sinan_j = prepare_sinan_for_join(sinan)
@@ -567,7 +570,7 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
     pop_path = outdir / "populacao_municipio.csv"
     if mm_path.exists():
         mm = read_csv(mm_path)
-        mm["municipio"] = mm["municipio"].astype(str).str.strip().str.upper()
+        mm["municipio"] = mm["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
         if "indice_vulnerabilidade" in mm.columns:
             mm["indice_vulnerabilidade"] = pd.to_numeric(mm["indice_vulnerabilidade"], errors="coerce")
         else:
@@ -578,7 +581,7 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
 
     if pop_path.exists():
         pop = read_csv(pop_path)
-        pop["municipio"] = pop["municipio"].astype(str).str.strip().str.upper()
+        pop["municipio"] = pop["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
         pop["ano"] = pd.to_numeric(pop.get("ano"), errors="coerce")
         pop["populacao"] = pd.to_numeric(pop.get("populacao"), errors="coerce")
         pop = pop.sort_values(["municipio", "ano"]).groupby("municipio", as_index=False).tail(1)
@@ -658,7 +661,7 @@ def write_territorial_intelligence(weekly: pd.DataFrame, outdir: Path) -> None:
             "municipio", "target", "tests_recent", "notif_recent", "positives_recent",
             "populacao", "tipo_sinal", "classificacao_silencio", "score_silencio",
         ]
-        alvo_sinais["municipio"] = alvo_sinais["municipio"].astype(str).str.strip().str.upper()
+        alvo_sinais["municipio"] = alvo_sinais["municipio"].astype(str).str.strip().str.upper().str.replace("''", "'", regex=False)
         silenciosos = pd.concat([silenciosos, alvo_sinais[keep]], ignore_index=True, sort=False)
 
     if "target" not in silenciosos.columns:
