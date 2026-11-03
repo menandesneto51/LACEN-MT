@@ -220,6 +220,10 @@ class SignalFact:
     internacao_semana_ref: str | None = None
     indicasus_score: float | None = None
     contexto_aviso: str = ""
+    # Portão de validação (lacen_validacao_sinais)
+    p_valor: float | None = None
+    excesso: float | None = None
+    validacao: Any = None
 
     @property
     def diferenca_absoluta(self) -> int:
@@ -522,6 +526,18 @@ def coletar_signal_facts(
             recomendacao="",
             score=score,
         )
+        try:
+            fact.p_valor = float(r["p_valor"]) if r.get("p_valor") not in (None, "") else None
+        except (TypeError, ValueError):
+            fact.p_valor = None
+        try:
+            fact.excesso = (
+                float(r["excesso_absoluto"])
+                if tipo == "volume" and r.get("excesso_absoluto") not in (None, "")
+                else None
+            )
+        except (TypeError, ValueError):
+            fact.excesso = None
         fact.interpretacao = (
             _interp_pos(fact) if tipo == "positividade" else _interp_volume(fact)
         )
@@ -695,8 +711,29 @@ def formatar_sinal_bloco(s: SignalFact) -> list[str]:
         lines.append(f"Robustez amostral: {s.robustez_amostral}")
     lines.extend(_linhas_contexto_linkage(s))
     lines.append(f"Interpretação: {s.interpretacao}")
+    if s.validacao is not None:
+        lines.append(f"Validação: {s.validacao.resumo()}")
     lines.append(f"Ação: {s.acao}")
     return lines
+
+
+def _linha_triagem(resumo: dict[str, Any], ctx: Any) -> str:
+    c = resumo.get("contagem", {})
+    mot = list((resumo.get("motivos") or {}).items())[:3]
+    txt = (
+        f"Triagem de sinais: {c.get('VALIDADO', 0)} validado(s) para o alerta · "
+        f"{c.get('EM_OBSERVACAO', 0)} em observação no painel · "
+        f"{c.get('DESCARTADO', 0)} descartado(s)"
+    )
+    if mot:
+        txt += " (principais motivos: " + "; ".join(f"{k}: {v}" for k, v in mot) + ")"
+    txt += "."
+    if ctx is not None and not ctx.positividade_valida:
+        txt += (
+            " Positividade não usada como critério nesta edição "
+            "(classificação de resultado GAL em revisão)."
+        )
+    return txt
 
 
 def sintese_executiva(
@@ -725,13 +762,20 @@ def sintese_executiva(
         if s.agravo not in agravos:
             agravos.append(s.agravo)
     agr_txt = ", ".join(agravos[:4]) if agravos else "agravos monitorados"
+    if not sinais and not lacunas:
+        return (
+            f"Na semana analisada ({se_lbl}), nenhum sinal laboratorial atendeu aos "
+            f"critérios de validação (qualidade do dado, significância, magnitude e "
+            f"corroboração). Os sinais em observação permanecem no Painel Radar LACEN."
+        )
+    n_terr = len({s.municipio for s in sinais + lacunas})
+    disp = "concentrados em" if n_terr <= 2 else "distribuídos entre"
     return (
-        f"A semana analisada ({se_lbl}) apresenta dispersão territorial de sinais "
-        f"laboratoriais, com predominância de anomalias relacionadas a {tipo_txt}. "
-        f"Não foi identificada evidência laboratorial suficiente para caracterizar "
-        f"aumento disseminado da positividade nos principais agravos destacados. "
-        f"Os sinais de maior prioridade concentram-se em {agr_txt} "
-        f"({terr}), exigindo validação junto às vigilâncias municipais e Regionais."
+        f"Na semana analisada ({se_lbl}), {len(sinais) + len(lacunas)} sinal(is) "
+        f"validado(s) de {tipo_txt}, {disp} {terr}. "
+        f"Agravos envolvidos: {agr_txt}. "
+        f"Os sinais validados exigem confirmação junto às vigilâncias municipais e "
+        f"Regionais; anomalia estatística não equivale a surto."
     )
 
 
@@ -742,7 +786,12 @@ def _se_secretario_legivel_local(se: str) -> str:
     return str(se or "—")
 
 
-def destaque_juina(rel: Any, facts: list[SignalFact]) -> list[str] | None:
+def destaque_juina(
+    rel: Any,
+    facts: list[SignalFact],
+    *,
+    se_analisada: tuple[int, int] | None = None,
+) -> list[str] | None:
     from lacen_relatorio_cievs import (
         _carregar_weekly_alerta,
         _parse_se,
@@ -754,7 +803,8 @@ def destaque_juina(rel: Any, facts: list[SignalFact]) -> list[str] | None:
     ]
     # Sempre considerar se há volume HBV alto
     wk = _carregar_weekly_alerta()
-    parsed = _parse_se(rel.semana_epidemiologica)
+    # SE analisada (N−1), não a SE do alerta (semana em curso, incompleta).
+    parsed = se_analisada or _parse_se(rel.semana_epidemiologica)
     if not parsed or not wk:
         return None
     got = resumo_serie_historica(wk, parsed, "hepatite_b_hbv", municipio="JUINA")
@@ -942,6 +992,20 @@ def encaminhamentos(sinais: list[SignalFact], lacunas: list[SignalFact]) -> list
         f"{s.municipio} · {s.agravo} — investigar linkage"
         for s in lacunas[:4]
     ]
+    if not sinais and not lacunas:
+        # Sem sinal validado: nada a investigar em município; só rotina e dados.
+        return [
+            "ENCAMINHAMENTOS",
+            "",
+            "CIEVS / VE estadual:",
+            "- Sem sinal validado nesta edição: manter monitoramento de rotina no "
+            "Painel Radar LACEN (sinais em observação).",
+            "- Nenhum acionamento municipal decorrente deste alerta.",
+            "",
+            "LACEN / gestão de dados:",
+            "- Tratar pendências de qualidade apontadas na triagem e no QA antes da "
+            "próxima edição.",
+        ]
     lines = [
         "ENCAMINHAMENTOS EM 48 HORAS",
         "",
@@ -1008,9 +1072,29 @@ def qa_alerta_estrategico(
     *,
     maturacao_qa: dict[str, str] | None = None,
     cobertura_sinan: dict[str, Any] | None = None,
+    contexto_validacao: Any = None,
 ) -> QaResult:
     items: dict[str, str] = {}
     critical_fail = False
+
+    # Só sinais VALIDADOS podem ser publicados (portão lacen_validacao_sinais).
+    nao_val = [
+        s for s in sinais
+        if s.validacao is not None and not s.validacao.publicar
+    ]
+    sem_val = [s for s in sinais if s.validacao is None and s.tipo_sinal != "lacuna"]
+    if nao_val:
+        items["SINAIS_VALIDADOS"] = f"FALHA ({len(nao_val)} sinal(is) não validado(s) publicado(s))"
+        critical_fail = True
+    elif sem_val and contexto_validacao is not None:
+        items["SINAIS_VALIDADOS"] = f"FALHA ({len(sem_val)} sinal(is) sem triagem)"
+        critical_fail = True
+    else:
+        items["SINAIS_VALIDADOS"] = "OK"
+    if contexto_validacao is not None and not contexto_validacao.carga_ok:
+        items["CARGA_SE"] = "ATENÇÃO (carga suspeita — sinais de volume descartados)"
+    elif contexto_validacao is not None:
+        items["CARGA_SE"] = "OK"
 
     # Cobertura SINAN na SE analisada (sem ela, lacunas GAL×SINAN são artefato).
     if cobertura_sinan is not None:
@@ -1231,7 +1315,26 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         se_analisada=mat.semana_analisada_yw,
         bloquear_positividade=bloquear_pos,
     )
-    sinais, lacunas, n_outros = selecionar_sinais_alerta(facts, max_n=6)
+    # Portão de validação: só sinais VALIDADOS seguem para o alerta.
+    import lacen_validacao_sinais as vs
+    from lacen_relatorio_cievs import _read_csv as _rcsv
+
+    ctx_val = vs.montar_contexto(
+        se=mat.semana_analisada_yw,
+        weekly=weekly,
+        anomalias=_rcsv(OUTDIR_ALERTA / "ml_anomalias.csv"),
+        vizinhos=_rcsv(OUTDIR_ALERTA / "municipio_vizinhos.csv"),
+        norm_mun=_norm_mun,
+    )
+    facts_validos, triagem = vs.triar(facts, ctx_val)
+    triagem_resumo = vs.resumo_triagem(triagem)
+    try:
+        vs.exportar_triagem(OUTDIR_ALERTA / "alerta_triagem_sinais.csv", triagem)
+    except OSError:
+        pass
+    sinais, lacunas, n_outros = selecionar_sinais_alerta(facts_validos, max_n=6)
+    n_outros = len(facts) - len(sinais) - len(lacunas)
+    triagem_txt = _linha_triagem(triagem_resumo, ctx_val)
     from lacen_relatorio_cievs import _carregar_weekly_alerta
 
     cob_sinan = cobertura_sinan_semana(
@@ -1244,7 +1347,12 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         + (f" (última SE com notificação: {_ult[1]:02d}/{_ult[0]})" if _ult else "")
         + ". Ausência de pareamento não deve ser lida como lacuna de vigilância."
     )
-    juina_lines = destaque_juina(rel, facts)
+    # Destaque territorial só com sinal validado no município.
+    juina_lines = (
+        destaque_juina(rel, facts_validos, se_analisada=mat.semana_analisada_yw)
+        if any("JUINA" in f.municipio_key for f in facts_validos)
+        else None
+    )
     if juina_lines:
         sinais = [s for s in sinais if s.municipio_key != "JUINA"]
 
@@ -1396,12 +1504,13 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
     lines.append("SINAIS PRIORITÁRIOS PARA INVESTIGAÇÃO")
     lines.append("")
     if not sinais:
-        lines.append("Nenhum sinal de prioridade moderada/alta após filtros de robustez.")
+        lines.append("Nenhum sinal atendeu aos critérios de validação nesta edição.")
     else:
         for i, s in enumerate(sinais):
             if i:
                 lines.append("")
             lines.extend(formatar_sinal_bloco(s))
+    lines.extend(["", triagem_txt])
     if n_outros > 0:
         lines.extend([
             "",
@@ -1495,7 +1604,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
     plain = "\n".join(lines)
 
     qa = qa_alerta_estrategico(
-        plain, sinais + lacunas, maturacao_qa=mat.qa, cobertura_sinan=cob_sinan
+        plain,
+        sinais + lacunas,
+        maturacao_qa=mat.qa,
+        cobertura_sinan=cob_sinan,
+        contexto_validacao=ctx_val,
     )
 
     def esc(t: str) -> str:
@@ -1528,8 +1641,9 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         <div style="font-size:13px;line-height:1.45;color:#333">{body}</div></div>"""
 
     sinais_html = "".join(bloco_sinal_html(s) for s in sinais) or (
-        "<p style='color:#555'>Nenhum sinal prioritário após filtros de robustez.</p>"
+        "<p style='color:#555'>Nenhum sinal atendeu aos critérios de validação nesta edição.</p>"
     )
+    sinais_html += f"<p style='color:#555;font-size:12px'>{esc(triagem_txt)}</p>"
     juina_html = ""
     if juina_lines:
         juina_html = (

@@ -2,7 +2,7 @@ RADAR LACEN · SES-MT / CIEVS-MT
 
 ALERTA ESTRATÉGICO — SE 37/2026
 Semana analisada: SE 36/2026
-Atualização / data de corte: 03/11/2026 às 13h34 (Hora de Mato Grosso)
+Atualização / data de corte: 03/11/2026 às 15h05 (Hora de Mato Grosso)
 Completude da semana analisada: 97,0%
 Exames elegíveis: 1231 · Liberados: 1231 · Pendentes: 0
 
@@ -40,22 +40,9 @@ Não incorporados à análise consolidada de positividade/incidência/anomalia d
 
 SÍNTESE EXECUTIVA
 
-A semana analisada (SE 36/2026) apresenta dispersão territorial de sinais laboratoriais, com predominância de anomalias relacionadas a aumento do volume de exames. Não foi identificada evidência laboratorial suficiente para caracterizar aumento disseminado da positividade nos principais agravos destacados. Os sinais de maior prioridade concentram-se em tuberculose, dengue, papilomavirus humano hpv papiloma rus biologia molecular, cultura para fungos (Tangará da Serra, Cuiabá, Cáceres, Sinop), exigindo validação junto às vigilâncias municipais e Regionais.
+Na semana analisada (SE 36/2026), 2 sinal(is) validado(s) de aumento do volume de exames, concentrados em Cuiabá, Várzea Grande. Agravos envolvidos: dengue. Os sinais validados exigem confirmação junto às vigilâncias municipais e Regionais; anomalia estatística não equivale a surto.
 
 SINAIS PRIORITÁRIOS PARA INVESTIGAÇÃO
-
-Tangará da Serra · tuberculose
-ANOMALIA DE VOLUME | PRIORIDADE CRÍTICA
-Atual: 43 exames
-Semana anterior: 13
-Diferença absoluta: +30 exames
-Referência recente: 12,5
-Variação relativa: +231%
-Positivos: 0
-Severidade estatística: alta
-Robustez amostral: alta
-Interpretação: Aumento do volume de exames (43 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: ACOMPANHAR
 
 Cuiabá · dengue
 ANOMALIA DE VOLUME | PRIORIDADE CRÍTICA
@@ -68,61 +55,34 @@ Positivos: 0
 Severidade estatística: alta
 Robustez amostral: alta
 Interpretação: Aumento do volume de exames (30 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
+Validação: carga da SE íntegra; significativo (p=0,0007); excesso de 14 exames sobre a base · corroborado por vizinho com sinal (VARZEA GRANDE)
 Ação: INVESTIGAR
 
-Cáceres · papilomavirus humano hpv papiloma rus biologia molecular
-ANOMALIA DE VOLUME | PRIORIDADE CRÍTICA
-Atual: 54 exames
-Semana anterior: 0
-Diferença absoluta: +54 exames
-Referência recente: 0
-Variação relativa: não calculável com denominador zero
-Positivos: 0
-Severidade estatística: alta
-Robustez amostral: alta
-Interpretação: Aumento do volume de exames (54 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: ACOMPANHAR
-
-Sinop · cultura para fungos
-ANOMALIA DE VOLUME | PRIORIDADE ALTA
-Atual: 24 exames
-Semana anterior: 9
-Diferença absoluta: +15 exames
-Referência recente: 1,1
-Variação relativa: +167%
-Positivos: 0
-Severidade estatística: alta
-Robustez amostral: moderada
-Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE31
-Ressalva: Internações referem-se a 2026-SE31 (lag SIH).
-Interpretação: Aumento do volume de exames (24 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: INVESTIGAR
-
-Alta Floresta · tuberculose
+Várzea Grande · dengue
 ANOMALIA DE VOLUME | PRIORIDADE MODERADA
-Atual: 10 exames
-Semana anterior: 0
-Diferença absoluta: +10 exames
-Referência recente: 3,6
-Variação relativa: não calculável com denominador zero
+Atual: 50 exames
+Semana anterior: 43
+Diferença absoluta: +7 exames
+Referência recente: 31,2
+Variação relativa: +16%
 Positivos: 0
 Severidade estatística: moderada
-Robustez amostral: moderada
-Internações (VW_INTERNACAO): 0 (0/100 mil) · ref. 2026-SE31
-Contexto INDICASUS (proxy): 10,6%
-Ressalva: Internações referem-se a 2026-SE31 (lag SIH).
-Interpretação: Aumento do volume de exames (10 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
-Ação: VALIDAR
+Robustez amostral: alta
+Interpretação: Aumento do volume de exames (50 exames) sem confirmação positiva nesta rodada. Investigar mudança de busca ativa, fluxo de coleta ou situação epidemiológica local — sem inferir aumento de casos.
+Validação: carga da SE íntegra; significativo (p=0,0012); excesso de 19 exames sobre a base · corroborado por vizinho com sinal (CUIABA)
+Ação: ACOMPANHAR
 
-Outros 2 sinais disponíveis no Painel Radar LACEN.
+Triagem de sinais: 3 validado(s) para o alerta · 2 em observação no painel · 3 descartado(s) (principais motivos: alvo não elegível para alerta: 3; sem corroboração: 2). Positividade não usada como critério nesta edição (classificação de resultado GAL em revisão).
+
+Outros 5 sinais disponíveis no Painel Radar LACEN.
 
 DESTAQUE TERRITORIAL — Juína
 
 Hepatite B (marcador de alerta agudo):
-0 exames
+49 exames
 0 positivos no marcador de alerta agudo
-SE anterior: 49 exames
-Diferença: -49 exames
+SE anterior: 57 exames
+Diferença: -8 exames
 
 Interpretação:
 Aumento importante da demanda laboratorial sem aumento da positividade no marcador agudo; padrão compatível com expansão de rastreio ou mudança de demanda, a confirmar.
@@ -143,7 +103,7 @@ CIEVS / VE estadual:
 - Conferir marcador laboratorial antes de classificação de evento.
 - Revisar linkage laboratório × notificação nos municípios citados.
 - Avaliar se o sinal atende a critérios epidemiológicos para investigação de surto (tempo, lugar, pessoa, positividade, vínculo e magnitude).
-- Prioridade alta: Tangará da Serra · tuberculose — acompanhar; Cuiabá · dengue — investigar; Cáceres · papilomavirus humano hpv papiloma rus biologia molecular — acompanhar; Sinop · cultura para fungos — investigar.
+- Prioridade alta: Cuiabá · dengue — investigar.
 
 VE municipal / Regional:
 - Verificar demanda, busca ativa, fluxo de coleta e notificações.

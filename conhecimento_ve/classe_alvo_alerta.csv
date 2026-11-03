@@ -1,0 +1,6 @@
+ordem,padrao,classe,nota
+10,(^|_)igg($|_)|igg_avidez|avidez_igg,nao_agudo,IgG/avidez: exposição pretérita ou soroprevalência — não entra no alerta agudo.
+20,hpv|papiloma|teste_de_sensibilidade|genes_de_resist|carbapenem|cultura_para_fungos|(^|_)fungos($|_)|(^|_)micose|micobacterioses|infec_o_coloniza|bacteremia|septicemia|transtorno_end|colinesterase|intoxica|tsa$,assistencial,Diagnóstico assistencial/rastreio/resistência — painel; não é sinal epidemiológico de alerta.
+30,^raiva_raiva|^sarampo_sarampo|^rub_ola_rub_ola|febre_amarela|hantav|botulismo|paralisia_fl_cida|poliomielite|^peste_|antraz|carb_nculo|febre_maculosa|doenca_de_chagas_aguda_chagas|febre_do_nilo|^meningite,imediata,Agravo de notificação imediata (lista a validar pela VE): positivo laboratorial basta para validar.
+40,dengue|chikungunya|^zika|oropouche|mayaro|influenza|sars_cov|v_rus_respirat|leptosp|malaria|hepatite_a|tuberculose|leishmaniose|coqueluche|rotav|diarr|caxumba|var_ola|varicela|esquistossomose|encefalite|(^|_)igm($|_)|biologia_molecular,aguda,Agravo agudo/ativo: exige significância + magnitude + corroboração.
+50,hepatite_b|hepatite_c|^hepatite$|^hiv$|sifilis|hansen|htlv|chagas|toxoplasm|(^|_)ist($|_),cronica,Agravo crônico/acompanhamento: volume reflete seguimento; exige persistência.
