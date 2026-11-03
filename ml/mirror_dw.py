@@ -321,15 +321,10 @@ def append_alerta_historico(
 
 
 def _epi_add(year: int, week: int, delta: int) -> tuple[int, int]:
-    """Avança semanas epidemiológicas (aprox. ISO 1..52)."""
-    y, w = int(year), int(week) + int(delta)
-    while w > 52:
-        w -= 52
-        y += 1
-    while w < 1:
-        w += 52
-        y -= 1
-    return y, w
+    """Desloca SE respeitando anos ISO de 52/53 semanas."""
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, delta)
 
 
 def _epi_le(y1: int, w1: int, y2: int, w2: int) -> bool:

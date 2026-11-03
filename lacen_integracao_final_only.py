@@ -41,9 +41,12 @@ def map_lacen_target_to_sinan(target: object) -> str:
         ("hiv", "hiv"),
         ("sifilis", "sifilis"),
         ("hepatite", "hepatite"),
-        ("influenza", "influenza"),
-        ("sars_cov", "covid19"),
-        ("covid", "covid19"),
+        # Vírus respiratórios: no SINAN o pareamento é com a ficha de SRAG
+        # (VW_SINAN_SINDROMERESPIRATORIAAGUDAGRAVE → "srag").
+        ("influenza", "srag"),
+        ("sars_cov", "srag"),
+        ("covid", "srag"),
+        ("v_rus_respirat", "srag"),
     )
     for needle, agravo in rules:
         if needle in t:
@@ -297,7 +300,8 @@ def main():
     log(f"[B2] SINAN pareado: {(weekly['notificacoes'].fillna(0) > 0).sum():,} linhas com notificação > 0")
     log(f"[B2] SIM pareado: {(weekly.get('obitos_sim', pd.Series(dtype=float)).fillna(0) > 0).sum():,} linhas com óbito > 0")
 
-    for col in ["tests", "positives", "negatives", "notificacoes", "obitos_sinan", "encerrados_sinan", "obitos_sim", "populacao"]:
+    for col in ["tests", "positives", "negatives", "notificacoes", "obitos_sinan", "encerrados_sinan", "obitos_sim", "populacao",
+                "validos", "indeterminados", "nao_classificados", "pendentes", "liberados"]:
         if col in weekly.columns:
             weekly[col] = pd.to_numeric(weekly[col], errors="coerce")
 
@@ -310,14 +314,23 @@ def main():
     weekly["encerrados_sinan"] = weekly["encerrados_sinan"].fillna(0).clip(lower=0)
     weekly["obitos_sim"] = weekly["obitos_sim"].fillna(0).clip(lower=0)
 
-    weekly["positividade"] = np.where(weekly["tests"] > 0, weekly["positives"] / weekly["tests"], np.nan)
+    # Denominador da positividade: resultados válidos (positivos + negativos) quando a
+    # agregação v2 os fornece (etl.resultado_gal); linhas antigas usam exames.
+    if "validos" not in weekly.columns:
+        weekly["validos"] = np.nan
+    weekly["den_positividade"] = np.where(
+        weekly["validos"].fillna(0) > 0, weekly["validos"], weekly["tests"]
+    )
+    weekly["positividade"] = np.where(
+        weekly["den_positividade"] > 0, weekly["positives"] / weekly["den_positividade"], np.nan
+    )
     weekly["solicitacoes_100k"] = np.where(weekly["populacao"] > 0, weekly["tests"] / weekly["populacao"] * 100000, np.nan)
     weekly["incidencia_100k"] = np.where(weekly["populacao"] > 0, weekly["positives"] / weekly["populacao"] * 100000, np.nan)
     weekly["notificacoes_100k"] = np.where(weekly["populacao"] > 0, weekly["notificacoes"] / weekly["populacao"] * 100000, np.nan)
     weekly["mortalidade_100k"] = np.where(weekly["populacao"] > 0, weekly["obitos_sim"] / weekly["populacao"] * 100000, np.nan)
     weekly["letalidade_proxy"] = np.where(weekly["notificacoes"] > 0, weekly["obitos_sim"] / weekly["notificacoes"], np.nan)
 
-    pos_ci = weekly.apply(lambda r: wilson_interval(r["positives"], r["tests"]), axis=1)
+    pos_ci = weekly.apply(lambda r: wilson_interval(r["positives"], r["den_positividade"]), axis=1)
     weekly["positivity_ci_low"] = [x[0] for x in pos_ci]
     weekly["positivity_ci_high"] = [x[1] for x in pos_ci]
 
@@ -398,12 +411,15 @@ def main():
 
     state = weekly.groupby(["epi_year", "epi_week", "target"], dropna=False).agg(
         tests=("tests", "sum"),
+        den_positividade=("den_positividade", "sum"),
         positives=("positives", "sum"),
         notificacoes=("notificacoes", "sum"),
         obitos=("obitos_sim", "sum"),
         populacao=("populacao", "sum")
     ).reset_index()
-    state["positividade"] = np.where(state["tests"] > 0, state["positives"] / state["tests"], np.nan)
+    state["positividade"] = np.where(
+        state["den_positividade"] > 0, state["positives"] / state["den_positividade"], np.nan
+    )
     state["incidencia_100k"] = np.where(state["populacao"] > 0, state["positives"] / state["populacao"] * 100000, np.nan)
 
     forecasts = []
@@ -419,11 +435,10 @@ def main():
         med_notif = sub["notificacoes"].tail(8).median()
         med_obitos = sub["obitos"].tail(8).median()
         y, w = last_year, last_week
+        from etl.epi_week import shift_se
+
         for step in range(1, 5):
-            w += 1
-            if w > 53:
-                w = 1
-                y += 1
+            y, w = shift_se(y, w, 1)
             forecasts.append({
                 "target": target,
                 "forecast_step": step,

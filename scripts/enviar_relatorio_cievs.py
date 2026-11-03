@@ -164,7 +164,15 @@ def _enviar_legado(
         print(pack["qa"].log)
         print("-" * 60)
 
-        if not args.dry_run:
+        qa_bloqueia = not pack["qa"].ok and not getattr(args, "forcar_envio", False)
+        if qa_bloqueia and not args.dry_run:
+            print(
+                "[BLOQUEADO] Alerta estratégico NÃO enviado: QA com item crítico em FALHA "
+                f"(ver {SEC_QA.relative_to(ROOT)}). Corrija os dados ou reenvie com "
+                "--forcar-envio após revisão humana."
+            )
+            exit_code = 2
+        if not args.dry_run and not qa_bloqueia:
             if do_tg:
                 ok, msg_status = send_telegram(sec_tg)
                 print(_mask_secrets(f"[Telegram estratégico] {msg_status}"))
@@ -297,6 +305,11 @@ def main(argv: list[str] | None = None) -> int:
         dest="email_to",
         default=None,
         help="Destinatário (default: EMAIL_TO / menandesneto@gmail.com)",
+    )
+    parser.add_argument(
+        "--forcar-envio",
+        action="store_true",
+        help="Envia o alerta estratégico mesmo com QA crítico em FALHA (exige revisão humana).",
     )
     parser.add_argument("--top-fila", type=int, default=10)
     parser.add_argument("--top-predito", type=int, default=5)

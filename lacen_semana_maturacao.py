@@ -87,14 +87,10 @@ def _parse_se(se: str) -> tuple[int, int] | None:
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    """Desloca SE respeitando anos ISO de 52/53 semanas."""
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, delta)
 
 
 def _iso_week(dt: datetime) -> tuple[int, int]:
@@ -269,6 +265,47 @@ def _completude_gal_micro(
     )
 
 
+def _completude_pendentes_weekly(
+    weekly: list[dict[str, str]], y: int, w: int
+) -> WeekCompleteness | None:
+    """Completude MEDIDA: exames da SE com resultado / exames da SE.
+
+    Usa as colunas ``pendentes`` (sem liberação nem resultado) e ``tests`` da
+    agregação v2 do GAL (``etl.resultado_gal``). Retorna None se a série não as
+    traz para a SE — aí valem os métodos antigos (microdado / proxy de volume).
+    """
+    tests = pend = 0.0
+    tem = False
+    for r in weekly:
+        try:
+            if int(float(r.get("epi_year") or 0)) != y or int(float(r.get("epi_week") or 0)) != w:
+                continue
+        except (TypeError, ValueError):
+            continue
+        mun = str(r.get("municipio") or "")
+        if not mun or mun.startswith("*"):
+            continue
+        p_ = _num(r.get("pendentes"))
+        if p_ is None:
+            continue
+        tem = True
+        tests += _num(r.get("tests")) or 0.0
+        pend += p_
+    if not tem or tests <= 0:
+        return None
+    pend = min(pend, tests)
+    return WeekCompleteness(
+        epi_year=y,
+        epi_week=w,
+        exames_elegiveis=int(tests),
+        exames_liberados=int(tests - pend),
+        exames_pendentes=int(pend),
+        completude_pct=100.0 * (tests - pend) / tests,
+        metodo="gal_pendentes_medido",
+        aviso="",
+    )
+
+
 def _completude_proxy_volume(
     weekly: list[dict[str, str]], y: int, w: int
 ) -> WeekCompleteness:
@@ -328,6 +365,9 @@ def estimar_completude(
     *,
     data_corte: datetime,
 ) -> WeekCompleteness:
+    medida = _completude_pendentes_weekly(weekly, y, w)
+    if medida is not None:
+        return medida
     gal = _completude_gal_micro(outdir, y, w, data_corte=data_corte)
     if gal is not None and gal.exames_elegiveis > 0:
         # Se só liberados no extract, complementar com proxy de volume
@@ -506,17 +546,32 @@ def fmt_completude_pct(pct: float | None) -> str:
     return f"{pct:.1f}%".replace(".", ",")
 
 
+def rotulo_completude(c: WeekCompleteness) -> str:
+    """Percentual + origem: medida (pendentes do GAL) × estimada (proxy de volume)."""
+    pct = fmt_completude_pct(c.completude_pct)
+    if pct == "—":
+        return pct
+    if "proxy" in (c.metodo or ""):
+        return f"{pct} (estimada por volume; pendentes não informados pela base)"
+    if c.metodo == "gal_pendentes_medido":
+        return f"{pct} (medida: exames com resultado / exames da semana)"
+    return pct
+
+
 def cabeçalho_maturacao_lines(ctx: WeekMaturityContext) -> list[str]:
     c = ctx.completude
     lines = [
         f"ALERTA ESTRATÉGICO — {_se_legivel(*ctx.semana_alerta_yw)}",
         f"Semana analisada: {_se_legivel(*ctx.semana_analisada_yw)}",
         f"Atualização / data de corte: {ctx.data_corte}",
-        f"Completude da semana analisada: {fmt_completude_pct(c.completude_pct)}",
-        f"Exames elegíveis: {c.exames_elegiveis} · "
-        f"Liberados: {c.exames_liberados} · "
-        f"Pendentes: {c.exames_pendentes}",
+        f"Completude da semana analisada: {rotulo_completude(c)}",
     ]
+    if "proxy" not in (c.metodo or ""):
+        lines.append(
+            f"Exames elegíveis: {c.exames_elegiveis} · "
+            f"Liberados: {c.exames_liberados} · "
+            f"Pendentes: {c.exames_pendentes}"
+        )
     if c.aviso:
         lines.append(f"Nota metodológica (completude): {c.aviso}")
     if ctx.preliminar:

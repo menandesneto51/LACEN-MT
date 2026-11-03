@@ -100,14 +100,10 @@ def _is_hepatite(target: str) -> bool:
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    """Desloca SE respeitando anos ISO de 52/53 semanas."""
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, delta)
 
 
 def _tendencia_seta(delta_pct: float | None, *, tol_pct: float = 5.0) -> str:
@@ -301,7 +297,7 @@ def _agg_counts_target_se(
     y0, w0 = se
     tgt = str(target or "").strip()
     mun_f = _norm_mun(municipio) if municipio else ""
-    exames = pos = notif = 0.0
+    exames = pos = notif = validos = 0.0
     for r in weekly:
         y = _num(r.get("epi_year"))
         w = _num(r.get("epi_week"))
@@ -314,10 +310,14 @@ def _agg_counts_target_se(
             continue
         if mun_f and mun != mun_f:
             continue
-        exames += _num(r.get("tests"), 0) or 0
+        ex_r = _num(r.get("tests"), 0) or 0
+        exames += ex_r
         pos += _num(r.get("positives"), 0) or 0
         notif += _num(r.get("notificacoes"), 0) or 0
-    return {"exames": exames, "positivos": pos, "notificacoes": notif}
+        den_r = _num(r.get("den_positividade"), None)
+        validos += den_r if den_r is not None else ex_r
+    # validos = denominador da positividade (positivos + negativos; antigo: exames)
+    return {"exames": exames, "positivos": pos, "notificacoes": notif, "validos": validos}
 
 
 def enriquecer_com_taxas_100k(

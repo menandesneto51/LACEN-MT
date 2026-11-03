@@ -50,12 +50,36 @@ def infer_target(agravo: object, exame: object = "") -> str:
     return blob[:80] if blob else "nao_classificado"
 
 
+CONTAGENS_RESULTADO = ("positives", "negatives", "indeterminados", "nao_classificados",
+                       "pendentes", "liberados")
+
+
+def _finalizar_positividade(pos: pd.DataFrame) -> pd.DataFrame:
+    """validos = positivos + negativos; positividade = positivos / validos."""
+    pos = pos.copy()
+    if "negatives" not in pos.columns:
+        pos["negatives"] = (pos["tests"] - pos["positives"]).clip(lower=0)
+        pos["validos"] = np.nan  # agregação antiga: sem contagem de negativos reais
+        pos["positivity"] = np.where(pos["tests"] > 0, pos["positives"] / pos["tests"], np.nan)
+        return pos
+    pos["validos"] = pos["positives"] + pos["negatives"]
+    pos["positivity"] = np.where(pos["validos"] > 0, pos["positives"] / pos["validos"], np.nan)
+    return pos
+
+
 def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Converte agregação SQL DW → weekly_tests + positivity."""
+    """Converte agregação SQL DW → weekly_tests + positivity.
+
+    Com a agregação v2 (``etl.resultado_gal``) traz positivos, negativos,
+    indeterminados, não classificados, pendentes e liberados; ``positivity`` usa
+    ``validos`` (positivos + negativos) como denominador. Agregações antigas
+    (só ``n_positivos_proxy``) continuam aceitas, com o denominador antigo.
+    """
     if agg is None or agg.empty:
         empty_t = pd.DataFrame(columns=["epi_year", "epi_week", "target", "municipio", "tests"])
         empty_p = pd.DataFrame(columns=[
-            "epi_year", "epi_week", "target", "municipio", "tests", "positives", "negatives", "positivity",
+            "epi_year", "epi_week", "target", "municipio", "tests", "positives", "negatives",
+            "validos", "positivity",
         ])
         return empty_t, empty_p
 
@@ -71,19 +95,22 @@ def weekly_from_dw_agg(agg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         for a, e in zip(df.get("agravo_raw", ""), df.get("exame_raw", ""))
     ]
     df["tests"] = pd.to_numeric(df.get("n_registros"), errors="coerce").fillna(0).astype(int)
-    df["positives"] = pd.to_numeric(df.get("n_positivos_proxy"), errors="coerce").fillna(0).astype(int)
+    pos_col = "n_positivos" if "n_positivos" in df.columns else "n_positivos_proxy"
+    df["positives"] = pd.to_numeric(df.get(pos_col), errors="coerce").fillna(0).astype(int)
+    v2 = "n_negativos" in df.columns
+    origem = {"negatives": "n_negativos", "indeterminados": "n_indeterminados",
+              "nao_classificados": "n_nao_classificados", "pendentes": "n_pendentes",
+              "liberados": "n_liberados"}
+    agg_spec = {"tests": ("tests", "sum"), "positives": ("positives", "sum")}
+    if v2:
+        for dst, src in origem.items():
+            df[dst] = pd.to_numeric(df.get(src), errors="coerce").fillna(0).astype(int)
+            agg_spec[dst] = (dst, "sum")
 
-    tests = (
-        df.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
-        .agg(tests=("tests", "sum"))
-    )
-    pos = (
-        df.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
-        .agg(tests=("tests", "sum"), positives=("positives", "sum"))
-    )
-    pos["negatives"] = (pos["tests"] - pos["positives"]).clip(lower=0)
-    pos["positivity"] = np.where(pos["tests"] > 0, pos["positives"] / pos["tests"], np.nan)
-    return tests, pos
+    keys = ["epi_year", "epi_week", "target", "municipio"]
+    tests = df.groupby(keys, as_index=False).agg(tests=("tests", "sum"))
+    pos = df.groupby(keys, as_index=False).agg(**agg_spec)
+    return tests, _finalizar_positividade(pos)
 
 
 def weekly_from_local_gal(
@@ -116,7 +143,11 @@ def weekly_from_local_gal(
     mun_col = pick("Municipio_Residencia_Paciente", "Municipio_Solicitante")
     agravo_col = pick("Agravo_Requisicao", "Agravo_Gal")
     exame_col = pick("Exame")
-    r1 = pick("Campo_Resultado_1")
+    from etl.resultado_gal import RESULT_FIELDS, classificar_exame, eh_liberado
+
+    campos = [c for c in RESULT_FIELDS if c in cols]
+    status_col = pick("Status_Exame")
+    lib_col = pick("Data_Liberacao_dt", "Data_Liberacao")
     if not date_col or not mun_col:
         raise ValueError(f"Colunas insuficientes em {gal_path.name}")
     if not gal_se_date_is_solicitacao(date_col):
@@ -127,7 +158,9 @@ def weekly_from_local_gal(
     else:
         print(f"[SE] weekly local ancorada em {date_col}", flush=True)
 
-    usecols = [c for c in (date_col, mun_col, agravo_col, exame_col, r1) if c]
+    usecols = list(dict.fromkeys(
+        c for c in (date_col, mun_col, agravo_col, exame_col, status_col, lib_col, *campos) if c
+    ))
     parts = []
     for chunk in pd.read_csv(
         gal_path, usecols=usecols, encoding="latin1",
@@ -146,15 +179,24 @@ def weekly_from_local_gal(
         agr = chunk[agravo_col] if agravo_col else ""
         ex = chunk[exame_col] if exame_col else ""
         chunk["target"] = [infer_target(a, e) for a, e in zip(agr, ex)]
-        if r1:
-            blob = chunk[r1].astype(str).str.casefold()
-            chunk["positives"] = blob.str.contains("positiv", na=False).astype(int)
-        else:
-            chunk["positives"] = 0
+        st = chunk[status_col] if status_col else pd.Series("", index=chunk.index)
+        dl = chunk[lib_col] if lib_col else pd.Series(None, index=chunk.index)
+        vals = chunk[campos].to_numpy(dtype=object) if campos else np.empty((len(chunk), 0))
+        classe = [
+            classificar_exame(row, liberado=eh_liberado(s_, d_))
+            for row, s_, d_ in zip(vals, st, dl)
+        ]
+        cl = pd.Series(classe, index=chunk.index)
+        chunk["positives"] = (cl == "positivo").astype(int)
+        chunk["negatives"] = (cl == "negativo").astype(int)
+        chunk["indeterminados"] = (cl == "indeterminado").astype(int)
+        chunk["nao_classificados"] = (cl == "nao_classificado").astype(int)
+        chunk["pendentes"] = (cl == "pendente").astype(int)
+        chunk["liberados"] = [int(eh_liberado(s_, d_)) for s_, d_ in zip(st, dl)]
         chunk["tests"] = 1
         g = chunk.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False).agg(
             tests=("tests", "sum"),
-            positives=("positives", "sum"),
+            **{c: (c, "sum") for c in CONTAGENS_RESULTADO},
         )
         parts.append(g)
 
@@ -168,10 +210,9 @@ def weekly_from_local_gal(
     allp = pd.concat(parts, ignore_index=True)
     pos = (
         allp.groupby(["epi_year", "epi_week", "target", "municipio"], as_index=False)
-        .agg(tests=("tests", "sum"), positives=("positives", "sum"))
+        .agg(tests=("tests", "sum"), **{c: (c, "sum") for c in CONTAGENS_RESULTADO})
     )
-    pos["negatives"] = (pos["tests"] - pos["positives"]).clip(lower=0)
-    pos["positivity"] = np.where(pos["tests"] > 0, pos["positives"] / pos["tests"], np.nan)
+    pos = _finalizar_positividade(pos)
     tests = pos[["epi_year", "epi_week", "target", "municipio", "tests"]].copy()
     return tests, pos
 

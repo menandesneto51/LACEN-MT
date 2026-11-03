@@ -138,6 +138,15 @@ def fmt_pct_br(frac_or_pct: float | None, *, as_frac: bool = False) -> str:
     return f"{s}%"
 
 
+def _dias_label(val: Any) -> str:
+    """'dia' só para valor ≤ 1 (ex.: '1 dia', '10,6 dias')."""
+    try:
+        v = float(str(val).replace(",", "."))
+    except (TypeError, ValueError):
+        return "dias"
+    return "dia" if v <= 1 else "dias"
+
+
 def plural_exame(n: int) -> str:
     return "exame" if n == 1 else "exames"
 
@@ -211,6 +220,10 @@ class SignalFact:
     internacao_semana_ref: str | None = None
     indicasus_score: float | None = None
     contexto_aviso: str = ""
+    # Portão de validação (lacen_validacao_sinais)
+    p_valor: float | None = None
+    excesso: float | None = None
+    validacao: Any = None
 
     @property
     def diferenca_absoluta(self) -> int:
@@ -335,6 +348,112 @@ def _interp_lacuna(s: SignalFact) -> str:
     )
 
 
+def cobertura_sinan_semana(
+    weekly: list[dict[str, str]], se: tuple[int, int] | None
+) -> dict[str, Any]:
+    """Notificações SINAN integradas na SE (estado) + última SE com notificação.
+
+    Sem notificações na SE analisada, a ausência de pareamento GAL×SINAN é
+    artefato de carga (SINAN não integrado), não lacuna de vigilância.
+    """
+    tot = 0.0
+    ultima: tuple[int, int] | None = None
+    for r in weekly or []:
+        try:
+            n = float(r.get("notificacoes") or 0)
+            y, w = int(float(r.get("epi_year") or 0)), int(float(r.get("epi_week") or 0))
+        except (TypeError, ValueError):
+            continue
+        if n <= 0:
+            continue
+        if se and (y, w) == tuple(se):
+            tot += n
+        if ultima is None or (y, w) > ultima:
+            ultima = (y, w)
+    return {
+        "notificacoes_semana": tot,
+        "ultima_se_com_notificacao": ultima,
+        "sem_cobertura": bool(se) and tot <= 0,
+    }
+
+
+def _candidatos_imediatos(
+    wk: list[dict[str, str]],
+    se: tuple[int, int] | None,
+    se_ant: tuple[int, int] | None,
+    seen: set[str],
+) -> list[SignalFact]:
+    from lacen_relatorio_cievs import _eh_municipio_mt
+    from lacen_validacao_sinais import classe_alvo
+
+    if not se or not wk:
+        return []
+    cur: dict[tuple[str, str], list[float]] = {}
+    ant: dict[tuple[str, str], list[float]] = {}
+    for r in wk:
+        try:
+            yw = (int(float(r.get("epi_year") or 0)), int(float(r.get("epi_week") or 0)))
+        except (TypeError, ValueError):
+            continue
+        if yw != tuple(se) and (not se_ant or yw != tuple(se_ant)):
+            continue
+        tgt = str(r.get("target") or "").strip()
+        if classe_alvo(tgt) != "imediata":
+            continue
+        mun_raw = str(r.get("municipio") or "")
+        if not _eh_municipio_mt(mun_raw):
+            continue
+        key = (mun_raw, tgt)
+        bucket = cur if yw == tuple(se) else ant
+        acc = bucket.setdefault(key, [0.0, 0.0])
+        acc[0] += float(r.get("tests") or 0)
+        acc[1] += float(r.get("positives") or 0)
+    out: list[SignalFact] = []
+    for (mun_raw, tgt), (ex, pos) in cur.items():
+        if pos < 1:
+            continue
+        mk = _norm_mun(mun_raw)
+        sid = f"{mk}|{tgt}|positividade|{tuple(se)}"
+        if sid in seen:
+            continue
+        seen.add(sid)
+        ex_a, pos_a = ant.get((mun_raw, tgt), [0.0, 0.0])
+        ex_i, pos_i = int(ex), int(pos)
+        f = SignalFact(
+            signal_id=sid,
+            municipio=mun_oficial(mun_raw),
+            municipio_key=mk,
+            codigo_ibge="",
+            agravo=agravo_legivel(tgt),
+            agravo_raw=tgt,
+            marcador=agravo_legivel(tgt),
+            tipo_sinal="positividade",
+            atual_exames=ex_i,
+            atual_positivos=pos_i,
+            anterior_exames=int(ex_a),
+            anterior_positivos=int(pos_a),
+            referencia=None,
+            positividade=100.0 * pos_i / ex_i if ex_i else None,
+            severidade_estatistica="alta",
+            robustez_amostral=_robustez(ex_i, pos_i, "positividade"),
+            persistencia="—",
+            prioridade_epidemiologica="CRITICA",
+            notificacoes_pareadas=None,
+            interpretacao=(
+                f"{pos_i} {plural_positivo(pos_i)} para agravo de notificação imediata. "
+                "Confirmar o resultado no GAL e a notificação no SINAN em até 24 horas; "
+                "um positivo isolado não caracteriza surto."
+            ),
+            recomendacao="",
+            score=10.0,
+        )
+        f.acao = "INVESTIGAR"
+        f.prazo = "24h"
+        f.recomendacao = f"INVESTIGAR (24h) — {f.municipio} · {f.agravo}"
+        out.append(f)
+    return out
+
+
 def coletar_signal_facts(
     rel: Any,
     *,
@@ -356,6 +475,8 @@ def coletar_signal_facts(
     parsed = se_analisada or _parse_se(rel.semana_epidemiologica)
     se_ant = _shift_se(parsed[0], parsed[1], -1) if parsed else None
 
+    validos_cache: dict[tuple[str, str], int] = {}
+
     def _counts(mun: str, tgt: str) -> tuple[int, int, int, int]:
         if not parsed or not wk:
             return 0, 0, 0, 0
@@ -365,6 +486,7 @@ def coletar_signal_facts(
             if se_ant
             else {"exames": 0, "positivos": 0}
         )
+        validos_cache[(mun, tgt)] = int(float(cur.get("validos") or cur.get("exames") or 0))
         return (
             int(float(cur.get("exames") or 0)),
             int(float(cur.get("positivos") or 0)),
@@ -423,8 +545,9 @@ def coletar_signal_facts(
         pos_pct: float | None = None
         rob = _robustez(ex_c, pos_c, metric if metric == "positividade" else "tests")
         if tipo == "positividade":
-            if ex_c > 0:
-                pos_pct = 100.0 * pos_c / ex_c
+            val_c = validos_cache.get((mun_raw, tgt), ex_c)
+            if val_c > 0:
+                pos_pct = 100.0 * pos_c / val_c
             else:
                 try:
                     v = float(r.get("valor_atual") or 0)
@@ -484,6 +607,18 @@ def coletar_signal_facts(
             recomendacao="",
             score=score,
         )
+        try:
+            fact.p_valor = float(r["p_valor"]) if r.get("p_valor") not in (None, "") else None
+        except (TypeError, ValueError):
+            fact.p_valor = None
+        try:
+            fact.excesso = (
+                float(r["excesso_absoluto"])
+                if tipo == "volume" and r.get("excesso_absoluto") not in (None, "")
+                else None
+            )
+        except (TypeError, ValueError):
+            fact.excesso = None
         fact.interpretacao = (
             _interp_pos(fact) if tipo == "positividade" else _interp_volume(fact)
         )
@@ -491,8 +626,14 @@ def coletar_signal_facts(
         fact.recomendacao = f"{fact.acao} — {fact.municipio} · {fact.agravo}"
         facts.append(fact)
 
-    # Lacunas lab × notificação
-    for g in rel.briefing_gal_sinan or []:
+    # Agravo de notificação imediata com ≥1 positivo: candidato direto das
+    # contagens semanais (a detecção de anomalias exige excesso ≥3 / ≥2 positivos
+    # e perderia um positivo isolado de raiva, sarampo etc.).
+    facts.extend(_candidatos_imediatos(wk, parsed, se_ant, seen))
+
+    # Lacunas lab × notificação — só se o SINAN cobre a SE analisada.
+    cob = cobertura_sinan_semana(wk, parsed)
+    for g in ([] if cob["sem_cobertura"] else (rel.briefing_gal_sinan or [])):
         mun_raw = str(g.get("municipio") or "")
         if not _eh_municipio_mt(mun_raw):
             continue
@@ -562,10 +703,11 @@ def selecionar_sinais_alerta(
         if f.tipo_sinal in {"volume", "positividade", "incidencia"}
         and f.prioridade_epidemiologica in {"ALTA", "MODERADA", "CRITICA"}
     ]
-    # Preferir ALTA; completar com MODERADA
+    # Ordem: CRÍTICA → ALTA → MODERADA (antes, CRÍTICA era descartada aqui).
+    criticas = [f for f in vols_pos if f.prioridade_epidemiologica == "CRITICA"]
     altas = [f for f in vols_pos if f.prioridade_epidemiologica == "ALTA"]
     mods = [f for f in vols_pos if f.prioridade_epidemiologica == "MODERADA"]
-    chosen = (altas + mods)[:max_n]
+    chosen = (criticas + altas + mods)[:max_n]
     lacunas = [
         f
         for f in facts
@@ -580,6 +722,10 @@ def selecionar_sinais_alerta(
 # ---------------------------------------------------------------------------
 # Blocos narrativos
 # ---------------------------------------------------------------------------
+
+def _prio_label(prio: str) -> str:
+    return {"CRITICA": "CRÍTICA"}.get(prio, prio)
+
 
 def _tipo_label(tipo: str) -> str:
     return {
@@ -613,7 +759,7 @@ def _linhas_contexto_linkage(s: SignalFact) -> list[str]:
 def formatar_sinal_bloco(s: SignalFact) -> list[str]:
     lines = [
         f"{s.municipio} · {s.agravo}",
-        f"{_tipo_label(s.tipo_sinal)} | PRIORIDADE {s.prioridade_epidemiologica}",
+        f"{_tipo_label(s.tipo_sinal)} | PRIORIDADE {_prio_label(s.prioridade_epidemiologica)}",
     ]
     if s.tipo_sinal == "positividade":
         pct = fmt_pct_br(s.positividade) if s.positividade is not None else "—"
@@ -651,8 +797,29 @@ def formatar_sinal_bloco(s: SignalFact) -> list[str]:
         lines.append(f"Robustez amostral: {s.robustez_amostral}")
     lines.extend(_linhas_contexto_linkage(s))
     lines.append(f"Interpretação: {s.interpretacao}")
+    if s.validacao is not None:
+        lines.append(f"Validação: {s.validacao.resumo()}")
     lines.append(f"Ação: {s.acao}")
     return lines
+
+
+def _linha_triagem(resumo: dict[str, Any], ctx: Any) -> str:
+    c = resumo.get("contagem", {})
+    mot = list((resumo.get("motivos") or {}).items())[:3]
+    txt = (
+        f"Triagem de sinais: {c.get('VALIDADO', 0)} validado(s) para o alerta · "
+        f"{c.get('EM_OBSERVACAO', 0)} em observação no painel · "
+        f"{c.get('DESCARTADO', 0)} descartado(s)"
+    )
+    if mot:
+        txt += " (principais motivos: " + "; ".join(f"{k}: {v}" for k, v in mot) + ")"
+    txt += "."
+    if ctx is not None and not ctx.positividade_valida:
+        txt += (
+            " Positividade não usada como critério nesta edição "
+            "(classificação de resultado GAL em revisão)."
+        )
+    return txt
 
 
 def sintese_executiva(
@@ -681,13 +848,20 @@ def sintese_executiva(
         if s.agravo not in agravos:
             agravos.append(s.agravo)
     agr_txt = ", ".join(agravos[:4]) if agravos else "agravos monitorados"
+    if not sinais and not lacunas:
+        return (
+            f"Na semana analisada ({se_lbl}), nenhum sinal laboratorial atendeu aos "
+            f"critérios de validação (qualidade do dado, significância, magnitude e "
+            f"corroboração). Os sinais em observação permanecem no Painel Radar LACEN."
+        )
+    n_terr = len({s.municipio for s in sinais + lacunas})
+    disp = "concentrados em" if n_terr <= 2 else "distribuídos entre"
     return (
-        f"A semana analisada ({se_lbl}) apresenta dispersão territorial de sinais "
-        f"laboratoriais, com predominância de anomalias relacionadas a {tipo_txt}. "
-        f"Não foi identificada evidência laboratorial suficiente para caracterizar "
-        f"aumento disseminado da positividade nos principais agravos destacados. "
-        f"Os sinais de maior prioridade concentram-se em {agr_txt} "
-        f"({terr}), exigindo validação junto às vigilâncias municipais e Regionais."
+        f"Na semana analisada ({se_lbl}), {len(sinais) + len(lacunas)} sinal(is) "
+        f"validado(s) de {tipo_txt}, {disp} {terr}. "
+        f"Agravos envolvidos: {agr_txt}. "
+        f"Os sinais validados exigem confirmação junto às vigilâncias municipais e "
+        f"Regionais; anomalia estatística não equivale a surto."
     )
 
 
@@ -698,127 +872,95 @@ def _se_secretario_legivel_local(se: str) -> str:
     return str(se or "—")
 
 
-def destaque_juina(rel: Any, facts: list[SignalFact]) -> list[str] | None:
-    from lacen_relatorio_cievs import (
-        _carregar_weekly_alerta,
-        _parse_se,
-        resumo_serie_historica,
-    )
+def destaque_juina(
+    rel: Any,
+    facts: list[SignalFact],
+    *,
+    se_analisada: tuple[int, int] | None = None,
+) -> list[str] | None:
+    """Destaque territorial de Juína construído **só** com sinais validados.
 
-    juina_facts = [
-        f for f in facts if f.municipio_key == "JUINA" or "JUINA" in f.municipio_key
-    ]
-    # Sempre considerar se há volume HBV alto
-    wk = _carregar_weekly_alerta()
-    parsed = _parse_se(rel.semana_epidemiologica)
-    if not parsed or not wk:
-        return None
-    got = resumo_serie_historica(wk, parsed, "hepatite_b_hbv", municipio="JUINA")
-    ex = int(float(got.get("exames_atual") or 0))
-    pos = int(float(got.get("positivos_atual") or 0))
-    if ex < 20 and not juina_facts:
+    ``facts`` deve conter apenas sinais aprovados pelo portão de validação.
+    Nada é recarregado de contagens brutas, anomalias ou do cruzamento
+    GAL×SINAN: o que não foi validado não aparece aqui (fica no painel).
+    """
+    juina = [f for f in facts if "JUINA" in (f.municipio_key or "")]
+    if not juina:
         return None
 
-    se_ant = _shift_se(parsed[0], parsed[1], -1)
-    ant = _agg_counts_target_se(wk, se_ant, "hepatite_b_hbv", municipio="JUINA")
-    ex_a = int(float(ant.get("exames") or 0))
-    delta = ex - ex_a
+    def _grupo(*chaves: str) -> list[SignalFact]:
+        return [
+            f for f in juina
+            if any(k in (f.agravo_raw or "").casefold() for k in chaves)
+        ]
 
-    lines = [
-        "DESTAQUE TERRITORIAL — Juína",
-        "",
-        "Hepatite B (marcador de alerta agudo):",
-        f"{fmt_num_br(ex)} {plural_exame(ex)}",
-        f"{fmt_num_br(pos)} {plural_positivo(pos)} no marcador de alerta agudo",
-        f"SE anterior: {fmt_num_br(ex_a)} {plural_exame(ex_a)}",
-        f"Diferença: {delta:+d} {plural_exame(abs(delta))}",
-        "",
-        "Interpretação:",
-        "Aumento importante da demanda laboratorial sem aumento da positividade "
-        "no marcador agudo; padrão compatível com expansão de rastreio ou mudança "
-        "de demanda, a confirmar.",
-        "",
-        "Ação: ACOMPANHAR + validar linkage. Manter Juína em acompanhamento no Radar; "
-        "revisar finalidade da testagem, marcadores, série histórica e linkage com "
-        "SINAN. Escalonar para investigação de surto somente se surgirem evidências "
-        "epidemiológicas ou laboratoriais compatíveis.",
-    ]
-    hcv = [f for f in juina_facts if "hepatite c" in f.agravo.casefold()]
-    if not hcv:
-        # Incluir HCV mesmo com volume pequeno (destaque territorial)
-        got_c = resumo_serie_historica(wk, parsed, "hepatite_c_hcv", municipio="JUINA")
-        ex_c = int(float(got_c.get("exames_atual") or 0))
-        pos_c = int(float(got_c.get("positivos_atual") or 0))
-        if ex_c > 0:
-            lines.extend([
-                "",
-                "Hepatite C:",
-                f"{fmt_num_br(ex_c)} {plural_exame(ex_c)}, "
-                f"{fmt_num_br(pos_c)} {plural_positivo(pos_c)} — "
-                f"anomalia moderada de volume (detalhe no painel).",
-            ])
-    else:
-        h = hcv[0]
+    hbv = [f for f in _grupo("hepatite_b") if f.tipo_sinal != "lacuna"]
+    hcv = [f for f in _grupo("hepatite_c") if f.tipo_sinal != "lacuna"]
+    diarr = _grupo("diarr", "gastroenterite", "rotav")
+    lac = [f for f in juina if f.tipo_sinal == "lacuna"]
+    if not (hbv or hcv or diarr or lac):
+        return None
+
+    lines = ["DESTAQUE TERRITORIAL — Juína"]
+
+    def _bloco_volume(titulo: str, f: SignalFact) -> None:
+        delta = f.atual_exames - f.anterior_exames
         lines.extend([
             "",
-            "Hepatite C:",
-            f"{fmt_num_br(h.atual_exames)} {plural_exame(h.atual_exames)}, "
-            f"{fmt_num_br(h.atual_positivos)} {plural_positivo(h.atual_positivos)} — "
-            f"anomalia {h.severidade_estatistica} de volume.",
+            f"{titulo}:",
+            f"{fmt_num_br(f.atual_exames)} {plural_exame(f.atual_exames)} na semana analisada"
+            + (
+                f" (base recente: {fmt_num_br(f.referencia, 1)})"
+                if f.referencia is not None
+                else ""
+            ),
+            f"SE anterior: {fmt_num_br(f.anterior_exames)} "
+            f"{plural_exame(f.anterior_exames)} (diferença: {delta:+d})",
+            f"{fmt_num_br(f.atual_positivos)} {plural_positivo(f.atual_positivos)}",
         ])
-    diarr = [
-        f
-        for f in juina_facts
-        if "diarreic" in f.agravo.casefold() or "gastroenterite" in f.agravo.casefold()
-    ]
-    if not diarr:
-        from lacen_relatorio_cievs import _carregar_anomalias_se
-
-        raw = _carregar_anomalias_se(rel)
-        diarr = [
-            r
-            for r in raw
-            if "JUINA" in str(r.get("municipio") or "").upper()
-            and any(
-                k in str(r.get("target") or "").casefold()
-                for k in ("diarr", "gastroenterite", "rotav")
+        if f.validacao is not None:
+            lines.append(f"Validação: {f.validacao.resumo()}")
+        acima = f.referencia is not None and f.atual_exames > f.referencia
+        if f.atual_positivos == 0:
+            interp = (
+                ("Demanda laboratorial acima da base recente" if acima else "Demanda laboratorial")
+                + " sem resultado positivo nesta rodada; compatível com rastreio, "
+                "seguimento ou mudança de demanda, a confirmar."
             )
-        ]
+        else:
+            interp = (
+                ("Demanda acima da base recente" if acima else "Demanda")
+                + f" com {f.atual_positivos} {plural_positivo(f.atual_positivos)}; "
+                "conferir marcador (agudo × seguimento) antes de classificar evento."
+            )
+        lines.append(f"Interpretação: {interp}")
+
+    if hbv:
+        _bloco_volume("Hepatite B", hbv[0])
+    if hcv:
+        _bloco_volume("Hepatite C", hcv[0])
     if diarr:
+        d = diarr[0]
         lines.extend([
             "",
             "Doenças diarreicas:",
-            "Aumento moderado de solicitações em procedimentos relacionados a "
-            "doenças diarreicas (agrupados; detalhe no painel).",
+            f"{fmt_num_br(d.atual_exames)} {plural_exame(d.atual_exames)} — sinal validado "
+            "de volume (procedimentos agrupados; detalhe no painel).",
         ])
-    # Lacuna HBV
-    for g in rel.briefing_gal_sinan or []:
-        if "JUINA" not in str(g.get("municipio") or "").upper():
-            continue
-        if "hepatite_b" not in str(g.get("target") or "").casefold():
-            continue
-        try:
-            ex_g = int(float(g.get("exames") or 0))
-            nf = int(float(g.get("notificacoes") or 0))
-        except (TypeError, ValueError):
-            continue
-        if ex_g >= 10 and nf == 0:
-            lines.extend([
-                "",
-                "Lacuna laboratório × notificação:",
-                f"{fmt_num_br(ex_g)} {plural_exame(ex_g)} sem correspondência identificada "
-                f"com notificação no cruzamento disponível.",
-            ])
-            if ex != ex_g and ex > 0:
-                lines.append(
-                    f"Nota de escopo: {fmt_num_br(ex)} correspondem ao marcador de alerta "
-                    f"agudo; {fmt_num_br(ex_g)} ao universo usado no linkage "
-                    f"(DENOMINATOR_SCOPE — universos distintos)."
-                )
-            lines.append(
-                "Não assume subnotificação automaticamente — requer validação nominal."
-            )
-        break
+    for g in lac[:1]:
+        lines.extend([
+            "",
+            "Lacuna laboratório × notificação:",
+            f"{fmt_num_br(g.atual_exames)} {plural_exame(g.atual_exames)} ({g.agravo}) "
+            "sem correspondência identificada com notificação no cruzamento disponível.",
+            "Não assume subnotificação automaticamente — requer validação nominal.",
+        ])
+    lines.extend([
+        "",
+        "Ação: ACOMPANHAR no Radar; revisar finalidade da testagem, marcadores e "
+        "linkage com o SINAN. Escalonar para investigação de surto somente se "
+        "surgirem evidências epidemiológicas ou laboratoriais compatíveis.",
+    ])
     return lines
 
 
@@ -875,7 +1017,7 @@ def kpis_estrategicos(
         ("MUNICÍPIOS COM EXAMES", mun_s),
         (
             "TEMPO MEDIANO DE LIBERAÇÃO",
-            f"{rel.kpi_tat_p50} dia" if rel.kpi_tat_p50 not in (None, "—", "") else "—",
+            f"{rel.kpi_tat_p50} {_dias_label(rel.kpi_tat_p50)}" if rel.kpi_tat_p50 not in (None, "—", "") else "—",
         ),
         ("LIBERAÇÕES EM ATÉ 48 H", str(rel.kpi_pct_48h or "—")),
         (
@@ -884,7 +1026,7 @@ def kpis_estrategicos(
             if rel.kpi_silencios not in (None, "—", "")
             else "—",
         ),
-        ("CONFIRMAÇÃO DE SINAIS ANTERIORES", str(rel.kpi_confirmacao or "—")),
+        ("PERSISTÊNCIA DE SINAIS ANTERIORES", str(rel.kpi_confirmacao or "—")),
     ]
 
 
@@ -898,6 +1040,20 @@ def encaminhamentos(sinais: list[SignalFact], lacunas: list[SignalFact]) -> list
         f"{s.municipio} · {s.agravo} — investigar linkage"
         for s in lacunas[:4]
     ]
+    if not sinais and not lacunas:
+        # Sem sinal validado: nada a investigar em município; só rotina e dados.
+        return [
+            "ENCAMINHAMENTOS",
+            "",
+            "CIEVS / VE estadual:",
+            "- Sem sinal validado nesta edição: manter monitoramento de rotina no "
+            "Painel Radar LACEN (sinais em observação).",
+            "- Nenhum acionamento municipal decorrente deste alerta.",
+            "",
+            "LACEN / gestão de dados:",
+            "- Tratar pendências de qualidade apontadas na triagem e no QA antes da "
+            "próxima edição.",
+        ]
     lines = [
         "ENCAMINHAMENTOS EM 48 HORAS",
         "",
@@ -935,8 +1091,9 @@ _NOTA_INTERPRETACAO = (
     "contexto epidemiológico. "
     "Silêncio laboratorial: municípios com queda abrupta de exames GAL frente ao "
     "histórico/vizinhos (não equivale automaticamente a ausência de transmissão). "
-    "Confirmação de sinais anteriores: proporção de alertas da rodada prévia "
-    "corroborados por desfecho nas 1–2 semanas seguintes (artefato de confirmação)."
+    "Persistência de sinais anteriores: proporção de alertas da rodada prévia em que "
+    "o mesmo indicador continuou alterado nas 1–2 semanas seguintes; não é confirmação "
+    "epidemiológica, que depende do retorno da Vigilância Epidemiológica."
 )
 
 _PEDIDO_MUNICIPIOS = [
@@ -963,9 +1120,57 @@ def qa_alerta_estrategico(
     sinais: list[SignalFact],
     *,
     maturacao_qa: dict[str, str] | None = None,
+    cobertura_sinan: dict[str, Any] | None = None,
+    contexto_validacao: Any = None,
 ) -> QaResult:
     items: dict[str, str] = {}
     critical_fail = False
+
+    # Só sinais VALIDADOS podem ser publicados (portão lacen_validacao_sinais).
+    nao_val = [
+        s for s in sinais
+        if s.validacao is not None and not s.validacao.publicar
+    ]
+    sem_val = [s for s in sinais if s.validacao is None and s.tipo_sinal != "lacuna"]
+    if nao_val:
+        items["SINAIS_VALIDADOS"] = f"FALHA ({len(nao_val)} sinal(is) não validado(s) publicado(s))"
+        critical_fail = True
+    elif sem_val and contexto_validacao is not None:
+        items["SINAIS_VALIDADOS"] = f"FALHA ({len(sem_val)} sinal(is) sem triagem)"
+        critical_fail = True
+    else:
+        items["SINAIS_VALIDADOS"] = "OK"
+    if contexto_validacao is not None and not contexto_validacao.carga_ok:
+        items["CARGA_SE"] = "ATENÇÃO (carga suspeita — sinais de volume descartados)"
+    elif contexto_validacao is not None:
+        items["CARGA_SE"] = "OK"
+
+    # Cobertura SINAN na SE analisada (sem ela, lacunas GAL×SINAN são artefato).
+    if cobertura_sinan is not None:
+        if cobertura_sinan.get("sem_cobertura"):
+            lac = [s for s in sinais if s.tipo_sinal == "lacuna"]
+            items["SINAN_COBERTURA"] = (
+                "FALHA (lacunas publicadas sem SINAN na SE)"
+                if lac
+                else "ATENÇÃO (SINAN sem notificações na SE — lacunas suprimidas)"
+            )
+            if lac:
+                critical_fail = True
+        else:
+            items["SINAN_COBERTURA"] = "OK"
+
+    # Plausibilidade da positividade estadual (classificador de resultado GAL).
+    m_pos = re.search(
+        r"Positividade estadual da semana analisada: [\d,]+% \((\d+)/(\d+)\)", text
+    )
+    if m_pos:
+        k, n = int(m_pos.group(1)), int(m_pos.group(2))
+        if n >= 500 and k / n < 0.02:
+            items["POSITIVIDADE_PLAUSIVEL"] = (
+                f"ATENÇÃO ({k}/{n}: verificar classificação de resultado GAL)"
+            )
+        else:
+            items["POSITIVIDADE_PLAUSIVEL"] = "OK"
 
     # Encoding / corrupção
     bad = re.findall(
@@ -1000,16 +1205,60 @@ def qa_alerta_estrategico(
     )
     items["Municípios/IBGE"] = "FALHA" if bad_mun else "OK"
 
-    items["Severidade estatística"] = "OK"
-    items["Robustez amostral"] = "OK" if all(s.robustez_amostral for s in sinais) else "FALHA"
-    items["Prioridade epidemiológica"] = "OK"
-    items["Volume × positividade separados"] = "OK"
-    items["Linkage × notificação"] = "OK"
-    items["Silêncio laboratorial"] = "OK"
-    items["Confirmação de sinais anteriores"] = "OK"
+    # Checagens reais (antes vários itens eram fixados em "OK" sem verificação).
+    sev_ok = all(
+        (s.severidade_estatistica or "").casefold() in {"alta", "moderada", "baixa"}
+        for s in sinais
+    )
+    items["Severidade estatística"] = "OK" if sev_ok else "FALHA"
+    items["Robustez amostral"] = (
+        "OK"
+        if all(s.robustez_amostral in {"alta", "moderada", "baixa"} for s in sinais)
+        else "FALHA"
+    )
+    prio_ok = all(
+        s.prioridade_epidemiologica in {"ACOMPANHAMENTO", "MODERADA", "ALTA", "CRITICA"}
+        for s in sinais
+    )
+    items["Prioridade epidemiológica"] = "OK" if prio_ok else "FALHA"
+    # Sinal de positividade precisa de positividade e denominador; volume não.
+    sep_ok = all(
+        (s.positividade is not None and s.atual_exames > 0)
+        for s in sinais
+        if s.tipo_sinal == "positividade"
+    )
+    items["Volume × positividade separados"] = "OK" if sep_ok else "FALHA"
+    # Linkage: não afirmar subnotificação a partir de ausência de pareamento.
+    afirma_subnotif = bool(
+        re.search(
+            r"\b(há|houve|indica|confirma\w*|evidencia\w*|evidência de)\s+subnotifica",
+            text,
+            flags=re.I,
+        )
+    )
+    items["Linkage × notificação"] = "FALHA" if afirma_subnotif else "OK"
+    items["Silêncio laboratorial"] = (
+        "OK" if re.search(r"SIL[ÊE]NCIO LABORATORIAL", text) else "ATENÇÃO (ausente)"
+    )
+    items["Persistência de sinais anteriores"] = (
+        "OK"
+        if re.search(r"PERSISTÊNCIA DE SINAIS ANTERIORES: (—|\d+ de \d+)", text)
+        else "ATENÇÃO (sem numerador/denominador)"
+    )
+    # Linguagem: não converter anomalia em surto (spec §33–40).
+    surto = bool(
+        re.search(r"poss[íi]vel (surto|epidemia|emerg[êe]ncia)", text, flags=re.I)
+    )
+    items["Linguagem anomalia ≠ surto"] = "FALHA" if surto else "OK"
+    if surto:
+        critical_fail = True
 
-    # Redundância: mesmo signal_id não deve aparecer >2 vezes
-    items["Redundância"] = "OK"
+    # Redundância: mesmo signal_id não pode aparecer duas vezes no alerta.
+    ids = [s.signal_id for s in sinais]
+    dup = len(ids) - len(set(ids))
+    items["Redundância"] = "OK" if dup == 0 else f"FALHA ({dup} sinal(is) repetido(s))"
+    if dup:
+        critical_fail = True
 
     # QA temporal (maturação SE)
     mq = maturacao_qa or {}
@@ -1115,8 +1364,44 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         se_analisada=mat.semana_analisada_yw,
         bloquear_positividade=bloquear_pos,
     )
-    sinais, lacunas, n_outros = selecionar_sinais_alerta(facts, max_n=6)
-    juina_lines = destaque_juina(rel, facts)
+    # Portão de validação: só sinais VALIDADOS seguem para o alerta.
+    import lacen_validacao_sinais as vs
+    from lacen_relatorio_cievs import _read_csv as _rcsv
+
+    ctx_val = vs.montar_contexto(
+        se=mat.semana_analisada_yw,
+        weekly=weekly,
+        anomalias=_rcsv(OUTDIR_ALERTA / "ml_anomalias.csv"),
+        vizinhos=_rcsv(OUTDIR_ALERTA / "municipio_vizinhos.csv"),
+        norm_mun=_norm_mun,
+    )
+    facts_validos, triagem = vs.triar(facts, ctx_val)
+    triagem_resumo = vs.resumo_triagem(triagem)
+    try:
+        vs.exportar_triagem(OUTDIR_ALERTA / "alerta_triagem_sinais.csv", triagem)
+    except OSError:
+        pass
+    sinais, lacunas, n_outros = selecionar_sinais_alerta(facts_validos, max_n=6)
+    n_outros = len(facts) - len(sinais) - len(lacunas)
+    triagem_txt = _linha_triagem(triagem_resumo, ctx_val)
+    from lacen_relatorio_cievs import _carregar_weekly_alerta
+
+    cob_sinan = cobertura_sinan_semana(
+        _carregar_weekly_alerta(), mat.semana_analisada_yw
+    )
+    _ult = cob_sinan["ultima_se_com_notificacao"]
+    nota_sem_sinan = (
+        "Cruzamento não avaliado nesta edição: a base SINAN integrada não tem "
+        "notificações na semana analisada"
+        + (f" (última SE com notificação: {_ult[1]:02d}/{_ult[0]})" if _ult else "")
+        + ". Ausência de pareamento não deve ser lida como lacuna de vigilância."
+    )
+    # Destaque territorial só com sinal validado no município.
+    juina_lines = (
+        destaque_juina(rel, facts_validos, se_analisada=mat.semana_analisada_yw)
+        if any("JUINA" in f.municipio_key for f in facts_validos)
+        else None
+    )
     if juina_lines:
         sinais = [s for s in sinais if s.municipio_key != "JUINA"]
 
@@ -1124,7 +1409,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         rel, weekly=weekly, se_analisada_yw=mat.semana_analisada_yw
     )
     comp = mat.completude
-    completude_txt = fmt_completude_pct(comp.completude_pct)
+    from lacen_semana_maturacao import rotulo_completude
+
+    completude_txt = rotulo_completude(comp)
+    # Com proxy de volume, "pendentes = 0" não é medida: não publicar a contagem.
+    completude_proxy = "proxy" in (comp.metodo or "")
     adv = build_advanced_metrics(
         outdir=OUTDIR_ALERTA,
         se_analisada=mat.semana_analisada_yw,
@@ -1155,11 +1444,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         f"Semana analisada: {se_analisada}",
         f"Atualização / data de corte: {atualizacao}",
         f"Completude da semana analisada: {completude_txt}",
-        (
+        *([] if completude_proxy else [
             f"Exames elegíveis: {fmt_num_br(comp.exames_elegiveis)} · "
             f"Liberados: {fmt_num_br(comp.exames_liberados)} · "
             f"Pendentes: {fmt_num_br(comp.exames_pendentes)}"
-        ),
+        ]),
         "",
         f"Situação: {situacao}",
         "",
@@ -1268,12 +1557,13 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
     lines.append("SINAIS PRIORITÁRIOS PARA INVESTIGAÇÃO")
     lines.append("")
     if not sinais:
-        lines.append("Nenhum sinal de prioridade moderada/alta após filtros de robustez.")
+        lines.append("Nenhum sinal atendeu aos critérios de validação nesta edição.")
     else:
         for i, s in enumerate(sinais):
             if i:
                 lines.append("")
             lines.extend(formatar_sinal_bloco(s))
+    lines.extend(["", triagem_txt])
     if n_outros > 0:
         lines.extend([
             "",
@@ -1285,7 +1575,9 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
 
     lines.extend(["", "LACUNAS LABORATÓRIO × VIGILÂNCIA", ""])
     lac_show = [s for s in lacunas if s.municipio_key != "JUINA"][:4]
-    if not lac_show:
+    if cob_sinan["sem_cobertura"]:
+        lines.append(nota_sem_sinan)
+    elif not lac_show:
         lines.append("Sem lacunas de grande magnitude além das já citadas.")
     else:
         for i, s in enumerate(lac_show):
@@ -1364,7 +1656,13 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
     ])
     plain = "\n".join(lines)
 
-    qa = qa_alerta_estrategico(plain, sinais + lacunas, maturacao_qa=mat.qa)
+    qa = qa_alerta_estrategico(
+        plain,
+        sinais + lacunas,
+        maturacao_qa=mat.qa,
+        cobertura_sinan=cob_sinan,
+        contexto_validacao=ctx_val,
+    )
 
     def esc(t: str) -> str:
         return html.escape(t)
@@ -1383,7 +1681,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         body = "<br>".join(esc(x) for x in formatar_sinal_bloco(s)[2:])
         head = esc(formatar_sinal_bloco(s)[0])
         selo = esc(formatar_sinal_bloco(s)[1])
-        cor = "#8b1a1a" if s.prioridade_epidemiologica == "ALTA" else "#0b3d5c"
+        cor = (
+            "#8b1a1a"
+            if s.prioridade_epidemiologica in {"ALTA", "CRITICA"}
+            else "#0b3d5c"
+        )
         return f"""<div style="margin:0 0 16px 0;padding:12px 14px;border-left:3px solid {cor};
         background:#f8fafc">
         <div style="font-family:Arial,sans-serif;font-size:14px;color:#0b3d5c"><b>{head}</b></div>
@@ -1392,8 +1694,9 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         <div style="font-size:13px;line-height:1.45;color:#333">{body}</div></div>"""
 
     sinais_html = "".join(bloco_sinal_html(s) for s in sinais) or (
-        "<p style='color:#555'>Nenhum sinal prioritário após filtros de robustez.</p>"
+        "<p style='color:#555'>Nenhum sinal atendeu aos critérios de validação nesta edição.</p>"
     )
+    sinais_html += f"<p style='color:#555;font-size:12px'>{esc(triagem_txt)}</p>"
     juina_html = ""
     if juina_lines:
         juina_html = (
@@ -1411,6 +1714,8 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
             f"<span style='color:#444'>Não assume subnotificação automaticamente — "
             f"requer validação nominal.</span></p>"
         )
+    if cob_sinan["sem_cobertura"]:
+        lac_html_parts = [f"<p style='color:#555'>{esc(nota_sem_sinan)}</p>"]
     lac_html = "".join(lac_html_parts) or (
         "<p style='color:#555'>Sem lacunas adicionais de grande magnitude.</p>"
     )
@@ -1513,9 +1818,10 @@ font-family:Arial,sans-serif">Alerta estratégico — {esc(se_alerta)}</h1>
 Semana analisada: <b>{esc(se_analisada)}</b><br>
 Atualização / data de corte: {esc(atualizacao)}<br>
 Completude da semana analisada: <b>{esc(completude_txt)}</b>
-({esc(fmt_num_br(comp.exames_elegiveis))} elegíveis ·
-{esc(fmt_num_br(comp.exames_liberados))} liberados ·
-{esc(fmt_num_br(comp.exames_pendentes))} pendentes)<br>
+{"" if completude_proxy else (
+    f"({esc(fmt_num_br(comp.exames_elegiveis))} elegíveis · "
+    f"{esc(fmt_num_br(comp.exames_liberados))} liberados · "
+    f"{esc(fmt_num_br(comp.exames_pendentes))} pendentes)")}<br>
 Situação: <b>{esc(situacao)}</b>
 </p>{prelim_html}</td></tr>
 <tr><td style="padding:16px 24px">

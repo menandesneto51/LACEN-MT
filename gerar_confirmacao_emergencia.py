@@ -147,11 +147,10 @@ def _future_outcomes(
 ) -> dict:
     rows = []
     y, w = int(year), int(week)
+    from etl.epi_week import shift_se
+
     for _ in range(horizon):
-        w += 1
-        if w > 53:
-            w = 1
-            y += 1
+        y, w = shift_se(y, w, 1)
         sub = vol[(vol["municipio"] == municipio) & (vol["epi_year"] == y) & (vol["epi_week"] == w)]
         if not sub.empty:
             rows.append(sub.iloc[0])

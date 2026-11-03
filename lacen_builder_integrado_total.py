@@ -947,10 +947,10 @@ def forecast_statewide(df, outdir):
             if pd.isna(b): return a
             return 0.4 * a + 0.6 * b
 
+        from etl.epi_week import shift_se
+
         for step in range(1, 5):
-            w += 1
-            if w > 53:
-                w = 1; y += 1
+            y, w = shift_se(y, w, 1)
             ft = mix(hist[w], recent_t)
             fp = mix(hist_pos[w], recent_p)
             fi = mix(hist_inc[w], recent_i)

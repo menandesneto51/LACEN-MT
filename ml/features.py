@@ -124,6 +124,10 @@ def build_panel_features(
     agg = {m: "sum" if m in sum_cols else "mean" for m in metrics}
     if "populacao" in df.columns:
         agg["populacao"] = "max"
+    # Denominador de positividade (válidos) — usado pelas anomalias v2; não vira feature.
+    if "den_positividade" in df.columns:
+        df["den_positividade"] = pd.to_numeric(df["den_positividade"], errors="coerce")
+        agg["den_positividade"] = "sum"
 
     panel = (
         df.groupby(["municipio", "target", "epi_year", "epi_week"], as_index=False)

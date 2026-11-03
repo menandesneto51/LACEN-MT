@@ -446,8 +446,14 @@ def build_advanced_metrics(
     cur_pos = pos_series[0] if pos_series else 0.0
     base_ex = _median(exams_series[1:5]) if len(exams_series) > 1 else 0.0
     base_pos = _median(pos_series[1:5]) if len(pos_series) > 1 else 0.0
-    pos_pct = (100.0 * cur_pos / cur_ex) if cur_ex > 0 else None
-    base_pct = (100.0 * base_pos / base_ex) if base_ex > 0 else 0.0
+    # Denominador: resultados válidos (positivos + negativos) quando a série os
+    # traz (agregação v2 / den_positividade); senão o volume de exames.
+    tem_den = bool(weekly) and "den_positividade" in weekly[0]
+    den_series = _series_weekly(weekly, se_analisada, "den_positividade") if tem_den else exams_series
+    cur_den = den_series[0] if den_series else 0.0
+    base_den = _median(den_series[1:5]) if len(den_series) > 1 else 0.0
+    pos_pct = (100.0 * cur_pos / cur_den) if cur_den > 0 else None
+    base_pct = (100.0 * base_pos / base_den) if base_den > 0 else 0.0
 
     intern_cur = _internacoes_semana(sih, sih_yw)
     intern_prev = [
@@ -473,9 +479,11 @@ def build_advanced_metrics(
     hist = exams_series[:6] if exams_series else []
     m_hist = (sum(hist) / len(hist)) if hist else 0.0
     sd_hist = _std(hist)
+    # Projeção de persistência (média das últimas 6 SE). Antes havia fatores
+    # fixos ×1,02/×1,04 em S+2/S+3 — tendência de alta sem base nos dados.
     p1 = int(round(m_hist)) if m_hist > 0 else None
-    p2 = int(round(m_hist * 1.02)) if m_hist > 0 else None
-    p3 = int(round(m_hist * 1.04)) if m_hist > 0 else None
+    p2 = p1
+    p3 = p1
     p1i = _fmt_interval(float(p1), max(sd_hist, (p1 or 0) * 0.12)) if p1 else None
     p2i = _fmt_interval(float(p2), max(sd_hist, (p2 or 0) * 0.14)) if p2 else None
     p3i = _fmt_interval(float(p3), max(sd_hist, (p3 or 0) * 0.16)) if p3 else None
@@ -548,7 +556,7 @@ def build_advanced_metrics(
         se_alerta=se_alerta,
         positividade_estadual_pct=pos_pct,
         positivos_estadual=int(cur_pos),
-        validos_estadual=int(cur_ex),
+        validos_estadual=int(cur_den),
         tendencia_volume=_trend(cur_ex, base_ex),
         tendencia_positividade=_trend(pos_pct or 0.0, base_pct),
         tendencia_internacao=_trend(float(intern_cur), intern_med),

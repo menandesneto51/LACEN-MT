@@ -400,56 +400,63 @@ def extract_vw_gal_weekly_agg(
     exame_expr = "Exame" if "Exame" in cols else "NULL"
     status_expr = "Status_Exame" if "Status_Exame" in cols else "NULL"
 
-    result_bits = []
-    for c in (
-        "Campo_Resultado_1", "Campo_Resultado_2", "Campo_Resultado_3",
-        "Campo_Resultado_4", "Campo_Resultado_5", "Campo_Resultado_6",
-        "Observacao_Resultado",
-    ):
-        if c in cols:
-            result_bits.append(f"ISNULL(CAST([{c}] AS NVARCHAR(4000)), '')")
-    concat_expr = " + ' ' + ".join(result_bits) if result_bits else "''"
+    from etl.resultado_gal import RESULT_FIELDS, sql_classe_campo, sql_classe_exame
+
+    campos = [c for c in RESULT_FIELDS if c in cols]
+    lib_cond = [f"LOWER(ISNULL(CAST({status_expr} AS NVARCHAR(200)), N'')) LIKE N'%liberad%'"]
+    lib_col = next((c for c in ("Data_Liberacao_dt", "Data_Liberacao") if c in cols), None)
+    if lib_col:
+        lib_cond.append(f"[{lib_col}] IS NOT NULL")
+    liberado_sql = "(" + " OR ".join(lib_cond) + ")"
 
     agravo_sql = f"[{agravo_col}]" if agravo_col else "N''"
     days = max(7, int(weeks_back) * 7 + 14)
 
     # isoyear exige SQL Server 2022+; fórmula YEAR(DATEADD(day, 26-iso_week, d))
     # é compatível com versões anteriores e alinha ao isocalendar() Python.
-    d = f"CAST([{date_col}] AS date)"
-    epi_year_expr = f"YEAR(DATEADD(day, 26 - DATEPART(iso_week, {d}), {d}))"
-    epi_week_expr = f"DATEPART(iso_week, {d})"
+    epi_year_expr = "YEAR(DATEADD(day, 26 - DATEPART(iso_week, d), d))"
+    epi_week_expr = "DATEPART(iso_week, d)"
+    codigos = [f"c{k}" for k in range(1, len(campos) + 1)]
+    cod_sql = "".join(
+        f",\n          {sql_classe_campo(c)} AS [{a}]" for c, a in zip(campos, codigos)
+    )
+    classe_sql = sql_classe_exame(codigos, "liberado = 1")
 
+    # Classificação por campo (uma vez por linha) → classe do exame → agregação.
+    # n_positivos_proxy mantido como alias de n_positivos (compatibilidade).
     sql = f"""
     SELECT
       {epi_year_expr} AS epi_year,
       {epi_week_expr} AS epi_week,
-      UPPER(LTRIM(RTRIM([{mun_col}]))) AS municipio,
-      LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))) AS agravo_raw,
-      LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400))))) AS exame_raw,
+      municipio, agravo_raw, exame_raw,
       COUNT_BIG(*) AS n_registros,
-      SUM(CASE
-            WHEN {concat_expr} LIKE N'%positiv%' THEN 1
-            WHEN {concat_expr} LIKE N'%reagent%' AND {concat_expr} NOT LIKE N'%nao reagent%'
-                 AND {concat_expr} NOT LIKE N'%não reagent%' THEN 1
-            ELSE 0
-          END) AS n_positivos_proxy,
-      SUM(CASE
-            WHEN LOWER(ISNULL(CAST({status_expr} AS NVARCHAR(200)), '')) LIKE N'%liberad%' THEN 1
-            ELSE 0
-          END) AS n_liberados,
-      MIN(CAST([{date_col}] AS date)) AS dt_min,
-      MAX(CAST([{date_col}] AS date)) AS dt_max
-    FROM [{schema}].[{view}]
-    WHERE [{date_col}] IS NOT NULL
-      AND CAST([{date_col}] AS date) >= DATEADD(day, -{days}, CAST(GETDATE() AS date))
-      AND CAST([{date_col}] AS date) <= CAST(GETDATE() AS date)
-      AND LTRIM(RTRIM([{mun_col}])) <> ''
+      SUM(CASE WHEN classe = 'positivo' THEN 1 ELSE 0 END) AS n_positivos,
+      SUM(CASE WHEN classe = 'negativo' THEN 1 ELSE 0 END) AS n_negativos,
+      SUM(CASE WHEN classe = 'indeterminado' THEN 1 ELSE 0 END) AS n_indeterminados,
+      SUM(CASE WHEN classe = 'nao_classificado' THEN 1 ELSE 0 END) AS n_nao_classificados,
+      SUM(CASE WHEN classe = 'pendente' THEN 1 ELSE 0 END) AS n_pendentes,
+      SUM(liberado) AS n_liberados,
+      SUM(CASE WHEN classe = 'positivo' THEN 1 ELSE 0 END) AS n_positivos_proxy,
+      MIN(d) AS dt_min,
+      MAX(d) AS dt_max
+    FROM (
+      SELECT x.*, {classe_sql} AS classe
+      FROM (
+        SELECT
+          CAST([{date_col}] AS date) AS d,
+          UPPER(LTRIM(RTRIM([{mun_col}]))) AS municipio,
+          LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))) AS agravo_raw,
+          LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400))))) AS exame_raw,
+          CASE WHEN {liberado_sql} THEN 1 ELSE 0 END AS liberado{cod_sql}
+        FROM [{schema}].[{view}]
+        WHERE [{date_col}] IS NOT NULL
+          AND CAST([{date_col}] AS date) >= DATEADD(day, -{days}, CAST(GETDATE() AS date))
+          AND CAST([{date_col}] AS date) <= CAST(GETDATE() AS date)
+          AND LTRIM(RTRIM([{mun_col}])) <> ''
+      ) x
+    ) y
     GROUP BY
-      {epi_year_expr},
-      {epi_week_expr},
-      UPPER(LTRIM(RTRIM([{mun_col}]))),
-      LOWER(LTRIM(RTRIM(CAST({agravo_sql} AS NVARCHAR(400))))),
-      LOWER(LTRIM(RTRIM(CAST({exame_expr} AS NVARCHAR(400)))))
+      {epi_year_expr}, {epi_week_expr}, municipio, agravo_raw, exame_raw
     """
     _log(f"[DW] Agregando {schema}.{view} (últimos ~{weeks_back} SE)…")
     return read_sql(mode, queryable, sql)

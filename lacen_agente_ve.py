@@ -290,15 +290,10 @@ def recuperar_trechos(
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    """Avança/recua SE (delta negativo = semanas anteriores)."""
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    """Desloca SE respeitando anos ISO de 52/53 semanas."""
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, delta)
 
 
 def _semanas_anteriores(se: tuple[int, int], n: int = 4) -> list[tuple[int, int]]:
