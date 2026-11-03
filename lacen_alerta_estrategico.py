@@ -377,6 +377,83 @@ def cobertura_sinan_semana(
     }
 
 
+def _candidatos_imediatos(
+    wk: list[dict[str, str]],
+    se: tuple[int, int] | None,
+    se_ant: tuple[int, int] | None,
+    seen: set[str],
+) -> list[SignalFact]:
+    from lacen_relatorio_cievs import _eh_municipio_mt
+    from lacen_validacao_sinais import classe_alvo
+
+    if not se or not wk:
+        return []
+    cur: dict[tuple[str, str], list[float]] = {}
+    ant: dict[tuple[str, str], list[float]] = {}
+    for r in wk:
+        try:
+            yw = (int(float(r.get("epi_year") or 0)), int(float(r.get("epi_week") or 0)))
+        except (TypeError, ValueError):
+            continue
+        if yw != tuple(se) and (not se_ant or yw != tuple(se_ant)):
+            continue
+        tgt = str(r.get("target") or "").strip()
+        if classe_alvo(tgt) != "imediata":
+            continue
+        mun_raw = str(r.get("municipio") or "")
+        if not _eh_municipio_mt(mun_raw):
+            continue
+        key = (mun_raw, tgt)
+        bucket = cur if yw == tuple(se) else ant
+        acc = bucket.setdefault(key, [0.0, 0.0])
+        acc[0] += float(r.get("tests") or 0)
+        acc[1] += float(r.get("positives") or 0)
+    out: list[SignalFact] = []
+    for (mun_raw, tgt), (ex, pos) in cur.items():
+        if pos < 1:
+            continue
+        mk = _norm_mun(mun_raw)
+        sid = f"{mk}|{tgt}|positividade|{tuple(se)}"
+        if sid in seen:
+            continue
+        seen.add(sid)
+        ex_a, pos_a = ant.get((mun_raw, tgt), [0.0, 0.0])
+        ex_i, pos_i = int(ex), int(pos)
+        f = SignalFact(
+            signal_id=sid,
+            municipio=mun_oficial(mun_raw),
+            municipio_key=mk,
+            codigo_ibge="",
+            agravo=agravo_legivel(tgt),
+            agravo_raw=tgt,
+            marcador=agravo_legivel(tgt),
+            tipo_sinal="positividade",
+            atual_exames=ex_i,
+            atual_positivos=pos_i,
+            anterior_exames=int(ex_a),
+            anterior_positivos=int(pos_a),
+            referencia=None,
+            positividade=100.0 * pos_i / ex_i if ex_i else None,
+            severidade_estatistica="alta",
+            robustez_amostral=_robustez(ex_i, pos_i, "positividade"),
+            persistencia="—",
+            prioridade_epidemiologica="CRITICA",
+            notificacoes_pareadas=None,
+            interpretacao=(
+                f"{pos_i} {plural_positivo(pos_i)} para agravo de notificação imediata. "
+                "Confirmar o resultado no GAL e a notificação no SINAN em até 24 horas; "
+                "um positivo isolado não caracteriza surto."
+            ),
+            recomendacao="",
+            score=10.0,
+        )
+        f.acao = "INVESTIGAR"
+        f.prazo = "24h"
+        f.recomendacao = f"INVESTIGAR (24h) — {f.municipio} · {f.agravo}"
+        out.append(f)
+    return out
+
+
 def coletar_signal_facts(
     rel: Any,
     *,
@@ -544,6 +621,11 @@ def coletar_signal_facts(
         fact.acao = _acao_padrao(fact)
         fact.recomendacao = f"{fact.acao} — {fact.municipio} · {fact.agravo}"
         facts.append(fact)
+
+    # Agravo de notificação imediata com ≥1 positivo: candidato direto das
+    # contagens semanais (a detecção de anomalias exige excesso ≥3 / ≥2 positivos
+    # e perderia um positivo isolado de raiva, sarampo etc.).
+    facts.extend(_candidatos_imediatos(wk, parsed, se_ant, seen))
 
     # Lacunas lab × notificação — só se o SINAN cobre a SE analisada.
     cob = cobertura_sinan_semana(wk, parsed)
@@ -792,127 +874,89 @@ def destaque_juina(
     *,
     se_analisada: tuple[int, int] | None = None,
 ) -> list[str] | None:
-    from lacen_relatorio_cievs import (
-        _carregar_weekly_alerta,
-        _parse_se,
-        resumo_serie_historica,
-    )
+    """Destaque territorial de Juína construído **só** com sinais validados.
 
-    juina_facts = [
-        f for f in facts if f.municipio_key == "JUINA" or "JUINA" in f.municipio_key
-    ]
-    # Sempre considerar se há volume HBV alto
-    wk = _carregar_weekly_alerta()
-    # SE analisada (N−1), não a SE do alerta (semana em curso, incompleta).
-    parsed = se_analisada or _parse_se(rel.semana_epidemiologica)
-    if not parsed or not wk:
-        return None
-    got = resumo_serie_historica(wk, parsed, "hepatite_b_hbv", municipio="JUINA")
-    ex = int(float(got.get("exames_atual") or 0))
-    pos = int(float(got.get("positivos_atual") or 0))
-    if ex < 20 and not juina_facts:
+    ``facts`` deve conter apenas sinais aprovados pelo portão de validação.
+    Nada é recarregado de contagens brutas, anomalias ou do cruzamento
+    GAL×SINAN: o que não foi validado não aparece aqui (fica no painel).
+    """
+    juina = [f for f in facts if "JUINA" in (f.municipio_key or "")]
+    if not juina:
         return None
 
-    se_ant = _shift_se(parsed[0], parsed[1], -1)
-    ant = _agg_counts_target_se(wk, se_ant, "hepatite_b_hbv", municipio="JUINA")
-    ex_a = int(float(ant.get("exames") or 0))
-    delta = ex - ex_a
+    def _grupo(*chaves: str) -> list[SignalFact]:
+        return [
+            f for f in juina
+            if any(k in (f.agravo_raw or "").casefold() for k in chaves)
+        ]
 
-    lines = [
-        "DESTAQUE TERRITORIAL — Juína",
-        "",
-        "Hepatite B (marcador de alerta agudo):",
-        f"{fmt_num_br(ex)} {plural_exame(ex)}",
-        f"{fmt_num_br(pos)} {plural_positivo(pos)} no marcador de alerta agudo",
-        f"SE anterior: {fmt_num_br(ex_a)} {plural_exame(ex_a)}",
-        f"Diferença: {delta:+d} {plural_exame(abs(delta))}",
-        "",
-        "Interpretação:",
-        "Aumento importante da demanda laboratorial sem aumento da positividade "
-        "no marcador agudo; padrão compatível com expansão de rastreio ou mudança "
-        "de demanda, a confirmar.",
-        "",
-        "Ação: ACOMPANHAR + validar linkage. Manter Juína em acompanhamento no Radar; "
-        "revisar finalidade da testagem, marcadores, série histórica e linkage com "
-        "SINAN. Escalonar para investigação de surto somente se surgirem evidências "
-        "epidemiológicas ou laboratoriais compatíveis.",
-    ]
-    hcv = [f for f in juina_facts if "hepatite c" in f.agravo.casefold()]
-    if not hcv:
-        # Incluir HCV mesmo com volume pequeno (destaque territorial)
-        got_c = resumo_serie_historica(wk, parsed, "hepatite_c_hcv", municipio="JUINA")
-        ex_c = int(float(got_c.get("exames_atual") or 0))
-        pos_c = int(float(got_c.get("positivos_atual") or 0))
-        if ex_c > 0:
-            lines.extend([
-                "",
-                "Hepatite C:",
-                f"{fmt_num_br(ex_c)} {plural_exame(ex_c)}, "
-                f"{fmt_num_br(pos_c)} {plural_positivo(pos_c)} — "
-                f"anomalia moderada de volume (detalhe no painel).",
-            ])
-    else:
-        h = hcv[0]
+    hbv = [f for f in _grupo("hepatite_b") if f.tipo_sinal != "lacuna"]
+    hcv = [f for f in _grupo("hepatite_c") if f.tipo_sinal != "lacuna"]
+    diarr = _grupo("diarr", "gastroenterite", "rotav")
+    lac = [f for f in juina if f.tipo_sinal == "lacuna"]
+    if not (hbv or hcv or diarr or lac):
+        return None
+
+    lines = ["DESTAQUE TERRITORIAL — Juína"]
+
+    def _bloco_volume(titulo: str, f: SignalFact) -> None:
+        delta = f.atual_exames - f.anterior_exames
         lines.extend([
             "",
-            "Hepatite C:",
-            f"{fmt_num_br(h.atual_exames)} {plural_exame(h.atual_exames)}, "
-            f"{fmt_num_br(h.atual_positivos)} {plural_positivo(h.atual_positivos)} — "
-            f"anomalia {h.severidade_estatistica} de volume.",
+            f"{titulo}:",
+            f"{fmt_num_br(f.atual_exames)} {plural_exame(f.atual_exames)} na semana analisada"
+            + (
+                f" (base recente: {fmt_num_br(f.referencia, 1)})"
+                if f.referencia is not None
+                else ""
+            ),
+            f"SE anterior: {fmt_num_br(f.anterior_exames)} "
+            f"{plural_exame(f.anterior_exames)} (diferença: {delta:+d})",
+            f"{fmt_num_br(f.atual_positivos)} {plural_positivo(f.atual_positivos)}",
         ])
-    diarr = [
-        f
-        for f in juina_facts
-        if "diarreic" in f.agravo.casefold() or "gastroenterite" in f.agravo.casefold()
-    ]
-    if not diarr:
-        from lacen_relatorio_cievs import _carregar_anomalias_se
-
-        raw = _carregar_anomalias_se(rel)
-        diarr = [
-            r
-            for r in raw
-            if "JUINA" in str(r.get("municipio") or "").upper()
-            and any(
-                k in str(r.get("target") or "").casefold()
-                for k in ("diarr", "gastroenterite", "rotav")
+        if f.validacao is not None:
+            lines.append(f"Validação: {f.validacao.resumo()}")
+        acima = f.referencia is not None and f.atual_exames > f.referencia
+        if f.atual_positivos == 0:
+            interp = (
+                ("Demanda laboratorial acima da base recente" if acima else "Demanda laboratorial")
+                + " sem resultado positivo nesta rodada; compatível com rastreio, "
+                "seguimento ou mudança de demanda, a confirmar."
             )
-        ]
+        else:
+            interp = (
+                ("Demanda acima da base recente" if acima else "Demanda")
+                + f" com {f.atual_positivos} {plural_positivo(f.atual_positivos)}; "
+                "conferir marcador (agudo × seguimento) antes de classificar evento."
+            )
+        lines.append(f"Interpretação: {interp}")
+
+    if hbv:
+        _bloco_volume("Hepatite B", hbv[0])
+    if hcv:
+        _bloco_volume("Hepatite C", hcv[0])
     if diarr:
+        d = diarr[0]
         lines.extend([
             "",
             "Doenças diarreicas:",
-            "Aumento moderado de solicitações em procedimentos relacionados a "
-            "doenças diarreicas (agrupados; detalhe no painel).",
+            f"{fmt_num_br(d.atual_exames)} {plural_exame(d.atual_exames)} — sinal validado "
+            "de volume (procedimentos agrupados; detalhe no painel).",
         ])
-    # Lacuna HBV
-    for g in rel.briefing_gal_sinan or []:
-        if "JUINA" not in str(g.get("municipio") or "").upper():
-            continue
-        if "hepatite_b" not in str(g.get("target") or "").casefold():
-            continue
-        try:
-            ex_g = int(float(g.get("exames") or 0))
-            nf = int(float(g.get("notificacoes") or 0))
-        except (TypeError, ValueError):
-            continue
-        if ex_g >= 10 and nf == 0:
-            lines.extend([
-                "",
-                "Lacuna laboratório × notificação:",
-                f"{fmt_num_br(ex_g)} {plural_exame(ex_g)} sem correspondência identificada "
-                f"com notificação no cruzamento disponível.",
-            ])
-            if ex != ex_g and ex > 0:
-                lines.append(
-                    f"Nota de escopo: {fmt_num_br(ex)} correspondem ao marcador de alerta "
-                    f"agudo; {fmt_num_br(ex_g)} ao universo usado no linkage "
-                    f"(DENOMINATOR_SCOPE — universos distintos)."
-                )
-            lines.append(
-                "Não assume subnotificação automaticamente — requer validação nominal."
-            )
-        break
+    for g in lac[:1]:
+        lines.extend([
+            "",
+            "Lacuna laboratório × notificação:",
+            f"{fmt_num_br(g.atual_exames)} {plural_exame(g.atual_exames)} ({g.agravo}) "
+            "sem correspondência identificada com notificação no cruzamento disponível.",
+            "Não assume subnotificação automaticamente — requer validação nominal.",
+        ])
+    lines.extend([
+        "",
+        "Ação: ACOMPANHAR no Radar; revisar finalidade da testagem, marcadores e "
+        "linkage com o SINAN. Escalonar para investigação de surto somente se "
+        "surgirem evidências epidemiológicas ou laboratoriais compatíveis.",
+    ])
     return lines
 
 

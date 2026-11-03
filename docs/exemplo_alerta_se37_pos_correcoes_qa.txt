@@ -33,5 +33,5 @@ SIGNAL_LINKAGE_CONTEXT: ATENÇÃO
 AGRAVO_FORECAST_PRESENT: OK
 Tamanho executivo: OK
 
-Palavras: 1002
+Palavras: 1011
 Sinais no alerta: 2

@@ -2,7 +2,7 @@ RADAR LACEN · SES-MT / CIEVS-MT
 
 ALERTA ESTRATÉGICO — SE 37/2026
 Semana analisada: SE 36/2026
-Atualização / data de corte: 03/11/2026 às 15h05 (Hora de Mato Grosso)
+Atualização / data de corte: 03/11/2026 às 15h25 (Hora de Mato Grosso)
 Completude da semana analisada: 97,0%
 Exames elegíveis: 1231 · Liberados: 1231 · Pendentes: 0
 
@@ -78,16 +78,14 @@ Outros 5 sinais disponíveis no Painel Radar LACEN.
 
 DESTAQUE TERRITORIAL — Juína
 
-Hepatite B (marcador de alerta agudo):
-49 exames
-0 positivos no marcador de alerta agudo
-SE anterior: 57 exames
-Diferença: -8 exames
+Hepatite B:
+49 exames na semana analisada (base recente: 17,6)
+SE anterior: 57 exames (diferença: -8)
+0 positivos
+Validação: carga da SE íntegra; significativo (p=6,4e-10); excesso de 31 exames sobre a base · corroborado por persistência (SE anterior)
+Interpretação: Demanda laboratorial acima da base recente sem resultado positivo nesta rodada; compatível com rastreio, seguimento ou mudança de demanda, a confirmar.
 
-Interpretação:
-Aumento importante da demanda laboratorial sem aumento da positividade no marcador agudo; padrão compatível com expansão de rastreio ou mudança de demanda, a confirmar.
-
-Ação: ACOMPANHAR + validar linkage. Manter Juína em acompanhamento no Radar; revisar finalidade da testagem, marcadores, série histórica e linkage com SINAN. Escalonar para investigação de surto somente se surgirem evidências epidemiológicas ou laboratoriais compatíveis.
+Ação: ACOMPANHAR no Radar; revisar finalidade da testagem, marcadores e linkage com o SINAN. Escalonar para investigação de surto somente se surgirem evidências epidemiológicas ou laboratoriais compatíveis.
 
 LACUNAS LABORATÓRIO × VIGILÂNCIA
 

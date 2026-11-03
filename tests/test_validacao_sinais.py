@@ -89,9 +89,9 @@ def test_positividade_implausivel_bloqueia_criterio():
     assert not ctx.positividade_valida
     v = vs.avaliar_sinal(_fact(tipo="positividade", pos=5), ctx)
     assert v.status == vs.EM_OBSERVACAO
-    # imediata com positivo também não valida se a positividade não é confiável
+    # imediata com positivo registrado é publicada mesmo assim (a confirmar no GAL)
     v2 = vs.avaliar_sinal(_fact(target="raiva_raiva", ex=1, pos=1, p=None, exc=0.0), ctx)
-    assert not v2.publicar
+    assert v2.publicar and any("confirmar" in a for a in v2.atendidos)
 
 
 def test_cronica_exige_persistencia():

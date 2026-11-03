@@ -23,8 +23,11 @@ C  Corroboração        — ao menos uma: persistência (anomalia do mesmo muni
                          positividade válida, ou município vizinho com anomalia do
                          mesmo alvo na mesma SE. Agravo crônico exige persistência.
 
-Agravo de notificação imediata com ≥ 1 positivo (positividade válida) é validado
-mesmo sem E1/E2/C: o positivo isolado já é relevante.
+Agravo de notificação imediata com ≥ 1 positivo é validado mesmo sem D3/E1/E2/C:
+o positivo isolado já é relevante (o classificador atual subdetecta positivos,
+então um positivo registrado é publicado com ação de confirmar em 24 h).
+Esses candidatos são criados direto das contagens semanais
+(``_candidatos_imediatos``), sem depender da detecção de anomalias.
 
 Parâmetros por variável de ambiente: ``LACEN_VALID_P_MAX`` (0,01),
 ``LACEN_VALID_MIN_EXCESSO`` (5), ``LACEN_VALID_CARGA_MIN`` (0,5).
@@ -229,19 +232,24 @@ def avaliar_sinal(s: Any, ctx: ContextoValidacao) -> Validacao:
         v.motivos.append("alvo sem classificação epidemiológica (revisar regra)")
         return v
 
+    positivos = _i(getattr(s, "atual_positivos", 0))
+
+    # Notificação imediata: positivo isolado já é relevante. Não depende da
+    # plausibilidade da positividade estadual: o classificador atual perde
+    # positivos (falso negativo); um positivo registrado deve ser conferido.
+    if classe == "imediata" and positivos >= 1:
+        v.atendidos.append(f"agravo de notificação imediata com {positivos} positivo(s)")
+        if not ctx.positividade_valida:
+            v.atendidos.append("resultado a confirmar no GAL (classificador em revisão)")
+        return v
+
     # D3 — positividade
     if tipo == "positividade" and not ctx.positividade_valida:
         v.status = EM_OBSERVACAO
         v.motivos.append("positividade não avaliável (classificação de resultado GAL em revisão)")
         return v
 
-    positivos = _i(getattr(s, "atual_positivos", 0))
     tem_positivo = ctx.positividade_valida and positivos >= 1
-
-    # Notificação imediata: positivo isolado já é relevante.
-    if classe == "imediata" and tem_positivo:
-        v.atendidos.append(f"agravo de notificação imediata com {positivos} positivo(s)")
-        return v
 
     # E1 — significância
     p = getattr(s, "p_valor", None)
