@@ -446,8 +446,14 @@ def build_advanced_metrics(
     cur_pos = pos_series[0] if pos_series else 0.0
     base_ex = _median(exams_series[1:5]) if len(exams_series) > 1 else 0.0
     base_pos = _median(pos_series[1:5]) if len(pos_series) > 1 else 0.0
-    pos_pct = (100.0 * cur_pos / cur_ex) if cur_ex > 0 else None
-    base_pct = (100.0 * base_pos / base_ex) if base_ex > 0 else 0.0
+    # Denominador: resultados válidos (positivos + negativos) quando a série os
+    # traz (agregação v2 / den_positividade); senão o volume de exames.
+    tem_den = bool(weekly) and "den_positividade" in weekly[0]
+    den_series = _series_weekly(weekly, se_analisada, "den_positividade") if tem_den else exams_series
+    cur_den = den_series[0] if den_series else 0.0
+    base_den = _median(den_series[1:5]) if len(den_series) > 1 else 0.0
+    pos_pct = (100.0 * cur_pos / cur_den) if cur_den > 0 else None
+    base_pct = (100.0 * base_pos / base_den) if base_den > 0 else 0.0
 
     intern_cur = _internacoes_semana(sih, sih_yw)
     intern_prev = [
@@ -550,7 +556,7 @@ def build_advanced_metrics(
         se_alerta=se_alerta,
         positividade_estadual_pct=pos_pct,
         positivos_estadual=int(cur_pos),
-        validos_estadual=int(cur_ex),
+        validos_estadual=int(cur_den),
         tendencia_volume=_trend(cur_ex, base_ex),
         tendencia_positividade=_trend(pos_pct or 0.0, base_pct),
         tendencia_internacao=_trend(float(intern_cur), intern_med),

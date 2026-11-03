@@ -125,7 +125,8 @@ def detect_anomalias_v2(
         return pd.DataFrame()
     df["_i"] = df["_i"].astype(int)
 
-    count_metrics = [m for m in ("tests", "positives", "notificacoes") if m in df.columns]
+    count_metrics = [m for m in ("tests", "positives", "notificacoes", "den_positividade")
+                     if m in df.columns]
     for m in count_metrics:
         df[m] = pd.to_numeric(df[m], errors="coerce").fillna(0.0)
     g = df.groupby(["municipio", "target", "_i"], as_index=False)[count_metrics].sum()
@@ -178,9 +179,11 @@ def detect_anomalias_v2(
                     "severidade": sev,
                 })
         if "positives" in grids:
-            n_cur = grids["tests"][:, e]
+            # n = resultados válidos (positivos + negativos) quando disponível
+            den = grids.get("den_positividade", grids["tests"])
+            n_cur = den[:, e]
             k_cur = grids["positives"][:, e]
-            n_b = grids["tests"][:, sl].sum(axis=1)
+            n_b = den[:, sl].sum(axis=1)
             k_b = grids["positives"][:, sl].sum(axis=1)
             for j in np.nonzero((n_cur >= min_n_positividade) & (n_b > 0))[0]:
                 n, k = int(n_cur[j]), int(k_cur[j])

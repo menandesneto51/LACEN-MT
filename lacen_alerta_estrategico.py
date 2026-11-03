@@ -475,6 +475,8 @@ def coletar_signal_facts(
     parsed = se_analisada or _parse_se(rel.semana_epidemiologica)
     se_ant = _shift_se(parsed[0], parsed[1], -1) if parsed else None
 
+    validos_cache: dict[tuple[str, str], int] = {}
+
     def _counts(mun: str, tgt: str) -> tuple[int, int, int, int]:
         if not parsed or not wk:
             return 0, 0, 0, 0
@@ -484,6 +486,7 @@ def coletar_signal_facts(
             if se_ant
             else {"exames": 0, "positivos": 0}
         )
+        validos_cache[(mun, tgt)] = int(float(cur.get("validos") or cur.get("exames") or 0))
         return (
             int(float(cur.get("exames") or 0)),
             int(float(cur.get("positivos") or 0)),
@@ -542,8 +545,9 @@ def coletar_signal_facts(
         pos_pct: float | None = None
         rob = _robustez(ex_c, pos_c, metric if metric == "positividade" else "tests")
         if tipo == "positividade":
-            if ex_c > 0:
-                pos_pct = 100.0 * pos_c / ex_c
+            val_c = validos_cache.get((mun_raw, tgt), ex_c)
+            if val_c > 0:
+                pos_pct = 100.0 * pos_c / val_c
             else:
                 try:
                     v = float(r.get("valor_atual") or 0)
