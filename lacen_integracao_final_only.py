@@ -41,9 +41,12 @@ def map_lacen_target_to_sinan(target: object) -> str:
         ("hiv", "hiv"),
         ("sifilis", "sifilis"),
         ("hepatite", "hepatite"),
-        ("influenza", "influenza"),
-        ("sars_cov", "covid19"),
-        ("covid", "covid19"),
+        # Vírus respiratórios: no SINAN o pareamento é com a ficha de SRAG
+        # (VW_SINAN_SINDROMERESPIRATORIAAGUDAGRAVE → "srag").
+        ("influenza", "srag"),
+        ("sars_cov", "srag"),
+        ("covid", "srag"),
+        ("v_rus_respirat", "srag"),
     )
     for needle, agravo in rules:
         if needle in t:

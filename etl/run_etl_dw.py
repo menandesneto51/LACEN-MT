@@ -66,6 +66,30 @@ def _counts_for_se(weekly: pd.DataFrame, ano: int, se: int) -> dict[str, Any]:
     }
 
 
+def checar_carga(weekly: pd.DataFrame, se: tuple[int, int], *, limiar: float = 0.5) -> dict[str, Any]:
+    """Carga suspeita: volume estadual da SE < ``limiar`` × mediana das 8 SE anteriores."""
+    from etl.epi_week import shift_se
+
+    out: dict[str, Any] = {"carga_razao": None, "carga_suspeita": False}
+    if weekly is None or weekly.empty:
+        return out
+    atual = _counts_for_se(weekly, se[0], se[1])["exames"]
+    hist = sorted(
+        _counts_for_se(weekly, *shift_se(se[0], se[1], -i))["exames"] for i in range(1, 9)
+    )
+    med = (hist[3] + hist[4]) / 2 if len(hist) == 8 else 0
+    if med > 0:
+        razao = atual / med
+        out["carga_razao"] = round(razao, 3)
+        out["carga_suspeita"] = razao < limiar
+        if out["carga_suspeita"]:
+            out["carga_aviso"] = (
+                f"CARGA SUSPEITA: {format_se(*se)} com {atual} exames "
+                f"({razao:.0%} da mediana de 8 SE = {med:.0f}). Conferir extração antes de analisar."
+            )
+    return out
+
+
 def write_validacao(
     outdir: Path,
     report: dict[str, Any],
@@ -86,6 +110,12 @@ def write_validacao(
         f"exames_se_usada: {report.get('exames_se_usada')}",
         f"positivos_se_usada: {report.get('positivos_se_usada')}",
         f"municipios_se_usada: {report.get('municipios_se_usada')}",
+        f"carga_razao_vs_mediana_8se: {report.get('carga_razao')}",
+        f"carga_suspeita: {report.get('carga_suspeita')}",
+        f"sinan_se_max: {report.get('sinan_se_max')}",
+        f"sinan_atraso_se: {report.get('sinan_atraso_se')}",
+        f"sinan_ok: {report.get('sinan_ok')}",
+        f"sinan_dw: {json.dumps(report.get('sinan_dw'), ensure_ascii=False, default=str)}",
         f"mirror_dw_ok: {report.get('mirror_dw_ok')}",
         f"mirror_error: {report.get('mirror_error')}",
         f"mirror_rows: {report.get('mirror_rows')}",
@@ -140,6 +170,16 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
                 agg_path = stage / "vw_gal_weekly_agg.csv"
             agg = pd.read_parquet(agg_path) if agg_path.suffix == ".parquet" else pd.read_csv(agg_path)
             tests, pos = weekly_from_dw_agg(agg)
+            # SINAN do DW → sinan_weekly_municipio.csv (antes só vinha do CSV local)
+            try:
+                from etl.sinan_dw import run_sinan_dw
+
+                sin_meta = run_sinan_dw(outdir, weeks_back=args.weeks_back)
+                report["sinan_dw"] = sin_meta
+                report["passos"].append(f"sinan_dw:{len(sin_meta.get('views_ok', []))}_views")
+            except Exception as exc:  # noqa: BLE001 — não derruba o GAL
+                report["sinan_dw"] = {"erro": f"{type(exc).__name__}: {exc}"[:300]}
+                report["passos"].append(f"sinan_dw_fail:{type(exc).__name__}")
             # micro → CSV para indicadores de rede
             micro_pq = stage / "vw_gal_micro_recent.parquet"
             if micro_pq.exists():
@@ -256,10 +296,22 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     # Contagens SE usada
     usada = se_info.get("se_usada_tuple")
     if usada:
-        cnt = _counts_for_se(weekly if not weekly.empty else tests, usada[0], usada[1])
+        base_w = weekly if not weekly.empty else tests
+        cnt = _counts_for_se(base_w, usada[0], usada[1])
         report["exames_se_usada"] = cnt["exames"]
         report["positivos_se_usada"] = cnt["positivos"]
         report["municipios_se_usada"] = cnt["municipios"]
+        report.update(checar_carga(base_w, usada))
+        try:
+            from etl.sinan_dw import status_sinan
+
+            sp = outdir / "sinan_weekly_municipio.csv"
+            report.update(status_sinan(pd.read_csv(sp, low_memory=False) if sp.exists() else None, usada))
+        except Exception as exc:  # noqa: BLE001
+            report["sinan_aviso"] = f"status SINAN indisponível: {exc}"
+        avisos = [a for a in (report.get("aviso"), report.get("carga_aviso"),
+                              report.get("sinan_aviso")) if a]
+        report["aviso"] = " | ".join(avisos) if avisos else None
     else:
         report["exames_se_usada"] = 0
         report["positivos_se_usada"] = 0
