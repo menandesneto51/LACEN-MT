@@ -100,14 +100,10 @@ def _is_hepatite(target: str) -> bool:
 
 
 def _shift_se(year: int, week: int, delta: int) -> tuple[int, int]:
-    y, w = int(year), int(week) + int(delta)
-    while w < 1:
-        y -= 1
-        w += 52
-    while w > 52:
-        y += 1
-        w -= 52
-    return y, w
+    """Desloca SE respeitando anos ISO de 52/53 semanas."""
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, delta)
 
 
 def _tendencia_seta(delta_pct: float | None, *, tol_pct: float = 5.0) -> str:

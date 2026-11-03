@@ -419,11 +419,10 @@ def main():
         med_notif = sub["notificacoes"].tail(8).median()
         med_obitos = sub["obitos"].tail(8).median()
         y, w = last_year, last_week
+        from etl.epi_week import shift_se
+
         for step in range(1, 5):
-            w += 1
-            if w > 53:
-                w = 1
-                y += 1
+            y, w = shift_se(y, w, 1)
             forecasts.append({
                 "target": target,
                 "forecast_step": step,

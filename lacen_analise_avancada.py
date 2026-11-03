@@ -473,9 +473,11 @@ def build_advanced_metrics(
     hist = exams_series[:6] if exams_series else []
     m_hist = (sum(hist) / len(hist)) if hist else 0.0
     sd_hist = _std(hist)
+    # Projeção de persistência (média das últimas 6 SE). Antes havia fatores
+    # fixos ×1,02/×1,04 em S+2/S+3 — tendência de alta sem base nos dados.
     p1 = int(round(m_hist)) if m_hist > 0 else None
-    p2 = int(round(m_hist * 1.02)) if m_hist > 0 else None
-    p3 = int(round(m_hist * 1.04)) if m_hist > 0 else None
+    p2 = p1
+    p3 = p1
     p1i = _fmt_interval(float(p1), max(sd_hist, (p1 or 0) * 0.12)) if p1 else None
     p2i = _fmt_interval(float(p2), max(sd_hist, (p2 or 0) * 0.14)) if p2 else None
     p3i = _fmt_interval(float(p3), max(sd_hist, (p3 or 0) * 0.16)) if p3 else None

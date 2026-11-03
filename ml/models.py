@@ -17,13 +17,9 @@ def _sigmoid(x: np.ndarray | pd.Series) -> np.ndarray:
 
 
 def _advance_epiweek(year: int, week: int, steps: int = 1) -> tuple[int, int]:
-    y, w = int(year), int(week)
-    for _ in range(steps):
-        w += 1
-        if w > 53:
-            w = 1
-            y += 1
-    return y, w
+    from etl.epi_week import shift_se
+
+    return shift_se(year, week, steps)
 
 
 def forecast_demanda(weekly: pd.DataFrame, horizon: int = 4) -> pd.DataFrame:
@@ -74,7 +70,21 @@ def forecast_demanda(weekly: pd.DataFrame, horizon: int = 4) -> pd.DataFrame:
 
 
 def detect_anomalias(features: pd.DataFrame, z_threshold: float = 2.5) -> pd.DataFrame:
-    """Anomalias na última semana: desvio vs média móvel 8 semanas."""
+    """Anomalias v2 (Poisson/binomial, série completa no calendário, base sem a SE).
+
+    ``LACEN_ANOMALIA_METODO=legado`` restaura o critério v1 para comparação.
+    """
+    import os
+
+    if os.environ.get("LACEN_ANOMALIA_METODO", "").casefold() == "legado":
+        return detect_anomalias_legado(features, z_threshold=z_threshold)
+    from .anomalias import detect_anomalias_v2
+
+    return detect_anomalias_v2(features)
+
+
+def detect_anomalias_legado(features: pd.DataFrame, z_threshold: float = 2.5) -> pd.DataFrame:
+    """[v1] Anomalias na última semana: desvio vs média móvel 8 semanas."""
     snap = latest_week_snapshot(features)
     if snap.empty:
         return pd.DataFrame()

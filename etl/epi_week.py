@@ -88,6 +88,24 @@ def format_se(ano: int, semana: int) -> str:
     return f"{int(ano)}-SE{int(semana):02d}"
 
 
+def semanas_no_ano(ano: int) -> int:
+    """Número de SE ISO no ano (52 ou 53). 28/dez sempre cai na última SE ISO."""
+    return int(date(int(ano), 12, 28).isocalendar()[1])
+
+
+def shift_se(ano: int, semana: int, delta: int) -> Tuple[int, int]:
+    """Desloca (ano, SE) em ``delta`` semanas respeitando anos ISO de 53 SE.
+
+    Substitui as implementações aritméticas que assumiam 52 (ou 53) semanas
+    fixas — erradas na virada 2026→2027 (2026 tem SE 53).
+    Semana fora do intervalo do ano (ex.: 53 num ano de 52) é limitada à última.
+    """
+    a, s = int(ano), int(semana)
+    s = max(1, min(s, semanas_no_ano(a)))
+    seg = date.fromisocalendar(a, s, 1) + timedelta(weeks=int(delta))
+    return date_to_epi(seg)
+
+
 def epi_ordinal(ano: int, semana: int) -> int:
     """Ordenação aproximada ano×semana (suporta SE 1–53)."""
     return int(ano) * 100 + int(semana)
