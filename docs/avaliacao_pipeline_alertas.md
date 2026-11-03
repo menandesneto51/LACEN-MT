@@ -189,3 +189,25 @@ O dry-run também expôs dois problemas que **não** foram corrigidos aqui:
 | **3 — Método e produto** | 1–2 meses | Base sazonal/Farrington + FDR + persistência + agregação regional (§6); matriz de prioridade (§7); produto único com QA (9.1); retroalimentação por `signal_id` (§10); CI | Validação VE/CIEVS |
 
 **Validação sugerida antes de oficializar a v2:** rodar v1 e v2 em paralelo por 4 SE (`LACEN_ANOMALIA_METODO=legado` gera a v1) e fazer revisão cega dos sinais por um técnico da VE.
+
+---
+
+## 14. Fase 1 — o que já foi implementado (03/11/2026)
+
+Feito sem acesso ao DW (VPN fora do ar); **validar na primeira execução com dados reais**.
+
+| Item | Situação | Onde |
+|------|----------|------|
+| 1.1 Classificador de resultado por campo (Detectável, cruzes, campos com vários alvos) | Implementado; SQL e Python geram a mesma classe (teste com DuckDB) | `etl/resultado_gal.py`, `etl/dw_extract.py` |
+| 1.2 Denominador = válidos (positivos + negativos); pendentes contados à parte | Implementado na série, na integração, na análise avançada, nos sinais e nas anomalias | `etl/build_weekly_from_gal.py`, `lacen_integracao_final_only.py` |
+| 1.4 SINAN do DW na série semanal + aviso de defasagem | Implementado (agregação no DW por view; hepatite e SRAG passam a parear) | `etl/sinan_dw.py`, `etl/run_etl_dw.py` |
+| 1.5 Carga suspeita (SE < 50% da mediana de 8 SE) | Implementado no relatório de validação do ETL | `etl/run_etl_dw.py` |
+| 5.1 Completude medida por pendentes; proxy rotulado como estimativa | Implementado; "Pendentes: 0" do proxy deixa de ser publicado | `lacen_semana_maturacao.py`, `lacen_alerta_estrategico.py` |
+| §10 "Confirmação" → "Persistência de sinais anteriores" | Renomeado no alerta e no QA | `lacen_alerta_estrategico.py` |
+
+**Primeira execução com o DW de volta (checklist):**
+
+1. Rodar `rodar_etl_dw.bat --skip-cievs` e abrir `saida_pipeline\validacao_etl_dw_ultimo.txt`: conferir `sinan_dw` (views agregadas e falhas), `sinan_se_max`, `sinan_atraso_se`, `carga_suspeita`.
+2. Conferir a positividade estadual da SE: deve sair da faixa de ~0,6% para valores plausíveis por agravo. Se continuar baixa, rodar `diagnosticar_codigo_resultados_gal.py` e acrescentar os textos de resultado que faltam em `etl/resultado_gal.py`.
+3. Se alguma `VW_SINAN_*` aparecer em `views_falha` por "colunas não identificadas", informar os nomes das colunas de data e município dessa view para ajuste de `pick_columns`.
+4. **Reprocessar o histórico** com o classificador novo antes de comparar positividade e positivos com anos anteriores (canal endêmico, anomalias, ML).

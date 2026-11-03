@@ -1026,7 +1026,7 @@ def kpis_estrategicos(
             if rel.kpi_silencios not in (None, "—", "")
             else "—",
         ),
-        ("CONFIRMAÇÃO DE SINAIS ANTERIORES", str(rel.kpi_confirmacao or "—")),
+        ("PERSISTÊNCIA DE SINAIS ANTERIORES", str(rel.kpi_confirmacao or "—")),
     ]
 
 
@@ -1091,8 +1091,9 @@ _NOTA_INTERPRETACAO = (
     "contexto epidemiológico. "
     "Silêncio laboratorial: municípios com queda abrupta de exames GAL frente ao "
     "histórico/vizinhos (não equivale automaticamente a ausência de transmissão). "
-    "Confirmação de sinais anteriores: proporção de alertas da rodada prévia "
-    "corroborados por desfecho nas 1–2 semanas seguintes (artefato de confirmação)."
+    "Persistência de sinais anteriores: proporção de alertas da rodada prévia em que "
+    "o mesmo indicador continuou alterado nas 1–2 semanas seguintes; não é confirmação "
+    "epidemiológica, que depende do retorno da Vigilância Epidemiológica."
 )
 
 _PEDIDO_MUNICIPIOS = [
@@ -1239,9 +1240,9 @@ def qa_alerta_estrategico(
     items["Silêncio laboratorial"] = (
         "OK" if re.search(r"SIL[ÊE]NCIO LABORATORIAL", text) else "ATENÇÃO (ausente)"
     )
-    items["Confirmação de sinais anteriores"] = (
+    items["Persistência de sinais anteriores"] = (
         "OK"
-        if re.search(r"CONFIRMAÇÃO DE SINAIS ANTERIORES: (—|\d+ de \d+)", text)
+        if re.search(r"PERSISTÊNCIA DE SINAIS ANTERIORES: (—|\d+ de \d+)", text)
         else "ATENÇÃO (sem numerador/denominador)"
     )
     # Linguagem: não converter anomalia em surto (spec §33–40).
@@ -1408,7 +1409,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         rel, weekly=weekly, se_analisada_yw=mat.semana_analisada_yw
     )
     comp = mat.completude
-    completude_txt = fmt_completude_pct(comp.completude_pct)
+    from lacen_semana_maturacao import rotulo_completude
+
+    completude_txt = rotulo_completude(comp)
+    # Com proxy de volume, "pendentes = 0" não é medida: não publicar a contagem.
+    completude_proxy = "proxy" in (comp.metodo or "")
     adv = build_advanced_metrics(
         outdir=OUTDIR_ALERTA,
         se_analisada=mat.semana_analisada_yw,
@@ -1439,11 +1444,11 @@ def montar_alerta_estrategico(rel: Any) -> dict[str, Any]:
         f"Semana analisada: {se_analisada}",
         f"Atualização / data de corte: {atualizacao}",
         f"Completude da semana analisada: {completude_txt}",
-        (
+        *([] if completude_proxy else [
             f"Exames elegíveis: {fmt_num_br(comp.exames_elegiveis)} · "
             f"Liberados: {fmt_num_br(comp.exames_liberados)} · "
             f"Pendentes: {fmt_num_br(comp.exames_pendentes)}"
-        ),
+        ]),
         "",
         f"Situação: {situacao}",
         "",
@@ -1813,9 +1818,10 @@ font-family:Arial,sans-serif">Alerta estratégico — {esc(se_alerta)}</h1>
 Semana analisada: <b>{esc(se_analisada)}</b><br>
 Atualização / data de corte: {esc(atualizacao)}<br>
 Completude da semana analisada: <b>{esc(completude_txt)}</b>
-({esc(fmt_num_br(comp.exames_elegiveis))} elegíveis ·
-{esc(fmt_num_br(comp.exames_liberados))} liberados ·
-{esc(fmt_num_br(comp.exames_pendentes))} pendentes)<br>
+{"" if completude_proxy else (
+    f"({esc(fmt_num_br(comp.exames_elegiveis))} elegíveis · "
+    f"{esc(fmt_num_br(comp.exames_liberados))} liberados · "
+    f"{esc(fmt_num_br(comp.exames_pendentes))} pendentes)")}<br>
 Situação: <b>{esc(situacao)}</b>
 </p>{prelim_html}</td></tr>
 <tr><td style="padding:16px 24px">

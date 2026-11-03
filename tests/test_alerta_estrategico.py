@@ -101,3 +101,23 @@ def test_destaque_juina_so_com_validados():
     assert "Hepatite B" in txt and "diferença: -8" in txt
     assert "Hepatite C" not in txt and "Lacuna" not in txt
     assert "Aumento importante" not in txt
+
+
+def test_completude_medida_por_pendentes():
+    from lacen_semana_maturacao import _completude_pendentes_weekly, rotulo_completude
+
+    wk = [{"epi_year": "2026", "epi_week": "36", "municipio": "CUIABA", "tests": "100", "pendentes": "4"},
+          {"epi_year": "2026", "epi_week": "36", "municipio": "SINOP", "tests": "100", "pendentes": "6"}]
+    c = _completude_pendentes_weekly(wk, 2026, 36)
+    assert c.metodo == "gal_pendentes_medido" and c.completude_pct == 95.0 and c.exames_pendentes == 10
+    assert "medida" in rotulo_completude(c)
+    # série antiga (sem coluna pendentes) → None, cai nos métodos anteriores
+    assert _completude_pendentes_weekly([{"epi_year": "2026", "epi_week": "36", "municipio": "A",
+                                          "tests": "10"}], 2026, 36) is None
+
+
+def test_rotulo_proxy_explicita_estimativa():
+    from lacen_semana_maturacao import WeekCompleteness, rotulo_completude
+
+    c = WeekCompleteness(2026, 36, 1231, 1231, 0, 97.0, "proxy_volume")
+    assert "estimada" in rotulo_completude(c)
